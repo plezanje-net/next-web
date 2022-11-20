@@ -1,8 +1,10 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { dedupExchange, fetchExchange } from "urql";
+import { withUrqlClient } from "next-urql";
 
-export default function App({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -32,7 +34,17 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Component {...pageProps} />
+      <Component {...pageProps} />;
     </>
   );
 }
+
+export default withUrqlClient(
+  (ssrExchange, ctx) => {
+    return {
+      url: "https://plezanje.info/graphql",
+      exchanges: [dedupExchange, ssrExchange, fetchExchange],
+    };
+  },
+  { ssr: true }
+)(MyApp);
