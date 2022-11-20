@@ -13,9 +13,7 @@ function Header() {
   const authCtx = useAuth();
   const router = useRouter();
 
-  console.log(router.pathname);
-
-  const nav: NavLink[] = [
+  const navLinks: NavLink[] = [
     {
       label: "Plezališča",
       href: "/plezalisca/slovenija",
@@ -39,7 +37,7 @@ function Header() {
         <Logo />
       </Link>
       <nav>
-        {nav.map((link) => (
+        {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
