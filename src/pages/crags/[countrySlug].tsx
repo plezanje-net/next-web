@@ -26,7 +26,7 @@ function Crags() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">
+      <h1 className="text-3xl font-medium">
         Plezalisca - {data?.countryBySlug?.name}
       </h1>
       <div>
