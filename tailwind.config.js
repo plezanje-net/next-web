@@ -47,6 +47,7 @@ module.exports = {
       red: {
         500: "#D9422B",
       },
+      current: "currentColor",
       // ...
     },
   },
