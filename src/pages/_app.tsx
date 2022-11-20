@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import { dedupExchange, fetchExchange } from "urql";
+import { cacheExchange, dedupExchange, fetchExchange } from "urql";
 import { withUrqlClient } from "next-urql";
 import { AuthProvider } from "../utils/providers/auth-provider";
 import App from "next/app";
@@ -33,7 +33,7 @@ export default withUrqlClient(
           authorization: token ? `Bearer ${token}` : "",
         },
       },
-      exchanges: [dedupExchange, ssrExchange, fetchExchange],
+      exchanges: [dedupExchange, cacheExchange, ssrExchange, fetchExchange],
     };
   },
   { ssr: true }
