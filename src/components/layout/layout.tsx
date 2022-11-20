@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import Header from "./header";
 
 interface Props {
   children?: ReactNode;
@@ -35,7 +36,8 @@ function Layout({ children }: Props) {
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <main className="container mx-auto">{children}</main>
+      <Header />
+      <main>{children}</main>
     </>
   );
 }
