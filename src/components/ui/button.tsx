@@ -17,17 +17,6 @@ function Button(props: Props) {
   if (props.variant === "secondary") {
     variantClassNames =
       "text-neutral-900 bg-neutral-200 hover:bg-neutral-300 focus:outline-blue-100 active:bg-neutral-400 disabled:bg-neutral-100 disabled:text-neutral-400 hover:focus:outline-blue-100 hover:focus:bg-neutral-300 hover:focus:outline-blue-100 hover:focus:bg-neutral-400";
-    ` text-neutral-900
-        bg-neutral-200
-        hover:bg-neutral-300
-        focus:outline-blue-100
-        active:bg-neutral-400
-        disabled:bg-neutral-100
-        disabled:text-neutral-400
-        hover:focus:outline-blue-100
-        hover:focus:bg-neutral-300
-        hover:focus:outline-blue-100
-        hover:focus:bg-neutral-400`;
   }
 
   return (
