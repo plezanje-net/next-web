@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "urql";
+import {
+  Breadcrumbs,
+  BreadcrumbsProps,
+} from "../../components/layout/breadcrumbs";
 import { CountryBySlugWithCragsDocument } from "../../graphql/generated";
 
 type Params = {
@@ -9,6 +13,7 @@ type Params = {
 
 function Crags() {
   const { query } = useRouter();
+
   const [result] = useQuery({
     query: CountryBySlugWithCragsDocument,
     variables: {
@@ -24,8 +29,27 @@ function Crags() {
 
   if (fetching) return <>Loading</>;
 
+  let breadcrumbsProps: BreadcrumbsProps = { items: [] };
+  if (data?.countryBySlug) {
+    breadcrumbsProps.items = [
+      {
+        label: "Plezanje.net",
+        link: "/",
+      },
+      {
+        label: "Plezališča",
+        link: `/plezalisca/${query.countrySlug}`,
+      },
+      {
+        label: data.countryBySlug.name,
+        link: `/plezalisca/${query.countrySlug}`,
+      },
+    ];
+  }
+
   return (
     <>
+      <Breadcrumbs {...breadcrumbsProps} />
       <h1 className="text-3xl font-medium">
         Plezalisca - {data?.countryBySlug?.name}
       </h1>
