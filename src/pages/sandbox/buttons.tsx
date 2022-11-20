@@ -1,4 +1,4 @@
-import Button from "../../components/ui/cutton";
+import Button from "../../components/ui/button";
 
 export default function Buttons() {
   return (
