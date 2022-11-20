@@ -51,7 +51,7 @@ function Header() {
           </Link>
         ))}
         <Link href="/sandbox/auth" className="inline-block px-4 py-3">
-          {authCtx.status ? "Anze" : "Prijava"}
+          {authCtx.status ? authCtx.status.email : "Prijava"}
         </Link>
       </nav>
     </header>
