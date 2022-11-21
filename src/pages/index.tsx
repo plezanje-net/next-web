@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Plezanjenet</div>;
+  return <div className="container mx-auto">Plezanjenet</div>;
 }
