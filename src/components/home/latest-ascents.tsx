@@ -1,9 +1,5 @@
 import { gql, useQuery } from "urql";
 import { Activity, HomeLatestAscentsDocument } from "../../graphql/generated";
-import displayDate from "../../utils/display-date";
-import CragLink from "../crag-link";
-import Grade from "../grade";
-import RouteLink from "../route-link";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
 import LatestAscentsActivitySkeleton from "./latest-ascents/latest-ascents-activity-skeleton";
 
