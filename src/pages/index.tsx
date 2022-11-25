@@ -4,7 +4,7 @@ import LatestDifficultyVotes from "../components/home/latest-difficulty-votes";
 function Home() {
   return (
     <div className="container mx-auto">
-      <div className="flex">
+      <div className="flex gap-6">
         <div className="w-1/2">
           <LatestAscents />
         </div>
