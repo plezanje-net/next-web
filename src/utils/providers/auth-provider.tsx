@@ -1,9 +1,11 @@
 import { createContext, useContext, useState } from "react";
+import parseJwt from "../parse-jwt";
 
 type AuthStatus = {
   loggedIn: boolean;
   token?: string;
   email?: string;
+  roles: string[];
 };
 
 export const AuthContext = createContext<{ status: AuthStatus | null }>({
@@ -19,10 +21,8 @@ export const AuthProvider = ({
 }) => {
   const [status, setStatus] = useState<AuthStatus | null>(null);
   if (token && status?.token !== token) {
-    const tokenData = JSON.parse(
-      Buffer.from(token.split(".")[1], "base64").toString()
-    );
-    setStatus({ loggedIn: true, token, email: tokenData.email });
+    const { email, roles } = parseJwt(token);
+    setStatus({ loggedIn: true, token, email, roles });
   }
   return (
     <AuthContext.Provider value={{ status }}>{children}</AuthContext.Provider>
