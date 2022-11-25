@@ -13,12 +13,12 @@ type Params = {
 
 function LatestAscentsActivity({ activity }: Params) {
   const [expanded, setExpanded] = useState(false);
-  const toggleExpanded = () => setExpanded(!expanded);
+  const toggleCommentsHandler = () => setExpanded(!expanded);
 
   return (
     <li
       className="flex items-center border-b border-b-neutral-200 py-3"
-      onClick={toggleExpanded}
+      onClick={toggleCommentsHandler}
     >
       <div className="w-6">
         {activity.routes.length > 1 ? (

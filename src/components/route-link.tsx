@@ -9,7 +9,10 @@ type Props = {
 function RouteLink({ route, crag }: Props) {
   const routeCrag = crag ?? route.crag;
   return (
-    <Link href={`/plezalisce/${routeCrag.slug}/smer/${route.slug}`}>
+    <Link
+      href={`/plezalisce/${routeCrag.slug}/smer/${route.slug}`}
+      onClick={(e) => e.stopPropagation()}
+    >
       {route.name}
     </Link>
   );

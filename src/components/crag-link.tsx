@@ -6,7 +6,14 @@ type Props = {
 };
 
 function CragLink({ crag }: Props) {
-  return <Link href={`/plezalisce/${crag.slug}`}>{crag.name}</Link>;
+  return (
+    <Link
+      href={`/plezalisce/${crag.slug}`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {crag.name}
+    </Link>
+  );
 }
 
 export default CragLink;
