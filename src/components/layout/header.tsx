@@ -62,20 +62,25 @@ function Header() {
       {/* Logo row */}
       <div className="box-content flex h-20 items-center justify-between ">
         {/* Logo */}
-        <div className="bg-[pink] py-1">
+        <div className="-ml-2 bg-[pink] py-1 px-2">
           <div className="bg-[coral]">
             <Logo />
           </div>
         </div>
         <div className="flex">
-          <div className="hidden bg-[lightgreen] py-2 xs:block lg:hidden">
-            {search}
+          <div className="hidden bg-[lightgreen] p-2 xs:block lg:hidden">
+            <div className="bg-[darkcyan]">{search}</div>
           </div>
           {loggedIn && (
-            <div className="bg-[magenta] py-2 lg:hidden">{userLinkShort}</div>
+            <div className="bg-[magenta] p-2 lg:hidden">{userLinkShort}</div>
           )}
-          <div className="bg-[violet] py-2 lg:hidden" onClick={handleMenuClick}>
-            {menuOpened ? <IconClose /> : <IconMenu />}
+          <div
+            className="-mr-2 bg-[violet] p-2 lg:hidden"
+            onClick={handleMenuClick}
+          >
+            <div className="bg-[darkcyan]">
+              {menuOpened ? <IconClose /> : <IconMenu />}
+            </div>
           </div>
         </div>
       </div>
@@ -85,23 +90,31 @@ function Header() {
           menuOpened ? "block" : "hidden"
         }`}
       >
-        <div className="bg-[#6ab26a] py-2 xs:hidden lg:block">{search}</div>
+        <div className="-mx-2 bg-[#6ab26a] p-2 xs:hidden lg:mx-0 lg:block">
+          <div className="bg-[floralwhite]">{search}</div>
+        </div>
 
-        {!loggedIn && <div className="bg-[beige] py-2 lg:hidden">Prijava</div>}
+        {!loggedIn && (
+          <div className="-mx-2 bg-[beige] p-2 lg:hidden">
+            <div className="bg-[deepskyblue]">Prijava</div>
+          </div>
+        )}
 
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className={`block bg-[orange] py-2
+            className={`-mx-2 block bg-[orange] p-2 lg:mx-0 lg:ml-4
                         ${link.isActive && "text-blue-500"}`}
           >
             <div className="bg-[purple]">{link.label}</div>
           </Link>
         ))}
 
-        <div className="hidden bg-[beige] py-2 lg:block">
-          {loggedIn ? userLink : "Prijava"}
+        <div className="-mr-2 hidden bg-[beige] p-2 py-2 lg:ml-4 lg:block">
+          <div className="bg-[burlywood]">
+            {loggedIn ? userLink : "Prijava"}
+          </div>
         </div>
       </div>
     </header>
