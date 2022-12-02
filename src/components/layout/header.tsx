@@ -66,7 +66,10 @@ function Header() {
           </div>
 
           {loggedIn && (
-            <Link className="p-2 xs:ml-4 lg:hidden" href="/sandbox/auth">
+            <Link
+              className="p-2 font-medium hover:text-blue-500 active:text-blue-600 xs:ml-4 lg:hidden"
+              href="/sandbox/auth"
+            >
               {userFullNameShort}
             </Link>
           )}
@@ -89,7 +92,10 @@ function Header() {
         </div>
 
         {!loggedIn && (
-          <Link className="-mx-2 block p-2 lg:hidden" href="/sandbox/auth">
+          <Link
+            className="-mx-2 block p-2 font-medium hover:text-blue-500 active:text-blue-600 lg:hidden"
+            href="/sandbox/auth"
+          >
             Prijava
           </Link>
         )}
@@ -98,7 +104,7 @@ function Header() {
           <Link
             key={link.href}
             href={link.href}
-            className={`-mx-2 block p-2 lg:mx-0 lg:ml-4
+            className={`-mx-2 block p-2 font-medium hover:text-blue-500 active:text-blue-600 lg:mx-0 lg:ml-4
                         ${link.isActive && "text-blue-500"}`}
           >
             {link.label}
@@ -106,7 +112,7 @@ function Header() {
         ))}
 
         <Link
-          className="-mr-2 hidden p-2 py-2 lg:ml-4 lg:block"
+          className="-mr-2 hidden p-2 py-2 font-medium hover:text-blue-500 active:text-blue-600 lg:ml-4 lg:block"
           href="/sandbox/auth"
         >
           {loggedIn ? userFullName : "Prijava"}
