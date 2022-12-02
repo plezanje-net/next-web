@@ -50,6 +50,7 @@ module.exports = {
       current: "currentColor",
       // ...
     },
+    extend: { screens: { xs: "512px" } },
   },
   plugins: [],
 };
