@@ -8,8 +8,9 @@ import App from "next/app";
 import cookies from "next-cookies";
 import { NextPageContext } from "next";
 import Layout from "../components/layout/layout";
-
-type MyAppProps = AppProps & { authToken: string };
+interface MyAppProps extends AppProps {
+  authToken: string;
+}
 
 function MyApp({ Component, pageProps, authToken }: MyAppProps) {
   return (
