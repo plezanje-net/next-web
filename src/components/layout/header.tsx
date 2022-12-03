@@ -44,9 +44,11 @@ function Header() {
   const loggedIn = !!authCtx.status;
 
   // TODO: get user's full name from authCtx. adjust BE ?
-  const userFullName = "Slavko Majonezič"; //TODO: replace testing dummy
-  const userFullNameShort = userFullName
-    .split(" ")
+  const userFullName = authCtx.status?.user?.fullName; //TODO: replace testing dummy
+  const userFullNameShort = [
+    authCtx.status?.user?.firstname ?? "",
+    authCtx.status?.user?.lastname ?? "",
+  ]
     .reduce((prev, curr) => prev + curr[0], "")
     .toUpperCase();
 
