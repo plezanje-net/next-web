@@ -26,7 +26,9 @@ function TabMenu({ items }: TabMenuProps) {
         >
           <Link
             href={item.link}
-            className={`block px-4 py-2 ${item.isActive && " text-blue-500"}`}
+            className={`block px-4 py-2 hover:text-blue-500 ${
+              item.isActive && " text-blue-500"
+            }`}
           >
             {item.label}
           </Link>
