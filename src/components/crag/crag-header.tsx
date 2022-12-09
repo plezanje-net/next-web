@@ -1,6 +1,10 @@
 import { gql, useQuery } from "urql";
 import { Crag, CragHeaderDocument } from "../../graphql/generated";
 import { Breadcrumb, Breadcrumbs } from "../layout/breadcrumbs";
+import IconComment from "../ui/icons/comment";
+import IconGallery from "../ui/icons/gallery";
+import IconInfo from "../ui/icons/info";
+import IconRoutes from "../ui/icons/routes";
 import Spinner from "../ui/spinner";
 import TabMenu, { TabMenuItem } from "../ui/tab-menu";
 
@@ -54,21 +58,25 @@ function CragHeader({ cragSlug, activeTab }: Props) {
       label: "Info",
       link: `/plezalisce/${crag.slug}/info`,
       isActive: activeTab === "info",
+      icon: <IconInfo />,
     },
     {
       label: "Smeri",
       link: `/plezalisce/${crag.slug}`,
       isActive: activeTab === "routes",
+      icon: <IconRoutes />,
     },
     {
       label: "Komentarji",
       link: `/plezalisce/${crag.slug}/komentarji`,
       isActive: activeTab === "comments",
+      icon: <IconComment />,
     },
     {
       label: "Galerija",
       link: `/plezalisce/${crag.slug}/galerija`,
       isActive: activeTab === "gallery",
+      icon: <IconGallery />,
     },
   ];
 
