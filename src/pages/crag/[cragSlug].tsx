@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import { gql, useQuery } from "urql";
 import CragHeader from "../../components/crag/crag-header";
+import CragSector from "../../components/crag/crag-sector";
+import CragTable from "../../components/crag/crag-table";
 import Accordion from "../../components/ui/accordion";
 import Spinner from "../../components/ui/spinner";
-import { Crag, CragSectorsDocument } from "../../graphql/generated";
+import { Crag, CragSectorsDocument, Sector } from "../../graphql/generated";
 
 type Params = {
   cragSlug: string;
@@ -39,23 +41,7 @@ function CragRoutes() {
   return (
     <>
       {header}
-      <div className="container mx-auto mt-4 px-8">
-        {data.cragBySlug.sectors.map((sector, index) => (
-          <div
-            key={sector.id}
-            className={`${index > 0 && "border-t border-t-neutral-200"}`}
-          >
-            <Accordion
-              label={[sector.label, sector.name]
-                .filter((part) => part != "")
-                .join(" - ")}
-              isOpen={false}
-            >
-              rutas
-            </Accordion>
-          </div>
-        ))}
-      </div>
+      <CragTable crag={data.cragBySlug as Crag} />
     </>
   );
 }
@@ -64,6 +50,7 @@ gql`
   query CragSectors($crag: String!) {
     cragBySlug(slug: $crag) {
       id
+      slug
       sectors {
         id
         name
