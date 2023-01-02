@@ -28,7 +28,7 @@ export default withUrqlClient(
   (ssrExchange, ctx) => {
     const { token } = cookies(ctx ?? {});
     return {
-      url: "https://plezanje.info/graphql",
+      url: `${process.env.NEXT_PUBLIC_API_URL}`,
       fetchOptions: {
         headers: {
           authorization: token ? `Bearer ${token}` : "",
