@@ -44,14 +44,16 @@ function Header() {
   const loggedIn = !!authCtx.status;
 
   // TODO: get user's full name from authCtx. adjust BE ?
-  const userFullName = "Slavko Majonezič"; //TODO: replace testing dummy
-  const userFullNameShort = userFullName
-    .split(" ")
+  const userFullName = authCtx.status?.user?.fullName; //TODO: replace testing dummy
+  const userFullNameShort = [
+    authCtx.status?.user?.firstname ?? "",
+    authCtx.status?.user?.lastname ?? "",
+  ]
     .reduce((prev, curr) => prev + curr[0], "")
     .toUpperCase();
 
   return (
-    <header className="flex flex-col justify-between border-b border-b-neutral-200 px-4 xs:px-8 lg:flex-row lg:items-center">
+    <header className="flex flex-col justify-between px-4 xs:px-8 lg:flex-row lg:items-center">
       {/* Logo row */}
       <div className="box-content flex h-20 items-center justify-between">
         {/* Logo */}

@@ -33,7 +33,7 @@ function Grade({
       gradingSystemId,
       displayIntermediate
     );
-    return <div>{gradeDisplay.name}</div>;
+    return <>{gradeDisplay.name}</>;
   }
 
   return <></>;

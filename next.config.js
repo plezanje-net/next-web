@@ -13,6 +13,10 @@ const nextConfig = {
         destination: "/crag/:cragSlug/route/:routeSlug*",
       },
       {
+        source: "/plezalisce/:cragSlug/komentarji",
+        destination: "/crag/:cragSlug/comments",
+      },
+      {
         source: "/plezalisce/:cragSlug*",
         destination: "/crag/:cragSlug*",
       },
