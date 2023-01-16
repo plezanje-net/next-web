@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Sector } from "../../graphql/generated";
 import Accordion from "../ui/accordion";
-import CragRoute from "./crag-route";
-import CragRouteCompact from "./crag-route-compact";
+import CragRoute, { CragRouteCompact } from "./crag-route";
+import CragRoutes from "./crag-routes";
 import { CragTableColumns, CragTableContext } from "./crag-table";
 
 interface Props {
@@ -12,10 +12,6 @@ interface Props {
 }
 
 function CragSector({ sector, isOpen, onToggle }: Props) {
-  let compact = false; // move to state?
-
-  const { state } = useContext(CragTableContext);
-
   return (
     <Accordion
       label={[sector.label, sector.name]
@@ -25,37 +21,7 @@ function CragSector({ sector, isOpen, onToggle }: Props) {
       onClick={onToggle}
     >
       <div className="md:mx-4">
-        {!compact ? (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-neutral-200">
-                {CragTableColumns.filter(
-                  ({ name, displayCondition }) =>
-                    state.selectedColumns.includes(name) &&
-                    (displayCondition === undefined || displayCondition())
-                ).map((column) => (
-                  <th
-                    key={column.name}
-                    className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
-                  >
-                    {column.icon ? column.icon : column.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sector.routes.map((route) => (
-                <CragRoute key={route.id} route={route} />
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div>
-            {sector.routes.map((route) => (
-              <CragRouteCompact key={route.id} route={route} />
-            ))}
-          </div>
-        )}
+        <CragRoutes routes={sector.routes} />
       </div>
     </Accordion>
   );
