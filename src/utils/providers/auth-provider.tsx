@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import parseJwt from "../parse-jwt";
+import { gql, useQuery } from "urql";
+import { ProfileDocument, User } from "../../graphql/generated";
 
 type AuthStatus = {
   loggedIn: boolean;
   token?: string;
-  email?: string;
-  roles: string[];
+  user?: User;
 };
 
 export const AuthContext = createContext<{ status: AuthStatus | null }>({
@@ -20,9 +20,11 @@ export const AuthProvider = ({
   children: any;
 }) => {
   const [status, setStatus] = useState<AuthStatus | null>(null);
+  const [result] = useQuery({ query: ProfileDocument });
+
   if (token && status?.token !== token) {
-    const { email, roles } = parseJwt(token);
-    setStatus({ loggedIn: true, token, email, roles });
+    const { data } = result;
+    setStatus({ loggedIn: true, token, user: data?.profile as User });
   }
   return (
     <AuthContext.Provider value={{ status }}>{children}</AuthContext.Provider>
@@ -30,3 +32,16 @@ export const AuthProvider = ({
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+gql`
+  query Profile {
+    profile {
+      id
+      firstname
+      lastname
+      fullName
+      email
+      roles
+    }
+  }
+`;

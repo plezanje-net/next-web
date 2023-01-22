@@ -7,11 +7,12 @@ import {
   useBreadcrumbs,
 } from "react-aria";
 
+export type Breadcrumb = {
+  label: string;
+  link: string;
+};
 export interface BreadcrumbsProps extends AriaBreadcrumbsProps {
-  items: {
-    label: string;
-    link: string;
-  }[];
+  items: Breadcrumb[];
 }
 
 export function Breadcrumbs(props: BreadcrumbsProps) {
