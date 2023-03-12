@@ -1,7 +1,7 @@
 import { ElementType, useRef } from "react";
 import { AriaButtonProps, useButton } from "react-aria";
 
-interface Props extends AriaButtonProps<ElementType<any>> {
+interface Props extends AriaButtonProps {
   variant?: "primary" | "secondary";
   renderStyle?: "button" | "icon" | "link";
   loading?: boolean;
