@@ -3,28 +3,78 @@ import { AriaButtonProps, useButton } from "react-aria";
 
 interface Props extends AriaButtonProps<ElementType<any>> {
   variant?: "primary" | "secondary";
+  renderStyle?: "button" | "icon" | "link";
   loading?: boolean;
   className?: string;
 }
 
-function Button(props: Props) {
-  const ref = useRef(null);
-  const { buttonProps } = useButton(props, ref);
+// TODO: design loading state
+// TODO: design button with icon
 
-  let variantClassNames =
-    "text-white bg-blue-500 hover:bg-blue-600 focus:outline-blue-500 active:bg-blue-700 disabled:bg-blue-100 hover:focus:bg-blue-600 hover:focus:outline-blue-100 active:focus:bg-blue-600 active:focus:outline-blue-100";
-  if (props.variant === "secondary") {
-    variantClassNames =
-      "bg-neutral-200 hover:bg-neutral-300 focus:outline-blue-100 active:bg-neutral-400 disabled:bg-neutral-100 disabled:text-neutral-400 hover:focus:outline-blue-100 hover:focus:bg-neutral-300 hover:focus:outline-blue-100 hover:focus:bg-neutral-400";
+function Button(props: Props) {
+  const buttonRef = useRef(null);
+  const { buttonProps, isPressed } = useButton(props, buttonRef);
+
+  const variant = props.variant || "primary";
+  const renderStyle = props.renderStyle || "button";
+  const disabled = props.isDisabled || false;
+
+  let buttonStyles = "";
+  switch (renderStyle) {
+    case "button":
+      buttonStyles =
+        "rounded-lg py-2 px-7 outline-none focus:ring focus:ring-blue-100 font-medium";
+      switch (variant) {
+        case "primary":
+          buttonStyles += ` text-white 
+          ${
+            disabled
+              ? "bg-blue-100"
+              : isPressed
+              ? "bg-blue-700"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`;
+          break;
+        case "secondary":
+          buttonStyles += `
+          ${
+            disabled
+              ? "bg-neutral-100 text-neutral-400"
+              : isPressed
+              ? "bg-neutral-400"
+              : "bg-neutral-200 hover:bg-neutral-300"
+          }`;
+          break;
+      }
+      break;
+
+    case "icon":
+      buttonStyles = "hover:text-blue-500 fill-current";
+      break;
+
+    case "link":
+      buttonStyles = "focus:underline focus:decoration-double outline-none";
+      switch (variant) {
+        case "primary":
+          buttonStyles += ` text-blue-500 ${isPressed && "text-blue-600"}`;
+          break;
+        case "secondary":
+          buttonStyles += ` text-neutral-900 ${
+            isPressed && "text-neutral-600"
+          }`;
+          break;
+      }
+      buttonStyles += ` ${
+        disabled ? "cursor-default text-neutral-400" : "hover:underline"
+      }`;
+      break;
   }
 
   return (
     <button
       {...buttonProps}
-      className={`rounded-lg py-1 px-7 ${variantClassNames} ${
-        props.className || ""
-      }`}
-      ref={ref}
+      className={`${buttonStyles} ${props.className || ""}`}
+      ref={buttonRef}
     >
       {props.loading ? "loading ..." : props.children}
     </button>

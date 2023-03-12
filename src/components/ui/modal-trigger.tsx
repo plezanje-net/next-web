@@ -3,16 +3,18 @@ import { OverlayTriggerProps } from "@react-stately/overlays";
 import { useOverlayTriggerState } from "@react-stately/overlays";
 import Button from "./button";
 import { Modal } from "./modal";
-import { cloneElement, ReactElement } from "react";
+import { cloneElement, ReactElement, ReactNode } from "react";
 
 interface ModalTriggerProps extends OverlayTriggerProps {
   children: (close: () => void) => ReactElement;
-  label: string;
-  size?: "small" | "medium" | "large";
+  triggerRenderStyle?: "button" | "icon" | "link";
+  triggerVariant?: "primary" | "secondary";
+  triggerLabel: string | ReactNode;
+  dialogSize?: "small" | "medium" | "large";
 }
 
 function ModalTrigger(props: ModalTriggerProps) {
-  const { children, label } = props;
+  const { children, triggerLabel } = props;
   const state = useOverlayTriggerState(props);
   const { triggerProps, overlayProps } = useOverlayTrigger(
     { type: "dialog" },
@@ -21,9 +23,15 @@ function ModalTrigger(props: ModalTriggerProps) {
 
   return (
     <>
-      <Button {...triggerProps}>{label}</Button>
+      <Button
+        {...triggerProps}
+        variant={props.triggerVariant}
+        renderStyle={props.triggerRenderStyle}
+      >
+        {triggerLabel}
+      </Button>
       {state.isOpen && (
-        <Modal {...props} state={state}>
+        <Modal {...props} size={props.dialogSize} state={state}>
           {cloneElement(children(state.close), overlayProps)}
         </Modal>
       )}
