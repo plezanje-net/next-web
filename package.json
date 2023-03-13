@@ -10,7 +10,9 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@react-stately/overlays": "^3.5.0",
     "@react-stately/radio": "^3.6.1",
+    "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
