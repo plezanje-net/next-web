@@ -90,10 +90,10 @@ function RangeSliderPage() {
 
   return (
     <div className="m-8">
-      <h1 className="text-xl">Range slider demo</h1>
+      <h3>Range slider demo</h3>
 
       <div className="mt-14 w-80">
-        <h2>A default range slider</h2>
+        <h5>A default range slider</h5>
         <div className="mt-4">
           <RangeSlider
             label="Težavnost"
@@ -105,7 +105,7 @@ function RangeSliderPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h2>A disabled range slider</h2>
+        <h5>A disabled range slider</h5>
         <div className="mt-4">
           <RangeSlider
             label="Težavnost"
@@ -118,7 +118,7 @@ function RangeSliderPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h2>Map values to grades and react to value change instantly</h2>
+        <h5>Map values to grades and react to value change instantly</h5>
 
         <div className="mt-4">
           <RangeSlider
@@ -150,9 +150,9 @@ function RangeSliderPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h2>
+        <h5>
           Map values to grades and react to value change after dragging stops
-        </h2>
+        </h5>
 
         <div className="mt-4">
           <RangeSlider
