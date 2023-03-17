@@ -10,6 +10,7 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.3",
     "@react-stately/overlays": "^3.5.0",
     "@react-stately/radio": "^3.6.1",
     "@react-stately/slider": "^3.2.4",
