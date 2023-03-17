@@ -1,18 +1,20 @@
-import { ElementType, useRef } from "react";
+import React, { ForwardedRef, forwardRef, RefObject, useRef } from "react";
 import { AriaButtonProps, useButton } from "react-aria";
+import useForwardedRef from "../../hooks/useForwardedRef";
 
 interface Props extends AriaButtonProps {
   variant?: "primary" | "secondary";
-  renderStyle?: "button" | "icon" | "link";
-  loading?: boolean;
+  renderStyle?: "button" | "icon" | "link"; // TODO: link type can be removed if we decide to use radix instead of react-aria
   className?: string;
 }
 
-// TODO: design loading state
 // TODO: design button with icon
 
-function Button(props: Props) {
-  const buttonRef = useRef(null);
+const Button = forwardRef(function Button(
+  props: Props,
+  forwarededRef: ForwardedRef<HTMLButtonElement>
+) {
+  const buttonRef = useForwardedRef(forwarededRef);
   const { buttonProps, isPressed } = useButton(props, buttonRef);
 
   const variant = props.variant || "primary";
@@ -49,7 +51,8 @@ function Button(props: Props) {
       break;
 
     case "icon":
-      buttonStyles = "hover:text-blue-500 fill-current";
+      buttonStyles =
+        "hover:text-blue-500 fill-current outline-none focus:ring focus:ring-blue-100 rounded";
       break;
 
     case "link":
@@ -76,9 +79,9 @@ function Button(props: Props) {
       className={`${buttonStyles} ${props.className || ""}`}
       ref={buttonRef}
     >
-      {props.loading ? "loading ..." : props.children}
+      {props.children}
     </button>
   );
-}
+});
 
 export default Button;
