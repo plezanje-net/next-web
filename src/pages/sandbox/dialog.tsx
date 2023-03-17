@@ -4,7 +4,7 @@ import Link from "../../components/ui/link";
 import IconFilter from "../../components/ui/icons/filter";
 import { useState } from "react";
 
-function ModalDialogRPage() {
+function DialogPage() {
   let [dialogResponse, setDialogResponse] = useState("Nothing yet");
 
   const dialogButtonClickHandler = (dialogResponse: string) => {
@@ -14,10 +14,10 @@ function ModalDialogRPage() {
 
   return (
     <div className="m-8">
-      <h3>Modal dialog demo</h3>
+      <h3>Dialog demo</h3>
 
       <div className="mt-14 w-80">
-        <h5>Default modal dialog</h5>
+        <h5>Default dialog</h5>
         <div className="mt-4">
           <DialogRad
             title="Test Dialog"
@@ -35,7 +35,7 @@ function ModalDialogRPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h5>Medium modal dialog with an icon trigger</h5>
+        <h5>Medium dialog with an icon trigger</h5>
         <div className="mt-4">
           <DialogRad
             title="Test Dialog"
@@ -58,7 +58,7 @@ function ModalDialogRPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h5>Large modal dialog with a link trigger</h5>
+        <h5>Large dialog with a link trigger</h5>
         <div className="mt-4">
           <DialogRad
             title="Test Dialog"
@@ -211,4 +211,4 @@ function ModalDialogRPage() {
   );
 }
 
-export default ModalDialogRPage;
+export default DialogPage;
