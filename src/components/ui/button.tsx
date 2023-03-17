@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef, RefObject, useRef } from "react";
+import React, { ForwardedRef, forwardRef } from "react";
 import { AriaButtonProps, useButton } from "react-aria";
 import useForwardedRef from "../../hooks/useForwardedRef";
 
