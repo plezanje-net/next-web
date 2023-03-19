@@ -1,13 +1,10 @@
-function IconStarEmpty() {
+import Icon, { IconProps } from "./icon";
+
+function IconStarEmpty(props: IconProps) {
   return (
-    <svg
-      width="20"
-      height="19"
-      viewBox="0 0 20 19"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M6.85 14.825L10 12.925L13.15 14.85L12.325 11.25L15.1 8.85L11.45 8.525L10 5.125L8.55 8.5L4.9 8.825L7.675 11.25L6.85 14.825ZM3.825 19L5.45 11.975L0 7.25L7.2 6.625L10 0L12.8 6.625L20 7.25L14.55 11.975L16.175 19L10 15.275L3.825 19Z" />
-    </svg>
+    <Icon {...props}>
+      <path d="M8.85 17.825L12 15.925L15.15 17.85L14.325 14.25L17.1 11.85L13.45 11.525L12 8.125L10.55 11.5L6.9 11.825L9.675 14.25L8.85 17.825ZM5.825 22L7.45 14.975L2 10.25L9.2 9.625L12 3L14.8 9.625L22 10.25L16.55 14.975L18.175 22L12 18.275L5.825 22Z" />
+    </Icon>
   );
 }
 export default IconStarEmpty;
