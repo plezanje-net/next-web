@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "urql";
+import CragLink from "../../components/crag-link";
 import {
   Breadcrumbs,
   BreadcrumbsProps,
@@ -56,7 +57,7 @@ function Crags() {
       <div>
         {data?.countryBySlug.crags.map((crag: any) => (
           <div key={crag.id}>
-            <Link href={`/plezalisce/${crag.slug}`}>{crag.name}</Link>
+            <CragLink crag={crag} />
           </div>
         ))}
       </div>

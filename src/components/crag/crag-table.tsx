@@ -59,7 +59,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: false,
     isDefault: true,
     defaultSortDirection: 1,
-    width: 48,
+    width: 64,
   },
   {
     name: "sector",
@@ -84,7 +84,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: true,
     isDefault: true,
     defaultSortDirection: 1,
-    width: 103,
+    width: 130,
   },
   {
     name: "length",
@@ -92,7 +92,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: true,
     isDefault: true,
     defaultSortDirection: 1,
-    width: 85,
+    width: 100,
   },
   {
     name: "nrTicks",
@@ -125,7 +125,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: true,
     isDefault: true,
     defaultSortDirection: -1,
-    width: 48,
+    width: 52,
   },
   {
     name: "comments",
@@ -134,7 +134,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: true,
     isDefault: true,
     defaultSortDirection: -1,
-    width: 48,
+    width: 52,
   },
   {
     name: "myAscents",
@@ -143,7 +143,7 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: true,
     isDefault: true,
     defaultSortDirection: -1,
-    width: 48,
+    width: 52,
   },
 ];
 
@@ -194,9 +194,10 @@ function CragTable({ crag }: Props) {
     <div ref={containerRef}>
       <CragTableContext.Provider value={{ state, setState }}>
         <CragTableActions />
-        <div className="container mx-auto mt-4 md:px-8">
+        <div className="container mx-auto mt-4 sm:px-8">
           {router.query.combine ? (
             <CragRoutes
+              crag={crag}
               routes={crag.sectors.reduce(
                 (acc: Route[], sector) => [...acc, ...sector.routes],
                 []
@@ -209,6 +210,7 @@ function CragTable({ crag }: Props) {
                 className={`${index > 0 && "border-t border-t-neutral-200"}`}
               >
                 <CragSector
+                  crag={crag}
                   sector={sector as Sector}
                   isOpen={index + 1 == selectedSector}
                   onToggle={() => toggleSector(index)}

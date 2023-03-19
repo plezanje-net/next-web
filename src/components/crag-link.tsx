@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Crag } from "../graphql/generated";
+import Link from "./ui/link";
 
 type Props = {
   crag: Crag;
@@ -7,10 +7,7 @@ type Props = {
 
 function CragLink({ crag }: Props) {
   return (
-    <Link
-      href={`/plezalisce/${crag.slug}`}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <Link href={`/plezalisce/${crag.slug}`} variant="secondary">
       {crag.name}
     </Link>
   );

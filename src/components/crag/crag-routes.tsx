@@ -1,13 +1,14 @@
 import { useContext } from "react";
-import { Route, Sector } from "../../graphql/generated";
+import { Crag, Route, Sector } from "../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route";
 import { CragTableColumns, CragTableContext } from "./crag-table";
 
 interface Props {
+  crag: Crag;
   routes: Route[];
 }
 
-function CragRoutes({ routes }: Props) {
+function CragRoutes({ routes, crag }: Props) {
   const { state } = useContext(CragTableContext);
   return (
     <>
@@ -31,14 +32,14 @@ function CragRoutes({ routes }: Props) {
           </thead>
           <tbody>
             {routes.map((route) => (
-              <CragRoute key={route.id} route={route} />
+              <CragRoute key={route.id} route={route} crag={crag} />
             ))}
           </tbody>
         </table>
       ) : (
         <div>
           {routes.map((route) => (
-            <CragRouteCompact key={route.id} route={route} />
+            <CragRouteCompact key={route.id} route={route} crag={crag} />
           ))}
         </div>
       )}
