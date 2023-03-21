@@ -1,0 +1,10 @@
+import Icon, { IconProps } from "./icon";
+
+function IconAddComment(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M13 14H11V11H8V9H11V6H13V9H16V11H13V14ZM22 22V4C22 3.45 21.804 2.979 21.412 2.587C21.0207 2.19567 20.55 2 20 2H4C3.45 2 2.979 2.19567 2.587 2.587C2.19567 2.979 2 3.45 2 4V16C2 16.55 2.19567 17.021 2.587 17.413C2.979 17.8043 3.45 18 4 18H18L22 22ZM20 17.175L18.825 16H4V4H20V17.175ZM20 4V17.175V4Z" />
+    </Icon>
+  );
+}
+export default IconAddComment;
