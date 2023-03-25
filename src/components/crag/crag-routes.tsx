@@ -25,7 +25,9 @@ function CragRoutes({ routes, crag }: Props) {
                   key={column.name}
                   className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
                 >
-                  {column.icon ? column.icon : column.label}
+                  {column.icon
+                    ? column.icon
+                    : column.labelShort ?? column.label}
                 </th>
               ))}
             </tr>

@@ -28,6 +28,7 @@ interface CragTableState {
 
 interface CragTableColumn {
   label: string;
+  labelShort?: string;
   name: string;
   icon?: ReactNode;
   isOptional: boolean;
@@ -97,6 +98,7 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "nrTicks",
     label: "Št. uspešnih vzponov",
+    labelShort: "Št. vzponov",
     isOptional: true,
     isDefault: false,
     defaultSortDirection: -1,
