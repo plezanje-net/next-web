@@ -2,8 +2,10 @@ import { useContext } from "react";
 import { Crag, Route } from "../../graphql/generated";
 import Grade from "../grade";
 import RouteLink from "../route-link";
+import AscentIcon from "../ui/ascent-icon";
 import Checkbox from "../ui/checkbox";
 import IconComment from "../ui/icons/comment";
+import { IconSize } from "../ui/icons/icon";
 import IconStarEmpty from "../ui/icons/star-empty";
 import IconStarFull from "../ui/icons/star-full";
 import Link from "../ui/link";
@@ -12,9 +14,10 @@ import { CragTableContext } from "./crag-table";
 interface Props {
   crag: Crag;
   route: Route;
+  ascent?: string | null;
 }
 
-function CragRoute({ crag, route }: Props) {
+function CragRoute({ crag, route, ascent }: Props) {
   const { state } = useContext(CragTableContext);
   const displayColumn = (name: string) => state.selectedColumns.includes(name);
   return (
@@ -49,12 +52,14 @@ function CragRoute({ crag, route }: Props) {
           <RouteComments route={route} />
         </td>
       )}
-      {displayColumn("myAscents") && <td></td>}
+      {displayColumn("myAscents") && (
+        <td>{ascent && <AscentIcon ascent={ascent} />}</td>
+      )}
     </tr>
   );
 }
 
-function CragRouteCompact({ crag, route }: Props) {
+function CragRouteCompact({ crag, route, ascent }: Props) {
   const { state } = useContext(CragTableContext);
   const displayColumn = (name: string) => state.selectedColumns.includes(name);
 
@@ -89,8 +94,11 @@ function CragRouteCompact({ crag, route }: Props) {
             )}
             {route.length && <span>{route.length} m</span>}
           </div>
-          <div>
+          <div className="flex space-x-4">
             <RouteComments route={route} size="small" />
+            {displayColumn("myAscents") && ascent && (
+              <AscentIcon ascent={ascent} size="small" />
+            )}
           </div>
         </div>
         {statsText && <div className="pb-1 text-sm">{statsText}</div>}
@@ -114,7 +122,7 @@ function RouteGrade({ route }: RouteGradeProps) {
 
 interface RouteStarRatingProps {
   route: Route;
-  size?: "small" | "normal";
+  size?: IconSize;
 }
 
 function RouteStarRating({ route, size }: RouteStarRatingProps) {
@@ -128,7 +136,7 @@ function RouteStarRating({ route, size }: RouteStarRatingProps) {
 
 interface RouteCommentsProps {
   route: Route;
-  size?: "small" | "normal";
+  size?: IconSize;
 }
 
 function RouteComments({ route, size }: RouteCommentsProps) {

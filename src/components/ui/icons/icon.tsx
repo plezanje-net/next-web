@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 
+type IconSize = "small" | "medium";
 interface IconProps {
   className?: string;
-  size?: "small" | "normal";
+  size?: IconSize;
   children?: ReactNode;
 }
 
@@ -23,5 +24,5 @@ function Icon({ className, size, children }: IconProps) {
   );
 }
 
-export type { IconProps };
+export type { IconProps, IconSize };
 export default Icon;

@@ -7,7 +7,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { Crag, Route, Sector } from "../../graphql/generated";
+import { gql, useQuery } from "urql";
+import {
+  Crag,
+  MyCragSummaryDocument,
+  Route,
+  Sector,
+} from "../../graphql/generated";
+import { useAuth } from "../../utils/providers/auth-provider";
 import IconCheck from "../ui/icons/check";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
@@ -172,6 +179,36 @@ function CragTable({ crag }: Props) {
     });
   };
 
+  const [ascents, setAscents] = useState<Map<string, string>>(new Map());
+  const authCtx = useAuth();
+  const [fetchAscents, setFetchAscents] = useState(false);
+  const [ascentsResult] = useQuery({
+    query: MyCragSummaryDocument,
+    variables: {
+      input: {
+        cragId: crag.id,
+      },
+    },
+    pause: !fetchAscents,
+  });
+
+  useEffect(() => {
+    if (authCtx.status?.loggedIn) {
+      setFetchAscents(true);
+    }
+  }, [authCtx.status]);
+
+  useEffect(() => {
+    setAscents(
+      new Map(
+        ascentsResult.data?.myCragSummary.map((ascent) => [
+          ascent.route.id,
+          ascent.ascentType,
+        ])
+      )
+    );
+  }, [ascentsResult.data]);
+
   useEffect(() => {
     setBreakpoint(
       CragTableColumns.filter((c) =>
@@ -204,6 +241,7 @@ function CragTable({ crag }: Props) {
                 (acc: Route[], sector) => [...acc, ...sector.routes],
                 []
               )}
+              ascents={ascents}
             />
           ) : (
             crag.sectors.map((sector, index) => (
@@ -214,6 +252,7 @@ function CragTable({ crag }: Props) {
                 <CragSector
                   crag={crag}
                   sector={sector as Sector}
+                  ascents={ascents}
                   isOpen={index + 1 == selectedSector}
                   onToggle={() => toggleSector(index)}
                 />
@@ -225,6 +264,18 @@ function CragTable({ crag }: Props) {
     </div>
   );
 }
+
+gql`
+  query MyCragSummary($input: FindActivityRoutesInput) {
+    myCragSummary(input: $input) {
+      ascentType
+      route {
+        id
+        slug
+      }
+    }
+  }
+`;
 
 export { CragTableColumns, CragTableContext };
 export default CragTable;

@@ -6,9 +6,10 @@ import { CragTableColumns, CragTableContext } from "./crag-table";
 interface Props {
   crag: Crag;
   routes: Route[];
+  ascents: Map<string, string>;
 }
 
-function CragRoutes({ routes, crag }: Props) {
+function CragRoutes({ routes, crag, ascents }: Props) {
   const { state } = useContext(CragTableContext);
   return (
     <>
@@ -34,14 +35,24 @@ function CragRoutes({ routes, crag }: Props) {
           </thead>
           <tbody>
             {routes.map((route) => (
-              <CragRoute key={route.id} route={route} crag={crag} />
+              <CragRoute
+                key={route.id}
+                route={route}
+                crag={crag}
+                ascent={ascents.get(route.id)}
+              />
             ))}
           </tbody>
         </table>
       ) : (
         <div>
           {routes.map((route) => (
-            <CragRouteCompact key={route.id} route={route} crag={crag} />
+            <CragRouteCompact
+              key={route.id}
+              route={route}
+              crag={crag}
+              ascent={ascents.get(route.id)}
+            />
           ))}
         </div>
       )}

@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
 import { gql, useQuery } from "urql";
 import CragHeader from "../../components/crag/crag-header";
-import CragSector from "../../components/crag/crag-sector";
 import CragTable from "../../components/crag/crag-table";
-import Accordion from "../../components/ui/accordion";
 import Spinner from "../../components/ui/spinner";
-import { Crag, CragSectorsDocument, Sector } from "../../graphql/generated";
+import { Crag, CragSectorsDocument } from "../../graphql/generated";
 
 type Params = {
   cragSlug: string;
