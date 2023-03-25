@@ -8,7 +8,7 @@ interface IconProps {
 
 function Icon({ className, size, children }: IconProps) {
   const classes = className ? `${className} fill-current` : "fill-current";
-  const sizePx = size === "small" ? 18 : 24;
+  const sizePx = size === "small" ? 16 : 24;
 
   return (
     <svg

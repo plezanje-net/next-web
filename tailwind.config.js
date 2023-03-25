@@ -52,5 +52,5 @@ module.exports = {
     },
     extend: { screens: { xs: "512px" } },
   },
-  plugins: [],
+  plugins: [require("@headlessui/tailwindcss")],
 };
