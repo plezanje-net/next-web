@@ -17,6 +17,7 @@ import {
 import useDebounce from "../../utils/hooks/use-debounce";
 import { useAuth } from "../../utils/providers/auth-provider";
 import IconCheck from "../ui/icons/check";
+import IconClose from "../ui/icons/close";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
 import TextInput from "../ui/text-input";
@@ -251,7 +252,10 @@ function CragTable({ crag }: Props) {
               placeholder="Poišči v seznamu"
               aria-label="Poišči v seznamu"
               onChange={setSearch}
-              defaultValue={debouncedSearch}
+              value={search}
+              suffix={
+                search != "" && <ClearSearch onClick={() => setSearch("")} />
+              }
             />
           </div>
         </div>
@@ -288,6 +292,14 @@ function CragTable({ crag }: Props) {
         </div>
       </CragTableContext.Provider>
     </div>
+  );
+}
+
+function ClearSearch({ onClick }: { onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="flex">
+      <IconClose />
+    </button>
   );
 }
 
