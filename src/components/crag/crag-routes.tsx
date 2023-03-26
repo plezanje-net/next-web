@@ -11,6 +11,11 @@ interface Props {
 
 function CragRoutes({ routes, crag, ascents }: Props) {
   const { state } = useContext(CragTableContext);
+
+  const search = (state.search || "").toLowerCase();
+  if (search != "") {
+    routes = routes.filter(({ name }) => name.toLowerCase().includes(search));
+  }
   return (
     <>
       {!state.compact ? (

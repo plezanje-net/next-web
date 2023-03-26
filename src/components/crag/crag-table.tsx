@@ -14,10 +14,12 @@ import {
   Route,
   Sector,
 } from "../../graphql/generated";
+import useDebounce from "../../utils/hooks/use-debounce";
 import { useAuth } from "../../utils/providers/auth-provider";
 import IconCheck from "../ui/icons/check";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
+import TextInput from "../ui/text-input";
 import CragRoutes from "./crag-routes";
 import CragSector from "./crag-sector";
 import CragTableActions from "./crag-table-actions";
@@ -231,12 +233,32 @@ function CragTable({ crag }: Props) {
     setState((state) => ({ ...state, compact }));
   }, [compact]);
 
+  // Search
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce<string>(search, 500);
+
+  useEffect(() => {
+    setState((state) => ({ ...state, search: debouncedSearch }));
+  }, [debouncedSearch]);
+
   return (
     <div ref={containerRef}>
       <CragTableContext.Provider value={{ state, setState }}>
         <CragTableActions />
+        <div className="container mx-auto mt-4 flex justify-end sm:px-8">
+          <div className="w-80">
+            <TextInput
+              placeholder="Poišči v seznamu"
+              aria-label="Poišči v seznamu"
+              onChange={setSearch}
+              defaultValue={debouncedSearch}
+            />
+          </div>
+        </div>
         <div className="container mx-auto mt-4 sm:px-8">
-          {router.query.combine || crag.sectors.length == 1 ? (
+          {router.query.combine ||
+          state.search != "" ||
+          crag.sectors.length == 1 ? (
             <CragRoutes
               crag={crag}
               routes={crag.sectors.reduce(
