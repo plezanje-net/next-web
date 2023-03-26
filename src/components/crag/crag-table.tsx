@@ -179,6 +179,7 @@ function CragTable({ crag }: Props) {
     });
   };
 
+  // Load user's crag summary if logged in and after server-side render
   const [ascents, setAscents] = useState<Map<string, string>>(new Map());
   const authCtx = useAuth();
   const [fetchAscents, setFetchAscents] = useState(false);
@@ -209,6 +210,7 @@ function CragTable({ crag }: Props) {
     );
   }, [ascentsResult.data]);
 
+  // Resize observer to detect when to switch to compact mode according to selected columns width
   useEffect(() => {
     setBreakpoint(
       CragTableColumns.filter((c) =>
@@ -234,7 +236,7 @@ function CragTable({ crag }: Props) {
       <CragTableContext.Provider value={{ state, setState }}>
         <CragTableActions />
         <div className="container mx-auto mt-4 sm:px-8">
-          {router.query.combine ? (
+          {router.query.combine || crag.sectors.length == 1 ? (
             <CragRoutes
               crag={crag}
               routes={crag.sectors.reduce(
@@ -247,7 +249,9 @@ function CragTable({ crag }: Props) {
             crag.sectors.map((sector, index) => (
               <div
                 key={sector.id}
-                className={`${index > 0 && "border-t border-t-neutral-200"}`}
+                className={`${
+                  index > 0 ? "border-t border-t-neutral-200" : ""
+                }`}
               >
                 <CragSector
                   crag={crag}

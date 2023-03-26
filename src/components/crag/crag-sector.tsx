@@ -12,7 +12,7 @@ interface Props {
 }
 
 function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
-  const sectorRef = useRef<null | HTMLDivElement>(null);
+  const sectorRef = useRef<null | HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (isOpen && sectorRef.current) {
@@ -21,7 +21,7 @@ function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
   }, [isOpen]);
   return (
     <>
-      <div ref={sectorRef} />
+      <a ref={sectorRef}></a>
       <Accordion
         label={[sector.label, sector.name]
           .filter((part) => part != "")
