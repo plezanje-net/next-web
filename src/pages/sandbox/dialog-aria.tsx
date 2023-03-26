@@ -4,7 +4,7 @@ import Dialog from "../../components/ui/dialog";
 import { useState } from "react";
 import IconFilter from "../../components/ui/icons/filter";
 
-function ModalDialogPage() {
+function DialogAriaPage() {
   let [clicked, setClicked] = useState("Nothing yet");
 
   const dialogButtonClickHandler = (close: () => void, clicked: string) => {
@@ -17,7 +17,7 @@ function ModalDialogPage() {
 
   return (
     <div className="m-8">
-      <h3>Modal dialog demo</h3>
+      <h3>Modal dialog demo (React Aria)</h3>
 
       <div className="mt-14 w-80">
         <h5>Default (small) modal dialog</h5>
@@ -166,4 +166,4 @@ function ModalDialogPage() {
   );
 }
 
-export default ModalDialogPage;
+export default DialogAriaPage;

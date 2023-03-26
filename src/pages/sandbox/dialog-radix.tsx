@@ -4,7 +4,7 @@ import Link from "../../components/ui/link";
 import IconFilter from "../../components/ui/icons/filter";
 import { useState } from "react";
 
-function DialogPage() {
+function DialogRadixPage() {
   let [dialogResponse, setDialogResponse] = useState("Nothing yet");
 
   const dialogButtonClickHandler = (dialogResponse: string) => {
@@ -14,7 +14,7 @@ function DialogPage() {
 
   return (
     <div className="m-8">
-      <h3>Dialog demo</h3>
+      <h3>Dialog demo (radix)</h3>
 
       <div className="mt-14 w-80">
         <h5>Default dialog</h5>
@@ -211,4 +211,4 @@ function DialogPage() {
   );
 }
 
-export default DialogPage;
+export default DialogRadixPage;
