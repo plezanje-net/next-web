@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
-    "@radix-ui/react-dialog": "^1.0.3",
-    "@react-stately/overlays": "^3.5.0",
     "@react-stately/radio": "^3.6.1",
     "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",

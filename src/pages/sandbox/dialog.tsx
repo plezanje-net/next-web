@@ -1,70 +1,75 @@
-import DialogRad, { DialogSize } from "../../components/ui/dialog-rad";
-import Button from "../../components/ui/button";
-import Link from "../../components/ui/link";
-import IconFilter from "../../components/ui/icons/filter";
 import { useState } from "react";
+import Button from "../../components/ui/button";
+import Dialog, { DialogSize } from "../../components/ui/dialog-head";
+import IconFilter from "../../components/ui/icons/filter";
+import Link from "../../components/ui/link";
 
-function DialogRadixPage() {
+function DialogPage() {
   let [dialogResponse, setDialogResponse] = useState("Nothing yet");
 
-  const dialogButtonClickHandler = (dialogResponse: string) => {
-    // do something, then...
-    setDialogResponse(dialogResponse);
+  const handleConfirm = () => {
+    console.log("dialog confirmed");
+    setDialogResponse("Confirmed");
+  };
+
+  const handleCancel = () => {
+    console.log("dialog canceled");
+    setDialogResponse("Canceled");
   };
 
   return (
     <div className="m-8">
-      <h3>Dialog demo (radix)</h3>
+      <h3>Dialog demo (headless)</h3>
 
       <div className="mt-14 w-80">
         <h5>Default dialog</h5>
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={<Button>Open Dialog</Button>}
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
           >
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
               sit amet lacinia nibh sollicitudin a.
             </div>
-          </DialogRad>
+          </Dialog>
         </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>Medium dialog with an icon trigger</h5>
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={
               <Button renderStyle="icon">
                 <IconFilter />
               </Button>
             }
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
             dialogSize={DialogSize.medium}
           >
-            <p>
+            <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
               sit amet lacinia nibh sollicitudin a.
-            </p>
-          </DialogRad>
+            </div>
+          </Dialog>
         </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>Large dialog with a link trigger</h5>
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={<Link href="">Open Dialog</Link>}
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
             dialogSize={DialogSize.large}
           >
             <div>
@@ -72,18 +77,18 @@ function DialogRadixPage() {
               maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
               sit amet lacinia nibh sollicitudin a.
             </div>
-          </DialogRad>
+          </Dialog>
         </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>A lot of content scrolls</h5>
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={<Button>Open Dialog</Button>}
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
           >
             <div>
               <p>
@@ -129,45 +134,29 @@ function DialogRadixPage() {
                 perferendis doloribus asperiores repellat.
               </p>
             </div>
-          </DialogRad>
+          </Dialog>
         </div>
       </div>
 
       <div className="mt-14 w-80">
-        <h5>A dialog that cannot be dismissed with the Escape key</h5>
+        <h5>
+          A dialog that cannot be dismissed with the Escape key nor with outside
+          click
+        </h5>
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={<Button>Open Dialog</Button>}
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
-            closeWithEscape={false}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
+            closeWithEscOrPressOutside={false}
           >
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
               sit amet lacinia nibh sollicitudin a.
             </div>
-          </DialogRad>
-        </div>
-      </div>
-
-      <div className="mt-14 w-80">
-        <h5>A dialog that cannot be dismissed with an outside click/press</h5>
-        <div className="mt-4">
-          <DialogRad
-            title="Test Dialog"
-            openTrigger={<Button>Open Dialog</Button>}
-            confirmTrigger={<Button>Confirm</Button>}
-            cancelTrigger={<Button variant="secondary">Cancel</Button>}
-            closeWithPressOutside={false}
-          >
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
-              sit amet lacinia nibh sollicitudin a.
-            </div>
-          </DialogRad>
+          </Dialog>
         </div>
       </div>
 
@@ -175,35 +164,18 @@ function DialogRadixPage() {
         <h5>A dialog with response</h5>
 
         <div className="mt-4">
-          <DialogRad
+          <Dialog
             title="Test Dialog"
             openTrigger={<Button>Open Dialog</Button>}
-            confirmTrigger={
-              <Button
-                onPress={() => {
-                  dialogButtonClickHandler("Confirmed");
-                }}
-              >
-                Confirm
-              </Button>
-            }
-            cancelTrigger={
-              <Button
-                onPress={() => {
-                  dialogButtonClickHandler("Canceled");
-                }}
-                variant="secondary"
-              >
-                Cancel
-              </Button>
-            }
+            confirm={{ label: "Confirm", callback: handleConfirm }}
+            cancel={{ label: "Cancel", callback: handleCancel }}
           >
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               maximus bibendum nisi vel lacinia. Curabitur sagittis elit nisi,
               sit amet lacinia nibh sollicitudin a.
             </div>
-          </DialogRad>
+          </Dialog>
           <div className="mt-2">Response: {dialogResponse}</div>
         </div>
       </div>
@@ -211,4 +183,4 @@ function DialogRadixPage() {
   );
 }
 
-export default DialogRadixPage;
+export default DialogPage;
