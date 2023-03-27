@@ -16,6 +16,7 @@ import {
 } from "../../graphql/generated";
 import useDebounce from "../../utils/hooks/use-debounce";
 import { useAuth } from "../../utils/providers/auth-provider";
+import Button from "../ui/button";
 import IconCheck from "../ui/icons/check";
 import IconClose from "../ui/icons/close";
 import IconComment from "../ui/icons/comment";
@@ -297,9 +298,9 @@ function CragTable({ crag }: Props) {
 
 function ClearSearch({ onClick }: { onClick: () => void }) {
   return (
-    <button onClick={onClick} className="flex">
+    <Button renderStyle="icon" onPress={onClick} className="flex">
       <IconClose />
-    </button>
+    </Button>
   );
 }
 
