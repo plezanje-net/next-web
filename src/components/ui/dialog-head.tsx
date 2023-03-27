@@ -1,4 +1,4 @@
-import { cloneElement, ReactElement, useState } from "react";
+import { cloneElement, ReactElement, useRef, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import Button from "./button";
 
@@ -45,10 +45,12 @@ function DialogHead({
     }
   };
 
+  const initFocusRef = useRef(null);
+
   return (
     <>
       {cloneElement(openTrigger, { onPress: () => setIsOpen(true) })}
-      <Dialog open={isOpen} onClose={handleClose}>
+      <Dialog open={isOpen} onClose={handleClose} initialFocus={initFocusRef}>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div
           className="fixed inset-0 bg-neutral-900 bg-opacity-25"
@@ -58,6 +60,7 @@ function DialogHead({
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 overflow-y-auto p-10">
           <Dialog.Panel
+            ref={initFocusRef}
             className={`mx-auto max-w-sm rounded-lg bg-white py-10 px-8 shadow-lg ${dialogSize}`}
           >
             <Dialog.Title as="h4">{title}</Dialog.Title>
