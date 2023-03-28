@@ -1,6 +1,6 @@
 import TextArea from "../../components/ui/text-area";
 
-function TextInputPage() {
+function TextAreaPage() {
   return (
     <div className="m-8">
       <h1 className="text-xl">Text area demo</h1>
@@ -24,4 +24,4 @@ function TextInputPage() {
   );
 }
 
-export default TextInputPage;
+export default TextAreaPage;

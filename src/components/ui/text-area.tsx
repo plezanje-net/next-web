@@ -11,8 +11,15 @@ type Props = {
 } & AriaTextFieldOptions<"textarea">;
 
 function TextArea(props: Props) {
-  const { isDisabled, isInvalid, label, description, errorMessage, rows = 6 } = props;
-  const inputRef = useRef(null);
+  const {
+    isDisabled,
+    isInvalid,
+    label,
+    description,
+    errorMessage,
+    rows = 6,
+  } = props;
+  const textareaRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
@@ -21,7 +28,7 @@ function TextArea(props: Props) {
         ...props,
         inputElementType: "textarea",
       },
-      inputRef
+      textareaRef
     );
 
   const { focusProps } = useFocus({
@@ -38,19 +45,20 @@ function TextArea(props: Props) {
       <div
         className={`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
                     ${
-                      isDisabled ?
-                      "border-neutral-300 bg-neutral-100 text-neutral-400" : ""
+                      isDisabled
+                        ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+                        : ""
                     }
                     ${isFocused ? "ring ring-blue-100" : ""}
                     ${label ? "mt-1" : ""}
-                    ${(isInvalid || errorMessage) ? "border-red-500" : ""}
+                    ${isInvalid || errorMessage ? "border-red-500" : ""}
                   `}
       >
         <textarea
           {...inputProps}
           {...focusProps}
           rows={rows}
-          ref={inputRef}
+          ref={textareaRef}
           className="flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none"
         />
       </div>
