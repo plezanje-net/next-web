@@ -36,9 +36,13 @@ function TextInput(props: TextInputProps) {
                       isDisabled &&
                       "border-neutral-300 bg-neutral-100 text-neutral-400"
                     }
-                    ${isFocused && "ring ring-blue-100"}
+                    ${
+                      isFocused &&
+                      "ring" +
+                        (errorMessage ? " ring-red-100" : " ring-blue-100")
+                    }
                     ${label && "mt-2"}
-                    ${errorMessage && "border-red-500"}
+                    ${errorMessage && "border-red-500 focus:ring-red-100"}
                   `}
       >
         {prefix && <div className="mx-2">{prefix}</div>}
