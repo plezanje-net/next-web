@@ -1,7 +1,13 @@
-import { HTMLAttributeAnchorTarget, ReactNode, useRef } from "react";
+import {
+  ForwardedRef,
+  forwardRef,
+  HTMLAttributeAnchorTarget,
+  ReactNode,
+} from "react";
 import { UrlObject } from "url";
 import NextLink from "next/link";
 import { AriaLinkOptions, useLink } from "react-aria";
+import useForwardedRef from "../../hooks/useForwardedRef";
 
 interface LinkProps extends AriaLinkOptions {
   href: string | UrlObject;
@@ -10,8 +16,11 @@ interface LinkProps extends AriaLinkOptions {
   children: ReactNode;
 }
 
-function Link(props: LinkProps) {
-  let linkRef = useRef(null);
+const Link = forwardRef(function Link(
+  props: LinkProps,
+  forwardedRef: ForwardedRef<HTMLAnchorElement>
+) {
+  const linkRef = useForwardedRef(forwardedRef);
   const { linkProps, isPressed } = useLink(props, linkRef);
 
   const variant = props.variant || "primary";
@@ -37,6 +46,6 @@ function Link(props: LinkProps) {
       {props.children}
     </NextLink>
   );
-}
+});
 
 export default Link;
