@@ -45,6 +45,7 @@ module.exports = {
         900: "#171717",
       },
       red: {
+        100:"#F0B3AA",
         500: "#d9422b",
       },
       current: "currentColor",
