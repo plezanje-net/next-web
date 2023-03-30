@@ -45,6 +45,7 @@ module.exports = {
         900: "#171717",
       },
       red: {
+        100:"#F0B3AA",
         500: "#d9422b",
       },
       current: "currentColor",
@@ -52,5 +53,5 @@ module.exports = {
     },
     extend: { screens: { xs: "512px" } },
   },
-  plugins: [],
+  plugins: [require("@headlessui/tailwindcss")],
 };
