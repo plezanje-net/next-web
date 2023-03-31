@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Crag, Route, Sector } from "../../graphql/generated";
+import { Crag, Route } from "../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route";
 import { CragTableColumns, CragTableContext } from "./crag-table";
 
@@ -11,12 +11,45 @@ interface Props {
 
 interface FilterOptions {
   search: string | null;
+  routesTouches?: "ticked" | "tried" | "unticked" | "untried";
 }
 
-function filterRoutes(routes: Route[], { search }: FilterOptions): Route[] {
+function filterRoutes(
+  routes: Route[],
+  ascents: Map<string, string>,
+  { search, routesTouches }: FilterOptions
+): Route[] {
   if (search) {
     routes = filterBySearchTerm(routes, search);
   }
+
+  if (routesTouches) {
+    switch (routesTouches) {
+      case "ticked":
+        routes = routes.filter((route) => {
+          const ascent = ascents.get(route.id);
+          return (
+            ascent === "onsight" || ascent === "redpoint" || ascent === "flash"
+          );
+        });
+        break;
+      case "tried":
+        routes = routes.filter((route) => ascents.has(route.id));
+        break;
+      case "unticked":
+        routes = routes.filter((route) => {
+          const ascent = ascents.get(route.id);
+          return (
+            ascent !== "onsight" && ascent !== "redpoint" && ascent !== "flash"
+          );
+        });
+        break;
+      case "untried":
+        routes = routes.filter((route) => !ascents.has(route.id));
+        break;
+    }
+  }
+
   return routes;
 }
 
@@ -48,7 +81,11 @@ function filterBySearchTerm(routes: Route[], searchTerm: string): Route[] {
 
 function CragRoutes({ routes, crag, ascents }: Props) {
   const { state } = useContext(CragTableContext);
-  routes = filterRoutes(routes, { search: state.search });
+  routes = filterRoutes(routes, ascents, {
+    search: state.search,
+    routesTouches: state.filter.routesTouches,
+  });
+
   return (
     <>
       {!state.compact ? (

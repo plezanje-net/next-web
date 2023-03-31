@@ -16,6 +16,7 @@ interface DialogProps {
   cancel: { label: string; callback?: () => void };
   dialogSize?: DialogSize;
   closeWithEscOrPressOutside?: boolean;
+  closeCallback?: () => void;
 }
 
 function Dialog({
@@ -26,6 +27,7 @@ function Dialog({
   cancel,
   dialogSize = DialogSize.small,
   closeWithEscOrPressOutside = true,
+  closeCallback,
 }: DialogProps) {
   let [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +44,7 @@ function Dialog({
   const handleClose = () => {
     if (closeWithEscOrPressOutside) {
       setIsOpen(false);
+      closeCallback && closeCallback();
     }
   };
 
@@ -49,7 +52,9 @@ function Dialog({
 
   return (
     <>
-      {cloneElement(openTrigger, { onPress: () => setIsOpen(true) })}
+      {cloneElement(openTrigger, {
+        onPress: () => setIsOpen(true),
+      })}
       <DialogHUI
         open={isOpen}
         onClose={handleClose}

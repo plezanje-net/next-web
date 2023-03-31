@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/ui/button";
-import Dialog, { DialogSize } from "../../components/ui/dialog-head";
+import Dialog, { DialogSize } from "../../components/ui/dialog";
 import IconFilter from "../../components/ui/icons/filter";
 import Link from "../../components/ui/link";
 

@@ -1,12 +1,5 @@
 import { useRouter } from "next/router";
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { gql, useQuery } from "urql";
 import {
   Crag,
@@ -34,7 +27,9 @@ interface CragTableState {
   combine: boolean; //
   selectedColumns: string[];
   search: string | null;
-  // filters
+  filter: {
+    routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+  };
 }
 
 interface CragTableColumn {
@@ -49,6 +44,7 @@ interface CragTableColumn {
   defaultSortDirection: number;
 }
 
+// TODO: lowercase param name?
 interface CragTableContextType {
   state: CragTableState;
   setState: (CragTableState: CragTableState) => void;
@@ -60,10 +56,12 @@ const CragTableContext = createContext<CragTableContextType>({
     combine: false,
     selectedColumns: [],
     search: null,
+    filter: {},
   },
   setState: () => {},
 });
 
+// TODO: lowercase var name??
 const CragTableColumns: CragTableColumn[] = [
   {
     name: "select",
@@ -171,6 +169,7 @@ function CragTable({ crag }: Props) {
     selectedColumns: CragTableColumns.filter(({ isDefault }) => isDefault).map(
       ({ name }) => name
     ),
+    filter: {},
   });
 
   const [compact, setCompact] = useState(true);
