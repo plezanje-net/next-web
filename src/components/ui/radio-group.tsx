@@ -87,10 +87,10 @@ function Radio(props: RadioProps) {
                     ${
                       isSelected
                         ? !isDisabled
-                          ? "border-blue-500 group-hover:border-blue-600 group-active:border-blue-700"
+                          ? "border-blue-500 group-active:border-blue-600"
                           : "border-neutral-300"
                         : !isDisabled
-                        ? "border-neutral-400 group-hover:border-neutral-500 group-active:border-neutral-600"
+                        ? "border-neutral-400 group-active:border-neutral-500"
                         : "border-neutral-300 bg-neutral-100"
                     }`}
         >
@@ -99,7 +99,7 @@ function Radio(props: RadioProps) {
               className={`h-2 w-2 rounded 
                           ${
                             !isDisabled
-                              ? "bg-blue-500 group-hover:bg-blue-600 group-active:bg-blue-700"
+                              ? "bg-blue-500  group-active:bg-blue-600"
                               : "bg-neutral-300"
                           } `}
             ></div>
