@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/ui/button";
-import Dialog, { DialogSize } from "../../components/ui/dialog-head";
+import Dialog, { DialogSize } from "../../components/ui/dialog";
 import IconFilter from "../../components/ui/icons/filter";
 import Link from "../../components/ui/link";
 
@@ -15,6 +15,11 @@ function DialogPage() {
   const handleCancel = () => {
     console.log("dialog canceled");
     setDialogResponse("Canceled");
+  };
+
+  const handleClose = () => {
+    console.log("dialog closed");
+    setDialogResponse("Closed with esc key or click outside.");
   };
 
   return (
@@ -169,6 +174,7 @@ function DialogPage() {
             openTrigger={<Button>Open Dialog</Button>}
             confirm={{ label: "Confirm", callback: handleConfirm }}
             cancel={{ label: "Cancel", callback: handleCancel }}
+            closeCallback={handleClose}
           >
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
