@@ -38,10 +38,8 @@ function CheckboxPage() {
         <div className="pl-4">
           <ul className="mt-2 list-outside list-disc">
             <li>
-              Click area should have a minimum size of 48x48px. Because of this,
-              checkboxes have horizontal padding of 16px. This is evened out
-              with negative horizontal margins. Height is set to a fixed 48px
-              and should be taken into account when positioning the checkboxes.
+              Click area should be at least 48x48px. Theoretically, and goes for
+              all other ui elements as well ... :)
             </li>
             <li>
               The last checkbox has no label but is labeled by another div. One

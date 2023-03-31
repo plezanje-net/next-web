@@ -17,7 +17,7 @@ function Checkbox(props: AriaCheckboxProps) {
 
   return (
     <label
-      className={`rouded group -mx-4 inline-flex h-12 items-center px-4
+      className={`rouded group inline-flex items-center
                   ${!isDisabled && "cursor-pointer"}`}
     >
       <VisuallyHidden>
