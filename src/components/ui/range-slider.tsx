@@ -37,7 +37,7 @@ function RangeSlider(props: SliderProps) {
       )}
 
       {/* Track and thumbs */}
-      <div {...trackProps} ref={trackRef} className="mt-2 h-4 w-full">
+      <div {...trackProps} ref={trackRef} className="mt-2 h-6 w-full">
         {/* Track's background */}
         <div
           className={`absolute top-1/2 block h-0.5 w-full translate-y--2/4 
