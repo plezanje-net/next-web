@@ -32,11 +32,8 @@ function Checkbox(props: AriaCheckboxProps) {
       >
         {!state.isSelected && (
           <div
-            className={`group-active: h-4 w-4 rounded border border-neutral-400 
-                        ${
-                          !isDisabled &&
-                          "group-hover:border-neutral-500 group-active:border-neutral-600"
-                        }
+            className={`h-4 w-4 rounded border border-neutral-400 
+                        ${!isDisabled && "group-active:border-neutral-500"}
                         ${isDisabled && "border-neutral-300 bg-neutral-100"}`}
           ></div>
         )}
@@ -44,10 +41,7 @@ function Checkbox(props: AriaCheckboxProps) {
         {state.isSelected && (
           <div
             className={`h-4 w-4 rounded bg-blue-500
-                        ${
-                          !isDisabled &&
-                          "group-hover:bg-blue-600 group-active:bg-blue-700"
-                        } 
+                        ${!isDisabled && "group-active:bg-blue-600"} 
                         ${isDisabled && "bg-neutral-300"}`}
           >
             <svg width="16" height="16" viewBox="0 0 16 16">
