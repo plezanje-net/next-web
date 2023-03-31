@@ -1,29 +1,39 @@
-import { useContext } from "react";
-import { Sector } from "../../graphql/generated";
+import { useEffect, useRef } from "react";
+import { Crag, Sector } from "../../graphql/generated";
 import Accordion from "../ui/accordion";
-import CragRoute, { CragRouteCompact } from "./crag-route";
 import CragRoutes from "./crag-routes";
-import { CragTableColumns, CragTableContext } from "./crag-table";
 
 interface Props {
+  crag: Crag;
   sector: Sector;
+  ascents: Map<string, string>;
   onToggle: () => void;
   isOpen: boolean;
 }
 
-function CragSector({ sector, isOpen, onToggle }: Props) {
+function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
+  const sectorRef = useRef<null | HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (isOpen && sectorRef.current) {
+      sectorRef.current.scrollIntoView();
+    }
+  }, [isOpen]);
   return (
-    <Accordion
-      label={[sector.label, sector.name]
-        .filter((part) => part != "")
-        .join(" - ")}
-      isOpen={isOpen}
-      onClick={onToggle}
-    >
-      <div className="md:mx-4">
-        <CragRoutes routes={sector.routes} />
-      </div>
-    </Accordion>
+    <>
+      <a ref={sectorRef}></a>
+      <Accordion
+        label={[sector.label, sector.name]
+          .filter((part) => part != "")
+          .join(" - ")}
+        isOpen={isOpen}
+        onClick={onToggle}
+      >
+        <div className="md:mx-4">
+          <CragRoutes routes={sector.routes} crag={crag} ascents={ascents} />
+        </div>
+      </Accordion>
+    </>
   );
 }
 

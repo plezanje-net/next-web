@@ -1,16 +1,23 @@
 import { useContext } from "react";
-import { Route } from "../../graphql/generated";
+import { Crag, Route } from "../../graphql/generated";
 import Grade from "../grade";
+import RouteLink from "../route-link";
+import AscentIcon from "../ui/ascent-icon";
 import Checkbox from "../ui/checkbox";
+import IconComment from "../ui/icons/comment";
+import { IconSize } from "../ui/icons/icon";
 import IconStarEmpty from "../ui/icons/star-empty";
 import IconStarFull from "../ui/icons/star-full";
+import Link from "../ui/link";
 import { CragTableContext } from "./crag-table";
 
 interface Props {
+  crag: Crag;
   route: Route;
+  ascent?: string | null;
 }
 
-function CragRoute({ route }: Props) {
+function CragRoute({ crag, route, ascent }: Props) {
   const { state } = useContext(CragTableContext);
   const displayColumn = (name: string) => state.selectedColumns.includes(name);
   return (
@@ -21,7 +28,9 @@ function CragRoute({ route }: Props) {
       <td>
         <Checkbox aria-label="Označi kot preplezano" />
       </td>
-      <td>{route.name}</td>
+      <td>
+        <RouteLink route={route} crag={crag} />
+      </td>
       {displayColumn("difficulty") && (
         <td>
           <RouteGrade route={route} />
@@ -38,13 +47,31 @@ function CragRoute({ route }: Props) {
           <RouteStarRating route={route} />
         </td>
       )}
-      {displayColumn("comments") && <td></td>}
-      {displayColumn("myAscents") && <td></td>}
+      {displayColumn("comments") && (
+        <td>
+          <RouteComments route={route} />
+        </td>
+      )}
+      {displayColumn("myAscents") && (
+        <td>{ascent && <AscentIcon ascent={ascent} />}</td>
+      )}
     </tr>
   );
 }
 
-function CragRouteCompact({ route }: Props) {
+function CragRouteCompact({ crag, route, ascent }: Props) {
+  const { state } = useContext(CragTableContext);
+  const displayColumn = (name: string) => state.selectedColumns.includes(name);
+
+  const statsText = Object.entries({
+    nrTicks: `${route.nrTicks} uspešnih vzponov`,
+    nrClimbers: `${route.nrClimbers} plezalcev`,
+    nrTries: `${route.nrTries} poskusov`,
+  })
+    .filter(([key, _]) => displayColumn(key))
+    .map(([_, value]) => value)
+    .join(", ");
+
   return (
     <div
       aria-label={route.name}
@@ -55,16 +82,26 @@ function CragRouteCompact({ route }: Props) {
       </div>
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
-          <RouteStarRating route={route} />
+          <RouteLink route={route} crag={crag} />
+          <RouteStarRating route={route} size="small" />
         </div>
-        <div>
-          {route.difficulty && (
-            <span className="pr-2">
-              <Grade difficulty={route.difficulty} />
-            </span>
-          )}
-          {route.length && <span>{route.length} m</span>}
+        <div className="flex items-center justify-between">
+          <div>
+            {route.difficulty && (
+              <span className="pr-4">
+                <Grade difficulty={route.difficulty} />
+              </span>
+            )}
+            {route.length && <span>{route.length} m</span>}
+          </div>
+          <div className="flex space-x-4">
+            <RouteComments route={route} size="small" />
+            {displayColumn("myAscents") && ascent && (
+              <AscentIcon ascent={ascent} size="small" />
+            )}
+          </div>
         </div>
+        {statsText && <div className="pb-1 text-sm">{statsText}</div>}
       </div>
     </div>
   );
@@ -85,13 +122,31 @@ function RouteGrade({ route }: RouteGradeProps) {
 
 interface RouteStarRatingProps {
   route: Route;
+  size?: IconSize;
 }
 
-function RouteStarRating({ route }: RouteStarRatingProps) {
+function RouteStarRating({ route, size }: RouteStarRatingProps) {
   return (
     <>
-      {route.starRating == 2 && <IconStarFull />}
-      {route.starRating == 1 && <IconStarEmpty />}
+      {route.starRating == 2 && <IconStarFull size={size} />}
+      {route.starRating == 1 && <IconStarEmpty size={size} />}
+    </>
+  );
+}
+
+interface RouteCommentsProps {
+  route: Route;
+  size?: IconSize;
+}
+
+function RouteComments({ route, size }: RouteCommentsProps) {
+  return (
+    <>
+      {route.comments.length > 0 && (
+        <Link href={`/route/${route.id}/comments`} variant="secondary">
+          <IconComment size={size} />
+        </Link>
+      )}
     </>
   );
 }
