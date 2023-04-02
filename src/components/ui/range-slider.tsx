@@ -40,7 +40,7 @@ function RangeSlider(props: SliderProps) {
       <div {...trackProps} ref={trackRef} className="mt-2 h-6 w-full">
         {/* Track's background */}
         <div
-          className={`absolute top-1/2 block h-0.5 w-full translate-y--2/4 
+          className={`absolute top-1/2 block h-0.5 w-full -translate-y-2/4 
                       ${
                         state.isDisabled ? "bg-neutral-200" : "bg-neutral-400"
                       }`}
@@ -54,7 +54,7 @@ function RangeSlider(props: SliderProps) {
               (state.getThumbPercent(1) - state.getThumbPercent(0)) * 100
             }%`,
           }}
-          className={`absolute top-1/2 block h-0.5 translate-y--2/4 
+          className={`absolute top-1/2 block h-0.5 -translate-y-2/4 
                       ${state.isDisabled ? "bg-neutral-300" : "bg-blue-500"}`}
         ></div>
 
@@ -102,9 +102,13 @@ function Thumb(props: SliderThumbProps) {
   return (
     <div
       {...thumbProps}
-      className={`top-1/2 h-4 w-4 rounded-lg 
-                  ${isFocusVisible && "ring ring-blue-100"}
-                  ${!state.isDisabled && "cursor-pointer"}
+      className={`top-1/2 ${!state.isDisabled && "cursor-pointer"}`}
+    >
+      <div
+        className={`my-2 h-4 w-4 rounded-lg ${
+          isFocusVisible && "ring ring-blue-100"
+        }
+                 
                   ${
                     state.isDisabled
                       ? "bg-neutral-300"
@@ -112,10 +116,11 @@ function Thumb(props: SliderThumbProps) {
                       ? "bg-blue-600"
                       : "bg-blue-500"
                   }`}
-    >
-      <VisuallyHidden>
-        <input ref={inputRef} {...mergeProps(inputProps, focusProps)} />
-      </VisuallyHidden>
+      >
+        <VisuallyHidden>
+          <input ref={inputRef} {...mergeProps(inputProps, focusProps)} />
+        </VisuallyHidden>
+      </div>
     </div>
   );
 }

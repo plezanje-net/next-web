@@ -17,8 +17,9 @@ function Checkbox(props: AriaCheckboxProps) {
 
   return (
     <label
-      className={`rouded group inline-flex items-center
-                  ${!isDisabled && "cursor-pointer"}`}
+      className={`group -my-0.5 -ml-1.5 flex items-center ${
+        !isDisabled && "cursor-pointer"
+      }`}
     >
       <VisuallyHidden>
         <input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
@@ -26,13 +27,13 @@ function Checkbox(props: AriaCheckboxProps) {
 
       <div
         aria-hidden="true"
-        className={`flex-initial rounded ${
+        className={`my-1.5 mx-1.5 flex-initial rounded ${
           isFocusVisible && "ring ring-blue-100"
         }`}
       >
         {!state.isSelected && (
           <div
-            className={`h-4 w-4 rounded border border-neutral-400 
+            className={` h-4 w-4 rounded border border-neutral-400 
                         ${!isDisabled && "group-active:border-neutral-500"}
                         ${isDisabled && "border-neutral-300 bg-neutral-100"}`}
           ></div>
@@ -54,7 +55,7 @@ function Checkbox(props: AriaCheckboxProps) {
         )}
       </div>
 
-      <span className={`${children && "ml-2"}`}>{children}</span>
+      <span>{children}</span>
     </label>
   );
 }
