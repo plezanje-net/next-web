@@ -6,6 +6,7 @@ export enum DialogSize {
   small = "max-w-sm",
   medium = "max-w-lg",
   large = "max-w-2xl",
+  hug = "w-fit max-w-[100%]",
 }
 
 interface DialogProps {
@@ -70,7 +71,7 @@ function Dialog({
         <div className="fixed inset-0 overflow-y-auto p-10">
           <DialogHUI.Panel
             ref={initFocusRef}
-            className={`mx-auto max-w-sm rounded-lg bg-white py-10 px-8 shadow-lg ${dialogSize}`}
+            className={`mx-auto rounded-lg bg-white py-10 px-8 shadow-lg ${dialogSize}`}
           >
             <DialogHUI.Title as="h4">{title}</DialogHUI.Title>
             <DialogHUI.Description className="mt-8" as="div">
