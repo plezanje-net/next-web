@@ -9,6 +9,7 @@ import {
 } from "../../graphql/generated";
 import useDebounce from "../../utils/hooks/use-debounce";
 import { useAuth } from "../../utils/providers/auth-provider";
+import { toggleQueryParam } from "../../utils/route-helpers";
 import Button from "../ui/button";
 import IconCheck from "../ui/icons/check";
 import IconClose from "../ui/icons/close";
@@ -231,10 +232,10 @@ function CragTable({ crag }: Props) {
   // Sectors collapse/expand
   // get initial state from query params (could be empty, string or array)
   const [expandedSectors, setExpandedSectors] = useState<number[]>(
-    router.query.sektor
-      ? typeof router.query.sektor == "string"
-        ? [parseInt(router.query.sektor)]
-        : router.query.sektor.map((s: string) => parseInt(s))
+    router.query.s
+      ? typeof router.query.s == "string"
+        ? [parseInt(router.query.s)]
+        : router.query.s.map((s: string) => parseInt(s))
       : []
   );
 
@@ -250,15 +251,14 @@ function CragTable({ crag }: Props) {
       return state;
     });
 
-    router.push(
+    toggleQueryParam(
+      router,
+      "s",
+      expandedSectors.map((s) => `${s}`),
       {
-        pathname: `/plezalisce/${crag.slug}`,
-        ...(expandedSectors.length == 0
-          ? {}
-          : { query: { sektor: expandedSectors } }),
-      },
-      undefined,
-      { scroll: false, shallow: true }
+        scroll: false,
+        shallow: true,
+      }
     );
   };
 
