@@ -17,6 +17,11 @@ function DialogPage() {
     setDialogResponse("Canceled");
   };
 
+  const handleClose = () => {
+    console.log("dialog closed");
+    setDialogResponse("Closed with esc key or click outside.");
+  };
+
   return (
     <div className="m-8">
       <h3>Dialog demo (headless)</h3>
@@ -161,6 +166,32 @@ function DialogPage() {
       </div>
 
       <div className="mt-14 w-80">
+        <h5>A hug sized dialog</h5>
+        <div className="mt-4">
+          <Dialog
+            title="Test Dialog"
+            openTrigger={<Button>Open Dialog</Button>}
+            confirm={{ label: "Confirm" }}
+            cancel={{ label: "Cancel" }}
+            dialogSize={DialogSize.hug}
+          >
+            <div className="flex flex-grow flex-wrap gap-8">
+              <div className="w-[188px] bg-red-100">
+                some random width of 188px
+              </div>
+              <div className="w-[146px] bg-blue-100">
+                some random width of 146px
+              </div>
+              <div className="w-[320px] bg-neutral-100">
+                some random width of 320px dialog is the same width as the
+                content (but not wider than the screen)
+              </div>
+            </div>
+          </Dialog>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
         <h5>A dialog with response</h5>
 
         <div className="mt-4">
@@ -169,6 +200,7 @@ function DialogPage() {
             openTrigger={<Button>Open Dialog</Button>}
             confirm={{ label: "Confirm", callback: handleConfirm }}
             cancel={{ label: "Cancel", callback: handleCancel }}
+            closeCallback={handleClose}
           >
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
