@@ -3,9 +3,10 @@ import { useContext, useState } from "react";
 import { toggleQueryParam } from "../../utils/route-helpers";
 import Button from "../ui/button";
 import Checkbox from "../ui/checkbox";
-import Dialog from "../ui/dialog";
+import Dialog, { DialogSize } from "../ui/dialog";
 import IconFilter from "../ui/icons/filter";
 import { Radio, RadioGroup } from "../ui/radio-group";
+import RangeSlider from "../ui/range-slider";
 import { CragTableColumns, CragTableContext } from "./crag-table";
 
 interface Props {}
@@ -72,12 +73,13 @@ function CragTableActions({}: Props) {
               <IconFilter />
             </Button>
           }
+          dialogSize={DialogSize.hug}
           title="Filtriraj smeri"
           confirm={{ label: "Filtriraj", callback: handleApplyFilter }}
           cancel={{ label: "Prekliči", callback: handleFilterClose }}
           closeCallback={handleFilterClose}
         >
-          <>
+          <div className="flex gap-8">
             <RadioGroup
               label="Glede na moje poskuse v smeri"
               value={routesTouchesFilterValue}
@@ -89,7 +91,28 @@ function CragTableActions({}: Props) {
               <Radio value="unticked">Nepreplezane</Radio>
               <Radio value="untried">Neposkušane</Radio>
             </RadioGroup>
-          </>
+
+            <div className="flex flex-col">
+              <div>Glede na lepoto</div>
+              <div className="mt-2">
+                <Checkbox>Čudovita</Checkbox>
+
+                <Checkbox>Lepa</Checkbox>
+
+                <Checkbox>Nič posebnega</Checkbox>
+              </div>
+            </div>
+
+            <div className="w-80">
+              <RangeSlider
+                label="Glede na težavnost"
+                defaultValue={[5, 20]}
+                minValue={1}
+                maxValue={38}
+                step={1}
+              />
+            </div>
+          </div>
         </Dialog>
       </div>
 
