@@ -50,7 +50,7 @@ function TextArea(props: Props) {
                         : ""
                     }
                     ${isFocused ? "ring ring-blue-100" : ""}
-                    ${label ? "mt-1" : ""}
+                    ${label ? "mt-2" : ""}
                     ${isInvalid || errorMessage ? "border-red-500" : ""}
                   `}
       >
