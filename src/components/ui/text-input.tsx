@@ -1,7 +1,7 @@
 import { ReactNode, useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
-type Props = {
+type TextInputProps = {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -10,7 +10,7 @@ type Props = {
   suffix?: ReactNode;
 } & AriaTextFieldOptions<"input">;
 
-function TextInput(props: Props) {
+function TextInput(props: TextInputProps) {
   const { isDisabled, label, description, errorMessage, prefix, suffix } =
     props;
   const inputRef = useRef(null);
@@ -36,9 +36,12 @@ function TextInput(props: Props) {
                       isDisabled ?
                       "border-neutral-300 bg-neutral-100 text-neutral-400 " : ""
                     }
-                    ${isFocused ? "ring ring-blue-100" : ""}
-                    ${label ? "mt-1" : ""}
-                    ${errorMessage ? "border-red-500" : ""}
+                    ${
+                      isFocused ?
+                      "ring" + (errorMessage ? " ring-red-100" : " ring-blue-100") : ""
+                    }
+                    ${label ? "mt-2" : ""}
+                    ${errorMessage ? "border-red-500 focus:ring-red-100" : ""}
                   `}
       >
         {prefix && <div className="mx-2">{prefix}</div>}
