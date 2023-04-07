@@ -35,6 +35,11 @@ interface CragTableState {
       from: number;
       to: number;
     };
+    starRating?: {
+      marvelous: boolean;
+      beautiful: boolean;
+      unremarkable: boolean;
+    };
   };
 }
 

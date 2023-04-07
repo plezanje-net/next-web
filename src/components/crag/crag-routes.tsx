@@ -14,12 +14,17 @@ interface FilterOptions {
   search: string | null;
   routesTouches?: "ticked" | "tried" | "unticked" | "untried";
   difficulty?: { from: number; to: number };
+  starRating?: {
+    marvelous: boolean;
+    beautiful: boolean;
+    unremarkable: boolean;
+  };
 }
 
 function filterRoutes(
   routes: Route[],
   ascents: Map<string, string>,
-  { search, routesTouches, difficulty }: FilterOptions
+  { search, routesTouches, difficulty, starRating }: FilterOptions
 ): Route[] {
   if (search) {
     routes = filterBySearchTerm(routes, search);
@@ -61,6 +66,20 @@ function filterRoutes(
     );
   }
 
+  if (starRating) {
+    routes = routes.filter((route) => {
+      switch (route.starRating) {
+        case 2:
+          return starRating.marvelous;
+        case 1:
+          return starRating.beautiful;
+        case 0:
+        default:
+          return starRating.unremarkable;
+      }
+    });
+  }
+
   return routes;
 }
 
@@ -97,6 +116,7 @@ function CragRoutes({ routes, crag, ascents }: Props) {
     search: state.search,
     routesTouches: state.filter.routesTouches,
     difficulty: state.filter.difficulty,
+    starRating: state.filter.starRating,
   });
 
   return (

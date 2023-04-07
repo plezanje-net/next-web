@@ -50,6 +50,11 @@ function CragTableActions({}: Props) {
     const filter: {
       routesTouches?: "ticked" | "tried" | "unticked" | "untried";
       difficulty?: { from: number; to: number };
+      starRating?: {
+        marvelous: boolean;
+        beautiful: boolean;
+        unremarkable: boolean;
+      };
     } = {};
 
     if (
@@ -70,6 +75,24 @@ function CragTableActions({}: Props) {
         to: sliderValueToDifficultyMap.get(difficultyFilterValue.to)!,
       };
     }
+
+    // it never made sense to me, but probably what a user would expect. that is if all or none are checked, all are shown
+    const allStarRatings =
+      (marvelousFilterValue &&
+        beautifulFilterValue &&
+        unremarkableFilterValue) ||
+      (!marvelousFilterValue &&
+        !beautifulFilterValue &&
+        !unremarkableFilterValue);
+
+    if (!allStarRatings) {
+      filter.starRating = {
+        marvelous: marvelousFilterValue,
+        beautiful: beautifulFilterValue,
+        unremarkable: unremarkableFilterValue,
+      };
+    }
+
     setState({ ...state, filter });
   };
 
@@ -85,6 +108,16 @@ function CragTableActions({}: Props) {
     } else {
       setDifficultyFilterValue({ from: minSliderValue, to: maxSliderValue });
     }
+
+    if (state.filter.starRating) {
+      setMarvelousFilterValue(state.filter.starRating.marvelous);
+      setBeautifulFilterValue(state.filter.starRating.beautiful);
+      setUnremarkableFilterValue(state.filter.starRating.unremarkable);
+    } else {
+      setMarvelousFilterValue(true);
+      setBeautifulFilterValue(true);
+      setUnremarkableFilterValue(true);
+    }
   };
 
   const [difficultyFilterValue, setDifficultyFilterValue] = useState({
@@ -96,6 +129,10 @@ function CragTableActions({}: Props) {
     const [from, to] = value;
     setDifficultyFilterValue({ from, to });
   };
+
+  const [marvelousFilterValue, setMarvelousFilterValue] = useState(true);
+  const [beautifulFilterValue, setBeautifulFilterValue] = useState(true);
+  const [unremarkableFilterValue, setUnremarkableFilterValue] = useState(true);
 
   return (
     <>
@@ -131,11 +168,24 @@ function CragTableActions({}: Props) {
                 <div className="flex flex-col">
                   <div>Glede na lepoto</div>
                   <div className="mt-2">
-                    <Checkbox>Čudovita</Checkbox>
-
-                    <Checkbox>Lepa</Checkbox>
-
-                    <Checkbox>Nič posebnega</Checkbox>
+                    <Checkbox
+                      isSelected={marvelousFilterValue}
+                      onChange={setMarvelousFilterValue}
+                    >
+                      Čudovita
+                    </Checkbox>
+                    <Checkbox
+                      isSelected={beautifulFilterValue}
+                      onChange={setBeautifulFilterValue}
+                    >
+                      Lepa
+                    </Checkbox>
+                    <Checkbox
+                      isSelected={unremarkableFilterValue}
+                      onChange={setUnremarkableFilterValue}
+                    >
+                      Nič posebnega
+                    </Checkbox>
                   </div>
                 </div>
 
@@ -177,6 +227,7 @@ function CragTableActions({}: Props) {
             <span>Uredi</span>
           </div>
 
+          {/* TODO */}
           {/* Action: Search ... TODO: move search here??? YES */}
           <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 pl-4 ">
             <IconSearch />
