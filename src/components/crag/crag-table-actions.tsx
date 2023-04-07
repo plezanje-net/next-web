@@ -12,6 +12,48 @@ import { CragTableColumns, CragTableContext } from "./crag-table";
 interface Props {}
 
 function CragTableActions({}: Props) {
+  // TODO: move this or get this
+  const tempValueToGradeMap = new Map([
+    [1, "1"],
+    [2, "2"],
+    [3, "3"],
+    [4, "4a"],
+    [5, "4a+"],
+    [6, "4b"],
+    [7, "4b+"],
+    [8, "4c"],
+    [9, "4c+"],
+    [10, "5a"],
+    [11, "5a+"],
+    [12, "5b"],
+    [13, "5b+"],
+    [14, "5c"],
+    [15, "5c+"],
+    [16, "6a"],
+    [17, "6a+"],
+    [18, "6b"],
+    [19, "6b+"],
+    [20, "6c"],
+    [21, "6c+"],
+    [22, "7a"],
+    [23, "7a+"],
+    [24, "7b"],
+    [25, "7b+"],
+    [26, "7c"],
+    [27, "7c+"],
+    [28, "8a"],
+    [29, "8a+"],
+    [30, "8b"],
+    [31, "8b+"],
+    [32, "8c"],
+    [33, "8c+"],
+    [34, "9a"],
+    [35, "9a+"],
+    [36, "9b"],
+    [37, "9b+"],
+    [38, "9c"],
+  ]);
+
   const { state, setState } = useContext(CragTableContext);
   const router = useRouter();
 
@@ -59,6 +101,12 @@ function CragTableActions({}: Props) {
     setRoutesTouchesFilterValue(previousRoutesTouchesFilterValue);
   };
 
+  // TODO: get min max from somewhere
+  const [difficultyFilterValue, setDifficultyFilterValue] = useState([1, 38]);
+  const handleDifficultyFilterChangeEnd = (value: number[] | number) => {
+    setDifficultyFilterValue(value as number[]);
+  };
+
   return (
     <>
       <div className="container mx-auto mt-4 px-8">
@@ -79,7 +127,7 @@ function CragTableActions({}: Props) {
           cancel={{ label: "Prekliči", callback: handleFilterClose }}
           closeCallback={handleFilterClose}
         >
-          <div className="flex gap-8">
+          <div className="flex flex-col flex-wrap gap-8 md:flex-row">
             <RadioGroup
               label="Glede na moje poskuse v smeri"
               value={routesTouchesFilterValue}
@@ -103,13 +151,15 @@ function CragTableActions({}: Props) {
               </div>
             </div>
 
-            <div className="w-80">
+            <div className="w-50 lg:w-80">
               <RangeSlider
                 label="Glede na težavnost"
-                defaultValue={[5, 20]}
+                defaultValue={difficultyFilterValue}
                 minValue={1}
                 maxValue={38}
                 step={1}
+                valueToLabelMap={tempValueToGradeMap}
+                onChangeEnd={handleDifficultyFilterChangeEnd}
               />
             </div>
           </div>
