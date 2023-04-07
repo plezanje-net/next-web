@@ -144,15 +144,18 @@ function CragTableActions({}: Props) {
 
   return (
     <>
-      <div className="mt-4">
+      <div className="mt-4 flex justify-center">
         <div className="flex">
           {/* Action: Filter */}
           <div className="flex cursor-pointer space-x-2 pr-4">
             <Dialog
               openTrigger={
-                <Button renderStyle="icon" className="flex gap-2">
+                <Button renderStyle="icon" className="flex">
                   <IconFilter />
-                  Filtriraj {nrFiltersActive > 0 && `(${nrFiltersActive})`}
+                  <span>
+                    <span className="ml-2 max-md:hidden">Filtriraj</span>
+                    {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
+                  </span>
                 </Button>
               }
               dialogSize={DialogSize.hug}
@@ -212,9 +215,10 @@ function CragTableActions({}: Props) {
             </Dialog>
           </div>
 
+          {/* Action: Columns */}
           <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
             <IconColumns />
-            <span>Izberi stolpce</span>
+            <span className="max-md:hidden">Izberi stolpce</span>
           </div>
 
           {/* Action: Combine/Uncombine sectors */}
@@ -224,7 +228,7 @@ function CragTableActions({}: Props) {
           >
             {!router.query.combine && <IconMerge />}
             {router.query.combine && <IconUnmerge />}
-            <span>
+            <span className="max-md:hidden">
               {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
             </span>
           </div>
@@ -232,7 +236,7 @@ function CragTableActions({}: Props) {
           {/* Action: Sort */}
           <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
             <IconSort />
-            <span>Uredi</span>
+            <span className="max-md:hidden">Uredi</span>
           </div>
 
           {/* TODO */}
