@@ -45,7 +45,11 @@ function CragTableActions({}: Props) {
   const [routesTouchesFilterValue, setRoutesTouchesFilterValue] =
     useState("all");
 
+  const [nrFiltersActive, setNrFiltersActive] = useState(0);
+
   const handleApplyFilter = () => {
+    let nrFiltersActiveCount = 0;
+
     //TODO: dry type
     const filter: {
       routesTouches?: "ticked" | "tried" | "unticked" | "untried";
@@ -64,6 +68,7 @@ function CragTableActions({}: Props) {
       routesTouchesFilterValue === "untried"
     ) {
       filter.routesTouches = routesTouchesFilterValue;
+      nrFiltersActiveCount++;
     }
 
     if (
@@ -74,6 +79,7 @@ function CragTableActions({}: Props) {
         from: sliderValueToDifficultyMap.get(difficultyFilterValue.from)!,
         to: sliderValueToDifficultyMap.get(difficultyFilterValue.to)!,
       };
+      nrFiltersActiveCount++;
     }
 
     // it never made sense to me, but probably what a user would expect. that is if all or none are checked, all are shown
@@ -91,9 +97,11 @@ function CragTableActions({}: Props) {
         beautiful: beautifulFilterValue,
         unremarkable: unremarkableFilterValue,
       };
+      nrFiltersActiveCount++;
     }
 
     setState({ ...state, filter });
+    setNrFiltersActive(nrFiltersActiveCount);
   };
 
   const handleFilterClose = () => {
@@ -142,8 +150,9 @@ function CragTableActions({}: Props) {
           <div className="flex cursor-pointer space-x-2 pr-4">
             <Dialog
               openTrigger={
-                <Button renderStyle="icon">
+                <Button renderStyle="icon" className="flex gap-2">
                   <IconFilter />
+                  Filtriraj {nrFiltersActive > 0 && `(${nrFiltersActive})`}
                 </Button>
               }
               dialogSize={DialogSize.hug}
@@ -201,7 +210,6 @@ function CragTableActions({}: Props) {
                 </div>
               </div>
             </Dialog>
-            <span>Filtriraj</span>
           </div>
 
           <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
