@@ -4,56 +4,25 @@ import { toggleQueryParam } from "../../utils/route-helpers";
 import Button from "../ui/button";
 import Checkbox from "../ui/checkbox";
 import Dialog, { DialogSize } from "../ui/dialog";
+import IconColumns from "../ui/icons/columns";
 import IconFilter from "../ui/icons/filter";
+import IconMerge from "../ui/icons/merge";
+import IconSearch from "../ui/icons/search";
+import IconSort from "../ui/icons/sort";
+import IconUnmerge from "../ui/icons/unmerge";
 import { Radio, RadioGroup } from "../ui/radio-group";
-import RangeSlider from "../ui/range-slider";
 import { CragTableColumns, CragTableContext } from "./crag-table";
+import GradeRangeSlider, {
+  difficultyToSliderValueMap,
+  maxSliderValue,
+  minSliderValue,
+  sliderValueToDifficultyMap,
+} from "../ui/grade-range-slider";
 
 interface Props {}
 
 function CragTableActions({}: Props) {
-  // TODO: move this or get this
-  const tempValueToGradeMap = new Map([
-    [1, "1"],
-    [2, "2"],
-    [3, "3"],
-    [4, "4a"],
-    [5, "4a+"],
-    [6, "4b"],
-    [7, "4b+"],
-    [8, "4c"],
-    [9, "4c+"],
-    [10, "5a"],
-    [11, "5a+"],
-    [12, "5b"],
-    [13, "5b+"],
-    [14, "5c"],
-    [15, "5c+"],
-    [16, "6a"],
-    [17, "6a+"],
-    [18, "6b"],
-    [19, "6b+"],
-    [20, "6c"],
-    [21, "6c+"],
-    [22, "7a"],
-    [23, "7a+"],
-    [24, "7b"],
-    [25, "7b+"],
-    [26, "7c"],
-    [27, "7c+"],
-    [28, "8a"],
-    [29, "8a+"],
-    [30, "8b"],
-    [31, "8b+"],
-    [32, "8c"],
-    [33, "8c+"],
-    [34, "9a"],
-    [35, "9a+"],
-    [36, "9b"],
-    [37, "9b+"],
-    [38, "9c"],
-  ]);
-
+  // TODO: could we rename the content of the context to sthg more specific?
   const { state, setState } = useContext(CragTableContext);
 
   const router = useRouter();
@@ -77,92 +46,145 @@ function CragTableActions({}: Props) {
     useState("all");
 
   const handleApplyFilter = () => {
+    //TODO: dry type
+    const filter: {
+      routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+      difficulty?: { from: number; to: number };
+    } = {};
+
     if (
       routesTouchesFilterValue === "ticked" ||
       routesTouchesFilterValue === "tried" ||
       routesTouchesFilterValue === "unticked" ||
       routesTouchesFilterValue === "untried"
     ) {
-      setState({
-        ...state,
-        filter: { routesTouches: routesTouchesFilterValue },
-      });
-    } else {
-      setState({ ...state, filter: {} });
+      filter.routesTouches = routesTouchesFilterValue;
     }
+
+    if (
+      difficultyFilterValue.from != minSliderValue ||
+      difficultyFilterValue.to != maxSliderValue
+    ) {
+      filter.difficulty = {
+        from: sliderValueToDifficultyMap.get(difficultyFilterValue.from)!,
+        to: sliderValueToDifficultyMap.get(difficultyFilterValue.to)!,
+      };
+    }
+    setState({ ...state, filter });
   };
 
   const handleFilterClose = () => {
-    // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored. take it from context
+    // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored. take it either from context or set back defaults if not in context
     setRoutesTouchesFilterValue(state.filter.routesTouches || "all");
+
+    if (state.filter.difficulty) {
+      setDifficultyFilterValue({
+        from: difficultyToSliderValueMap.get(state.filter.difficulty.from)!,
+        to: difficultyToSliderValueMap.get(state.filter.difficulty.to)!,
+      });
+    } else {
+      setDifficultyFilterValue({ from: minSliderValue, to: maxSliderValue });
+    }
   };
 
-  // TODO: get min max from somewhere
-  const [difficultyFilterValue, setDifficultyFilterValue] = useState([1, 38]);
-  const handleDifficultyFilterChangeEnd = (value: number[] | number) => {
-    setDifficultyFilterValue(value as number[]);
+  const [difficultyFilterValue, setDifficultyFilterValue] = useState({
+    from: minSliderValue,
+    to: maxSliderValue,
+  });
+
+  const handleDifficultyFilterChangeEnd = (value: number[]) => {
+    const [from, to] = value;
+    setDifficultyFilterValue({ from, to });
   };
 
   return (
     <>
-      <div className="container mx-auto mt-4 px-8">
-        This is just so we can test context
-      </div>
-
-      {/* Action: Filter */}
-      <div className="container mx-auto mt-4 px-8">
-        <Dialog
-          openTrigger={
-            <Button renderStyle="icon">
-              <IconFilter />
-            </Button>
-          }
-          dialogSize={DialogSize.hug}
-          title="Filtriraj smeri"
-          confirm={{ label: "Filtriraj", callback: handleApplyFilter }}
-          cancel={{ label: "Prekliči", callback: handleFilterClose }}
-          closeCallback={handleFilterClose}
-        >
-          <div className="flex flex-col flex-wrap gap-8 md:flex-row">
-            <RadioGroup
-              label="Glede na moje poskuse v smeri"
-              value={routesTouchesFilterValue}
-              onChange={setRoutesTouchesFilterValue}
+      <div className="mt-4">
+        <div className="flex">
+          {/* Action: Filter */}
+          <div className="flex cursor-pointer space-x-2 pr-4">
+            <Dialog
+              openTrigger={
+                <Button renderStyle="icon">
+                  <IconFilter />
+                </Button>
+              }
+              dialogSize={DialogSize.hug}
+              title="Filtriraj smeri"
+              confirm={{ label: "Filtriraj", callback: handleApplyFilter }}
+              cancel={{ label: "Prekliči", callback: handleFilterClose }}
+              closeCallback={handleFilterClose}
             >
-              <Radio value="all">Vse</Radio>
-              <Radio value="ticked">Preplezane</Radio>
-              <Radio value="tried">Poskušane</Radio>
-              <Radio value="unticked">Nepreplezane</Radio>
-              <Radio value="untried">Neposkušane</Radio>
-            </RadioGroup>
+              <div className="flex flex-col flex-wrap gap-8 md:flex-row">
+                <RadioGroup
+                  label="Glede na moje poskuse v smeri"
+                  value={routesTouchesFilterValue}
+                  onChange={setRoutesTouchesFilterValue}
+                >
+                  <Radio value="all">Vse</Radio>
+                  <Radio value="ticked">Preplezane</Radio>
+                  <Radio value="tried">Poskušane</Radio>
+                  <Radio value="unticked">Nepreplezane</Radio>
+                  <Radio value="untried">Neposkušane</Radio>
+                </RadioGroup>
 
-            <div className="flex flex-col">
-              <div>Glede na lepoto</div>
-              <div className="mt-2">
-                <Checkbox>Čudovita</Checkbox>
+                <div className="flex flex-col">
+                  <div>Glede na lepoto</div>
+                  <div className="mt-2">
+                    <Checkbox>Čudovita</Checkbox>
 
-                <Checkbox>Lepa</Checkbox>
+                    <Checkbox>Lepa</Checkbox>
 
-                <Checkbox>Nič posebnega</Checkbox>
+                    <Checkbox>Nič posebnega</Checkbox>
+                  </div>
+                </div>
+
+                <div className="w-50 lg:w-80">
+                  <GradeRangeSlider
+                    label="Glede na težavnost"
+                    defaultValue={[
+                      difficultyFilterValue.from,
+                      difficultyFilterValue.to,
+                    ]}
+                    onChangeEnd={handleDifficultyFilterChangeEnd}
+                  />
+                </div>
               </div>
-            </div>
-
-            <div className="w-50 lg:w-80">
-              <RangeSlider
-                label="Glede na težavnost"
-                defaultValue={difficultyFilterValue}
-                minValue={1}
-                maxValue={38}
-                step={1}
-                valueToLabelMap={tempValueToGradeMap}
-                onChangeEnd={handleDifficultyFilterChangeEnd}
-              />
-            </div>
+            </Dialog>
+            <span>Filtriraj</span>
           </div>
-        </Dialog>
+
+          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
+            <IconColumns />
+            <span>Izberi stolpce</span>
+          </div>
+
+          {/* Action: Combine/Uncombine sectors */}
+          <div
+            className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4"
+            onClick={handleToggleCombine}
+          >
+            {!router.query.combine && <IconMerge />}
+            {router.query.combine && <IconUnmerge />}
+            <span>
+              {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
+            </span>
+          </div>
+
+          {/* Action: Sort */}
+          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
+            <IconSort />
+            <span>Uredi</span>
+          </div>
+
+          {/* Action: Search ... TODO: move search here??? YES */}
+          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 pl-4 ">
+            <IconSearch />
+          </div>
+        </div>
       </div>
 
-      {/* Action: Select columns */}
+      {/* Action: Select columns TODO: move into actions row*/}
       <div className="container mx-auto mt-4 px-8">
         cols:
         {CragTableColumns.filter(({ isOptional }) => isOptional).map(
@@ -178,18 +200,6 @@ function CragTableActions({}: Props) {
           )
         )}
       </div>
-
-      {/* Action: Combine/Uncombine sectors */}
-      <div className="container mx-auto mt-4 px-8">
-        <button
-          onClick={handleToggleCombine}
-          className={router.query.combine && "text-blue-500"}
-        >
-          combine sectors
-        </button>
-      </div>
-
-      {/* Action: Search ... TODO: move search here??? YES */}
     </>
   );
 }

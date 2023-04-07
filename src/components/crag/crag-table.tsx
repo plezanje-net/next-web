@@ -22,6 +22,8 @@ import CragTableActions from "./crag-table-actions";
 interface Props {
   crag: Crag;
 }
+
+// TODO: dry filter interface
 interface CragTableState {
   compact: boolean;
   combine: boolean; //
@@ -29,6 +31,10 @@ interface CragTableState {
   search: string | null;
   filter: {
     routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+    difficulty?: {
+      from: number;
+      to: number;
+    };
   };
 }
 

@@ -9,15 +9,17 @@ interface Props {
   ascents: Map<string, string>;
 }
 
+// TODO: dry
 interface FilterOptions {
   search: string | null;
   routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+  difficulty?: { from: number; to: number };
 }
 
 function filterRoutes(
   routes: Route[],
   ascents: Map<string, string>,
-  { search, routesTouches }: FilterOptions
+  { search, routesTouches, difficulty }: FilterOptions
 ): Route[] {
   if (search) {
     routes = filterBySearchTerm(routes, search);
@@ -48,6 +50,15 @@ function filterRoutes(
         routes = routes.filter((route) => !ascents.has(route.id));
         break;
     }
+  }
+
+  if (difficulty) {
+    routes = routes.filter(
+      (route) =>
+        !route.difficulty ||
+        (route.difficulty >= difficulty.from &&
+          route.difficulty <= difficulty.to)
+    );
   }
 
   return routes;
@@ -82,8 +93,10 @@ function filterBySearchTerm(routes: Route[], searchTerm: string): Route[] {
 function CragRoutes({ routes, crag, ascents }: Props) {
   const { state } = useContext(CragTableContext);
   routes = filterRoutes(routes, ascents, {
+    // TODO: should move search into filter
     search: state.search,
     routesTouches: state.filter.routesTouches,
+    difficulty: state.filter.difficulty,
   });
 
   return (
