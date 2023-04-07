@@ -55,6 +55,7 @@ function CragTableActions({}: Props) {
   ]);
 
   const { state, setState } = useContext(CragTableContext);
+
   const router = useRouter();
 
   const handleToggleColumn = (columnName: string) => {
@@ -74,13 +75,8 @@ function CragTableActions({}: Props) {
 
   const [routesTouchesFilterValue, setRoutesTouchesFilterValue] =
     useState("all");
-  const [
-    previousRoutesTouchesFilterValue,
-    setPreviousRoutesTouchesFilterValue,
-  ] = useState(routesTouchesFilterValue);
 
   const handleApplyFilter = () => {
-    setPreviousRoutesTouchesFilterValue(routesTouchesFilterValue); // used to restore filter values if user closes the dialog without confirming filters
     if (
       routesTouchesFilterValue === "ticked" ||
       routesTouchesFilterValue === "tried" ||
@@ -97,8 +93,8 @@ function CragTableActions({}: Props) {
   };
 
   const handleFilterClose = () => {
-    // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored
-    setRoutesTouchesFilterValue(previousRoutesTouchesFilterValue);
+    // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored. take it from context
+    setRoutesTouchesFilterValue(state.filter.routesTouches || "all");
   };
 
   // TODO: get min max from somewhere
@@ -193,7 +189,7 @@ function CragTableActions({}: Props) {
         </button>
       </div>
 
-      {/* Action: Search ... TODO: move search here??? */}
+      {/* Action: Search ... TODO: move search here??? YES */}
     </>
   );
 }
