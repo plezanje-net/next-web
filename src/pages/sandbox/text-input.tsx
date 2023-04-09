@@ -1,18 +1,18 @@
 import IconClose from "../../components/ui/icons/close";
 import IconSearch from "../../components/ui/icons/search";
-import TextInput from "../../components/ui/text-input";
+import TextField from "../../components/ui/text-field";
 
-function TextInputPage() {
+function TextFieldPage() {
   return (
     <div className="m-8">
-      <h1 className="text-xl">Text input demo</h1>
+      <h1 className="text-xl">Text field demo</h1>
 
       <div className="mt-10 w-80">
-        <TextInput label="Name" placeholder="What is your name" />
+        <TextField label="Name" placeholder="What is your name" />
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           placeholder="What is your name"
           description="Enter your real name."
@@ -20,7 +20,7 @@ function TextInputPage() {
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           placeholder="What is your name"
           description="Enter your real name."
@@ -29,7 +29,7 @@ function TextInputPage() {
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           placeholder="What is your name"
           description="Enter your real name."
@@ -39,7 +39,7 @@ function TextInputPage() {
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           defaultValue="Aliba Gundič"
           isDisabled
@@ -48,7 +48,7 @@ function TextInputPage() {
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           placeholder="What is your name"
           description="Search for your name."
@@ -57,7 +57,7 @@ function TextInputPage() {
       </div>
 
       <div className="mt-8 w-80">
-        <TextInput
+        <TextField
           label="Name"
           defaultValue="Aliba"
           description="Search for your name."
@@ -66,9 +66,9 @@ function TextInputPage() {
         />
       </div>
 
-      <div>
-        A fullwidth example (shrinks as necessary)
-        <TextInput
+      <div className="mt-8">
+        <h5>A fullwidth example (shrinks as necessary)</h5>
+        <TextField
           label="Name"
           defaultValue="Aliba"
           description="Search for your name."
@@ -79,4 +79,4 @@ function TextInputPage() {
   );
 }
 
-export default TextInputPage;
+export default TextFieldPage;

@@ -1,7 +1,7 @@
 import { ReactNode, useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
-type TextInputProps = {
+type TextFieldProps = {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -10,7 +10,7 @@ type TextInputProps = {
   suffix?: ReactNode;
 } & AriaTextFieldOptions<"input">;
 
-function TextInput(props: TextInputProps) {
+function TextField(props: TextFieldProps) {
   const { isDisabled, label, description, errorMessage, prefix, suffix } =
     props;
   const inputRef = useRef(null);
@@ -75,4 +75,4 @@ function TextInput(props: TextInputProps) {
   );
 }
 
-export default TextInput;
+export default TextField;
