@@ -51,7 +51,7 @@ function TextInput(props: TextInputProps) {
           {...inputProps}
           {...focusProps}
           ref={inputRef}
-          className={`flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
+          className={`min-w-0 flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
                       ${!prefix && "pl-4"}
                       ${!suffix && "pr-4"}
                     `}

@@ -65,6 +65,16 @@ function TextInputPage() {
           suffix={<IconClose />}
         />
       </div>
+
+      <div>
+        A fullwidth example (shrinks as necessary)
+        <TextInput
+          label="Name"
+          defaultValue="Aliba"
+          description="Search for your name."
+          prefix={<IconSearch />}
+        />
+      </div>
     </div>
   );
 }
