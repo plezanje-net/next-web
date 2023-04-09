@@ -14,7 +14,7 @@ import IconCheck from "../ui/icons/check";
 import IconClose from "../ui/icons/close";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
-import TextInput from "../ui/text-input";
+import TextField from "../ui/text-field";
 import CragRoutes from "./crag-routes";
 import CragSector from "./crag-sector";
 import CragTableActions from "./crag-table-actions";
@@ -259,7 +259,7 @@ function CragTable({ crag }: Props) {
         <CragTableActions />
         <div className="container mx-auto mt-4 flex justify-end sm:px-8">
           <div className="w-80">
-            <TextInput
+            <TextField
               placeholder="Poišči v seznamu"
               aria-label="Poišči v seznamu"
               onChange={setSearch}

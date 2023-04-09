@@ -18,7 +18,7 @@ import GradeRangeSlider, {
   minSliderValue,
   sliderValueToDifficultyMap,
 } from "../ui/grade-range-slider";
-import TextInput from "../ui/text-input";
+import TextField from "../ui/text-field";
 
 interface Props {}
 
@@ -143,6 +143,10 @@ function CragTableActions({}: Props) {
   const [beautifulFilterValue, setBeautifulFilterValue] = useState(true);
   const [unremarkableFilterValue, setUnremarkableFilterValue] = useState(true);
 
+  const handleSearchFieldChange = (searchFieldValue: string) => {
+    setState({ ...state, search: searchFieldValue });
+  };
+
   return (
     <>
       {/* outer wrap, to center actions */}
@@ -244,14 +248,18 @@ function CragTableActions({}: Props) {
             </div>
           </div>
 
-          {/* TODO: check text input, there are some undefined styles if you inspect container */}
-
           {/* TODO */}
           {/* Action: Search ... TODO: move search here??? YES */}
-          <div className="xs:w-80">
+          <div className="min-w-0 xs:w-80">
             <IconSearch className="xs:hidden" />
             <div className="max-xs:hidden">
-              <TextInput prefix={<IconSearch />} />
+              <TextField
+                prefix={<IconSearch />}
+                placeholder="Poišči po imenu"
+                aria-label="Poišči po imenu"
+                onChange={handleSearchFieldChange}
+                value={state.search || ""}
+              />
             </div>
           </div>
         </div>
