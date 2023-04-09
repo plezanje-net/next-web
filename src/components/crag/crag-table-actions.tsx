@@ -18,6 +18,7 @@ import GradeRangeSlider, {
   minSliderValue,
   sliderValueToDifficultyMap,
 } from "../ui/grade-range-slider";
+import TextInput from "../ui/text-input";
 
 interface Props {}
 
@@ -144,105 +145,114 @@ function CragTableActions({}: Props) {
 
   return (
     <>
-      <div className="mt-4 flex justify-center">
-        <div className="flex">
-          {/* Action: Filter */}
-          <div className="flex cursor-pointer space-x-2 pr-4">
-            <Dialog
-              openTrigger={
-                <Button renderStyle="icon" className="flex">
-                  <IconFilter />
-                  <span>
-                    <span className="ml-2 max-md:hidden">Filtriraj</span>
-                    {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
-                  </span>
-                </Button>
-              }
-              dialogSize={DialogSize.hug}
-              title="Filtriraj smeri"
-              confirm={{ label: "Filtriraj", callback: handleApplyFilter }}
-              cancel={{ label: "Prekliči", callback: handleFilterClose }}
-              closeCallback={handleFilterClose}
-            >
-              <div className="flex flex-col flex-wrap gap-8 md:flex-row">
-                <RadioGroup
-                  label="Glede na moje poskuse v smeri"
-                  value={routesTouchesFilterValue}
-                  onChange={setRoutesTouchesFilterValue}
-                >
-                  <Radio value="all">Vse</Radio>
-                  <Radio value="ticked">Preplezane</Radio>
-                  <Radio value="tried">Poskušane</Radio>
-                  <Radio value="unticked">Nepreplezane</Radio>
-                  <Radio value="untried">Neposkušane</Radio>
-                </RadioGroup>
+      {/* outer wrap, to center actions */}
+      <div className="mx-8 my-4 flex h-11 justify-center py-px xs:block">
+        {/* middle wrap: left: other actions, right: search */}
+        <div className="flex items-center xs:justify-between xs:gap-8">
+          <div className="flex items-center">
+            {/* Action: Filter */}
+            <div className="flex cursor-pointer space-x-2 pr-4">
+              <Dialog
+                openTrigger={
+                  <Button renderStyle="icon" className="flex">
+                    <IconFilter />
+                    <span>
+                      <span className="ml-2 max-lg:hidden">Filtriraj</span>
+                      {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
+                    </span>
+                  </Button>
+                }
+                dialogSize={DialogSize.hug}
+                title="Filtriraj smeri"
+                confirm={{ label: "Filtriraj", callback: handleApplyFilter }}
+                cancel={{ label: "Prekliči", callback: handleFilterClose }}
+                closeCallback={handleFilterClose}
+              >
+                <div className="flex flex-col flex-wrap gap-8 md:flex-row">
+                  <RadioGroup
+                    label="Glede na moje poskuse v smeri"
+                    value={routesTouchesFilterValue}
+                    onChange={setRoutesTouchesFilterValue}
+                  >
+                    <Radio value="all">Vse</Radio>
+                    <Radio value="ticked">Preplezane</Radio>
+                    <Radio value="tried">Poskušane</Radio>
+                    <Radio value="unticked">Nepreplezane</Radio>
+                    <Radio value="untried">Neposkušane</Radio>
+                  </RadioGroup>
 
-                <div className="flex flex-col">
-                  <div>Glede na lepoto</div>
-                  <div className="mt-2">
-                    <Checkbox
-                      isSelected={marvelousFilterValue}
-                      onChange={setMarvelousFilterValue}
-                    >
-                      Čudovita
-                    </Checkbox>
-                    <Checkbox
-                      isSelected={beautifulFilterValue}
-                      onChange={setBeautifulFilterValue}
-                    >
-                      Lepa
-                    </Checkbox>
-                    <Checkbox
-                      isSelected={unremarkableFilterValue}
-                      onChange={setUnremarkableFilterValue}
-                    >
-                      Nič posebnega
-                    </Checkbox>
+                  <div className="flex flex-col">
+                    <div>Glede na lepoto</div>
+                    <div className="mt-2">
+                      <Checkbox
+                        isSelected={marvelousFilterValue}
+                        onChange={setMarvelousFilterValue}
+                      >
+                        Čudovita
+                      </Checkbox>
+                      <Checkbox
+                        isSelected={beautifulFilterValue}
+                        onChange={setBeautifulFilterValue}
+                      >
+                        Lepa
+                      </Checkbox>
+                      <Checkbox
+                        isSelected={unremarkableFilterValue}
+                        onChange={setUnremarkableFilterValue}
+                      >
+                        Nič posebnega
+                      </Checkbox>
+                    </div>
+                  </div>
+
+                  <div className="w-50 lg:w-80">
+                    <GradeRangeSlider
+                      label="Glede na težavnost"
+                      defaultValue={[
+                        difficultyFilterValue.from,
+                        difficultyFilterValue.to,
+                      ]}
+                      onChangeEnd={handleDifficultyFilterChangeEnd}
+                    />
                   </div>
                 </div>
+              </Dialog>
+            </div>
 
-                <div className="w-50 lg:w-80">
-                  <GradeRangeSlider
-                    label="Glede na težavnost"
-                    defaultValue={[
-                      difficultyFilterValue.from,
-                      difficultyFilterValue.to,
-                    ]}
-                    onChangeEnd={handleDifficultyFilterChangeEnd}
-                  />
-                </div>
-              </div>
-            </Dialog>
+            {/* Action: Columns */}
+            <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
+              <IconColumns />
+              <span className="max-lg:hidden">Izberi stolpce</span>
+            </div>
+
+            {/* Action: Combine/Uncombine sectors */}
+            <div
+              className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4"
+              onClick={handleToggleCombine}
+            >
+              {!router.query.combine && <IconMerge />}
+              {router.query.combine && <IconUnmerge />}
+              <span className="max-lg:hidden">
+                {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
+              </span>
+            </div>
+
+            {/* Action: Sort */}
+            <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
+              <IconSort />
+              <span className="max-lg:hidden">Uredi</span>
+            </div>
           </div>
 
-          {/* Action: Columns */}
-          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
-            <IconColumns />
-            <span className="max-md:hidden">Izberi stolpce</span>
-          </div>
-
-          {/* Action: Combine/Uncombine sectors */}
-          <div
-            className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4"
-            onClick={handleToggleCombine}
-          >
-            {!router.query.combine && <IconMerge />}
-            {router.query.combine && <IconUnmerge />}
-            <span className="max-md:hidden">
-              {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
-            </span>
-          </div>
-
-          {/* Action: Sort */}
-          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
-            <IconSort />
-            <span className="max-md:hidden">Uredi</span>
-          </div>
+          {/* TODO: check text input, there are some undefined styles if you inspect container */}
 
           {/* TODO */}
           {/* Action: Search ... TODO: move search here??? YES */}
-          <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 pl-4 ">
-            <IconSearch />
+          <div className="xs:w-80">
+            <IconSearch className="xs:hidden" />
+            <div className="max-xs:hidden">
+              <TextInput prefix={<IconSearch />} />
+            </div>
           </div>
         </div>
       </div>
