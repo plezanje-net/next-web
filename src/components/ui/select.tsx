@@ -1,5 +1,5 @@
 import { Listbox } from "@headlessui/react";
-import { Children, cloneElement, ReactElement, ReactNode } from "react";
+import { Children, cloneElement, ReactElement } from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
