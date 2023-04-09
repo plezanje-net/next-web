@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@headlessui/tailwindcss": "^0.1.2",
+    "@netlify/classnames-template-literals": "^1.0.3",
     "@react-stately/radio": "^3.6.1",
     "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",

@@ -1,3 +1,4 @@
+import ctl from "@netlify/classnames-template-literals";
 import { ReactNode, useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
@@ -31,7 +32,7 @@ function TextField(props: TextFieldProps) {
         </label>
       )}
       <div
-        className={`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
+        className={ctl(`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
                     ${
                       isDisabled &&
                       "border-neutral-300 bg-neutral-100 text-neutral-400"
@@ -43,7 +44,7 @@ function TextField(props: TextFieldProps) {
                     }
                     ${label && "mt-2"}
                     ${errorMessage && "border-red-500 focus:ring-red-100"}
-                  `}
+                  `)}
       >
         {prefix && <div className="mx-2">{prefix}</div>}
 
@@ -51,10 +52,10 @@ function TextField(props: TextFieldProps) {
           {...inputProps}
           {...focusProps}
           ref={inputRef}
-          className={`min-w-0 flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
+          className={ctl(`min-w-0 flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
                       ${!prefix && "pl-4"}
                       ${!suffix && "pr-4"}
-                    `}
+                    `)}
         />
 
         {suffix && <div className="mx-2">{suffix}</div>}
