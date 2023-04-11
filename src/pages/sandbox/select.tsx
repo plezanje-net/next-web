@@ -4,7 +4,7 @@ import IconColumns from "../../components/ui/icons/columns";
 import IconStarFull from "../../components/ui/icons/star-full";
 import { Select, Option } from "../../components/ui/select";
 
-function SelectHeadPage() {
+function SelectPage() {
   return (
     <div className="m-8">
       <h3>Select demo</h3>
@@ -157,4 +157,4 @@ function SelectHeadPage() {
   );
 }
 
-export default SelectHeadPage;
+export default SelectPage;
