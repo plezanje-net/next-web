@@ -1,5 +1,5 @@
 import { Listbox } from "@headlessui/react";
-import { Children, cloneElement, ReactElement } from "react";
+import React, { Children, cloneElement, Fragment, ReactElement } from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
@@ -32,9 +32,10 @@ function Option({ children, id, value, disabled, icon }: OptionProps) {
 interface SelectProps {
   children: ReactElement<OptionProps>[];
   defaultValue?: string | string[];
-  label: string;
+  label?: string;
   placeholder?: string;
   multi?: boolean;
+  customTrigger?: ReactElement;
 }
 
 function Select({
@@ -43,8 +44,9 @@ function Select({
   label,
   placeholder,
   multi,
+  customTrigger,
 }: SelectProps) {
-  // map options (children) to a temporary 'associative array' to be able to access labels an icons later
+  // map options (children) to a temporary 'associative array' to be able to access labels and icons later
   let options: {
     [key: string]: {
       label: string;
@@ -92,22 +94,26 @@ function Select({
       className="w-80"
       multiple={multi}
     >
-      <Listbox.Label>{label}</Listbox.Label>
-      <Listbox.Button className="mt-1 flex w-80 justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-        {({ value }) => (
-          <>
-            {!!value?.length ? (
-              <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-                {getOptionLabel(value)}
-              </span>
-            ) : (
-              <span className="text-neutral-400">{placeholder}</span>
-            )}
+      {label && <Listbox.Label>{label}</Listbox.Label>}
+      {customTrigger ? (
+        <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
+      ) : (
+        <Listbox.Button className="mt-1 flex w-80 justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          {({ value }) => (
+            <>
+              {!!value?.length ? (
+                <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {getOptionLabel(value)}
+                </span>
+              ) : (
+                <span className="text-neutral-400">{placeholder}</span>
+              )}
 
-            <IconExpand className="shrink-0" />
-          </>
-        )}
-      </Listbox.Button>
+              <IconExpand className="shrink-0" />
+            </>
+          )}
+        </Listbox.Button>
+      )}
 
       <Listbox.Options className="absolute mt-2 w-80 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
         {children}
