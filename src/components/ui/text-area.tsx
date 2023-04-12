@@ -59,7 +59,9 @@ function TextArea(props: Props) {
           {...focusProps}
           rows={rows}
           ref={textareaRef}
-          className="flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none"
+          className={`flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none focus:ring
+                      ${isInvalid || errorMessage ? "focus:ring-red-100" : ""}
+          `}
         />
       </div>
 
