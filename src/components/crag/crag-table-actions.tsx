@@ -19,6 +19,7 @@ import GradeRangeSlider, {
   sliderValueToDifficultyMap,
 } from "../ui/grade-range-slider";
 import TextField from "../ui/text-field";
+import { Select, Option } from "../ui/select";
 
 interface Props {}
 
@@ -27,17 +28,6 @@ function CragTableActions({}: Props) {
   const { state, setState } = useContext(CragTableContext);
 
   const router = useRouter();
-
-  const handleToggleColumn = (columnName: string) => {
-    const selectedColumns = state.selectedColumns;
-    const columnIndex = selectedColumns.indexOf(columnName);
-    if (columnIndex > -1) {
-      selectedColumns.splice(columnIndex, 1);
-    } else {
-      selectedColumns.push(columnName);
-    }
-    setState({ ...state, selectedColumns });
-  };
 
   const handleToggleCombine = () => {
     toggleQueryParam(router, "combine", router.query.combine ? null : "true");
@@ -147,6 +137,10 @@ function CragTableActions({}: Props) {
     setState({ ...state, search: searchFieldValue });
   };
 
+  const handleSelectedColumnsChange = (selectedColumns: string[]) => {
+    setState({ ...state, selectedColumns });
+  };
+
   return (
     <>
       {/* outer wrap, to center actions */}
@@ -223,11 +217,42 @@ function CragTableActions({}: Props) {
               </Dialog>
             </div>
 
+            {/* TODO: a bit weird when this is a select... try with popover and also try with dialog... make decision if not select chosen maybe remove custom trigger option from select component */}
+
             {/* Action: Columns */}
             <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
-              <IconColumns />
-              <span className="max-lg:hidden">Izberi stolpce</span>
+              <Select
+                multi
+                defaultValue={state.selectedColumns}
+                onChange={handleSelectedColumnsChange}
+                customTrigger={
+                  <Button renderStyle="icon" className="flex">
+                    <IconColumns />
+
+                    <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
+                  </Button>
+                }
+              >
+                {CragTableColumns.filter(({ isOptional }) => isOptional).map(
+                  (column) => (
+                    <Option
+                      key={column.name}
+                      id={column.name}
+                      value={column.name}
+                    >
+                      {column.label}
+                    </Option>
+                  )
+                )}
+              </Select>
             </div>
+
+            {/* <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
+              <Button renderStyle="icon" className="flex">
+                <IconColumns />
+                <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
+              </Button>
+            </div> */}
 
             {/* Action: Combine/Uncombine sectors */}
             <div
@@ -263,23 +288,6 @@ function CragTableActions({}: Props) {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Action: Select columns TODO: move into actions row*/}
-      <div className="container mx-auto mt-4 px-8">
-        cols:
-        {CragTableColumns.filter(({ isOptional }) => isOptional).map(
-          (column) => (
-            <Checkbox
-              key={column.name}
-              value={column.name}
-              isSelected={state.selectedColumns.includes(column.name)}
-              onChange={() => handleToggleColumn(column.name)}
-            >
-              {column.label}
-            </Checkbox>
-          )
-        )}
       </div>
     </>
   );

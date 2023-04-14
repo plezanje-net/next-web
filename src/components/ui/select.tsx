@@ -11,6 +11,7 @@ interface OptionProps {
   icon?: ReactElement;
 }
 
+// TODO: could id just be key?
 function Option({ children, id, value, disabled, icon }: OptionProps) {
   return (
     <Listbox.Option
@@ -35,6 +36,7 @@ interface SelectProps {
   label?: string;
   placeholder?: string;
   multi?: boolean;
+  onChange?: (value: string[]) => void;
   customTrigger?: ReactElement;
 }
 
@@ -44,6 +46,8 @@ function Select({
   label,
   placeholder,
   multi,
+  // TODO: this change belongs into ui fixes branch...
+  onChange,
   customTrigger,
 }: SelectProps) {
   // map options (children) to a temporary 'associative array' to be able to access labels and icons later
@@ -91,14 +95,17 @@ function Select({
     <Listbox
       defaultValue={defaultValue}
       as="div"
-      className="w-80"
+      // TODO: width should probably not be hardcoded... rework this
+      // className="w-80"
       multiple={multi}
+      onChange={onChange}
     >
       {label && <Listbox.Label>{label}</Listbox.Label>}
       {customTrigger ? (
         <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
       ) : (
-        <Listbox.Button className="mt-1 flex w-80 justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+        // TODO: this is temp width removal for testing actions. rework this in the ui fixes branch
+        <Listbox.Button className="w-80... mt-1 flex justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
           {({ value }) => (
             <>
               {!!value?.length ? (

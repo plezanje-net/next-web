@@ -257,7 +257,8 @@ function CragTable({ crag }: Props) {
     <div ref={containerRef}>
       <CragTableContext.Provider value={{ state, setState }}>
         <CragTableActions />
-        <div className="container mx-auto mt-4 flex justify-end sm:px-8">
+        {/* TODO: clean up */}
+        {/* <div className="container mx-auto mt-4 flex justify-end sm:px-8">
           <div className="w-80">
             <TextField
               placeholder="Poišči v seznamu"
@@ -269,7 +270,7 @@ function CragTable({ crag }: Props) {
               }
             />
           </div>
-        </div>
+        </div> */}
         <div className="container mx-auto mt-4 sm:px-8">
           {router.query.combine ||
           state.search != "" ||
