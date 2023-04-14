@@ -119,17 +119,17 @@ function Select({
         </Listbox.Button>
       )}
 
-      <Listbox.Options
+      <div
         className={`absolute z-10 pb-2 ${
           customTrigger ? "w-auto whitespace-nowrap" : "w-full"
         }`}
       >
-        <div
-          className={`mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
+        <Listbox.Options
+          className={`mt-2  overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
         >
           {children}
-        </div>
-      </Listbox.Options>
+        </Listbox.Options>
+      </div>
     </Listbox>
   );
 }
