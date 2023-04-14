@@ -18,14 +18,14 @@ function Option({ children, id, value, disabled, icon }: OptionProps) {
       key={id}
       value={value}
       disabled={disabled}
-      className="flex cursor-pointer justify-between py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
+      className="flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
     >
-      <span>
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
         {icon &&
           cloneElement(icon, { size: "small", className: "mb-1 inline mr-1" })}
         {children}
       </span>
-      <IconCheck className="hidden text-neutral-900 ui-selected:block" />
+      <IconCheck className="invisible text-neutral-900 ui-selected:visible" />
     </Listbox.Option>
   );
 }
@@ -46,7 +46,6 @@ function Select({
   label,
   placeholder,
   multi,
-  // TODO: this change belongs into ui fixes branch...
   onChange,
   customTrigger,
 }: SelectProps) {
@@ -95,17 +94,15 @@ function Select({
     <Listbox
       defaultValue={defaultValue}
       as="div"
-      // TODO: width should probably not be hardcoded... rework this
-      // className="w-80"
       multiple={multi}
       onChange={onChange}
+      className="relative bg-white"
     >
       {label && <Listbox.Label>{label}</Listbox.Label>}
       {customTrigger ? (
         <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
       ) : (
-        // TODO: this is temp width removal for testing actions. rework this in the ui fixes branch
-        <Listbox.Button className="w-80... mt-1 flex justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+        <Listbox.Button className="relative mt-1 flex w-full justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
           {({ value }) => (
             <>
               {!!value?.length ? (
@@ -113,7 +110,9 @@ function Select({
                   {getOptionLabel(value)}
                 </span>
               ) : (
-                <span className="text-neutral-400">{placeholder}</span>
+                <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+                  {placeholder}
+                </span>
               )}
 
               <IconExpand className="shrink-0" />
@@ -122,9 +121,17 @@ function Select({
         </Listbox.Button>
       )}
 
-      <Listbox.Options className="absolute mt-2 w-80 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-        {children}
-      </Listbox.Options>
+      <div
+        className={`absolute z-10 pb-2 ${
+          customTrigger ? "w-auto whitespace-nowrap" : "w-full"
+        }`}
+      >
+        <Listbox.Options
+          className={`mt-2  overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
+        >
+          {children}
+        </Listbox.Options>
+      </div>
     </Listbox>
   );
 }

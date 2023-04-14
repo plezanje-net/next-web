@@ -122,7 +122,7 @@ function SelectPage() {
         </div>
       </div>
 
-      <div className="mt-14 w-80">
+      <div className="mt-14">
         <h5>A select with a custom trigger</h5>
         <div className="mt-4">
           <Select
@@ -151,6 +151,130 @@ function SelectPage() {
               Šunka
             </Option>
           </Select>
+        </div>
+      </div>
+
+      <div className="mt-14 w-96">
+        <h5>A wide select</h5>
+        <div className="mt-4">
+          <Select label="Izberi možnost" placeholder="Izberi možnost">
+            <Option id="1" value="pleskavica">
+              Pleskavica
+            </Option>
+            <Option id="2" value="hrenovka">
+              Hrenovka
+            </Option>
+            <Option id="3" value="pecenica">
+              Pečenica
+            </Option>
+            <Option id="4" value="krvavica">
+              Krvavica
+            </Option>
+            <Option id="5" value="klobasa">
+              Klobasa
+            </Option>
+            <Option id="6" value="sunka">
+              Šunka
+            </Option>
+          </Select>
+        </div>
+      </div>
+
+      <div className="mt-14 w-40">
+        <h5>A narrow select</h5>
+        <div className="mt-4">
+          <Select label="Izberi možnost" placeholder="Izberi možnost">
+            <Option id="1" value="pleskavica">
+              Pleskavica
+            </Option>
+            <Option id="2" value="hrenovka">
+              Hrenovka
+            </Option>
+            <Option id="3" value="pecenica">
+              Pečenica
+            </Option>
+            <Option id="4" value="krvavica">
+              Krvavica
+            </Option>
+            <Option id="5" value="klobasa">
+              Klobasa
+            </Option>
+            <Option id="6" value="sunka">
+              Šunka
+            </Option>
+          </Select>
+        </div>
+      </div>
+
+      <div className="mt-14">
+        <h5>Selects in a flex</h5>
+        <div className="mt-4 flex gap-4">
+          <div className="min-w-0 flex-1">
+            <Select label="Izberi možnost" placeholder="Izberi možnost">
+              <Option id="1" value="pleskavica">
+                A route with an unusually long name
+              </Option>
+              <Option id="2" value="hrenovka">
+                Hrenovka
+              </Option>
+              <Option id="3" value="pecenica">
+                Pečenica do vrha
+              </Option>
+              <Option id="4" value="krvavica">
+                Krvavica
+              </Option>
+              <Option id="5" value="klobasa">
+                Klobasa
+              </Option>
+              <Option id="6" value="sunka">
+                Šunka
+              </Option>
+            </Select>
+          </div>
+          <div className="min-w-0 flex-1">
+            <Select label="Izberi možnost" placeholder="Izberi možnost">
+              <Option id="1" value="pleskavica">
+                Pleskavica
+              </Option>
+              <Option id="2" value="hrenovka">
+                Hrenovka
+              </Option>
+              <Option id="3" value="pecenica">
+                Pečenica do vrha
+              </Option>
+              <Option id="4" value="krvavica">
+                Krvavica
+              </Option>
+              <Option id="5" value="klobasa">
+                Klobasa
+              </Option>
+              <Option id="6" value="sunka">
+                Šunka
+              </Option>
+            </Select>
+          </div>
+          <div className="min-w-0 flex-1">
+            <Select label="Izberi možnost" placeholder="Izberi možnost">
+              <Option id="1" value="pleskavica">
+                Pleskavica
+              </Option>
+              <Option id="2" value="hrenovka">
+                Hrenovka
+              </Option>
+              <Option id="3" value="pecenica">
+                Pečenica
+              </Option>
+              <Option id="4" value="krvavica">
+                Krvavica
+              </Option>
+              <Option id="5" value="klobasa">
+                Klobasa
+              </Option>
+              <Option id="6" value="sunka">
+                Šunka
+              </Option>
+            </Select>
+          </div>
         </div>
       </div>
     </div>
