@@ -11,20 +11,21 @@ interface OptionProps {
   icon?: ReactElement;
 }
 
+// TODO: could id just be key?
 function Option({ children, id, value, disabled, icon }: OptionProps) {
   return (
     <Listbox.Option
       key={id}
       value={value}
       disabled={disabled}
-      className="flex cursor-pointer justify-between py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
+      className="flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
     >
       <span>
         {icon &&
           cloneElement(icon, { size: "small", className: "mb-1 inline mr-1" })}
         {children}
       </span>
-      <IconCheck className="hidden text-neutral-900 ui-selected:block" />
+      <IconCheck className="invisible text-neutral-900 ui-selected:visible" />
     </Listbox.Option>
   );
 }
@@ -35,6 +36,7 @@ interface SelectProps {
   label?: string;
   placeholder?: string;
   multi?: boolean;
+  onChange?: (value: string[]) => void;
   customTrigger?: ReactElement;
 }
 
@@ -44,6 +46,7 @@ function Select({
   label,
   placeholder,
   multi,
+  onChange,
   customTrigger,
 }: SelectProps) {
   // map options (children) to a temporary 'associative array' to be able to access labels and icons later
@@ -91,14 +94,15 @@ function Select({
     <Listbox
       defaultValue={defaultValue}
       as="div"
-      className="w-80"
       multiple={multi}
+      onChange={onChange}
+      className="relative bg-white"
     >
       {label && <Listbox.Label>{label}</Listbox.Label>}
       {customTrigger ? (
         <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
       ) : (
-        <Listbox.Button className="mt-1 flex w-80 justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+        <Listbox.Button className="relative mt-1 flex w-full justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
           {({ value }) => (
             <>
               {!!value?.length ? (
@@ -115,7 +119,11 @@ function Select({
         </Listbox.Button>
       )}
 
-      <Listbox.Options className="absolute mt-2 w-80 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+      <Listbox.Options
+        className={`absolute z-10 mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
+          customTrigger ? "w-auto whitespace-nowrap" : "w-full"
+        }`}
+      >
         {children}
       </Listbox.Options>
     </Listbox>
