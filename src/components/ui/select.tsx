@@ -11,7 +11,6 @@ interface OptionProps {
   icon?: ReactElement;
 }
 
-// TODO: could id just be key?
 function Option({ children, id, value, disabled, icon }: OptionProps) {
   return (
     <Listbox.Option
