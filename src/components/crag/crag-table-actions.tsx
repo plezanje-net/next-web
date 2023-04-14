@@ -310,7 +310,7 @@ function CragTableActions({}: Props) {
 
             {/* Option 3/3: columns are selected with checkboxes within a modal dialog */}
             {router.query.colsUI === "dialog" && (
-              <div className="flex cursor-pointer space-x-2 pr-4">
+              <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
                 <Dialog
                   openTrigger={
                     <Button renderStyle="icon" className="flex">
