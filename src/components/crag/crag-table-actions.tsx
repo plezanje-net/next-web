@@ -20,7 +20,6 @@ import GradeRangeSlider, {
 } from "../ui/grade-range-slider";
 import TextField from "../ui/text-field";
 import { Select, Option } from "../ui/select";
-import Popover from "../ui/popover";
 
 interface Props {}
 
@@ -142,34 +141,6 @@ function CragTableActions({}: Props) {
     setState({ ...state, selectedColumns });
   };
 
-  const handleToggleColumn = (columnName: string) => {
-    const selectedColumns = state.selectedColumns;
-    const columnIndex = selectedColumns.indexOf(columnName);
-    if (columnIndex > -1) {
-      selectedColumns.splice(columnIndex, 1);
-    } else {
-      selectedColumns.push(columnName);
-    }
-    setState({ ...state, selectedColumns });
-  };
-
-  const [dialogCols, setDialogCols] = useState(new Set(state.selectedColumns));
-  const handleToggleDialogCol = (columnName: string, value: boolean) => {
-    if (value) {
-      dialogCols.add(columnName);
-    } else {
-      dialogCols.delete(columnName);
-    }
-    setDialogCols(dialogCols);
-  };
-
-  const handleApplyColumns = () => {
-    setState({ ...state, selectedColumns: Array.from(dialogCols) });
-  };
-  const handleCloseColumns = () => {
-    setDialogCols(new Set(state.selectedColumns));
-  };
-
   return (
     <>
       {/* outer wrap, to center actions */}
@@ -246,114 +217,33 @@ function CragTableActions({}: Props) {
               </Dialog>
             </div>
 
-            {/* TODO: choose an option for selecting columns */}
-
             {/* Action: Columns */}
-            {/* Option 1/3: columns are selected from a select with a custom trigger */}
-            {router.query.colsUI === "select" && (
-              <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
-                <Select
-                  multi
-                  defaultValue={state.selectedColumns}
-                  onChange={handleSelectedColumnsChange}
-                  customTrigger={
-                    <Button renderStyle="icon" className="flex">
-                      <IconColumns />
+            <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
+              <Select
+                multi
+                defaultValue={state.selectedColumns}
+                onChange={handleSelectedColumnsChange}
+                customTrigger={
+                  <Button renderStyle="icon" className="flex">
+                    <IconColumns />
 
-                      <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
-                    </Button>
-                  }
-                >
-                  {CragTableColumns.filter(({ isOptional }) => isOptional).map(
-                    (column) => (
-                      <Option
-                        key={column.name}
-                        id={column.name}
-                        value={column.name}
-                      >
-                        {column.label}
-                      </Option>
-                    )
-                  )}
-                </Select>
-              </div>
-            )}
-
-            {/* Option 2/3: columns are selected with checkboxes within a popover */}
-            {router.query.colsUI === "popover" && (
-              <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
-                <Popover
-                  openTrigger={
-                    <Button renderStyle="icon" className="flex">
-                      <IconColumns />
-                      <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
-                    </Button>
-                  }
-                >
-                  <div className="flex flex-col gap-1 whitespace-nowrap">
-                    {CragTableColumns.filter(
-                      ({ isOptional }) => isOptional
-                    ).map((column) => (
-                      <Checkbox
-                        key={column.name}
-                        value={column.name}
-                        isSelected={state.selectedColumns.includes(column.name)}
-                        onChange={() => handleToggleColumn(column.name)}
-                      >
-                        {column.label}
-                      </Checkbox>
-                    ))}
-                  </div>
-                </Popover>
-              </div>
-            )}
-
-            {/* Option 3/3: columns are selected with checkboxes within a modal dialog */}
-            {router.query.colsUI === "dialog" && (
-              <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
-                <Dialog
-                  openTrigger={
-                    <Button renderStyle="icon" className="flex">
-                      <IconColumns />
-
-                      <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
-                    </Button>
-                  }
-                  dialogSize={DialogSize.hug}
-                  title="Izberi stolpce"
-                  confirm={{
-                    label: "Potrdi izbiro",
-                    callback: handleApplyColumns,
-                  }}
-                  cancel={{
-                    label: "Prekliči",
-                    callback: handleCloseColumns,
-                  }}
-                  closeCallback={handleCloseColumns}
-                >
-                  <div className="flex flex-col flex-wrap gap-8 md:flex-row">
-                    <div className="flex flex-col">
-                      <div className="mt-2">
-                        {CragTableColumns.filter(
-                          ({ isOptional }) => isOptional
-                        ).map((column) => (
-                          <Checkbox
-                            key={column.name}
-                            value={column.name}
-                            onChange={(value) =>
-                              handleToggleDialogCol(column.name, value)
-                            }
-                            defaultSelected={dialogCols.has(column.name)}
-                          >
-                            {column.label}
-                          </Checkbox>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </Dialog>
-              </div>
-            )}
+                    <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
+                  </Button>
+                }
+              >
+                {CragTableColumns.filter(({ isOptional }) => isOptional).map(
+                  (column) => (
+                    <Option
+                      key={column.name}
+                      id={column.name}
+                      value={column.name}
+                    >
+                      {column.label}
+                    </Option>
+                  )
+                )}
+              </Select>
+            </div>
 
             {/* Action: Combine/Uncombine sectors */}
             <div
@@ -374,8 +264,7 @@ function CragTableActions({}: Props) {
             </div>
           </div>
 
-          {/* TODO */}
-          {/* Action: Search ... TODO: move search here??? YES */}
+          {/* Action: Search  */}
           <div className="min-w-0 xs:w-80">
             <IconSearch className="xs:hidden" />
             <div className="max-xs:hidden">
