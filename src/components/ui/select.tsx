@@ -20,7 +20,7 @@ function Option({ children, id, value, disabled, icon }: OptionProps) {
       disabled={disabled}
       className="flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
     >
-      <span>
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
         {icon &&
           cloneElement(icon, { size: "small", className: "mb-1 inline mr-1" })}
         {children}
@@ -110,7 +110,9 @@ function Select({
                   {getOptionLabel(value)}
                 </span>
               ) : (
-                <span className="text-neutral-400">{placeholder}</span>
+                <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+                  {placeholder}
+                </span>
               )}
 
               <IconExpand className="shrink-0" />
