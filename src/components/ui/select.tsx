@@ -35,7 +35,7 @@ interface SelectProps {
   label?: string;
   placeholder?: string;
   multi?: boolean;
-  onChange?: (value: string[]) => void;
+  onChange?: ((value: string[]) => void) | ((value: string) => void);
   customTrigger?: ReactElement;
 }
 
