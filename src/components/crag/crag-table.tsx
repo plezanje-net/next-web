@@ -265,33 +265,11 @@ function CragTable({ crag }: Props) {
     setState((state) => ({ ...state, compact }));
   }, [compact]);
 
-  // TODO: this was moved. clean up
-  // Search
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce<string>(search, 500);
-
-  useEffect(() => {
-    setState((state) => ({ ...state, search: debouncedSearch }));
-  }, [debouncedSearch]);
-
   return (
     <div ref={containerRef}>
       <CragTableContext.Provider value={{ state, setState }}>
         <CragTableActions />
-        {/* TODO: clean up */}
-        {/* <div className="container mx-auto mt-4 flex justify-end sm:px-8">
-          <div className="w-80">
-            <TextField
-              placeholder="Poišči v seznamu"
-              aria-label="Poišči v seznamu"
-              onChange={setSearch}
-              value={search}
-              suffix={
-                search != "" && <ClearSearch onClick={() => setSearch("")} />
-              }
-            />
-          </div>
-        </div> */}
+
         <div className="container mx-auto mt-4 sm:px-8">
           {router.query.combine ||
           state.search != "" ||
@@ -325,14 +303,6 @@ function CragTable({ crag }: Props) {
         </div>
       </CragTableContext.Provider>
     </div>
-  );
-}
-
-function ClearSearch({ onClick }: { onClick: () => void }) {
-  return (
-    <Button renderStyle="icon" onPress={onClick} className="flex">
-      <IconClose />
-    </Button>
   );
 }
 

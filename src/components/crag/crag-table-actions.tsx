@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toggleQueryParam } from "../../utils/route-helpers";
 import Button from "../ui/button";
 import Checkbox from "../ui/checkbox";
@@ -24,6 +24,8 @@ import GradeRangeSlider, {
 } from "../ui/grade-range-slider";
 import TextField from "../ui/text-field";
 import { Select, Option } from "../ui/select";
+import IconClose from "../ui/icons/close";
+import useDebounce from "../../utils/hooks/use-debounce";
 
 interface Props {}
 
@@ -127,8 +129,25 @@ function CragTableActions({}: Props) {
   const [beautifulFilterValue, setBeautifulFilterValue] = useState(true);
   const [unremarkableFilterValue, setUnremarkableFilterValue] = useState(true);
 
+  // TODO: test some more and decide wether to use debounce or not
+  // option with debounce ---
+  // const [search, setSearch] = useState("");
+  // const debouncedSearch = useDebounce<string>(search, 500);
+  // useEffect(() => {
+  //   setState({
+  //     ...state,
+  //     search: debouncedSearch,
+  //   });
+  // }, [debouncedSearch]);
+  // --- option with debounce
+
   const handleSearchFieldChange = (searchFieldValue: string) => {
-    setState({ ...state, search: searchFieldValue });
+    setState({ ...state, search: searchFieldValue }); // option without debounce
+    // setSearch(searchFieldValue);  // option with debounce
+  };
+
+  const handleClearSearch = () => {
+    setState({ ...state, search: "" });
   };
 
   const handleSelectedColumnsChange = (selectedColumns: string[]) => {
@@ -321,6 +340,18 @@ function CragTableActions({}: Props) {
                 aria-label="Poišči po imenu"
                 onChange={handleSearchFieldChange}
                 value={state.search || ""}
+                // value={search} // option with debounce
+                suffix={
+                  state.search != "" && (
+                    <Button
+                      renderStyle="icon"
+                      className="flex"
+                      onPress={handleClearSearch}
+                    >
+                      <IconClose />
+                    </Button>
+                  )
+                }
               />
             </div>
           </div>
