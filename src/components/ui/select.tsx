@@ -11,7 +11,6 @@ interface OptionProps {
   icon?: ReactElement;
 }
 
-// TODO: could id just be key?
 function Option({ children, id, value, disabled, icon }: OptionProps) {
   return (
     <Listbox.Option
@@ -36,7 +35,7 @@ interface SelectProps {
   label?: string;
   placeholder?: string;
   multi?: boolean;
-  onChange?: (value: string[]) => void;
+  onChange?: ((value: string[]) => void) | ((value: string) => void);
   customTrigger?: ReactElement;
 }
 

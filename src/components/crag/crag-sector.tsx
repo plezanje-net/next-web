@@ -19,6 +19,7 @@ function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
       sectorRef.current.scrollIntoView();
     }
   }, [isOpen]);
+
   return (
     <>
       <a ref={sectorRef}></a>

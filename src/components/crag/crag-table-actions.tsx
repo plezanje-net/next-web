@@ -97,9 +97,9 @@ function CragTableActions({}: Props) {
 
   const handleFilterClose = () => {
     // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored. take it either from context or set back defaults if not in context
-    setRoutesTouchesFilterValue(state.filter.routesTouches || "all");
+    setRoutesTouchesFilterValue(state.filter?.routesTouches || "all");
 
-    if (state.filter.difficulty) {
+    if (state.filter?.difficulty) {
       setDifficultyFilterValue({
         from: difficultyToSliderValueMap.get(state.filter.difficulty.from)!,
         to: difficultyToSliderValueMap.get(state.filter.difficulty.to)!,
@@ -108,7 +108,7 @@ function CragTableActions({}: Props) {
       setDifficultyFilterValue({ from: minSliderValue, to: maxSliderValue });
     }
 
-    if (state.filter.starRating) {
+    if (state.filter?.starRating) {
       setMarvelousFilterValue(state.filter.starRating.marvelous);
       setBeautifulFilterValue(state.filter.starRating.beautiful);
       setUnremarkableFilterValue(state.filter.starRating.unremarkable);
@@ -141,6 +141,17 @@ function CragTableActions({}: Props) {
     setState({ ...state, selectedColumns });
   };
 
+  const handleSortChange = (value: string) => {
+    const [column, direction] = value.split(",");
+    setState({
+      ...state,
+      sort: {
+        column,
+        direction: direction === "asc" ? "asc" : "desc",
+      },
+    });
+  };
+
   return (
     <>
       {/* outer wrap, to center actions */}
@@ -149,7 +160,7 @@ function CragTableActions({}: Props) {
         <div className="flex items-center xs:justify-between xs:gap-8">
           <div className="flex items-center">
             {/* Action: Filter */}
-            <div className="flex cursor-pointer space-x-2 pr-4">
+            <div className="flex cursor-pointer pr-4">
               <Dialog
                 openTrigger={
                   <Button renderStyle="icon" className="flex">
@@ -218,7 +229,7 @@ function CragTableActions({}: Props) {
             </div>
 
             {/* Action: Columns */}
-            <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4">
+            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
               <Select
                 multi
                 defaultValue={state.selectedColumns}
@@ -246,21 +257,61 @@ function CragTableActions({}: Props) {
             </div>
 
             {/* Action: Combine/Uncombine sectors */}
-            <div
-              className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4"
-              onClick={handleToggleCombine}
-            >
-              {!router.query.combine && <IconMerge />}
-              {router.query.combine && <IconUnmerge />}
-              <span className="max-lg:hidden">
-                {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
-              </span>
+            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
+              <Button
+                renderStyle="icon"
+                className="flex"
+                onPress={handleToggleCombine}
+              >
+                {!router.query.combine && <IconMerge />}
+                {router.query.combine && <IconUnmerge />}
+                <span className="ml-2 max-lg:hidden">
+                  {router.query.combine
+                    ? "Razdruži sektorje"
+                    : "Združi sektorje"}
+                </span>
+              </Button>
             </div>
 
             {/* Action: Sort */}
-            <div className="flex cursor-pointer space-x-2 border-l border-l-neutral-300 px-4 ">
-              <IconSort />
-              <span className="max-lg:hidden">Uredi</span>
+            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
+              <Select
+                // defaultValue={state.selectedColumns}
+                onChange={handleSortChange}
+                customTrigger={
+                  <Button renderStyle="icon" className="flex">
+                    <IconSort />
+                    <span className="ml-2 max-lg:hidden">Uredi</span>
+                  </Button>
+                }
+              >
+                {CragTableColumns.filter(
+                  (column) =>
+                    state.selectedColumns.includes(column.name) &&
+                    !column.excludeFromSort
+                ).map((column) => (
+                  <>
+                    <Option
+                      key={`${column.name},asc`}
+                      id={`${column.name},asc`}
+                      value={`${column.name},asc`}
+                    >
+                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                        column.sortAscLabel
+                      }`}
+                    </Option>
+                    <Option
+                      key={`${column.name},desc`}
+                      id={`${column.name},desc`}
+                      value={`${column.name},desc`}
+                    >
+                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                        column.sortDescLabel
+                      }`}
+                    </Option>
+                  </>
+                ))}
+              </Select>
             </div>
           </div>
 

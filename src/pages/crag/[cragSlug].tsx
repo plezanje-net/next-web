@@ -83,6 +83,9 @@ gql`
           position
           starRating
           publishStatus
+          sector {
+            position
+          }
         }
         bouldersOnly
       }

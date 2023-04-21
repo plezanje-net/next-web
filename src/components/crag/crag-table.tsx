@@ -23,36 +23,44 @@ interface Props {
   crag: Crag;
 }
 
-// TODO: dry filter interface
+export interface FilterOptions {
+  routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+  difficulty?: { from: number; to: number };
+  starRating?: {
+    marvelous: boolean;
+    beautiful: boolean;
+    unremarkable: boolean;
+  };
+}
+
+export interface SortOptions {
+  column: string;
+  direction: "asc" | "desc";
+}
+
 interface CragTableState {
   compact: boolean;
-  combine: boolean; //
+  combine: boolean;
   selectedColumns: string[];
-  search: string | null;
-  filter: {
-    routesTouches?: "ticked" | "tried" | "unticked" | "untried";
-    difficulty?: {
-      from: number;
-      to: number;
-    };
-    starRating?: {
-      marvelous: boolean;
-      beautiful: boolean;
-      unremarkable: boolean;
-    };
-  };
+  search?: string;
+  filter?: FilterOptions;
+  sort?: SortOptions;
 }
 
 interface CragTableColumn {
   label: string;
   labelShort?: string;
+  sortLabel?: string;
+  sortAscLabel?: string;
+  sortDescLabel?: string;
+  excludeFromSort?: boolean;
   name: string;
   icon?: ReactNode;
   isOptional: boolean;
   isDefault: boolean;
   displayCondition?: () => boolean;
   width: number;
-  defaultSortDirection: number;
+  defaultSortDirection?: number;
 }
 
 // TODO: lowercase param name?
@@ -66,19 +74,22 @@ const CragTableContext = createContext<CragTableContextType>({
     compact: true,
     combine: false,
     selectedColumns: [],
-    search: null,
-    filter: {},
   },
   setState: () => {},
 });
 
 // TODO: lowercase var name??
+
 const CragTableColumns: CragTableColumn[] = [
   {
     name: "select",
     label: "#",
+    sortLabel: "",
+    sortAscLabel: "Od leve proti desni",
+    sortDescLabel: "Od desne proti levi",
     isOptional: false,
     isDefault: true,
+    //TODO: is defaultSordDirection still being used?
     defaultSortDirection: 1,
     width: 64,
   },
@@ -88,12 +99,15 @@ const CragTableColumns: CragTableColumn[] = [
     isOptional: false,
     displayCondition: () => false,
     isDefault: true,
-    defaultSortDirection: 1,
+    excludeFromSort: true,
     width: 100,
   },
   {
     name: "name",
     label: "Ime",
+    sortLabel: "Po abecedi",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: false,
     isDefault: true,
     defaultSortDirection: 1,
@@ -102,6 +116,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "difficulty",
     label: "Težavnost",
+    sortLabel: "Po težavnosti",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: true,
     defaultSortDirection: 1,
@@ -110,6 +127,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "length",
     label: "Dolžina",
+    sortLabel: "Po dolžini",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: true,
     defaultSortDirection: 1,
@@ -119,6 +139,9 @@ const CragTableColumns: CragTableColumn[] = [
     name: "nrTicks",
     label: "Št. uspešnih vzponov",
     labelShort: "Št. vzponov",
+    sortLabel: "Po št. vzponov",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
     defaultSortDirection: -1,
@@ -127,6 +150,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "nrTries",
     label: "Št. poskusov",
+    sortLabel: "Po št. poskusov",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
     defaultSortDirection: -1,
@@ -135,6 +161,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "nrClimbers",
     label: "Št. plezalcev",
+    sortLabel: "Po št. plezalcev",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
     defaultSortDirection: -1,
@@ -143,6 +172,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "starRating",
     label: "Lepota",
+    sortLabel: "Po lepoti",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
     icon: <IconStarFull />,
     isOptional: true,
     isDefault: true,
@@ -152,6 +184,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "comments",
     label: "Komentarji",
+    sortLabel: "",
+    sortAscLabel: "S komentarji najprej",
+    sortDescLabel: "Brez komentarjev najprej",
     icon: <IconComment />,
     isOptional: true,
     isDefault: true,
@@ -161,6 +196,9 @@ const CragTableColumns: CragTableColumn[] = [
   {
     name: "myAscents",
     label: "Moji vzponi",
+    sortLabel: "",
+    sortAscLabel: "Z mojimi vzponi najprej",
+    sortDescLabel: "Brez mojih vzponov najprej",
     icon: <IconCheck />,
     isOptional: true,
     isDefault: true,
@@ -176,11 +214,9 @@ function CragTable({ crag }: Props) {
   const [state, setState] = useState<CragTableState>({
     compact: true,
     combine: false,
-    search: null,
     selectedColumns: CragTableColumns.filter(({ isDefault }) => isDefault).map(
       ({ name }) => name
     ),
-    filter: {},
   });
 
   const [compact, setCompact] = useState(true);

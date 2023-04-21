@@ -1,7 +1,12 @@
 import { useContext } from "react";
 import { Crag, Route } from "../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route";
-import { CragTableColumns, CragTableContext } from "./crag-table";
+import {
+  CragTableColumns,
+  CragTableContext,
+  FilterOptions,
+  SortOptions,
+} from "./crag-table";
 
 interface Props {
   crag: Crag;
@@ -9,27 +14,11 @@ interface Props {
   ascents: Map<string, string>;
 }
 
-// TODO: dry
-interface FilterOptions {
-  search: string | null;
-  routesTouches?: "ticked" | "tried" | "unticked" | "untried";
-  difficulty?: { from: number; to: number };
-  starRating?: {
-    marvelous: boolean;
-    beautiful: boolean;
-    unremarkable: boolean;
-  };
-}
-
-function filterRoutes(
+function filterRoutesByFilter(
   routes: Route[],
   ascents: Map<string, string>,
-  { search, routesTouches, difficulty, starRating }: FilterOptions
+  { routesTouches, difficulty, starRating }: FilterOptions = {}
 ): Route[] {
-  if (search) {
-    routes = filterBySearchTerm(routes, search);
-  }
-
   if (routesTouches) {
     switch (routesTouches) {
       case "ticked":
@@ -100,7 +89,10 @@ function ignoreAccents(searchTerm: string): string {
     .replace(/[dđ]/gi, "[dđ]");
 }
 
-function filterBySearchTerm(routes: Route[], searchTerm: string): Route[] {
+function filterRoutesBySearchTerm(
+  routes: Route[],
+  searchTerm: string
+): Route[] {
   searchTerm = searchTerm.toLowerCase();
   searchTerm = escape(searchTerm);
   searchTerm = ignoreAccents(searchTerm);
@@ -109,15 +101,71 @@ function filterBySearchTerm(routes: Route[], searchTerm: string): Route[] {
   return routes.filter((route) => regExp.test(route.name.toLowerCase()));
 }
 
+function sortRoutes(
+  routes: Route[],
+  ascents: Map<string, string>,
+  sort: SortOptions = {
+    column: "select",
+    direction: "asc",
+  }
+): Route[] {
+  const collator = new Intl.Collator("sl");
+
+  routes.sort((r1, r2) => {
+    const numericalDirection = sort.direction === "asc" ? 1 : -1;
+
+    switch (sort.column) {
+      case "select":
+        // this is the checkboxes column and is 'used' to sort routes from left to right
+        if (r1.sector.position === r2.sector.position) {
+          return (r1.position - r2.position) * numericalDirection;
+        } else {
+          return (r1.sector.position - r2.sector.position) * numericalDirection;
+        }
+      case "name":
+        return collator.compare(r1.name, r2.name) * numericalDirection;
+
+      case "difficulty":
+        return (
+          ((r1.difficulty || Infinity) - (r2.difficulty || Infinity)) *
+          numericalDirection
+        );
+      case "comments":
+        return (r2.comments.length - r1.comments.length) * numericalDirection;
+
+      case "myAscents":
+        return (
+          (+!!ascents.get(r2.id) - +!!ascents.get(r1.id)) * numericalDirection
+        );
+      // TODO: attempt icon is missing!!
+
+      case "length":
+      case "nrTicks":
+      case "nrTries":
+      case "nrClimbers":
+      case "starRating":
+        return (
+          ((r1[sort.column] || 0) - (r2[sort.column] || 0)) * numericalDirection
+        );
+
+      default:
+        return 0;
+    }
+  });
+
+  return routes;
+}
+
 function CragRoutes({ routes, crag, ascents }: Props) {
   const { state } = useContext(CragTableContext);
-  routes = filterRoutes(routes, ascents, {
-    // TODO: should move search into filter
-    search: state.search,
-    routesTouches: state.filter.routesTouches,
-    difficulty: state.filter.difficulty,
-    starRating: state.filter.starRating,
-  });
+
+  routes = filterRoutesByFilter(routes, ascents, state.filter);
+
+  if (state.search) {
+    routes = filterRoutesBySearchTerm(routes, state.search);
+  }
+
+  routes = sortRoutes(routes, ascents, state.sort);
 
   return (
     <>
