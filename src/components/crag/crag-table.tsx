@@ -59,7 +59,6 @@ interface CragTableColumn {
   isDefault: boolean;
   displayCondition?: () => boolean;
   width: number;
-  defaultSortDirection?: number;
 }
 
 interface CragTableContextType {
@@ -85,8 +84,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "Od desne proti levi",
     isOptional: false,
     isDefault: true,
-    //TODO: is defaultSordDirection still being used?
-    defaultSortDirection: 1,
     width: 64,
   },
   {
@@ -106,7 +103,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: false,
     isDefault: true,
-    defaultSortDirection: 1,
     width: 100,
   },
   {
@@ -117,7 +113,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: true,
-    defaultSortDirection: 1,
     width: 130,
   },
   {
@@ -128,7 +123,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: true,
-    defaultSortDirection: 1,
     width: 100,
   },
   {
@@ -140,7 +134,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
-    defaultSortDirection: -1,
     width: 160,
   },
   {
@@ -151,7 +144,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
-    defaultSortDirection: -1,
     width: 100,
   },
   {
@@ -162,7 +154,6 @@ const cragTableColumns: CragTableColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: false,
-    defaultSortDirection: -1,
     width: 99,
   },
   {
@@ -174,7 +165,6 @@ const cragTableColumns: CragTableColumn[] = [
     icon: <IconStarFull />,
     isOptional: true,
     isDefault: true,
-    defaultSortDirection: -1,
     width: 52,
   },
   {
@@ -186,7 +176,6 @@ const cragTableColumns: CragTableColumn[] = [
     icon: <IconComment />,
     isOptional: true,
     isDefault: true,
-    defaultSortDirection: -1,
     width: 52,
   },
   {
@@ -198,7 +187,6 @@ const cragTableColumns: CragTableColumn[] = [
     icon: <IconCheck />,
     isOptional: true,
     isDefault: true,
-    defaultSortDirection: -1,
     width: 52,
   },
 ];
