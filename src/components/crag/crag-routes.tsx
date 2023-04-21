@@ -137,7 +137,6 @@ function sortRoutes(
         return (
           (+!!ascents.get(r2.id) - +!!ascents.get(r1.id)) * numericalDirection
         );
-      // TODO: attempt icon is missing!!
 
       case "length":
       case "nrTicks":

@@ -26,7 +26,7 @@ function AscentIcon({ ascent, size }: Props) {
       return <IconAllFree size={size} />;
     case "aid":
       return <IconAid size={size} />;
-    case "try":
+    case "attempt":
       return <IconClose size={size} />;
   }
 
