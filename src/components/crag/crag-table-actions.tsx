@@ -289,7 +289,6 @@ function CragTableActions({}: Props) {
             {/* Action: Sort */}
             <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
               <Select
-                // defaultValue={state.selectedColumns}
                 onChange={handleSortChange}
                 customTrigger={
                   <Button renderStyle="icon" className="flex">
@@ -304,28 +303,26 @@ function CragTableActions({}: Props) {
                       state.selectedColumns.includes(column.name) &&
                       !column.excludeFromSort
                   )
-                  .map((column) => (
-                    <>
-                      <Option
-                        key={`${column.name},asc`}
-                        id={`${column.name},asc`}
-                        value={`${column.name},asc`}
-                      >
-                        {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
-                          column.sortAscLabel
-                        }`}
-                      </Option>
-                      <Option
-                        key={`${column.name},desc`}
-                        id={`${column.name},desc`}
-                        value={`${column.name},desc`}
-                      >
-                        {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
-                          column.sortDescLabel
-                        }`}
-                      </Option>
-                    </>
-                  ))}
+                  .flatMap((column) => [
+                    <Option
+                      key={`${column.name},asc`}
+                      id={`${column.name},asc`}
+                      value={`${column.name},asc`}
+                    >
+                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                        column.sortAscLabel
+                      }`}
+                    </Option>,
+                    <Option
+                      key={`${column.name},desc`}
+                      id={`${column.name},desc`}
+                      value={`${column.name},desc`}
+                    >
+                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                        column.sortDescLabel
+                      }`}
+                    </Option>,
+                  ])}
               </Select>
             </div>
           </div>
