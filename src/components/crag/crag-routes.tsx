@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Crag, Route } from "../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route";
 import {
-  CragTableColumns,
+  cragTableColumns,
   CragTableContext,
   FilterOptions,
   SortOptions,
@@ -172,20 +172,22 @@ function CragRoutes({ routes, crag, ascents }: Props) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-200">
-              {CragTableColumns.filter(
-                ({ name, displayCondition }) =>
-                  state.selectedColumns.includes(name) &&
-                  (displayCondition === undefined || displayCondition())
-              ).map((column) => (
-                <th
-                  key={column.name}
-                  className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
-                >
-                  {column.icon
-                    ? column.icon
-                    : column.labelShort ?? column.label}
-                </th>
-              ))}
+              {cragTableColumns
+                .filter(
+                  ({ name, displayCondition }) =>
+                    state.selectedColumns.includes(name) &&
+                    (displayCondition === undefined || displayCondition())
+                )
+                .map((column) => (
+                  <th
+                    key={column.name}
+                    className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
+                  >
+                    {column.icon
+                      ? column.icon
+                      : column.labelShort ?? column.label}
+                  </th>
+                ))}
             </tr>
           </thead>
           <tbody>

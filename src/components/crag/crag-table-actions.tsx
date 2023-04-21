@@ -11,7 +11,11 @@ import IconSearch from "../ui/icons/search";
 import IconSort from "../ui/icons/sort";
 import IconUnmerge from "../ui/icons/unmerge";
 import { Radio, RadioGroup } from "../ui/radio-group";
-import { CragTableColumns, CragTableContext } from "./crag-table";
+import {
+  cragTableColumns,
+  CragTableContext,
+  FilterOptions,
+} from "./crag-table";
 import GradeRangeSlider, {
   difficultyToSliderValueMap,
   maxSliderValue,
@@ -40,17 +44,7 @@ function CragTableActions({}: Props) {
 
   const handleApplyFilter = () => {
     let nrFiltersActiveCount = 0;
-
-    //TODO: dry type
-    const filter: {
-      routesTouches?: "ticked" | "tried" | "unticked" | "untried";
-      difficulty?: { from: number; to: number };
-      starRating?: {
-        marvelous: boolean;
-        beautiful: boolean;
-        unremarkable: boolean;
-      };
-    } = {};
+    const filter: FilterOptions = {};
 
     if (
       routesTouchesFilterValue === "ticked" ||
@@ -242,8 +236,9 @@ function CragTableActions({}: Props) {
                   </Button>
                 }
               >
-                {CragTableColumns.filter(({ isOptional }) => isOptional).map(
-                  (column) => (
+                {cragTableColumns
+                  .filter(({ isOptional }) => isOptional)
+                  .map((column) => (
                     <Option
                       key={column.name}
                       id={column.name}
@@ -251,8 +246,7 @@ function CragTableActions({}: Props) {
                     >
                       {column.label}
                     </Option>
-                  )
-                )}
+                  ))}
               </Select>
             </div>
 
@@ -285,32 +279,34 @@ function CragTableActions({}: Props) {
                   </Button>
                 }
               >
-                {CragTableColumns.filter(
-                  (column) =>
-                    state.selectedColumns.includes(column.name) &&
-                    !column.excludeFromSort
-                ).map((column) => (
-                  <>
-                    <Option
-                      key={`${column.name},asc`}
-                      id={`${column.name},asc`}
-                      value={`${column.name},asc`}
-                    >
-                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
-                        column.sortAscLabel
-                      }`}
-                    </Option>
-                    <Option
-                      key={`${column.name},desc`}
-                      id={`${column.name},desc`}
-                      value={`${column.name},desc`}
-                    >
-                      {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
-                        column.sortDescLabel
-                      }`}
-                    </Option>
-                  </>
-                ))}
+                {cragTableColumns
+                  .filter(
+                    (column) =>
+                      state.selectedColumns.includes(column.name) &&
+                      !column.excludeFromSort
+                  )
+                  .map((column) => (
+                    <>
+                      <Option
+                        key={`${column.name},asc`}
+                        id={`${column.name},asc`}
+                        value={`${column.name},asc`}
+                      >
+                        {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                          column.sortAscLabel
+                        }`}
+                      </Option>
+                      <Option
+                        key={`${column.name},desc`}
+                        id={`${column.name},desc`}
+                        value={`${column.name},desc`}
+                      >
+                        {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
+                          column.sortDescLabel
+                        }`}
+                      </Option>
+                    </>
+                  ))}
               </Select>
             </div>
           </div>

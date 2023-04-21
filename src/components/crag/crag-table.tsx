@@ -14,7 +14,6 @@ import IconCheck from "../ui/icons/check";
 import IconClose from "../ui/icons/close";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
-import TextField from "../ui/text-field";
 import CragRoutes from "./crag-routes";
 import CragSector from "./crag-sector";
 import CragTableActions from "./crag-table-actions";
@@ -23,7 +22,7 @@ interface Props {
   crag: Crag;
 }
 
-export interface FilterOptions {
+interface FilterOptions {
   routesTouches?: "ticked" | "tried" | "unticked" | "untried";
   difficulty?: { from: number; to: number };
   starRating?: {
@@ -33,7 +32,7 @@ export interface FilterOptions {
   };
 }
 
-export interface SortOptions {
+interface SortOptions {
   column: string;
   direction: "asc" | "desc";
 }
@@ -63,10 +62,9 @@ interface CragTableColumn {
   defaultSortDirection?: number;
 }
 
-// TODO: lowercase param name?
 interface CragTableContextType {
   state: CragTableState;
-  setState: (CragTableState: CragTableState) => void;
+  setState: (cragTableState: CragTableState) => void;
 }
 
 const CragTableContext = createContext<CragTableContextType>({
@@ -78,9 +76,7 @@ const CragTableContext = createContext<CragTableContextType>({
   setState: () => {},
 });
 
-// TODO: lowercase var name??
-
-const CragTableColumns: CragTableColumn[] = [
+const cragTableColumns: CragTableColumn[] = [
   {
     name: "select",
     label: "#",
@@ -214,9 +210,9 @@ function CragTable({ crag }: Props) {
   const [state, setState] = useState<CragTableState>({
     compact: true,
     combine: false,
-    selectedColumns: CragTableColumns.filter(({ isDefault }) => isDefault).map(
-      ({ name }) => name
-    ),
+    selectedColumns: cragTableColumns
+      .filter(({ isDefault }) => isDefault)
+      .map(({ name }) => name),
   });
 
   const [compact, setCompact] = useState(true);
@@ -263,9 +259,9 @@ function CragTable({ crag }: Props) {
   // Resize observer to detect when to switch to compact mode according to selected columns width
   useEffect(() => {
     setBreakpoint(
-      CragTableColumns.filter((c) =>
-        state.selectedColumns.includes(c.name)
-      ).reduce((acc, c) => acc + c.width, 0)
+      cragTableColumns
+        .filter((c) => state.selectedColumns.includes(c.name))
+        .reduce((acc, c) => acc + c.width, 0)
     );
   }, [state.selectedColumns, state.selectedColumns.length]);
 
@@ -281,6 +277,7 @@ function CragTable({ crag }: Props) {
     setState((state) => ({ ...state, compact }));
   }, [compact]);
 
+  // TODO: this was moved. clean up
   // Search
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce<string>(search, 500);
@@ -363,5 +360,10 @@ gql`
   }
 `;
 
-export { CragTableColumns, CragTableContext };
+export {
+  cragTableColumns,
+  CragTableContext,
+  type FilterOptions,
+  type SortOptions,
+};
 export default CragTable;
