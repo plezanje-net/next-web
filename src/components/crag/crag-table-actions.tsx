@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { toggleQueryParam } from "../../utils/route-helpers";
 import Button from "../ui/button";
 import Checkbox from "../ui/checkbox";
@@ -25,7 +25,6 @@ import GradeRangeSlider, {
 import TextField from "../ui/text-field";
 import { Select, Option } from "../ui/select";
 import IconClose from "../ui/icons/close";
-import useDebounce from "../../utils/hooks/use-debounce";
 
 interface Props {}
 
@@ -129,21 +128,8 @@ function CragTableActions({}: Props) {
   const [beautifulFilterValue, setBeautifulFilterValue] = useState(true);
   const [unremarkableFilterValue, setUnremarkableFilterValue] = useState(true);
 
-  // TODO: test some more and decide wether to use debounce or not
-  // option with debounce ---
-  // const [search, setSearch] = useState("");
-  // const debouncedSearch = useDebounce<string>(search, 500);
-  // useEffect(() => {
-  //   setState({
-  //     ...state,
-  //     search: debouncedSearch,
-  //   });
-  // }, [debouncedSearch]);
-  // --- option with debounce
-
   const handleSearchFieldChange = (searchFieldValue: string) => {
-    setState({ ...state, search: searchFieldValue }); // option without debounce
-    // setSearch(searchFieldValue);  // option with debounce
+    setState({ ...state, search: searchFieldValue });
   };
 
   const handleClearSearch = () => {
@@ -328,7 +314,7 @@ function CragTableActions({}: Props) {
           </div>
 
           {/* Action: Search  */}
-          <div className="min-w-0 xs:w-80">
+          <div className="min-w-0 max-xs:border-l max-xs:border-l-neutral-300 max-xs:pl-4 xs:w-80">
             <IconSearch className="xs:hidden" />
             <div className="max-xs:hidden">
               <TextField
@@ -337,7 +323,6 @@ function CragTableActions({}: Props) {
                 aria-label="Poišči po imenu"
                 onChange={handleSearchFieldChange}
                 value={state.search || ""}
-                // value={search} // option with debounce
                 suffix={
                   state.search != "" && (
                     <Button
