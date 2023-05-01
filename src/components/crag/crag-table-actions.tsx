@@ -325,7 +325,7 @@ function CragTableActions({}: Props) {
                 onChange={handleSearchFieldChange}
                 value={state.search || ""}
                 suffix={
-                  state.search != "" && (
+                  state.search && (
                     <Button
                       renderStyle="icon"
                       className="flex"
