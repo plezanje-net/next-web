@@ -282,6 +282,7 @@ function CragTableActions({}: Props) {
                     <span className="ml-2 max-lg:hidden">Uredi</span>
                   </Button>
                 }
+                customOptionsClasses="max-xs:right-[calc((185px-100vw)/2)]"
               >
                 {cragTableColumns
                   .filter(
