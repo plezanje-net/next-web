@@ -54,7 +54,7 @@ function Dialog({
   return (
     <>
       {cloneElement(openTrigger, {
-        onPress: () => setIsOpen(true),
+        onClick: () => setIsOpen(true),
       })}
       <DialogHUI
         open={isOpen}

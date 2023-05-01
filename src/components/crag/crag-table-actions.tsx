@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { toggleQueryParam } from "../../utils/route-helpers";
-import Button from "../ui/button";
 import Checkbox from "../ui/checkbox";
 import Dialog, { DialogSize } from "../ui/dialog";
 import IconColumns from "../ui/icons/columns";
@@ -25,6 +24,7 @@ import GradeRangeSlider, {
 import TextField from "../ui/text-field";
 import { Select, Option } from "../ui/select";
 import IconClose from "../ui/icons/close";
+import ButtonGood from "../ui/button-good";
 
 interface Props {}
 
@@ -159,16 +159,18 @@ function CragTableActions({}: Props) {
         <div className="flex items-center xs:justify-between xs:gap-8">
           <div className="flex items-center">
             {/* Action: Filter */}
-            <div className="flex cursor-pointer pr-4">
+            <div className="flex pr-4">
               <Dialog
                 openTrigger={
-                  <Button renderStyle="icon" className="flex">
-                    <IconFilter />
-                    <span>
-                      <span className="ml-2 max-lg:hidden">Filtriraj</span>
-                      {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
+                  <ButtonGood renderStyle="icon">
+                    <span className="flex">
+                      <IconFilter />
+                      <span>
+                        <span className="ml-2 max-lg:hidden">Filtriraj</span>
+                        {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
+                      </span>
                     </span>
-                  </Button>
+                  </ButtonGood>
                 }
                 dialogSize={DialogSize.hug}
                 title="Filtriraj smeri"
@@ -228,17 +230,18 @@ function CragTableActions({}: Props) {
             </div>
 
             {/* Action: Columns */}
-            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
+            <div className="flex border-l border-l-neutral-300 px-4">
               <Select
                 multi
                 defaultValue={state.selectedColumns}
                 onChange={handleSelectedColumnsChange}
                 customTrigger={
-                  <Button renderStyle="icon" className="flex">
-                    <IconColumns />
-
-                    <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
-                  </Button>
+                  <ButtonGood renderStyle="icon">
+                    <span className="flex">
+                      <IconColumns />
+                      <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
+                    </span>
+                  </ButtonGood>
                 }
               >
                 {cragTableColumns
@@ -256,31 +259,31 @@ function CragTableActions({}: Props) {
             </div>
 
             {/* Action: Combine/Uncombine sectors */}
-            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
-              <Button
-                renderStyle="icon"
-                className="flex"
-                onPress={handleToggleCombine}
-              >
-                {!router.query.combine && <IconMerge />}
-                {router.query.combine && <IconUnmerge />}
-                <span className="ml-2 max-lg:hidden">
-                  {router.query.combine
-                    ? "Razdruži sektorje"
-                    : "Združi sektorje"}
+            <div className="flex border-l border-l-neutral-300 px-4">
+              <ButtonGood renderStyle="icon" onClick={handleToggleCombine}>
+                <span className="flex">
+                  {!router.query.combine && <IconMerge />}
+                  {router.query.combine && <IconUnmerge />}
+                  <span className="ml-2 max-lg:hidden">
+                    {router.query.combine
+                      ? "Razdruži sektorje"
+                      : "Združi sektorje"}
+                  </span>
                 </span>
-              </Button>
+              </ButtonGood>
             </div>
 
             {/* Action: Sort */}
-            <div className="flex cursor-pointer border-l border-l-neutral-300 px-4">
+            <div className="flex border-l border-l-neutral-300 px-4">
               <Select
                 onChange={handleSortChange}
                 customTrigger={
-                  <Button renderStyle="icon" className="flex">
-                    <IconSort />
-                    <span className="ml-2 max-lg:hidden">Uredi</span>
-                  </Button>
+                  <ButtonGood renderStyle="icon">
+                    <span className="flex">
+                      <IconSort />
+                      <span className="ml-2 max-lg:hidden">Uredi</span>
+                    </span>
+                  </ButtonGood>
                 }
                 customOptionsClasses="max-xs:right-[calc((185px-100vw)/2)]"
               >
@@ -326,13 +329,14 @@ function CragTableActions({}: Props) {
                 value={state.search || ""}
                 suffix={
                   state.search && (
-                    <Button
-                      renderStyle="icon"
-                      className="flex"
-                      onPress={handleClearSearch}
-                    >
-                      <IconClose />
-                    </Button>
+                    <span className="flex">
+                      <ButtonGood
+                        renderStyle="icon"
+                        onClick={handleClearSearch}
+                      >
+                        <IconClose />
+                      </ButtonGood>
+                    </span>
                   )
                 }
               />
