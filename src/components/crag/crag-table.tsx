@@ -269,8 +269,9 @@ function CragTable({ crag }: Props) {
 
         <div className="container mx-auto mt-4 sm:px-8">
           {router.query.combine ||
-          state.search != "" ||
+          !!state.search ||
           crag.sectors.length == 1 ? (
+            // 'Single sector' (combined) view
             <CragRoutes
               crag={crag}
               routes={crag.sectors.reduce(
@@ -280,6 +281,7 @@ function CragTable({ crag }: Props) {
               ascents={ascents}
             />
           ) : (
+            // 'By sector' (uncombined) view
             crag.sectors.map((sector, index) => (
               <div
                 key={sector.id}
