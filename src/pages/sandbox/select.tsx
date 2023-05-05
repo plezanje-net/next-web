@@ -1,4 +1,3 @@
-import Button from "../../components/ui/button";
 import ButtonGood from "../../components/ui/button-good";
 import IconAid from "../../components/ui/icons/aid";
 import IconColumns from "../../components/ui/icons/columns";
