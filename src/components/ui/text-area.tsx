@@ -1,23 +1,27 @@
-import { ReactNode, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
-type TextInputProps = {
+type TextAreaProps = {
   label?: string;
   description?: string;
   errorMessage?: string;
   isDisabled?: boolean;
-  prefix?: ReactNode;
-  suffix?: ReactNode;
-} & AriaTextFieldOptions<"input">;
+  rows?: number;
+} & AriaTextFieldOptions<"textarea">;
 
-function TextInput(props: TextInputProps) {
-  const { isDisabled, label, description, errorMessage, prefix, suffix } =
-    props;
-  const inputRef = useRef(null);
+function TextArea(props: TextAreaProps) {
+  const { isDisabled, label, description, errorMessage, rows = 6 } = props;
+  const textareaRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-    useTextField(props, inputRef);
+    useTextField(
+      {
+        ...props,
+        inputElementType: "textarea",
+      },
+      textareaRef
+    );
 
   const { focusProps } = useFocus({
     onFocusChange: (isFocused) => setIsFocused(isFocused),
@@ -33,30 +37,29 @@ function TextInput(props: TextInputProps) {
       <div
         className={`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
                     ${
-                      isDisabled ?
-                      "border-neutral-300 bg-neutral-100 text-neutral-400 " : ""
+                      isDisabled
+                        ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+                        : ""
                     }
                     ${
-                      isFocused ?
-                      "ring" + (errorMessage ? " ring-red-100" : " ring-blue-100") : ""
+                      isFocused
+                        ? "ring" +
+                          (errorMessage ? " ring-red-100" : " ring-blue-100")
+                        : ""
                     }
                     ${label ? "mt-2" : ""}
                     ${errorMessage ? "border-red-500 focus:ring-red-100" : ""}
                   `}
       >
-        {prefix && <div className="mx-2">{prefix}</div>}
-
-        <input
+        <textarea
           {...inputProps}
           {...focusProps}
-          ref={inputRef}
-          className={`flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
-                      ${!prefix ? "pl-4" : ""}
-                      ${!suffix ? "pr-4" : ""}
-                    `}
+          rows={rows}
+          ref={textareaRef}
+          className={
+            "flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none"
+          }
         />
-
-        {suffix && <div className="mx-2">{suffix}</div>}
       </div>
 
       {description && !errorMessage && (
@@ -74,4 +77,4 @@ function TextInput(props: TextInputProps) {
   );
 }
 
-export default TextInput;
+export default TextArea;
