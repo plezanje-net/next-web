@@ -1,24 +1,16 @@
 import { useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
-type Props = {
+type TextAreaProps = {
   label?: string;
   description?: string;
   errorMessage?: string;
   isDisabled?: boolean;
-  isInvalid?: boolean;
   rows?: number;
 } & AriaTextFieldOptions<"textarea">;
 
-function TextArea(props: Props) {
-  const {
-    isDisabled,
-    isInvalid,
-    label,
-    description,
-    errorMessage,
-    rows = 6,
-  } = props;
+function TextArea(props: TextAreaProps) {
+  const { isDisabled, label, description, errorMessage, rows = 6 } = props;
   const textareaRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -49,9 +41,14 @@ function TextArea(props: Props) {
                         ? "border-neutral-300 bg-neutral-100 text-neutral-400"
                         : ""
                     }
-                    ${isFocused ? "ring ring-blue-100" : ""}
+                    ${
+                      isFocused
+                        ? "ring" +
+                          (errorMessage ? " ring-red-100" : " ring-blue-100")
+                        : ""
+                    }
                     ${label ? "mt-2" : ""}
-                    ${isInvalid || errorMessage ? "border-red-500" : ""}
+                    ${errorMessage ? "border-red-500 focus:ring-red-100" : ""}
                   `}
       >
         <textarea
@@ -59,9 +56,9 @@ function TextArea(props: Props) {
           {...focusProps}
           rows={rows}
           ref={textareaRef}
-          className={`flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none focus:ring
-                      ${isInvalid || errorMessage ? "focus:ring-red-100" : ""}
-          `}
+          className={
+            "flex-1 rounded-lg py-2 px-4 placeholder:text-neutral-400 focus:outline-none"
+          }
         />
       </div>
 
