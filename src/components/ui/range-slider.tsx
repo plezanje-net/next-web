@@ -10,7 +10,6 @@ import {
   VisuallyHidden,
   AriaSliderProps,
 } from "react-aria";
-import ctl from "@netlify/classnames-template-literals";
 
 interface SliderProps extends AriaSliderProps {
   formatOptions?: Intl.NumberFormatOptions;
@@ -106,15 +105,15 @@ function Thumb(props: SliderThumbProps) {
       className={`top-1/2 ${!state.isDisabled && "cursor-pointer"}`}
     >
       <div
-        className={ctl(`my-2 h-4 w-4 rounded-lg
-          ${isFocusVisible && "ring ring-blue-100"}
+        className={`my-2 h-4 w-4 rounded-lg
+          ${isFocusVisible ? "ring ring-blue-100" : ""}
           ${
             state.isDisabled
               ? "bg-neutral-300"
               : isDragging
               ? "bg-blue-600"
               : "bg-blue-500"
-          }`)}
+          }`}
       >
         <VisuallyHidden>
           <input ref={inputRef} {...mergeProps(inputProps, focusProps)} />
