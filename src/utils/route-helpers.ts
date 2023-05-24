@@ -1,35 +1,45 @@
 import { NextRouter } from "next/router";
+
+interface Options {
+  shallow?: boolean;
+  scroll?: boolean;
+}
+
 // TODO: move somewhere else
 function toggleQueryParam(
   router: NextRouter,
   routeParam: string,
-  newValue: string | null
+  newValue: string | string[] | undefined | null,
+  options?: Options
 ) {
-  let pathname = router.pathname;
-  const newQuery: Record<string, string> = {};
+  let { pathname, asPath, query } = router;
+  const newQuery: Record<string, string | string[] | undefined> = {};
 
-  Object.entries(router.query).forEach(([param, value]) => {
+  Object.entries(query).forEach(([param, value]) => {
     if (pathname.includes(`[${param}]`)) {
-      pathname = pathname.replace(`[${param}]`, `${value}`);
       return;
     }
     if (param != routeParam) {
-      newQuery[param] = `${value}`;
+      newQuery[param] = value;
       return;
     }
-    if (newValue != null) {
+    if (newValue != null && newValue != undefined) {
       newQuery[param] = `${newValue}`;
     }
   });
 
   if (newValue != null) {
-    newQuery[routeParam] = `${newValue}`;
+    newQuery[routeParam] = newValue;
   }
 
-  router.push({
-    pathname,
-    query: newQuery,
-  });
+  router.push(
+    {
+      pathname: asPath.split("?")[0],
+      query: newQuery,
+    },
+    undefined,
+    options
+  );
 }
 
 export { toggleQueryParam };

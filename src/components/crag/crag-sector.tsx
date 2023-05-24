@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { Crag, Sector } from "../../graphql/generated";
 import Accordion from "../ui/accordion";
 import CragRoutes from "./crag-routes";
@@ -12,17 +11,8 @@ interface Props {
 }
 
 function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
-  const sectorRef = useRef<null | HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (isOpen && sectorRef.current) {
-      sectorRef.current.scrollIntoView();
-    }
-  }, [isOpen]);
-
   return (
     <>
-      <a ref={sectorRef}></a>
       <Accordion
         label={[sector.label, sector.name]
           .filter((part) => part != "")
