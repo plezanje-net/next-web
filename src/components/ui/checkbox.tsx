@@ -17,8 +17,9 @@ function Checkbox(props: AriaCheckboxProps) {
 
   return (
     <label
-      className={`rouded group -mx-4 inline-flex h-12 items-center px-4
-                  ${!isDisabled && "cursor-pointer"}`}
+      className={`group -my-0.5 -ml-1.5 flex items-center ${
+        !isDisabled && "cursor-pointer"
+      }`}
     >
       <VisuallyHidden>
         <input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
@@ -26,17 +27,14 @@ function Checkbox(props: AriaCheckboxProps) {
 
       <div
         aria-hidden="true"
-        className={`flex-initial rounded ${
+        className={`my-1.5 mx-1.5 flex-initial rounded ${
           isFocusVisible && "ring ring-blue-100"
         }`}
       >
         {!state.isSelected && (
           <div
-            className={`group-active: h-4 w-4 rounded border border-neutral-400 
-                        ${
-                          !isDisabled &&
-                          "group-hover:border-neutral-500 group-active:border-neutral-600"
-                        }
+            className={` h-4 w-4 rounded border border-neutral-400 
+                        ${!isDisabled && "group-active:border-neutral-500"}
                         ${isDisabled && "border-neutral-300 bg-neutral-100"}`}
           ></div>
         )}
@@ -44,10 +42,7 @@ function Checkbox(props: AriaCheckboxProps) {
         {state.isSelected && (
           <div
             className={`h-4 w-4 rounded bg-blue-500
-                        ${
-                          !isDisabled &&
-                          "group-hover:bg-blue-600 group-active:bg-blue-700"
-                        } 
+                        ${!isDisabled && "group-active:bg-blue-600"} 
                         ${isDisabled && "bg-neutral-300"}`}
           >
             <svg width="16" height="16" viewBox="0 0 16 16">
@@ -60,7 +55,7 @@ function Checkbox(props: AriaCheckboxProps) {
         )}
       </div>
 
-      <span className={`${children && "ml-2"}`}>{children}</span>
+      <span>{children}</span>
     </label>
   );
 }

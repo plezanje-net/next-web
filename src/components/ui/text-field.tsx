@@ -1,7 +1,7 @@
 import { ReactNode, useRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
 
-type TextInputProps = {
+type TextFieldProps = {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -10,7 +10,7 @@ type TextInputProps = {
   suffix?: ReactNode;
 } & AriaTextFieldOptions<"input">;
 
-function TextInput(props: TextInputProps) {
+function TextField(props: TextFieldProps) {
   const { isDisabled, label, description, errorMessage, prefix, suffix } =
     props;
   const inputRef = useRef(null);
@@ -33,12 +33,15 @@ function TextInput(props: TextInputProps) {
       <div
         className={`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
                     ${
-                      isDisabled ?
-                      "border-neutral-300 bg-neutral-100 text-neutral-400 " : ""
+                      isDisabled
+                        ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+                        : ""
                     }
                     ${
-                      isFocused ?
-                      "ring" + (errorMessage ? " ring-red-100" : " ring-blue-100") : ""
+                      isFocused
+                        ? "ring" +
+                          (errorMessage ? " ring-red-100" : " ring-blue-100")
+                        : ""
                     }
                     ${label ? "mt-2" : ""}
                     ${errorMessage ? "border-red-500 focus:ring-red-100" : ""}
@@ -50,7 +53,7 @@ function TextInput(props: TextInputProps) {
           {...inputProps}
           {...focusProps}
           ref={inputRef}
-          className={`flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
+          className={`min-w-0 flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
                       ${!prefix ? "pl-4" : ""}
                       ${!suffix ? "pr-4" : ""}
                     `}
@@ -74,4 +77,4 @@ function TextInput(props: TextInputProps) {
   );
 }
 
-export default TextInput;
+export default TextField;
