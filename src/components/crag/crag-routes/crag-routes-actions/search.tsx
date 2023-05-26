@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import IconSearch from "../../ui/icons/search";
-import TextField from "../../ui/text-field";
-import { CragTableContext } from "../crag-table";
-import Button from "../../ui/button";
-import IconClose from "../../ui/icons/close";
+import IconSearch from "../../../ui/icons/search";
+import TextField from "../../../ui/text-field";
+import { CragTableContext } from "../../crag-routes";
+import Button from "../../../ui/button";
+import IconClose from "../../../ui/icons/close";
 
 // TODO: search on xs screen: design and enable!
 

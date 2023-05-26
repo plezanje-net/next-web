@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import { gql, useQuery } from "urql";
-import { Crag, CragCommentsDocument } from "../../../graphql/generated";
-import Spinner from "../../../components/ui/spinner";
+import { gql } from "urql";
 import CragHeader from "../../../components/crag/crag-header";
+import CragComments from "../../../components/crag/crag-comments";
 
 type Params = {
   cragSlug: string;
@@ -14,6 +13,7 @@ function CragCommentsPage() {
   return (
     <>
       <CragHeader cragSlug={(query as Params).cragSlug} activeTab="comments" />
+      <CragComments />
     </>
   );
 }

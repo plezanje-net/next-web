@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import Button from "../../ui/button";
-import IconSort from "../../ui/icons/sort";
-import { Select, Option } from "../../ui/select";
-import { CragTableContext, cragTableColumns } from "../crag-table";
+import Button from "../../../ui/button";
+import IconSort from "../../../ui/icons/sort";
+import { Select, Option } from "../../../ui/select";
+import { CragTableContext, cragTableColumns } from "../../crag-routes";
 
 function Sort() {
   // TODO: could we rename the content of the context to sthg more specific?

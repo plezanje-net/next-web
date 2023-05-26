@@ -1,16 +1,16 @@
 import { useContext, useState } from "react";
-import Button from "../../ui/button";
-import IconFilter from "../../ui/icons/filter";
-import Dialog, { DialogSize } from "../../ui/dialog";
-import { CragTableContext, FilterOptions } from "../crag-table";
+import Button from "../../../ui/button";
+import IconFilter from "../../../ui/icons/filter";
+import Dialog, { DialogSize } from "../../../ui/dialog";
+import { CragTableContext, FilterOptions } from "../../crag-routes";
 import GradeRangeSlider, {
   difficultyToSliderValueMap,
   maxSliderValue,
   minSliderValue,
   sliderValueToDifficultyMap,
-} from "../../ui/grade-range-slider";
-import { Radio, RadioGroup } from "../../ui/radio-group";
-import Checkbox from "../../ui/checkbox";
+} from "../../../ui/grade-range-slider";
+import { Radio, RadioGroup } from "../../../ui/radio-group";
+import Checkbox from "../../../ui/checkbox";
 
 // TODO: naming??? discus and set systematically
 function Filter() {

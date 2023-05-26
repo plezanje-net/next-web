@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import Button from "../../ui/button";
-import IconMerge from "../../ui/icons/merge";
-import IconUnmerge from "../../ui/icons/unmerge";
-import { toggleQueryParam } from "../../../utils/route-helpers";
+import Button from "../../../ui/button";
+import IconMerge from "../../../ui/icons/merge";
+import IconUnmerge from "../../../ui/icons/unmerge";
+import { toggleQueryParam } from "../../../../utils/route-helpers";
 
 function CombineSectors() {
   const router = useRouter();

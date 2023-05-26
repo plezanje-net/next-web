@@ -1,220 +1,379 @@
-import { useContext } from "react";
-import { Crag, Route } from "../../graphql/generated";
-import CragRoute, { CragRouteCompact } from "./crag-route";
+import { useRouter } from "next/router";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
+import { gql, useQuery } from "urql";
 import {
-  cragTableColumns,
-  CragTableContext,
-  FilterOptions,
-  SortOptions,
-} from "./crag-table";
+  Crag,
+  MyCragSummaryDocument,
+  Route,
+  Sector,
+} from "../../graphql/generated";
+import { useAuth } from "../../utils/providers/auth-provider";
+import { toggleQueryParam } from "../../utils/route-helpers";
+import IconCheck from "../ui/icons/check";
+import IconComment from "../ui/icons/comment";
+import IconStarFull from "../ui/icons/star-full";
+import CragRouteList from "./crag-routes/crag-route-list";
+import CragSector from "./crag-routes/crag-sector";
+import CragRoutesActions from "./crag-routes/crag-routes-actions";
 
 interface Props {
   crag: Crag;
-  routes: Route[];
-  ascents: Map<string, string>;
 }
 
-function filterRoutesByFilter(
-  routes: Route[],
-  ascents: Map<string, string>,
-  { routesTouches, difficulty, starRating }: FilterOptions = {}
-): Route[] {
-  if (routesTouches) {
-    switch (routesTouches) {
-      case "ticked":
-        routes = routes.filter((route) => {
-          const ascent = ascents.get(route.id);
-          return (
-            ascent === "onsight" || ascent === "redpoint" || ascent === "flash"
-          );
-        });
-        break;
-      case "tried":
-        routes = routes.filter((route) => ascents.has(route.id));
-        break;
-      case "unticked":
-        routes = routes.filter((route) => {
-          const ascent = ascents.get(route.id);
-          return (
-            ascent !== "onsight" && ascent !== "redpoint" && ascent !== "flash"
-          );
-        });
-        break;
-      case "untried":
-        routes = routes.filter((route) => !ascents.has(route.id));
-        break;
-    }
-  }
-
-  if (difficulty) {
-    routes = routes.filter(
-      (route) =>
-        !route.difficulty ||
-        (route.difficulty >= difficulty.from &&
-          route.difficulty <= difficulty.to)
-    );
-  }
-
-  if (starRating) {
-    routes = routes.filter((route) => {
-      switch (route.starRating) {
-        case 2:
-          return starRating.marvelous;
-        case 1:
-          return starRating.beautiful;
-        case 0:
-        default:
-          return starRating.unremarkable;
-      }
-    });
-  }
-
-  return routes;
+interface FilterOptions {
+  routesTouches?: "ticked" | "tried" | "unticked" | "untried";
+  difficulty?: { from: number; to: number };
+  starRating?: {
+    marvelous: boolean;
+    beautiful: boolean;
+    unremarkable: boolean;
+  };
 }
 
-function escape(searchTerm: string): string {
-  return searchTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+interface SortOptions {
+  column: string;
+  direction: "asc" | "desc";
 }
 
-function ignoreAccents(searchTerm: string): string {
-  return searchTerm
-    .replace(/[cčć]/gi, "[cčć]")
-    .replace(/[sš]/gi, "[sš]")
-    .replace(/[zž]/gi, "[zž]")
-    .replace(/[aàáâäæãåā]/gi, "[aàáâäæãåā]")
-    .replace(/[eèéêëēėę]/gi, "[eèéêëēėę]")
-    .replace(/[iîïíīįì]/gi, "[iîïíīįì]")
-    .replace(/[oôöòóœøōõ]/gi, "[oôöòóœøōõ]")
-    .replace(/[uûüùúū]/gi, "[uûüùúū]")
-    .replace(/[dđ]/gi, "[dđ]");
+interface CragTableState {
+  compact: boolean;
+  combine: boolean;
+  selectedColumns: string[];
+  search?: string;
+  filter?: FilterOptions;
+  sort?: SortOptions;
 }
 
-function filterRoutesBySearchTerm(
-  routes: Route[],
-  searchTerm: string
-): Route[] {
-  searchTerm = searchTerm.toLowerCase();
-  searchTerm = escape(searchTerm);
-  searchTerm = ignoreAccents(searchTerm);
-  const regExp = new RegExp(searchTerm);
-
-  return routes.filter((route) => regExp.test(route.name.toLowerCase()));
+interface CragTableColumn {
+  label: string;
+  labelShort?: string;
+  sortLabel?: string;
+  sortAscLabel?: string;
+  sortDescLabel?: string;
+  excludeFromSort?: boolean;
+  name: string;
+  icon?: ReactNode;
+  isOptional: boolean;
+  isDefault: boolean;
+  displayCondition?: () => boolean;
+  width: number;
 }
 
-function sortRoutes(
-  routes: Route[],
-  ascents: Map<string, string>,
-  sort: SortOptions = {
-    column: "select",
-    direction: "asc",
-  }
-): Route[] {
-  const collator = new Intl.Collator("sl");
+interface CragTableContextType {
+  state: CragTableState;
+  setState: (cragTableState: CragTableState) => void;
+}
 
-  routes.sort((r1, r2) => {
-    const numericalDirection = sort.direction === "asc" ? 1 : -1;
+const CragTableContext = createContext<CragTableContextType>({
+  state: {
+    compact: true,
+    combine: false,
+    selectedColumns: [],
+  },
+  setState: () => {},
+});
 
-    switch (sort.column) {
-      case "select":
-        // this is the checkboxes column and is 'used' to sort routes from left to right
-        if (r1.sector.position === r2.sector.position) {
-          return (r1.position - r2.position) * numericalDirection;
-        } else {
-          return (r1.sector.position - r2.sector.position) * numericalDirection;
-        }
-      case "name":
-        return collator.compare(r1.name, r2.name) * numericalDirection;
+const cragTableColumns: CragTableColumn[] = [
+  {
+    name: "select",
+    label: "#",
+    sortLabel: "",
+    sortAscLabel: "Od leve proti desni",
+    sortDescLabel: "Od desne proti levi",
+    isOptional: false,
+    isDefault: true,
+    width: 64,
+  },
+  {
+    name: "sector",
+    label: "Sektor",
+    isOptional: false,
+    displayCondition: () => false,
+    isDefault: true,
+    excludeFromSort: true,
+    width: 100,
+  },
+  {
+    name: "name",
+    label: "Ime",
+    sortLabel: "Po abecedi",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: false,
+    isDefault: true,
+    width: 100,
+  },
+  {
+    name: "difficulty",
+    label: "Težavnost",
+    sortLabel: "Po težavnosti",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: true,
+    isDefault: true,
+    width: 130,
+  },
+  {
+    name: "length",
+    label: "Dolžina",
+    sortLabel: "Po dolžini",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: true,
+    isDefault: true,
+    width: 100,
+  },
+  {
+    name: "nrTicks",
+    label: "Št. uspešnih vzponov",
+    labelShort: "Št. vzponov",
+    sortLabel: "Po št. vzponov",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: true,
+    isDefault: false,
+    width: 160,
+  },
+  {
+    name: "nrTries",
+    label: "Št. poskusov",
+    sortLabel: "Po št. poskusov",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: true,
+    isDefault: false,
+    width: 100,
+  },
+  {
+    name: "nrClimbers",
+    label: "Št. plezalcev",
+    sortLabel: "Po št. plezalcev",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    isOptional: true,
+    isDefault: false,
+    width: 99,
+  },
+  {
+    name: "starRating",
+    label: "Lepota",
+    sortLabel: "Po lepoti",
+    sortAscLabel: "naraščajoče",
+    sortDescLabel: "padajoče",
+    icon: <IconStarFull />,
+    isOptional: true,
+    isDefault: true,
+    width: 52,
+  },
+  {
+    name: "comments",
+    label: "Komentarji",
+    sortLabel: "",
+    sortAscLabel: "S komentarji najprej",
+    sortDescLabel: "Brez komentarjev najprej",
+    icon: <IconComment />,
+    isOptional: true,
+    isDefault: true,
+    width: 52,
+  },
+  {
+    name: "myAscents",
+    label: "Moji vzponi",
+    sortLabel: "",
+    sortAscLabel: "Z mojimi vzponi najprej",
+    sortDescLabel: "Brez mojih vzponov najprej",
+    icon: <IconCheck />,
+    isOptional: true,
+    isDefault: true,
+    width: 52,
+  },
+];
 
-      case "difficulty":
-        return (
-          ((r1.difficulty || Infinity) - (r2.difficulty || Infinity)) *
-          numericalDirection
-        );
-      case "comments":
-        return (r2.comments.length - r1.comments.length) * numericalDirection;
+function CragRoutes({ crag }: Props) {
+  const router = useRouter();
 
-      case "myAscents":
-        return (
-          (+!!ascents.get(r2.id) - +!!ascents.get(r1.id)) * numericalDirection
-        );
-
-      case "length":
-      case "nrTicks":
-      case "nrTries":
-      case "nrClimbers":
-      case "starRating":
-        return (
-          ((r1[sort.column] || 0) - (r2[sort.column] || 0)) * numericalDirection
-        );
-
-      default:
-        return 0;
-    }
+  const [state, setState] = useState<CragTableState>({
+    compact: true,
+    combine: false,
+    selectedColumns: cragTableColumns
+      .filter(({ isDefault }) => isDefault)
+      .map(({ name }) => name),
   });
 
-  return routes;
-}
+  const [compact, setCompact] = useState(true);
+  const [breakpoint, setBreakpoint] = useState(500);
 
-function CragRoutes({ routes, crag, ascents }: Props) {
-  const { state } = useContext(CragTableContext);
+  // Load user's crag summary if logged in and after server-side render
+  const [ascents, setAscents] = useState<Map<string, string>>(new Map());
+  const authCtx = useAuth();
+  const [fetchAscents, setFetchAscents] = useState(false);
+  const [ascentsResult] = useQuery({
+    query: MyCragSummaryDocument,
+    variables: {
+      input: {
+        cragId: crag.id,
+      },
+    },
+    pause: !fetchAscents,
+  });
 
-  routes = filterRoutesByFilter(routes, ascents, state.filter);
+  useEffect(() => {
+    if (authCtx.status?.loggedIn) {
+      setFetchAscents(true);
+    }
+  }, [authCtx.status]);
 
-  if (state.search) {
-    routes = filterRoutesBySearchTerm(routes, state.search);
-  }
+  useEffect(() => {
+    setAscents(
+      new Map(
+        ascentsResult.data?.myCragSummary.map((ascent) => [
+          ascent.route.id,
+          ascent.ascentType,
+        ])
+      )
+    );
+  }, [ascentsResult.data]);
 
-  routes = sortRoutes(routes, ascents, state.sort);
+  // Resize observer to detect when to switch to compact mode according to selected columns width
+  useEffect(() => {
+    setBreakpoint(
+      cragTableColumns
+        .filter((c) => state.selectedColumns.includes(c.name))
+        .reduce((acc, c) => acc + c.width, 0)
+    );
+  }, [state.selectedColumns, state.selectedColumns.length]);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      setCompact((containerRef.current?.offsetWidth ?? 0) <= breakpoint);
+    });
+    resizeObserver.observe(document.body);
+  });
+
+  useEffect(() => {
+    setState((state) => ({ ...state, compact }));
+  }, [compact]);
+
+  // Sectors collapse/expand
+  // get initial state from query params (could be empty, string or array)
+  const [expandedSectors, setExpandedSectors] = useState<number[]>(
+    router.query.s
+      ? typeof router.query.s == "string"
+        ? [parseInt(router.query.s)]
+        : router.query.s.map((s: string) => parseInt(s))
+      : []
+  );
+
+  // toggle sector handler update state and silently push it to router
+  const toggleSector = (index: number) => {
+    setExpandedSectors((state) => {
+      const i = state.indexOf(index);
+      if (i === -1) {
+        state.push(index);
+      } else {
+        state.splice(i, 1);
+      }
+      return state;
+    });
+
+    toggleQueryParam(
+      router,
+      "s",
+      expandedSectors.map((s) => `${s}`),
+      {
+        scroll: false,
+        shallow: true,
+      }
+    );
+  };
+
+  // observe expanded sectors and always set the anchor for the last visible sector on screen
+
+  // I don't really like this anymore but it should work
+
+  // const [lastVisibleSector, setLastVisibleSector] = useState(-1);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver((entries) => {
+  //     let firstVisibleSectorFound = false;
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting) {
+  //         const sectorIndex = parseInt(entry.target.id.split("-")[1]);
+  //         setLastVisibleSector(sectorIndex);
+  //       }
+  //     });
+  //   });
+  //   expandedSectors.forEach((index) => {
+  //     const sectorAnchor = document.getElementById(`sektor-${index}`);
+  //     if (sectorAnchor) {
+  //       observer.observe(sectorAnchor);
+  //     }
+  //   });
+  // }, [expandedSectors]);
+
+  // useEffect(() => {
+  //   if (lastVisibleSector != -1) {
+  //     window.location.hash = `#sektor-${lastVisibleSector}`;
+  //   }
+  // }, [lastVisibleSector]);
 
   return (
-    <>
-      {!state.compact ? (
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-neutral-200">
-              {cragTableColumns
-                .filter(
-                  ({ name, displayCondition }) =>
-                    state.selectedColumns.includes(name) &&
-                    (displayCondition === undefined || displayCondition())
-                )
-                .map((column) => (
-                  <th
-                    key={column.name}
-                    className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
-                  >
-                    {column.icon
-                      ? column.icon
-                      : column.labelShort ?? column.label}
-                  </th>
-                ))}
-            </tr>
-          </thead>
-          <tbody>
-            {routes.map((route) => (
-              <CragRoute
-                key={route.id}
-                route={route}
-                crag={crag}
-                ascent={ascents.get(route.id)}
-              />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div>
-          {routes.map((route) => (
-            <CragRouteCompact
-              key={route.id}
-              route={route}
+    <div ref={containerRef}>
+      <CragTableContext.Provider value={{ state, setState }}>
+        <CragRoutesActions />
+
+        <div className="container mx-auto mt-4 sm:px-8">
+          {router.query.combine || state.search || crag.sectors.length == 1 ? (
+            <CragRouteList
               crag={crag}
-              ascent={ascents.get(route.id)}
+              routes={crag.sectors.reduce(
+                (acc: Route[], sector) => [...acc, ...sector.routes],
+                []
+              )}
+              ascents={ascents}
             />
-          ))}
+          ) : (
+            // 'By sector' (uncombined) view
+            crag.sectors.map((sector, index) => (
+              <div
+                key={sector.id}
+                className={`${
+                  index > 0 ? "border-t border-t-neutral-200" : ""
+                }`}
+              >
+                {/* <a id={`sektor-${index}`} /> */}
+                <CragSector
+                  crag={crag}
+                  sector={sector as Sector}
+                  ascents={ascents}
+                  isOpen={expandedSectors.includes(index)}
+                  onToggle={() => toggleSector(index)}
+                />
+              </div>
+            ))
+          )}
         </div>
-      )}
-    </>
+      </CragTableContext.Provider>
+    </div>
   );
 }
 
+gql`
+  query MyCragSummary($input: FindActivityRoutesInput) {
+    myCragSummary(input: $input) {
+      ascentType
+      route {
+        id
+        slug
+      }
+    }
+  }
+`;
+
+export {
+  cragTableColumns,
+  CragTableContext,
+  type FilterOptions,
+  type SortOptions,
+};
 export default CragRoutes;

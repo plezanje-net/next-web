@@ -1,10 +1,10 @@
-import Filter from "./actions/filter";
-import Columns from "./actions/columns";
-import CombineSectors from "./actions/combine-sectors";
-import Sort from "./actions/sort";
-import Search from "./actions/search";
+import Filter from "./crag-routes-actions/filter";
+import Columns from "./crag-routes-actions/columns";
+import CombineSectors from "./crag-routes-actions/combine-sectors";
+import Sort from "./crag-routes-actions/sort";
+import Search from "./crag-routes-actions/search";
 
-function CragTableActions() {
+function CragRoutesActions() {
   return (
     <>
       {/* outer wrap, to center actions */}
@@ -43,4 +43,4 @@ function CragTableActions() {
   );
 }
 
-export default CragTableActions;
+export default CragRoutesActions;
