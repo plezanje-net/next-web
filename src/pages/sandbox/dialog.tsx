@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Button from "../../components/ui/button";
 import Dialog, { DialogSize } from "../../components/ui/dialog";
 import IconFilter from "../../components/ui/icons/filter";
 import Link from "../../components/ui/link";
+import Button from "../../components/ui/button";
 
 function DialogPage() {
   let [dialogResponse, setDialogResponse] = useState("Nothing yet");

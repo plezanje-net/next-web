@@ -54,7 +54,7 @@ function Dialog({
   return (
     <>
       {cloneElement(openTrigger, {
-        onPress: () => setIsOpen(true),
+        onClick: () => setIsOpen(true),
       })}
       <DialogHUI
         open={isOpen}
@@ -78,10 +78,10 @@ function Dialog({
               {children}
             </DialogHUI.Description>
             <div className="mt-10 flex flex-wrap justify-end gap-4">
-              <Button variant="secondary" onPress={handleCancel}>
+              <Button variant="secondary" onClick={handleCancel}>
                 {cancel.label}
               </Button>
-              <Button onPress={handleConfirm}>{confirm.label}</Button>
+              <Button onClick={handleConfirm}>{confirm.label}</Button>
             </div>
           </DialogHUI.Panel>
         </div>

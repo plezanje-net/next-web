@@ -150,6 +150,9 @@ function SelectPage() {
             <Option id="6" value="sunka">
               Šunka
             </Option>
+            <Option id="7" value="longname">
+              A route with an unusually long name
+            </Option>
           </Select>
         </div>
       </div>
@@ -201,6 +204,9 @@ function SelectPage() {
             </Option>
             <Option id="6" value="sunka">
               Šunka
+            </Option>
+            <Option id="7" value="longname">
+              A route with an unusually long name
             </Option>
           </Select>
         </div>

@@ -37,6 +37,7 @@ interface SelectProps {
   multi?: boolean;
   onChange?: ((value: string[]) => void) | ((value: string) => void);
   customTrigger?: ReactElement;
+  customOptionsClasses?: string;
 }
 
 function Select({
@@ -47,6 +48,7 @@ function Select({
   multi,
   onChange,
   customTrigger,
+  customOptionsClasses,
 }: SelectProps) {
   // map options (children) to a temporary 'associative array' to be able to access labels and icons later
   let options: {
@@ -123,7 +125,8 @@ function Select({
       <div
         className={`absolute z-10 pb-2 ${
           customTrigger ? "w-auto whitespace-nowrap" : "w-full"
-        }`}
+        }    
+        ${customOptionsClasses || ""}`}
       >
         <Listbox.Options
           className={`mt-2  overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}

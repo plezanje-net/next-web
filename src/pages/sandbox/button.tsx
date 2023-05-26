@@ -3,42 +3,39 @@ import Button from "../../components/ui/button";
 function ButtonPage() {
   return (
     <div className="m-8">
-      <h3>Button demo</h3>
+      <h3>Button good demo</h3>
 
       <div className="mt-14 w-80">
         <h5>Default (primary) button</h5>
-        <Button variant="primary" className="mt-4">
-          Button
-        </Button>
+        <div className="mt-4">
+          <Button variant="primary">Button</Button>
+        </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>Secondary button</h5>
-        <Button variant="secondary" className="mt-4">
-          Button
-        </Button>
+        <div className="mt-4">
+          <Button variant="secondary">Button</Button>
+        </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>A disabled primary button</h5>
-        <Button variant="primary" className="mt-4" isDisabled>
-          Button
-        </Button>
+        <div className="mt-4">
+          <Button variant="primary" isDisabled>
+            Button
+          </Button>
+        </div>
       </div>
 
       <div className="mt-14 w-80">
         <h5>A disabled secondary button</h5>
-        <Button variant="secondary" className="mt-4" isDisabled>
-          Button
-        </Button>
+        <div className="mt-4">
+          <Button variant="secondary" isDisabled>
+            Button
+          </Button>
+        </div>
       </div>
-
-      {/* <div className="mt-14 w-80">
-        <h5>A loading button (TODO)</h5>
-        <Button variant="secondary" className="mt-4" loading>
-          Button
-        </Button>
-      </div> */}
 
       <div className="mt-16">
         <h3 className="text-lg">Notes</h3>

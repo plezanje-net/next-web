@@ -43,8 +43,7 @@ function Header() {
 
   const loggedIn = !!authCtx.status;
 
-  // TODO: get user's full name from authCtx. adjust BE ?
-  const userFullName = authCtx.status?.user?.fullName; //TODO: replace testing dummy
+  const userFullName = authCtx.status?.user?.fullName;
   const userFullNameShort = [
     authCtx.status?.user?.firstname ?? "",
     authCtx.status?.user?.lastname ?? "",

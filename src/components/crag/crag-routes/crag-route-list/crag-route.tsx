@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { Crag, Route } from "../../graphql/generated";
-import Grade from "../grade";
-import RouteLink from "../route-link";
-import AscentIcon from "../ui/ascent-icon";
-import Checkbox from "../ui/checkbox";
-import IconComment from "../ui/icons/comment";
-import { IconSize } from "../ui/icons/icon";
-import IconStarEmpty from "../ui/icons/star-empty";
-import IconStarFull from "../ui/icons/star-full";
-import Link from "../ui/link";
-import { CragTableContext } from "./crag-table";
+import { Crag, Route } from "../../../../graphql/generated";
+import Grade from "../../../grade";
+import RouteLink from "../../../route-link";
+import AscentIcon from "../../../ui/ascent-icon";
+import Checkbox from "../../../ui/checkbox";
+import IconComment from "../../../ui/icons/comment";
+import { IconSize } from "../../../ui/icons/icon";
+import IconStarEmpty from "../../../ui/icons/star-empty";
+import IconStarFull from "../../../ui/icons/star-full";
+import Link from "../../../ui/link";
+import { CragRoutesContext } from "../../crag-routes";
 
 interface Props {
   crag: Crag;
@@ -18,8 +18,9 @@ interface Props {
 }
 
 function CragRoute({ crag, route, ascent }: Props) {
-  const { state } = useContext(CragTableContext);
-  const displayColumn = (name: string) => state.selectedColumns.includes(name);
+  const { cragRoutesState } = useContext(CragRoutesContext);
+  const displayColumn = (name: string) =>
+    cragRoutesState.selectedColumns.includes(name);
   return (
     <tr
       aria-label={route.name}
@@ -60,8 +61,9 @@ function CragRoute({ crag, route, ascent }: Props) {
 }
 
 function CragRouteCompact({ crag, route, ascent }: Props) {
-  const { state } = useContext(CragTableContext);
-  const displayColumn = (name: string) => state.selectedColumns.includes(name);
+  const { cragRoutesState } = useContext(CragRoutesContext);
+  const displayColumn = (name: string) =>
+    cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
     nrTicks: `${route.nrTicks} uspešnih vzponov`,

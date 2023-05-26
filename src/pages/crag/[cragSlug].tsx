@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { gql, useQuery } from "urql";
 import CragHeader from "../../components/crag/crag-header";
-import CragTable from "../../components/crag/crag-table";
+import CragRoutes from "../../components/crag/crag-routes";
 import Spinner from "../../components/ui/spinner";
 import { Crag, CragSectorsDocument } from "../../graphql/generated";
 
@@ -9,7 +9,7 @@ type Params = {
   cragSlug: string;
 };
 
-function CragRoutes() {
+function CragRoutesPage() {
   const { query } = useRouter();
   const cragSlug = (query as Params).cragSlug;
 
@@ -39,7 +39,7 @@ function CragRoutes() {
   return (
     <>
       {header}
-      <CragTable crag={data.cragBySlug as Crag} />
+      <CragRoutes crag={data.cragBySlug as Crag} />
     </>
   );
 }
@@ -83,6 +83,9 @@ gql`
           position
           starRating
           publishStatus
+          sector {
+            position
+          }
         }
         bouldersOnly
       }
@@ -90,4 +93,4 @@ gql`
   }
 `;
 
-export default CragRoutes;
+export default CragRoutesPage;

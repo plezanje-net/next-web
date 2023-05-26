@@ -1,6 +1,6 @@
-import { Crag, Sector } from "../../graphql/generated";
-import Accordion from "../ui/accordion";
-import CragRoutes from "./crag-routes";
+import { Crag, Sector } from "../../../graphql/generated";
+import Accordion from "../../ui/accordion";
+import CragRouteList from "./crag-route-list";
 
 interface Props {
   crag: Crag;
@@ -21,7 +21,7 @@ function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
         onClick={onToggle}
       >
         <div className="md:mx-4">
-          <CragRoutes routes={sector.routes} crag={crag} ascents={ascents} />
+          <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />
         </div>
       </Accordion>
     </>
