@@ -1,10 +1,5 @@
 import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
-import IconClose from "../../../components/ui/icons/close";
-import IconSearch from "../../../components/ui/icons/search";
 import TabMenu, { TabMenuItem } from "../../../components/ui/tab-menu";
-import Tabs from "../../../components/ui/tab-menu";
-import TextInput from "../../../components/ui/text-input";
 
 interface Params {
   selectedTab?: string;
