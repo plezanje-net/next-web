@@ -35,7 +35,7 @@ interface SortOptions {
   direction: "asc" | "desc";
 }
 
-interface CragTableState {
+interface CragRoutesState {
   compact: boolean;
   combine: boolean;
   selectedColumns: string[];
@@ -44,7 +44,7 @@ interface CragTableState {
   sort?: SortOptions;
 }
 
-interface CragTableColumn {
+interface CragRouteListColumn {
   label: string;
   labelShort?: string;
   sortLabel?: string;
@@ -59,21 +59,21 @@ interface CragTableColumn {
   width: number;
 }
 
-interface CragTableContextType {
-  state: CragTableState;
-  setState: (cragTableState: CragTableState) => void;
+interface CragRoutesContextType {
+  cragRoutesState: CragRoutesState;
+  setCragRoutesState: (cragRoutesState: CragRoutesState) => void;
 }
 
-const CragTableContext = createContext<CragTableContextType>({
-  state: {
+const CragRoutesContext = createContext<CragRoutesContextType>({
+  cragRoutesState: {
     compact: true,
     combine: false,
     selectedColumns: [],
   },
-  setState: () => {},
+  setCragRoutesState: () => {},
 });
 
-const cragTableColumns: CragTableColumn[] = [
+const cragRouteListColumns: CragRouteListColumn[] = [
   {
     name: "select",
     label: "#",
@@ -192,10 +192,10 @@ const cragTableColumns: CragTableColumn[] = [
 function CragRoutes({ crag }: Props) {
   const router = useRouter();
 
-  const [state, setState] = useState<CragTableState>({
+  const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
     compact: true,
     combine: false,
-    selectedColumns: cragTableColumns
+    selectedColumns: cragRouteListColumns
       .filter(({ isDefault }) => isDefault)
       .map(({ name }) => name),
   });
@@ -237,11 +237,11 @@ function CragRoutes({ crag }: Props) {
   // Resize observer to detect when to switch to compact mode according to selected columns width
   useEffect(() => {
     setBreakpoint(
-      cragTableColumns
-        .filter((c) => state.selectedColumns.includes(c.name))
+      cragRouteListColumns
+        .filter((c) => cragRoutesState.selectedColumns.includes(c.name))
         .reduce((acc, c) => acc + c.width, 0)
     );
-  }, [state.selectedColumns, state.selectedColumns.length]);
+  }, [cragRoutesState.selectedColumns, cragRoutesState.selectedColumns.length]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -252,7 +252,7 @@ function CragRoutes({ crag }: Props) {
   });
 
   useEffect(() => {
-    setState((state) => ({ ...state, compact }));
+    setCragRoutesState((state) => ({ ...state, compact }));
   }, [compact]);
 
   // Sectors collapse/expand
@@ -288,42 +288,17 @@ function CragRoutes({ crag }: Props) {
     );
   };
 
-  // observe expanded sectors and always set the anchor for the last visible sector on screen
-
-  // I don't really like this anymore but it should work
-
-  // const [lastVisibleSector, setLastVisibleSector] = useState(-1);
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver((entries) => {
-  //     let firstVisibleSectorFound = false;
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting) {
-  //         const sectorIndex = parseInt(entry.target.id.split("-")[1]);
-  //         setLastVisibleSector(sectorIndex);
-  //       }
-  //     });
-  //   });
-  //   expandedSectors.forEach((index) => {
-  //     const sectorAnchor = document.getElementById(`sektor-${index}`);
-  //     if (sectorAnchor) {
-  //       observer.observe(sectorAnchor);
-  //     }
-  //   });
-  // }, [expandedSectors]);
-
-  // useEffect(() => {
-  //   if (lastVisibleSector != -1) {
-  //     window.location.hash = `#sektor-${lastVisibleSector}`;
-  //   }
-  // }, [lastVisibleSector]);
-
   return (
     <div ref={containerRef}>
-      <CragTableContext.Provider value={{ state, setState }}>
+      <CragRoutesContext.Provider
+        value={{ cragRoutesState, setCragRoutesState }}
+      >
         <CragRoutesActions />
 
         <div className="container mx-auto mt-4 sm:px-8">
-          {router.query.combine || state.search || crag.sectors.length == 1 ? (
+          {router.query.combine ||
+          cragRoutesState.search ||
+          crag.sectors.length == 1 ? (
             <CragRouteList
               crag={crag}
               routes={crag.sectors.reduce(
@@ -353,7 +328,7 @@ function CragRoutes({ crag }: Props) {
             ))
           )}
         </div>
-      </CragTableContext.Provider>
+      </CragRoutesContext.Provider>
     </div>
   );
 }
@@ -371,8 +346,8 @@ gql`
 `;
 
 export {
-  cragTableColumns,
-  CragTableContext,
+  cragRouteListColumns,
+  CragRoutesContext,
   type FilterOptions,
   type SortOptions,
 };

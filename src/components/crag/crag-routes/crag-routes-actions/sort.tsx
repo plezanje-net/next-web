@@ -2,16 +2,15 @@ import { useContext } from "react";
 import Button from "../../../ui/button";
 import IconSort from "../../../ui/icons/sort";
 import { Select, Option } from "../../../ui/select";
-import { CragTableContext, cragTableColumns } from "../../crag-routes";
+import { CragRoutesContext, cragRouteListColumns } from "../../crag-routes";
 
 function Sort() {
-  // TODO: could we rename the content of the context to sthg more specific?
-  const { state, setState } = useContext(CragTableContext);
+  const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
 
   const handleSortChange = (value: string) => {
     const [column, direction] = value.split(",");
-    setState({
-      ...state,
+    setCragRoutesState({
+      ...cragRoutesState,
       sort: {
         column,
         direction: direction === "asc" ? "asc" : "desc",
@@ -32,10 +31,10 @@ function Sort() {
       }
       customOptionsClasses="max-xs:right-[calc((185px-100vw)/2)]"
     >
-      {cragTableColumns
+      {cragRouteListColumns
         .filter(
           (column) =>
-            state.selectedColumns.includes(column.name) &&
+            cragRoutesState.selectedColumns.includes(column.name) &&
             !column.excludeFromSort
         )
         .flatMap((column) => [

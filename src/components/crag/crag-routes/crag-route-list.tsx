@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { Crag, Route } from "../../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import {
-  cragTableColumns,
-  CragTableContext,
+  CragRoutesContext,
   FilterOptions,
   SortOptions,
+  cragRouteListColumns,
 } from "../crag-routes";
 
 interface Props {
@@ -156,26 +156,26 @@ function sortRoutes(
 }
 
 function CragRouteList({ routes, crag, ascents }: Props) {
-  const { state } = useContext(CragTableContext);
+  const { cragRoutesState } = useContext(CragRoutesContext);
 
-  routes = filterRoutesByFilter(routes, ascents, state.filter);
+  routes = filterRoutesByFilter(routes, ascents, cragRoutesState.filter);
 
-  if (state.search) {
-    routes = filterRoutesBySearchTerm(routes, state.search);
+  if (cragRoutesState.search) {
+    routes = filterRoutesBySearchTerm(routes, cragRoutesState.search);
   }
 
-  routes = sortRoutes(routes, ascents, state.sort);
+  routes = sortRoutes(routes, ascents, cragRoutesState.sort);
 
   return (
     <>
-      {!state.compact ? (
+      {!cragRoutesState.compact ? (
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-200">
-              {cragTableColumns
+              {cragRouteListColumns
                 .filter(
                   ({ name, displayCondition }) =>
-                    state.selectedColumns.includes(name) &&
+                    cragRoutesState.selectedColumns.includes(name) &&
                     (displayCondition === undefined || displayCondition())
                 )
                 .map((column) => (

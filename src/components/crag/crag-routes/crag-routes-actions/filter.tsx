@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import Button from "../../../ui/button";
 import IconFilter from "../../../ui/icons/filter";
 import Dialog, { DialogSize } from "../../../ui/dialog";
-import { CragTableContext, FilterOptions } from "../../crag-routes";
+import { CragRoutesContext, FilterOptions } from "../../crag-routes";
 import GradeRangeSlider, {
   difficultyToSliderValueMap,
   maxSliderValue,
@@ -12,10 +12,8 @@ import GradeRangeSlider, {
 import { Radio, RadioGroup } from "../../../ui/radio-group";
 import Checkbox from "../../../ui/checkbox";
 
-// TODO: naming??? discus and set systematically
 function Filter() {
-  // TODO: could we rename the content of the context to sthg more specific?
-  const { state, setState } = useContext(CragTableContext);
+  const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
 
   const [routesTouchesFilterValue, setRoutesTouchesFilterValue] =
     useState("all");
@@ -71,27 +69,33 @@ function Filter() {
       nrFiltersActiveCount++;
     }
 
-    setState({ ...state, filter });
+    setCragRoutesState({ ...cragRoutesState, filter });
     setNrFiltersActive(nrFiltersActiveCount);
   };
 
   const handleFilterClose = () => {
     // if the dialog was closed without confirming the changed filter choice, the previous filters state needs to be restored. take it either from context or set back defaults if not in context
-    setRoutesTouchesFilterValue(state.filter?.routesTouches || "all");
+    setRoutesTouchesFilterValue(cragRoutesState.filter?.routesTouches || "all");
 
-    if (state.filter?.difficulty) {
+    if (cragRoutesState.filter?.difficulty) {
       setDifficultyFilterValue({
-        from: difficultyToSliderValueMap.get(state.filter.difficulty.from)!,
-        to: difficultyToSliderValueMap.get(state.filter.difficulty.to)!,
+        from: difficultyToSliderValueMap.get(
+          cragRoutesState.filter.difficulty.from
+        )!,
+        to: difficultyToSliderValueMap.get(
+          cragRoutesState.filter.difficulty.to
+        )!,
       });
     } else {
       setDifficultyFilterValue({ from: minSliderValue, to: maxSliderValue });
     }
 
-    if (state.filter?.starRating) {
-      setMarvelousFilterValue(state.filter.starRating.marvelous);
-      setBeautifulFilterValue(state.filter.starRating.beautiful);
-      setUnremarkableFilterValue(state.filter.starRating.unremarkable);
+    if (cragRoutesState.filter?.starRating) {
+      setMarvelousFilterValue(cragRoutesState.filter.starRating.marvelous);
+      setBeautifulFilterValue(cragRoutesState.filter.starRating.beautiful);
+      setUnremarkableFilterValue(
+        cragRoutesState.filter.starRating.unremarkable
+      );
     } else {
       setMarvelousFilterValue(true);
       setBeautifulFilterValue(true);

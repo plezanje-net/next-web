@@ -1,21 +1,20 @@
 import { useContext } from "react";
 import { Select, Option } from "../../../ui/select";
-import { CragTableContext, cragTableColumns } from "../../crag-routes";
+import { CragRoutesContext, cragRouteListColumns } from "../../crag-routes";
 import Button from "../../../ui/button";
 import IconColumns from "../../../ui/icons/columns";
 
 function Columns() {
-  // TODO: could we rename the content of the context to sthg more specific?
-  const { state, setState } = useContext(CragTableContext);
+  const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
 
   const handleSelectedColumnsChange = (selectedColumns: string[]) => {
-    setState({ ...state, selectedColumns });
+    setCragRoutesState({ ...cragRoutesState, selectedColumns });
   };
 
   return (
     <Select
       multi
-      defaultValue={state.selectedColumns}
+      defaultValue={cragRoutesState.selectedColumns}
       onChange={handleSelectedColumnsChange}
       customTrigger={
         <Button renderStyle="icon">
@@ -26,7 +25,7 @@ function Columns() {
         </Button>
       }
     >
-      {cragTableColumns
+      {cragRouteListColumns
         .filter(({ isOptional }) => isOptional)
         .map((column) => (
           <Option key={column.name} id={column.name} value={column.name}>
