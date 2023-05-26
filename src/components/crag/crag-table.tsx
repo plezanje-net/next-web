@@ -9,7 +9,6 @@ import {
 } from "../../graphql/generated";
 import { useAuth } from "../../utils/providers/auth-provider";
 import { toggleQueryParam } from "../../utils/route-helpers";
-import Button from "../ui/button";
 import IconCheck from "../ui/icons/check";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";

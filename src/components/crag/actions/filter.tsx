@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import ButtonGood from "../../ui/button-good";
+import Button from "../../ui/button";
 import IconFilter from "../../ui/icons/filter";
 import Dialog, { DialogSize } from "../../ui/dialog";
 import { CragTableContext, FilterOptions } from "../crag-table";
@@ -107,7 +107,7 @@ function Filter() {
   return (
     <Dialog
       openTrigger={
-        <ButtonGood renderStyle="icon">
+        <Button renderStyle="icon">
           <span className="flex">
             <IconFilter />
             <span>
@@ -115,7 +115,7 @@ function Filter() {
               {nrFiltersActive > 0 && <>&nbsp;({nrFiltersActive})</>}
             </span>
           </span>
-        </ButtonGood>
+        </Button>
       }
       dialogSize={DialogSize.hug}
       title="Filtriraj smeri"

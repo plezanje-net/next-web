@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ButtonGood from "../../ui/button-good";
+import Button from "../../ui/button";
 import IconSort from "../../ui/icons/sort";
 import { Select, Option } from "../../ui/select";
 import { CragTableContext, cragTableColumns } from "../crag-table";
@@ -19,18 +19,16 @@ function Sort() {
     });
   };
 
-  // TODO: remove aria button and replace it with ButtonGood, then rename ButtonGood to Button
-
   return (
     <Select
       onChange={handleSortChange}
       customTrigger={
-        <ButtonGood renderStyle="icon">
+        <Button renderStyle="icon">
           <span className="flex">
             <IconSort />
             <span className="ml-2 max-lg:hidden">Uredi</span>
           </span>
-        </ButtonGood>
+        </Button>
       }
       customOptionsClasses="max-xs:right-[calc((185px-100vw)/2)]"
     >

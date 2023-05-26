@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Select, Option } from "../../ui/select";
 import { CragTableContext, cragTableColumns } from "../crag-table";
-import ButtonGood from "../../ui/button-good";
+import Button from "../../ui/button";
 import IconColumns from "../../ui/icons/columns";
 
 function Columns() {
@@ -18,12 +18,12 @@ function Columns() {
       defaultValue={state.selectedColumns}
       onChange={handleSelectedColumnsChange}
       customTrigger={
-        <ButtonGood renderStyle="icon">
+        <Button renderStyle="icon">
           <span className="flex">
             <IconColumns />
             <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
           </span>
-        </ButtonGood>
+        </Button>
       }
     >
       {cragTableColumns

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import IconSearch from "../../ui/icons/search";
 import TextField from "../../ui/text-field";
 import { CragTableContext } from "../crag-table";
-import ButtonGood from "../../ui/button-good";
+import Button from "../../ui/button";
 import IconClose from "../../ui/icons/close";
 
 // TODO: search on xs screen: design and enable!
@@ -31,9 +31,9 @@ function Search() {
           suffix={
             state.search && (
               <span className="flex">
-                <ButtonGood renderStyle="icon" onClick={handleClearSearch}>
+                <Button renderStyle="icon" onClick={handleClearSearch}>
                   <IconClose />
-                </ButtonGood>
+                </Button>
               </span>
             )
           }

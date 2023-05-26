@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import ButtonGood from "../../ui/button-good";
+import Button from "../../ui/button";
 import IconMerge from "../../ui/icons/merge";
 import IconUnmerge from "../../ui/icons/unmerge";
 import { toggleQueryParam } from "../../../utils/route-helpers";
@@ -12,7 +12,7 @@ function CombineSectors() {
   };
 
   return (
-    <ButtonGood renderStyle="icon" onClick={handleToggleCombine}>
+    <Button renderStyle="icon" onClick={handleToggleCombine}>
       <span className="flex">
         {!router.query.combine && <IconMerge />}
         {router.query.combine && <IconUnmerge />}
@@ -20,7 +20,7 @@ function CombineSectors() {
           {router.query.combine ? "Razdruži sektorje" : "Združi sektorje"}
         </span>
       </span>
-    </ButtonGood>
+    </Button>
   );
 }
 

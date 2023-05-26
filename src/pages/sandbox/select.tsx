@@ -1,4 +1,4 @@
-import ButtonGood from "../../components/ui/button-good";
+import Button from "../../components/ui/button";
 import IconAid from "../../components/ui/icons/aid";
 import IconColumns from "../../components/ui/icons/columns";
 import IconStarFull from "../../components/ui/icons/star-full";
@@ -127,9 +127,9 @@ function SelectPage() {
         <div className="mt-4">
           <Select
             customTrigger={
-              <ButtonGood renderStyle="icon">
+              <Button renderStyle="icon">
                 <IconColumns />
-              </ButtonGood>
+              </Button>
             }
           >
             <Option id="1" value="pleskavica">
