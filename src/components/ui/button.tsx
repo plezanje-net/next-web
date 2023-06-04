@@ -22,8 +22,12 @@ const Button = forwardRef(function Button(
   let buttonStyles = "flex";
   switch (renderStyle) {
     case "icon":
-      buttonStyles +=
-        " hover:text-blue-500 fill-current outline-none focus-visible:ring focus-visible:ring-blue-100 rounded";
+      buttonStyles += ` fill-current outline-none focus-visible:ring focus-visible:ring-blue-100 rounded
+      ${
+        isDisabled
+          ? "text-neutral-400 cursor-default"
+          : "hover:text-blue-500 active:text-blue-600"
+      }`;
       break;
 
     case "button":
