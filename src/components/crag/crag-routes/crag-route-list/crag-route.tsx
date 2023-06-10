@@ -10,6 +10,7 @@ import IconStarEmpty from "../../../ui/icons/star-empty";
 import IconStarFull from "../../../ui/icons/star-full";
 import Link from "../../../ui/link";
 import { CragRoutesContext } from "../../crag-routes";
+import { pluralizeNoun } from "../../../../utils/text-helpers";
 
 interface Props {
   crag: Crag;
@@ -68,9 +69,9 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
     cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
-    nrTicks: `${route.nrTicks} uspešnih vzponov`,
-    nrClimbers: `${route.nrClimbers} plezalcev`,
-    nrTries: `${route.nrTries} poskusov`,
+    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks),
+    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers),
+    nrTries: pluralizeNoun("poskus", route.nrTries),
   })
     .filter(([key, _]) => displayColumn(key))
     .map(([_, value]) => value)
