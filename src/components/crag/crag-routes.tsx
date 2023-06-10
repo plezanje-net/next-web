@@ -313,7 +313,13 @@ function CragRoutes({ crag }: Props) {
               <div
                 key={sector.id}
                 className={`${
-                  index > 0 ? "border-t border-t-neutral-200" : ""
+                  index > 0
+                    ? "border-t border-t-neutral-200"
+                    : "overflow-hidden rounded-t-lg"
+                } ${
+                  index == crag.sectors.length - 1
+                    ? "overflow-hidden rounded-b-lg"
+                    : ""
                 }`}
               >
                 {/* <a id={`sektor-${index}`} /> */}
