@@ -171,7 +171,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
       {!cragRoutesState.compact ? (
         <table className="w-full">
           <thead>
-            <tr className="border-b border-neutral-200">
+            <tr>
               {cragRouteListColumns
                 .filter(
                   ({ name, displayCondition }) =>
@@ -181,7 +181,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
                 .map((column) => (
                   <th
                     key={column.name}
-                    className={`h-14 fill-neutral-500 text-left font-normal text-neutral-500`}
+                    className={`border-b border-neutral-200 fill-neutral-500 py-4 text-left font-normal text-neutral-500`}
                   >
                     {column.icon
                       ? column.icon

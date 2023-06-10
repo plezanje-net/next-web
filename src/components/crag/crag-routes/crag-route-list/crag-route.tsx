@@ -29,32 +29,34 @@ function CragRoute({ crag, route, ascent }: Props) {
       <td>
         <Checkbox aria-label="Označi kot preplezano" />
       </td>
-      <td>
+      <td className="py-4">
         <RouteLink route={route} crag={crag} />
       </td>
       {displayColumn("difficulty") && (
-        <td>
+        <td className="py-4">
           <RouteGrade route={route} />
         </td>
       )}
       {displayColumn("length") && (
-        <td>{route.length && `${route.length} m`}</td>
+        <td className="py-4">{route.length && `${route.length} m`}</td>
       )}
-      {displayColumn("nrTicks") && <td>{route.nrTicks}</td>}
-      {displayColumn("nrTries") && <td>{route.nrTries}</td>}
-      {displayColumn("nrClimbers") && <td>{route.nrClimbers}</td>}
+      {displayColumn("nrTicks") && <td className="py-4">{route.nrTicks}</td>}
+      {displayColumn("nrTries") && <td className="py-4">{route.nrTries}</td>}
+      {displayColumn("nrClimbers") && (
+        <td className="py-4">{route.nrClimbers}</td>
+      )}
       {displayColumn("starRating") && (
-        <td>
+        <td className="py-4">
           <RouteStarRating route={route} />
         </td>
       )}
       {displayColumn("comments") && (
-        <td>
+        <td className="py-4">
           <RouteComments route={route} />
         </td>
       )}
       {displayColumn("myAscents") && (
-        <td>{ascent && <AscentIcon ascent={ascent} />}</td>
+        <td className="py-4">{ascent && <AscentIcon ascent={ascent} />}</td>
       )}
     </tr>
   );
