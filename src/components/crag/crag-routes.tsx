@@ -295,7 +295,7 @@ function CragRoutes({ crag }: Props) {
       >
         <CragRoutesActions />
 
-        <div className="container mx-auto mt-4 sm:px-8">
+        <div className="mx-auto mt-4 xs:px-8 2xl:container">
           {router.query.combine ||
           cragRoutesState.search ||
           crag.sectors.length == 1 ? (
@@ -315,10 +315,10 @@ function CragRoutes({ crag }: Props) {
                 className={`${
                   index > 0
                     ? "border-t border-t-neutral-200"
-                    : "overflow-hidden rounded-t-lg"
+                    : "overflow-hidden rounded-none xs:rounded-t-lg"
                 } ${
                   index == crag.sectors.length - 1
-                    ? "overflow-hidden rounded-b-lg"
+                    ? "overflow-hidden rounded-none xs:rounded-b-lg"
                     : ""
                 }`}
               >

@@ -83,7 +83,7 @@ function CragHeader({ cragSlug, activeTab }: Props) {
   return (
     <>
       <div className="bg-neutral-100">
-        <div className="container mx-auto px-8">
+        <div className="mx-auto px-4 xs:px-8 2xl:container">
           <div className="pt-4">
             <Breadcrumbs items={breadcrumbs} />
             <h1 className="pt-12 pb-8 text-3xl">{crag.name}</h1>

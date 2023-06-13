@@ -6,9 +6,9 @@ import Search from "./crag-routes-actions/search";
 
 function CragRoutesActions() {
   return (
-    <>
+    <div className="mx-auto 2xl:container">
       {/* outer wrap, to center actions */}
-      <div className="mx-8 my-4 flex h-11 justify-center py-px xs:block">
+      <div className="my-4 mx-8 flex h-11 justify-center py-px xs:block">
         {/* middle wrap: left: other actions, right: search */}
         <div className="flex items-center xs:justify-between xs:gap-8">
           <div className="flex items-center">
@@ -39,7 +39,7 @@ function CragRoutesActions() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
