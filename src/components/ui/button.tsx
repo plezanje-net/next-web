@@ -6,6 +6,7 @@ import {
 } from "react";
 
 interface ButtonProps {
+  className?: string;
   children: ReactElement | string;
   variant?: "primary" | "secondary";
   renderStyle?: "button" | "icon";
@@ -17,9 +18,16 @@ const Button = forwardRef(function Button(
   props: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
-  const { variant, renderStyle, isDisabled, children, ...otherProps } = props;
+  const {
+    variant,
+    renderStyle,
+    isDisabled,
+    className,
+    children,
+    ...otherProps
+  } = props;
 
-  let buttonStyles = "flex";
+  let buttonStyles = className ? `${className} flex` : "flex";
   switch (renderStyle) {
     case "icon":
       buttonStyles += ` fill-current outline-none focus-visible:ring focus-visible:ring-blue-100 rounded

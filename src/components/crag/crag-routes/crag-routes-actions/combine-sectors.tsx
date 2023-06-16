@@ -18,17 +18,17 @@ function CombineSectors() {
   return (
     <Button
       renderStyle="icon"
-      onClick={cragRoutesState.search ? () => {} : handleToggleCombine}
-      isDisabled={!!cragRoutesState.search}
+      onClick={cragRoutesState.search?.query ? () => {} : handleToggleCombine}
+      isDisabled={!!cragRoutesState.search?.query}
     >
       <span className="flex">
-        {router.query.combine || cragRoutesState.search ? (
+        {router.query.combine || cragRoutesState.search?.query ? (
           <IconUnmerge />
         ) : (
           <IconMerge />
         )}
         <span className="ml-2 max-lg:hidden">
-          {router.query.combine || cragRoutesState.search
+          {router.query.combine || cragRoutesState.search?.query
             ? "Razdruži sektorje"
             : "Združi sektorje"}
         </span>

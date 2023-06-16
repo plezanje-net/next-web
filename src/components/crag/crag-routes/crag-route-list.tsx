@@ -160,8 +160,8 @@ function CragRouteList({ routes, crag, ascents }: Props) {
 
   routes = filterRoutesByFilter(routes, ascents, cragRoutesState.filter);
 
-  if (cragRoutesState.search) {
-    routes = filterRoutesBySearchTerm(routes, cragRoutesState.search);
+  if (cragRoutesState.search?.query) {
+    routes = filterRoutesBySearchTerm(routes, cragRoutesState.search.query);
   }
 
   routes = sortRoutes(routes, ascents, cragRoutesState.sort);

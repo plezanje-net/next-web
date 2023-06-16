@@ -35,11 +35,16 @@ interface SortOptions {
   direction: "asc" | "desc";
 }
 
+interface SearchOptions {
+  query?: string;
+  focus?: boolean;
+}
+
 interface CragRoutesState {
   compact: boolean;
   combine: boolean;
   selectedColumns: string[];
-  search?: string;
+  search?: SearchOptions;
   filter?: FilterOptions;
   sort?: SortOptions;
 }
@@ -295,9 +300,9 @@ function CragRoutes({ crag }: Props) {
       >
         <CragRoutesActions />
 
-        <div className="mx-auto mt-4 xs:px-8 2xl:container">
+        <div className="mx-auto xs:px-8 2xl:container">
           {router.query.combine ||
-          cragRoutesState.search ||
+          cragRoutesState.search?.query ||
           crag.sectors.length == 1 ? (
             <CragRouteList
               crag={crag}

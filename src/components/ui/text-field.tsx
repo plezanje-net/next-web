@@ -1,5 +1,6 @@
-import { ReactNode, useRef, useState } from "react";
+import { ForwardedRef, ReactNode, forwardRef, useState } from "react";
 import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
+import useForwardedRef from "../../hooks/useForwardedRef";
 
 type TextFieldProps = {
   label?: string;
@@ -8,12 +9,24 @@ type TextFieldProps = {
   isDisabled?: boolean;
   prefix?: ReactNode;
   suffix?: ReactNode;
+  onBlur?: () => void;
 } & AriaTextFieldOptions<"input">;
 
-function TextField(props: TextFieldProps) {
-  const { isDisabled, label, description, errorMessage, prefix, suffix } =
-    props;
-  const inputRef = useRef(null);
+const TextField = forwardRef(function TextField(
+  props: TextFieldProps,
+  forwardedRef: ForwardedRef<HTMLInputElement>
+) {
+  const {
+    isDisabled,
+    label,
+    description,
+    errorMessage,
+    prefix,
+    suffix,
+    onBlur,
+  } = props;
+
+  const inputRef = useForwardedRef(forwardedRef);
   const [isFocused, setIsFocused] = useState(false);
 
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
@@ -21,6 +34,7 @@ function TextField(props: TextFieldProps) {
 
   const { focusProps } = useFocus({
     onFocusChange: (isFocused) => setIsFocused(isFocused),
+    onBlur: onBlur,
   });
 
   return (
@@ -75,6 +89,6 @@ function TextField(props: TextFieldProps) {
       )}
     </div>
   );
-}
+});
 
 export default TextField;
