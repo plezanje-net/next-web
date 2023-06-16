@@ -11,6 +11,7 @@ import IconStarFull from "../../../ui/icons/star-full";
 import Link from "../../../ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../utils/text-helpers";
+import { useRouter } from "next/router";
 
 interface Props {
   crag: Crag;
@@ -20,8 +21,11 @@ interface Props {
 
 function CragRoute({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
+  const router = useRouter();
+
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
+
   return (
     <tr
       aria-label={route.name}
@@ -40,6 +44,11 @@ function CragRoute({ crag, route, ascent }: Props) {
       )}
       {displayColumn("length") && (
         <td className="py-4">{route.length && `${route.length} m`}</td>
+      )}
+      {router.query.combine && (
+        <td className="py-4">{`${route.sector.label}${
+          route.sector.label && route.sector.name && " - "
+        }${route.sector.name}`}</td>
       )}
       {displayColumn("nrTicks") && <td className="py-4">{route.nrTicks}</td>}
       {displayColumn("nrTries") && <td className="py-4">{route.nrTries}</td>}
@@ -65,6 +74,8 @@ function CragRoute({ crag, route, ascent }: Props) {
 
 function CragRouteCompact({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
+  const router = useRouter();
+
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
 
@@ -106,7 +117,16 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
             )}
           </div>
         </div>
-        {statsText && <div className="pb-1 text-sm">{statsText}</div>}
+        {router.query.combine && (
+          <div className="text-sm">
+            v sektorju
+            {` ${route.sector.label}${
+              route.sector.label && route.sector.name && " - "
+            }${route.sector.name}`}
+          </div>
+        )}
+        {statsText && <div className="text-sm">{statsText}</div>}
+        {!statsText != !router.query.combine && <div className="pb-1"></div>}
       </div>
     </div>
   );

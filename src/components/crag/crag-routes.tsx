@@ -42,7 +42,6 @@ interface SearchOptions {
 
 interface CragRoutesState {
   compact: boolean;
-  combine: boolean;
   selectedColumns: string[];
   search?: SearchOptions;
   filter?: FilterOptions;
@@ -72,7 +71,6 @@ interface CragRoutesContextType {
 const CragRoutesContext = createContext<CragRoutesContextType>({
   cragRoutesState: {
     compact: true,
-    combine: false,
     selectedColumns: [],
   },
   setCragRoutesState: () => {},
@@ -88,15 +86,6 @@ const cragRouteListColumns: CragRouteListColumn[] = [
     isOptional: false,
     isDefault: true,
     width: 64,
-  },
-  {
-    name: "sector",
-    label: "Sektor",
-    isOptional: false,
-    displayCondition: () => false,
-    isDefault: true,
-    excludeFromSort: true,
-    width: 100,
   },
   {
     name: "name",
@@ -126,6 +115,14 @@ const cragRouteListColumns: CragRouteListColumn[] = [
     sortDescLabel: "padajoče",
     isOptional: true,
     isDefault: true,
+    width: 100,
+  },
+  {
+    name: "sector",
+    label: "Sektor",
+    isOptional: false,
+    isDefault: false,
+    excludeFromSort: true,
     width: 100,
   },
   {
@@ -199,7 +196,6 @@ function CragRoutes({ crag }: Props) {
 
   const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
     compact: true,
-    combine: false,
     selectedColumns: cragRouteListColumns
       .filter(({ isDefault }) => isDefault)
       .map(({ name }) => name),
@@ -243,10 +239,18 @@ function CragRoutes({ crag }: Props) {
   useEffect(() => {
     setBreakpoint(
       cragRouteListColumns
-        .filter((c) => cragRoutesState.selectedColumns.includes(c.name))
+        .filter(
+          (c) =>
+            cragRoutesState.selectedColumns.includes(c.name) ||
+            (router.query.combine && c.name === "sector")
+        )
         .reduce((acc, c) => acc + c.width, 0)
     );
-  }, [cragRoutesState.selectedColumns, cragRoutesState.selectedColumns.length]);
+  }, [
+    cragRoutesState.selectedColumns,
+    cragRoutesState.selectedColumns.length,
+    router.query.combine,
+  ]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {

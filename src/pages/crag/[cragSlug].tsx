@@ -85,6 +85,8 @@ gql`
           publishStatus
           sector {
             position
+            label
+            name
           }
         }
         bouldersOnly

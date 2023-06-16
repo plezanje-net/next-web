@@ -7,6 +7,7 @@ import {
   SortOptions,
   cragRouteListColumns,
 } from "../crag-routes";
+import { useRouter } from "next/router";
 
 interface Props {
   crag: Crag;
@@ -157,6 +158,7 @@ function sortRoutes(
 
 function CragRouteList({ routes, crag, ascents }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
+  const router = useRouter();
 
   routes = filterRoutesByFilter(routes, ascents, cragRoutesState.filter);
 
@@ -174,9 +176,9 @@ function CragRouteList({ routes, crag, ascents }: Props) {
             <tr>
               {cragRouteListColumns
                 .filter(
-                  ({ name, displayCondition }) =>
-                    cragRoutesState.selectedColumns.includes(name) &&
-                    (displayCondition === undefined || displayCondition())
+                  ({ name }) =>
+                    cragRoutesState.selectedColumns.includes(name) ||
+                    (name === "sector" && router.query.combine)
                 )
                 .map((column) => (
                   <th
