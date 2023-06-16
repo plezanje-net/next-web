@@ -1,3 +1,4 @@
+"use client";
 import { gql, useQuery } from "urql";
 import { Crag, CragHeaderDocument } from "../../graphql/generated";
 import { Breadcrumb, Breadcrumbs } from "../layout/breadcrumbs";
@@ -7,13 +8,18 @@ import IconInfo from "../ui/icons/info";
 import IconRoutes from "../ui/icons/routes";
 import Spinner from "../ui/spinner";
 import TabMenu, { TabMenuItem } from "../ui/tab-menu";
+import { useParams } from "next/navigation";
+import { useI18nPathname } from "../../utils/hooks/use-i18n-pathname";
 
 interface Props {
   cragSlug: string;
   activeTab: string;
 }
 
-function CragHeader({ cragSlug, activeTab }: Props) {
+function CragHeader() {
+  const { cragSlug } = useParams();
+
+  const i18nPathname = useI18nPathname();
   const [result] = useQuery({
     query: CragHeaderDocument,
     variables: {
@@ -57,41 +63,39 @@ function CragHeader({ cragSlug, activeTab }: Props) {
     {
       label: "Info",
       link: `/plezalisce/${crag.slug}/info`,
-      isActive: activeTab === "info",
+      isActive: i18nPathname.test([`/{crag}/${cragSlug}/{info}`]),
       icon: <IconInfo />,
     },
     {
       label: "Smeri",
       link: `/plezalisce/${crag.slug}`,
-      isActive: activeTab === "routes",
+      isActive: i18nPathname.test([`/{crag}/${cragSlug}`]),
       icon: <IconRoutes />,
     },
     {
       label: "Komentarji",
       link: `/plezalisce/${crag.slug}/komentarji`,
-      isActive: activeTab === "comments",
+      isActive: i18nPathname.test([`/{crag}/${cragSlug}/{comments}`]),
       icon: <IconComment />,
     },
     {
       label: "Galerija",
       link: `/plezalisce/${crag.slug}/galerija`,
-      isActive: activeTab === "gallery",
+      isActive: i18nPathname.test([`/{crag}/${cragSlug}/{gallery}`]),
       icon: <IconGallery />,
     },
   ];
 
   return (
-    <>
-      <div className="bg-neutral-100">
-        <div className="container mx-auto px-8">
-          <div className="pt-4">
-            <Breadcrumbs items={breadcrumbs} />
-            <h1 className="pt-12 pb-8 text-3xl">{crag.name}</h1>
-          </div>
+    <div className="bg-neutral-100">
+      <div className="container mx-auto px-8">
+        <div className="pt-4">
+          <Breadcrumbs items={breadcrumbs} />
+          <h1 className="pb-8 pt-12 text-3xl">{crag.name}</h1>
         </div>
-        <TabMenu items={menuItems}></TabMenu>
       </div>
-    </>
+      <TabMenu items={menuItems}></TabMenu>
+    </div>
   );
 }
 

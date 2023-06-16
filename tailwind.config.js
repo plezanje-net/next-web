@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     fontFamily: {
@@ -45,7 +46,7 @@ module.exports = {
         900: "#171717",
       },
       red: {
-        100:"#F0B3AA",
+        100: "#F0B3AA",
         500: "#d9422b",
       },
       current: "currentColor",

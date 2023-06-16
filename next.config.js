@@ -2,30 +2,33 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    appDir: true,
+  },
   rewrites() {
-    return [
-      {
-        source: "/plezalisca/:countrySlug*",
-        destination: "/crags/:countrySlug*",
-      },
-      {
-        source: "/plezalisce/:cragSlug/smer/:routeSlug*",
-        destination: "/crag/:cragSlug/route/:routeSlug*",
-      },
-      {
-        source: "/plezalisce/:cragSlug/komentarji",
-        destination: "/crag/:cragSlug/comments",
-      },
-      {
-        source: "/plezalisce/:cragSlug/galerija",
-        destination: "/crag/:cragSlug/gallery",
-      },
-      {
-        source: "/plezalisce/:cragSlug*",
-        destination: "/crag/:cragSlug*",
-      },
-    ];
+    const rewrites = require("./src/rewrites.json");
+    const rewritesArray = [];
+    Object.entries(rewrites.translations).forEach(([, translations]) => {
+      rewritesArray.push(
+        ...rewrites.routes.map((route) => {
+          let source = route;
+          let destination = `/sl${route}`;
+          Object.entries(translations).forEach(([from, to]) => {
+            source = source.replace(`{${from}}`, to);
+            destination = destination.replace(`{${from}}`, from);
+          });
+          return {
+            source,
+            destination,
+          };
+        })
+      );
+    });
+    return rewritesArray;
   },
 };
-
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+module.exports = withBundleAnalyzer(nextConfig);
 module.exports = nextConfig;

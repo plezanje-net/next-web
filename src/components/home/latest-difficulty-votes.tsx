@@ -1,3 +1,4 @@
+"use client";
 import { gql, useQuery } from "urql";
 import {
   DifficultyVote,

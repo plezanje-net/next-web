@@ -1,3 +1,4 @@
+"use client";
 import { gql, useQuery } from "urql";
 import { Activity, HomeLatestAscentsDocument } from "../../graphql/generated";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
@@ -15,7 +16,7 @@ function LatestAscents() {
       },
       activityRoutesInput: {
         publish: ["public"],
-        orderBy: { field: "score", direction: "DESC" },
+        orderBy: { field: "orderScore", direction: "DESC" },
       },
     },
   });
@@ -23,6 +24,7 @@ function LatestAscents() {
   const { data, fetching, error } = result;
 
   if (error) {
+    console.log(error);
     return <div className="text-red-500">Napaka</div>;
   }
 
@@ -76,7 +78,6 @@ gql`
           }
           id
           ascentType
-          score
         }
       }
       meta {

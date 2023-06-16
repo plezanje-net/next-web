@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+"use client";
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { gql, useQuery } from "urql";
 import {
@@ -15,6 +15,7 @@ import IconStarFull from "../ui/icons/star-full";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   crag: Crag;
@@ -190,7 +191,10 @@ const cragRouteListColumns: CragRouteListColumn[] = [
 ];
 
 function CragRoutes({ crag }: Props) {
+  // const searchParams = useSearchParams();
   const router = useRouter();
+
+  const combine = false;
 
   const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
     compact: true,
@@ -257,13 +261,14 @@ function CragRoutes({ crag }: Props) {
 
   // Sectors collapse/expand
   // get initial state from query params (could be empty, string or array)
-  const [expandedSectors, setExpandedSectors] = useState<number[]>(
-    router.query.s
-      ? typeof router.query.s == "string"
-        ? [parseInt(router.query.s)]
-        : router.query.s.map((s: string) => parseInt(s))
-      : []
-  );
+  const [expandedSectors, setExpandedSectors] = useState<number[]>([1]);
+  // const [expandedSectors, setExpandedSectors] = useState<number[]>(
+  //   router.query.s
+  //     ? typeof router.query.s == "string"
+  //       ? [parseInt(router.query.s)]
+  //       : router.query.s.map((s: string) => parseInt(s))
+  //     : []
+  // );
 
   // toggle sector handler update state and silently push it to router
   const toggleSector = (index: number) => {
@@ -277,15 +282,15 @@ function CragRoutes({ crag }: Props) {
       return state;
     });
 
-    toggleQueryParam(
-      router,
-      "s",
-      expandedSectors.map((s) => `${s}`),
-      {
-        scroll: false,
-        shallow: true,
-      }
-    );
+    // toggleQueryParam(
+    //   router,
+    //   "s",
+    //   expandedSectors.map((s) => `${s}`),
+    //   {
+    //     scroll: false,
+    //     shallow: true,
+    //   }
+    // );
   };
 
   return (
@@ -296,9 +301,7 @@ function CragRoutes({ crag }: Props) {
         <CragRoutesActions />
 
         <div className="container mx-auto mt-4 sm:px-8">
-          {router.query.combine ||
-          cragRoutesState.search ||
-          crag.sectors.length == 1 ? (
+          {combine || cragRoutesState.search || crag.sectors.length == 1 ? (
             <CragRouteList
               crag={crag}
               routes={crag.sectors.reduce(
