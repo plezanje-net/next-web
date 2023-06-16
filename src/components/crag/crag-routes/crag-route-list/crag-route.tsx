@@ -99,19 +99,25 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
-          <RouteStarRating route={route} size="small" />
+          {displayColumn("starRating") && (
+            <RouteStarRating route={route} size="small" />
+          )}
         </div>
         <div className="flex items-center justify-between">
           <div>
-            {route.difficulty && (
+            {displayColumn("difficulty") && (
               <span className="pr-4">
-                <Grade difficulty={route.difficulty} />
+                <RouteGrade route={route} />
               </span>
             )}
-            {route.length && <span>{route.length} m</span>}
+            {displayColumn("length") && route.length && (
+              <span>{route.length} m</span>
+            )}
           </div>
           <div className="flex space-x-4">
-            <RouteComments route={route} size="small" />
+            {displayColumn("comments") && (
+              <RouteComments route={route} size="small" />
+            )}
             {displayColumn("myAscents") && ascent && (
               <AscentIcon ascent={ascent} size="small" />
             )}
