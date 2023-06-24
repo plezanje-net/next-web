@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    appDir: true,
+    serverActions: true,
   },
   rewrites() {
     const rewrites = require("./src/rewrites.json");

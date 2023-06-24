@@ -1,5 +1,5 @@
-import { gql, useQuery } from "urql";
-import { GradingSystem, GradingSystemsDocument } from "../graphql/generated";
+import { GradingSystem } from "../graphql/generated";
+import { gradingSystems } from "../utils/grading-systems";
 
 type Props = {
   difficulty: number;
@@ -21,22 +21,13 @@ function Grade({
   displayIntermediate = false,
   disabled = false,
 }: Props) {
-  const [result] = useQuery({
-    query: GradingSystemsDocument,
-  });
-  const { data } = result;
-
-  if (data) {
-    const gradeDisplay = diffToGrade(
-      data.gradingSystems as GradingSystem[],
-      difficulty,
-      gradingSystemId,
-      displayIntermediate
-    );
-    return <>{gradeDisplay.name}</>;
-  }
-
-  return <></>;
+  const gradeDisplay = diffToGrade(
+    gradingSystems as GradingSystem[],
+    difficulty,
+    gradingSystemId,
+    displayIntermediate
+  );
+  return <>{gradeDisplay.name}</>;
 }
 
 function diffToGrade(
@@ -149,21 +140,3 @@ function parseLegacyFrenchInBetweenName(lowName: string, highName: string) {
 }
 
 export default Grade;
-
-gql`
-  query GradingSystems {
-    gradingSystems {
-      id
-      name
-      grades {
-        id
-        name
-        difficulty
-      }
-      routeTypes {
-        id
-        name
-      }
-    }
-  }
-`;

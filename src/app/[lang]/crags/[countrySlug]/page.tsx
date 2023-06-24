@@ -89,20 +89,3 @@ gql`
 `;
 
 export default CragsPage;
-
-// export default withUrqlClient(
-//   (ssrExchange, ctx) => {
-//     const token = "";
-//     return {
-//       url: `${process.env.NEXT_PUBLIC_API_URL}`,
-//       fetchOptions: {
-//         headers: {
-//           authorization: token ? `Bearer ${token}` : "",
-//         },
-//       },
-//       exchanges: [dedupExchange, cacheExchange, ssrExchange, fetchExchange],
-//       suspense: true,
-//     };
-//   },
-//   { ssr: true }
-// )(CragsPage);

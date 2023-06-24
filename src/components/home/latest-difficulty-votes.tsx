@@ -1,27 +1,18 @@
-"use client";
-import { gql, useQuery } from "urql";
+import { gql } from "@urql/core";
 import {
   DifficultyVote,
   HomeLatestDifficultyVotesDocument,
 } from "../../graphql/generated";
 import LatestDifficultyVote from "./latest-difficulty-votes/latest-difficulty-vote";
 import LatestDifficultyVoteSkeleton from "./latest-difficulty-votes/latest-difficulty-vote-skeleton";
+import urqlServer from "../../graphql/urql-server";
 
-function LatestDifficultyVotes() {
-  const [result] = useQuery({
-    query: HomeLatestDifficultyVotesDocument,
-    variables: {
-      input: {
-        pageSize: 10,
-      },
+async function LatestDifficultyVotes() {
+  const { data } = await urqlServer().query(HomeLatestDifficultyVotesDocument, {
+    input: {
+      pageSize: 10,
     },
   });
-
-  const { data, fetching, error } = result;
-
-  if (error) {
-    return <div className="text-red-500">Napaka</div>;
-  }
 
   const difficultyVotes: DifficultyVote[] =
     data?.latestDifficultyVotes.items ?? Array.from(new Array(10));

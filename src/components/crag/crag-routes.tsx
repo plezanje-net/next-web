@@ -1,6 +1,5 @@
 "use client";
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
-import { gql, useQuery } from "urql";
 import {
   Crag,
   MyCragSummaryDocument,
@@ -15,7 +14,8 @@ import IconStarFull from "../ui/icons/star-full";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SSRProvider } from "react-aria";
 
 interface Props {
   crag: Crag;
@@ -191,8 +191,9 @@ const cragRouteListColumns: CragRouteListColumn[] = [
 ];
 
 function CragRoutes({ crag }: Props) {
-  // const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
 
   const combine = false;
 
@@ -209,34 +210,34 @@ function CragRoutes({ crag }: Props) {
 
   // Load user's crag summary if logged in and after server-side render
   const [ascents, setAscents] = useState<Map<string, string>>(new Map());
-  const authCtx = useAuth();
-  const [fetchAscents, setFetchAscents] = useState(false);
-  const [ascentsResult] = useQuery({
-    query: MyCragSummaryDocument,
-    variables: {
-      input: {
-        cragId: crag.id,
-      },
-    },
-    pause: !fetchAscents,
-  });
+  // const authCtx = useAuth();
+  // const [fetchAscents, setFetchAscents] = useState(false);
+  // const [ascentsResult] = useQuery({
+  //   query: MyCragSummaryDocument,
+  //   variables: {
+  //     input: {
+  //       cragId: crag.id,
+  //     },
+  //   },
+  //   pause: !fetchAscents,
+  // });
 
-  useEffect(() => {
-    if (authCtx.status?.loggedIn) {
-      setFetchAscents(true);
-    }
-  }, [authCtx.status]);
+  // useEffect(() => {
+  //   if (authCtx.status?.loggedIn) {
+  //     setFetchAscents(true);
+  //   }
+  // }, [authCtx.status]);
 
-  useEffect(() => {
-    setAscents(
-      new Map(
-        ascentsResult.data?.myCragSummary.map((ascent) => [
-          ascent.route.id,
-          ascent.ascentType,
-        ])
-      )
-    );
-  }, [ascentsResult.data]);
+  // useEffect(() => {
+  //   setAscents(
+  //     new Map(
+  //       ascentsResult.data?.myCragSummary.map((ascent) => [
+  //         ascent.route.id,
+  //         ascent.ascentType,
+  //       ])
+  //     )
+  //   );
+  // }, [ascentsResult.data]);
 
   // Resize observer to detect when to switch to compact mode according to selected columns width
   useEffect(() => {
@@ -260,15 +261,7 @@ function CragRoutes({ crag }: Props) {
   }, [compact]);
 
   // Sectors collapse/expand
-  // get initial state from query params (could be empty, string or array)
-  const [expandedSectors, setExpandedSectors] = useState<number[]>([1]);
-  // const [expandedSectors, setExpandedSectors] = useState<number[]>(
-  //   router.query.s
-  //     ? typeof router.query.s == "string"
-  //       ? [parseInt(router.query.s)]
-  //       : router.query.s.map((s: string) => parseInt(s))
-  //     : []
-  // );
+  const [expandedSectors, setExpandedSectors] = useState<number[]>([]);
 
   // toggle sector handler update state and silently push it to router
   const toggleSector = (index: number) => {
@@ -282,71 +275,72 @@ function CragRoutes({ crag }: Props) {
       return state;
     });
 
+    // TODO: save state to router somehow
     // toggleQueryParam(
     //   router,
+    //   pathname,
+    //   searchParams,
     //   "s",
     //   expandedSectors.map((s) => `${s}`),
-    //   {
-    //     scroll: false,
-    //     shallow: true,
-    //   }
+    //   {}
     // );
   };
 
   return (
     <div ref={containerRef}>
-      <CragRoutesContext.Provider
-        value={{ cragRoutesState, setCragRoutesState }}
-      >
-        <CragRoutesActions />
+      <SSRProvider>
+        <CragRoutesContext.Provider
+          value={{ cragRoutesState, setCragRoutesState }}
+        >
+          <CragRoutesActions />
 
-        <div className="container mx-auto mt-4 sm:px-8">
-          {combine || cragRoutesState.search || crag.sectors.length == 1 ? (
-            <CragRouteList
-              crag={crag}
-              routes={crag.sectors.reduce(
-                (acc: Route[], sector) => [...acc, ...sector.routes],
-                []
-              )}
-              ascents={ascents}
-            />
-          ) : (
-            // 'By sector' (uncombined) view
-            crag.sectors.map((sector, index) => (
-              <div
-                key={sector.id}
-                className={`${
-                  index > 0 ? "border-t border-t-neutral-200" : ""
-                }`}
-              >
-                {/* <a id={`sektor-${index}`} /> */}
-                <CragSector
-                  crag={crag}
-                  sector={sector as Sector}
-                  ascents={ascents}
-                  isOpen={expandedSectors.includes(index)}
-                  onToggle={() => toggleSector(index)}
-                />
-              </div>
-            ))
-          )}
-        </div>
-      </CragRoutesContext.Provider>
+          <div className="container mx-auto mt-4 sm:px-8">
+            {combine || cragRoutesState.search || crag.sectors.length == 1 ? (
+              <CragRouteList
+                crag={crag}
+                routes={crag.sectors.reduce(
+                  (acc: Route[], sector) => [...acc, ...sector.routes],
+                  []
+                )}
+                ascents={ascents}
+              />
+            ) : (
+              // 'By sector' (uncombined) view
+              crag.sectors.map((sector, index) => (
+                <div
+                  key={sector.id}
+                  className={`${
+                    index > 0 ? "border-t border-t-neutral-200" : ""
+                  }`}
+                >
+                  <CragSector
+                    crag={crag}
+                    sector={sector as Sector}
+                    ascents={ascents}
+                    isOpen={expandedSectors.includes(index)}
+                    onToggle={() => toggleSector(index)}
+                  />
+                </div>
+              ))
+            )}
+          </div>
+        </CragRoutesContext.Provider>
+      </SSRProvider>
     </div>
   );
 }
 
-gql`
-  query MyCragSummary($input: FindActivityRoutesInput) {
-    myCragSummary(input: $input) {
-      ascentType
-      route {
-        id
-        slug
-      }
-    }
-  }
-`;
+// gql`
+//   query MyCragSummary($input: FindActivityRoutesInput) {
+//     myCragSummary(input: $input) {
+//       ascentType
+//       route {
+//         id
+//         slug
+//       }
+//     }
+//   }
+// `;
 
 export {
   cragRouteListColumns,

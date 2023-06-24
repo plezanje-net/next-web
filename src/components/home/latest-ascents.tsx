@@ -1,32 +1,22 @@
-"use client";
-import { gql, useQuery } from "urql";
 import { Activity, HomeLatestAscentsDocument } from "../../graphql/generated";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
 import LatestAscentsActivitySkeleton from "./latest-ascents/latest-ascents-activity-skeleton";
+import urqlServer from "../../graphql/urql-server";
+import { gql } from "@urql/core";
 
-function LatestAscents() {
-  const [result] = useQuery({
-    query: HomeLatestAscentsDocument,
-    variables: {
-      activitiesInput: {
-        type: ["crag"],
-        hasRoutesWithPublish: ["public"],
-        orderBy: { field: "date", direction: "DESC" },
-        pageSize: 10,
-      },
-      activityRoutesInput: {
-        publish: ["public"],
-        orderBy: { field: "orderScore", direction: "DESC" },
-      },
+async function LatestAscents() {
+  const { data } = await urqlServer().query(HomeLatestAscentsDocument, {
+    activitiesInput: {
+      type: ["crag"],
+      hasRoutesWithPublish: ["public"],
+      orderBy: { field: "date", direction: "DESC" },
+      pageSize: 10,
+    },
+    activityRoutesInput: {
+      publish: ["public"],
+      orderBy: { field: "orderScore", direction: "DESC" },
     },
   });
-
-  const { data, fetching, error } = result;
-
-  if (error) {
-    console.log(error);
-    return <div className="text-red-500">Napaka</div>;
-  }
 
   const activities: Activity[] =
     data?.activities.items ?? Array.from(new Array(10));

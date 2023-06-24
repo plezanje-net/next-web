@@ -1,26 +1,25 @@
 import { gql } from "@urql/core";
-import Link from "../../../../components/ui/link";
 import { Crag, CragSectorsDocument } from "../../../../graphql/generated";
 import urqlServer from "../../../../graphql/urql-server";
 import CragRoutes from "../../../../components/crag/crag-routes";
-import Client from "../../../../components/client";
 
 type Params = {
   cragSlug: string;
 };
 
-async function CragPage({ params }: { params: Params }) {
+type Props = {
+  params: Params;
+};
+
+async function CragPage({ params }: Props) {
   const { data } = await urqlServer().query(CragSectorsDocument, {
     crag: params.cragSlug,
   });
 
   const crag = data.cragBySlug as Crag;
-
   return (
     <>
-      <Client>
-        <CragRoutes crag={crag} />
-      </Client>
+      <CragRoutes crag={crag} />
     </>
   );
 }

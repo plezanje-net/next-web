@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import Head from "next/head";
 import Header from "../components/layout/header";
 import { Poppins } from "next/font/google";
+import authStatus from "../utils/auth/auth-status";
 
 const poppins = Poppins({
   weight: ["400", "500"],
@@ -9,7 +10,11 @@ const poppins = Poppins({
   display: "swap",
 });
 
-function RootLayout({ children }: { children: React.ReactNode }) {
+interface Props {
+  children: React.ReactNode;
+}
+
+async function RootLayout({ children }: Props) {
   return (
     <html>
       <Head>
@@ -40,7 +45,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <body className={`text-neutral-900 ${poppins.className}`}>
-        <Header />
+        <Header authStatus={await authStatus()} />
         <main>{children}</main>
       </body>
     </html>
