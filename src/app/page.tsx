@@ -1,4 +1,3 @@
-import Client from "../components/client";
 import LatestAscents from "../components/home/latest-ascents";
 import LatestDifficultyVotes from "../components/home/latest-difficulty-votes";
 
