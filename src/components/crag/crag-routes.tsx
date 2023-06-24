@@ -1,20 +1,12 @@
 "use client";
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
-import {
-  Crag,
-  MyCragSummaryDocument,
-  Route,
-  Sector,
-} from "../../graphql/generated";
-import { useAuth } from "../../utils/providers/auth-provider";
-import { toggleQueryParam } from "../../utils/route-helpers";
+import { Crag, Route, Sector } from "../../graphql/generated";
 import IconCheck from "../ui/icons/check";
 import IconComment from "../ui/icons/comment";
 import IconStarFull from "../ui/icons/star-full";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SSRProvider } from "react-aria";
 
 interface Props {
@@ -191,12 +183,6 @@ const cragRouteListColumns: CragRouteListColumn[] = [
 ];
 
 function CragRoutes({ crag }: Props) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const combine = false;
-
   const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
     compact: true,
     combine: false,
@@ -272,7 +258,7 @@ function CragRoutes({ crag }: Props) {
       } else {
         state.splice(i, 1);
       }
-      return state;
+      return [...state];
     });
 
     // TODO: save state to router somehow
@@ -295,7 +281,9 @@ function CragRoutes({ crag }: Props) {
           <CragRoutesActions />
 
           <div className="container mx-auto mt-4 sm:px-8">
-            {combine || cragRoutesState.search || crag.sectors.length == 1 ? (
+            {cragRoutesState.combine ||
+            cragRoutesState.search ||
+            crag.sectors.length == 1 ? (
               <CragRouteList
                 crag={crag}
                 routes={crag.sectors.reduce(
