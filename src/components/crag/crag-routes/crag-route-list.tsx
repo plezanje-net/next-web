@@ -1,13 +1,11 @@
 import { useContext } from "react";
 import { Crag, Route } from "../../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
-import {
-  CragRoutesContext,
-  FilterOptions,
-  SortOptions,
-  cragRouteListColumns,
-} from "../crag-routes";
+import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
 import { useRouter } from "next/router";
+import IconStarFull from "../../ui/icons/star-full";
+import IconComment from "../../ui/icons/comment";
+import IconCheck from "../../ui/icons/check";
 
 interface Props {
   crag: Crag;
@@ -168,30 +166,87 @@ function CragRouteList({ routes, crag, ascents }: Props) {
 
   routes = sortRoutes(routes, ascents, cragRoutesState.sort);
 
+  const bySector = !router.query.combine;
+  const someFilter = Object.keys(cragRoutesState.filter || {}).length > 0;
+  const someSearchQuery = cragRoutesState.search?.query;
+  const noResultsText = `Za izbrane pogoje ${
+    bySector ? "v tem sektorju" : ""
+  } ni rezultatov. Poskusi spremeniti 
+  ${someSearchQuery ? "iskalni niz" : ""}${
+    someSearchQuery && someFilter ? " ali " : ""
+  }${someFilter ? "nastavljene filtre" : ""}.${!!cragRoutesState.compact}`;
+
   return (
-    <>
-      {!cragRoutesState.compact ? (
+    <div className={`${!bySector || someSearchQuery ? "px-4 xs:px-0" : ""}`}>
+      {!routes.length ? (
+        <p>{noResultsText}</p>
+      ) : !cragRoutesState.compact ? (
         <table className="w-full">
           <thead>
-            <tr>
-              {cragRouteListColumns
-                .filter(
-                  ({ name }) =>
-                    cragRoutesState.selectedColumns.includes(name) ||
-                    (name === "sector" && router.query.combine)
-                )
-                .map((column) => (
-                  <th
-                    key={column.name}
-                    className={`border-b border-neutral-200 fill-neutral-500 py-4 text-left font-normal text-neutral-500`}
-                  >
-                    {column.icon
-                      ? column.icon
-                      : column.labelShort ?? column.label}
-                  </th>
-                ))}
+            <tr className="border-b border-neutral-200 text-left text-neutral-500">
+              {/* # (checkbox) */}
+              <th className="w-8 min-w-8 py-4 pl-0 pr-4 text-center font-normal">
+                #
+              </th>
+
+              {/* Route name */}
+              {cragRoutesState.selectedColumns.includes("name") && (
+                <th className="min-w-36 py-4 pl-0 pr-4 font-normal">Ime</th>
+              )}
+
+              {/* Route difficulty */}
+              {cragRoutesState.selectedColumns.includes("difficulty") && (
+                <th className="min-w-30 p-4 font-normal">Težavnost</th>
+              )}
+
+              {/* Route length */}
+              {cragRoutesState.selectedColumns.includes("length") && (
+                <th className="min-w-22 p-4 font-normal">Dolžina</th>
+              )}
+
+              {/* Route's sector */}
+              {router.query.combine && (
+                <th className="min-w-28 p-4 font-normal">Sektor</th>
+              )}
+
+              {/* Number of successfull ascents of a route */}
+              {cragRoutesState.selectedColumns.includes("nrTicks") && (
+                <th className="min-w-32 p-4 font-normal">Št. vzponov</th>
+              )}
+
+              {/* Number of all ascents of a route */}
+              {cragRoutesState.selectedColumns.includes("nrTries") && (
+                <th className="min-w-34 p-4 font-normal">Št. poskusov</th>
+              )}
+
+              {/* Number of different climbers ticked/tried a route */}
+              {cragRoutesState.selectedColumns.includes("nrClimbers") && (
+                <th className="min-w-34 p-4 font-normal">Št. plezalcev</th>
+              )}
+
+              {/* Route star rating */}
+              {cragRoutesState.selectedColumns.includes("starRating") && (
+                <th className="w-14 min-w-14 p-4">
+                  <IconStarFull />
+                </th>
+              )}
+
+              {/* Does a route have any comments */}
+              {cragRoutesState.selectedColumns.includes("comments") && (
+                <th className="w-14 min-w-14 p-4">
+                  <IconComment />
+                </th>
+              )}
+
+              {/* Logged in user's acents of a route */}
+              {cragRoutesState.selectedColumns.includes("myAscents") && (
+                <th className="w-16 min-w-16 py-4 pl-4 pr-0 text-center">
+                  <IconCheck className="inline-block" />
+                </th>
+              )}
             </tr>
           </thead>
+
           <tbody>
             {routes.map((route) => (
               <CragRoute
@@ -215,7 +270,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }
 

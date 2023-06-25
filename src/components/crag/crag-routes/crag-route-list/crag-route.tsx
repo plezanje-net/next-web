@@ -31,42 +31,71 @@ function CragRoute({ crag, route, ascent }: Props) {
       aria-label={route.name}
       className="border-b border-neutral-200 last:border-none"
     >
+      {/* # (checkbox) */}
       <td>
-        <Checkbox aria-label="Označi kot preplezano" />
+        <Checkbox aria-label="Označi kot plezano" />
       </td>
-      <td className="py-4">
-        <RouteLink route={route} crag={crag} />
+
+      {/* Route name */}
+      <td className="py-4 pl-0 pr-4">
+        <RouteLink
+          className="[overflow-wrap:anywhere]"
+          route={route}
+          crag={crag}
+        />
       </td>
+
+      {/* Route difficulty */}
       {displayColumn("difficulty") && (
-        <td className="py-4">
+        <td className="p-4">
           <RouteGrade route={route} />
         </td>
       )}
+
+      {/* Route length */}
       {displayColumn("length") && (
-        <td className="py-4">{route.length && `${route.length} m`}</td>
+        <td className="p-4">{route.length && `${route.length} m`}</td>
       )}
+
+      {/* Route's sector */}
       {router.query.combine && (
-        <td className="py-4">{`${route.sector.label}${
-          route.sector.label && route.sector.name && " - "
-        }${route.sector.name}`}</td>
+        <td className="p-4">
+          {[route.sector.label, route.sector.name]
+            .filter((part) => part != "")
+            .join(" - ")}
+        </td>
       )}
-      {displayColumn("nrTicks") && <td className="py-4">{route.nrTicks}</td>}
-      {displayColumn("nrTries") && <td className="py-4">{route.nrTries}</td>}
+
+      {/* Number of successfull ascents of a route */}
+      {displayColumn("nrTicks") && <td className="p-4">{route.nrTicks}</td>}
+
+      {/* Number of all ascents of a route */}
+      {displayColumn("nrTries") && <td className="p-4">{route.nrTries}</td>}
+
+      {/* Number of different climbers ticked/tried a route */}
       {displayColumn("nrClimbers") && (
-        <td className="py-4">{route.nrClimbers}</td>
+        <td className="p-4">{route.nrClimbers}</td>
       )}
+
+      {/* Route star rating */}
       {displayColumn("starRating") && (
-        <td className="py-4">
+        <td className="p-4">
           <RouteStarRating route={route} />
         </td>
       )}
+
+      {/* Does a route have any comments */}
       {displayColumn("comments") && (
-        <td className="py-4">
+        <td className="p-4">
           <RouteComments route={route} />
         </td>
       )}
+
+      {/* Logged in user's acents of a route */}
       {displayColumn("myAscents") && (
-        <td className="py-4">{ascent && <AscentIcon ascent={ascent} />}</td>
+        <td className="py-4 pl-4 pr-0 text-center">
+          {ascent && <AscentIcon className="inline-block" ascent={ascent} />}
+        </td>
       )}
     </tr>
   );
@@ -93,8 +122,8 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       aria-label={route.name}
       className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
     >
-      <div className="pl-4 pr-3">
-        <Checkbox aria-label="Označi kot preplezano" />
+      <div className="w-7">
+        <Checkbox aria-label="Označi kot plezano" />
       </div>
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">

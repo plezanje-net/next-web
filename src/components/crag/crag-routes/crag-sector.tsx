@@ -20,7 +20,7 @@ function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
         isOpen={isOpen}
         onClick={onToggle}
       >
-        <div className="md:mx-4">
+        <div className="mx-4">
           <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />
         </div>
       </Accordion>
