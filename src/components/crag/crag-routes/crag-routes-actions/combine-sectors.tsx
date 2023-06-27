@@ -3,8 +3,8 @@ import Button from "../../../ui/button";
 import IconMerge from "../../../ui/icons/merge";
 import IconUnmerge from "../../../ui/icons/unmerge";
 import { toggleQueryParam } from "../../../../utils/route-helpers";
-import { useContext } from "react";
 import { CragRoutesContext } from "../../crag-routes";
+import { useContext } from "react";
 
 function CombineSectors() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
@@ -17,12 +17,21 @@ function CombineSectors() {
   };
 
   return (
-    <Button renderStyle="icon" onClick={handleToggleCombine}>
+    <Button
+      renderStyle="icon"
+      onClick={cragRoutesState.search?.query ? () => {} : handleToggleCombine}
+      isDisabled={!!cragRoutesState.search?.query}
+    >
       <span className="flex">
-        {!cragRoutesState.combine && <IconMerge />}
-        {cragRoutesState.combine && <IconUnmerge />}
+        {cragRoutesState.combine || cragRoutesState.search?.query ? (
+          <IconUnmerge />
+        ) : (
+          <IconMerge />
+        )}
         <span className="ml-2 max-lg:hidden">
-          {cragRoutesState.combine ? "Razdruži sektorje" : "Združi sektorje"}
+          {cragRoutesState.combine || cragRoutesState.search?.query
+            ? "Razdruži sektorje"
+            : "Združi sektorje"}
         </span>
       </span>
     </Button>

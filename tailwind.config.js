@@ -50,9 +50,24 @@ module.exports = {
         500: "#d9422b",
       },
       current: "currentColor",
+
       // ...
     },
-    extend: { screens: { xs: "512px" } },
+    extend: {
+      screens: { xs: "512px" },
+      minWidth: {
+        8: "2rem", // 32px
+        14: "3.5rem", // 56px
+        16: "4rem", // 64px
+        20: "5rem", // 80px
+        22: "5.5rem", // 88px
+        28: "7rem", // 112px
+        30: "7.5rem", // 120px
+        32: "8rem", // 128px
+        34: "8.5rem", // 136px
+        36: "9rem", // 144px
+      },
+    },
   },
   plugins: [require("@headlessui/tailwindcss")],
 };

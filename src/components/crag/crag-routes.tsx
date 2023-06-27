@@ -1,9 +1,6 @@
 "use client";
-import { createContext, ReactNode, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { Crag, Route, Sector } from "../../graphql/generated";
-import IconCheck from "../ui/icons/check";
-import IconComment from "../ui/icons/comment";
-import IconStarFull from "../ui/icons/star-full";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
@@ -28,27 +25,29 @@ interface SortOptions {
   direction: "asc" | "desc";
 }
 
+interface SearchOptions {
+  query?: string;
+  focus?: boolean;
+}
+
 interface CragRoutesState {
   compact: boolean;
   combine: boolean;
   selectedColumns: string[];
-  search?: string;
+  search?: SearchOptions;
   filter?: FilterOptions;
   sort?: SortOptions;
 }
 
 interface CragRouteListColumn {
+  name: string;
+  isOptional: boolean;
   label: string;
-  labelShort?: string;
   sortLabel?: string;
   sortAscLabel?: string;
   sortDescLabel?: string;
   excludeFromSort?: boolean;
-  name: string;
-  icon?: ReactNode;
-  isOptional: boolean;
   isDefault: boolean;
-  displayCondition?: () => boolean;
   width: number;
 }
 
@@ -69,116 +68,111 @@ const CragRoutesContext = createContext<CragRoutesContextType>({
 const cragRouteListColumns: CragRouteListColumn[] = [
   {
     name: "select",
+    isOptional: false,
     label: "#",
     sortLabel: "",
     sortAscLabel: "Od leve proti desni",
     sortDescLabel: "Od desne proti levi",
-    isOptional: false,
     isDefault: true,
-    width: 64,
-  },
-  {
-    name: "sector",
-    label: "Sektor",
-    isOptional: false,
-    displayCondition: () => false,
-    isDefault: true,
-    excludeFromSort: true,
-    width: 100,
+    width: 32, // w-8
   },
   {
     name: "name",
+    isOptional: false,
     label: "Ime",
     sortLabel: "Po abecedi",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: false,
     isDefault: true,
-    width: 100,
+    width: 144, // w-36
   },
   {
     name: "difficulty",
+    isOptional: true,
     label: "Težavnost",
     sortLabel: "Po težavnosti",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: true,
     isDefault: true,
-    width: 130,
+    width: 120, // w-30
   },
   {
     name: "length",
+    isOptional: true,
     label: "Dolžina",
     sortLabel: "Po dolžini",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: true,
     isDefault: true,
-    width: 100,
+    width: 88, // w-22
+  },
+  {
+    name: "sector",
+    isOptional: false,
+    label: "Sektor",
+    excludeFromSort: true,
+    isDefault: false,
+    width: 112, // w-28
   },
   {
     name: "nrTicks",
+    isOptional: true,
     label: "Št. uspešnih vzponov",
-    labelShort: "Št. vzponov",
     sortLabel: "Po št. vzponov",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: true,
     isDefault: false,
-    width: 160,
+    width: 128, // w-32
   },
   {
     name: "nrTries",
+    isOptional: true,
     label: "Št. poskusov",
     sortLabel: "Po št. poskusov",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: true,
     isDefault: false,
-    width: 100,
+    width: 136, // w-34
   },
   {
     name: "nrClimbers",
+    isOptional: true,
     label: "Št. plezalcev",
     sortLabel: "Po št. plezalcev",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    isOptional: true,
     isDefault: false,
-    width: 99,
+    width: 136, // w-34
   },
   {
     name: "starRating",
+    isOptional: true,
     label: "Lepota",
     sortLabel: "Po lepoti",
     sortAscLabel: "naraščajoče",
     sortDescLabel: "padajoče",
-    icon: <IconStarFull />,
-    isOptional: true,
     isDefault: true,
-    width: 52,
+    width: 56, // w-14
   },
   {
     name: "comments",
+    isOptional: true,
     label: "Komentarji",
     sortLabel: "",
     sortAscLabel: "S komentarji najprej",
     sortDescLabel: "Brez komentarjev najprej",
-    icon: <IconComment />,
-    isOptional: true,
     isDefault: true,
-    width: 52,
+    width: 56, // w-14
   },
   {
     name: "myAscents",
+    isOptional: true,
     label: "Moji vzponi",
     sortLabel: "",
     sortAscLabel: "Z mojimi vzponi najprej",
     sortDescLabel: "Brez mojih vzponov najprej",
-    icon: <IconCheck />,
-    isOptional: true,
     isDefault: true,
-    width: 52,
+    width: 64, // w-16
   },
 ];
 
@@ -229,18 +223,38 @@ function CragRoutes({ crag }: Props) {
   useEffect(() => {
     setBreakpoint(
       cragRouteListColumns
-        .filter((c) => cragRoutesState.selectedColumns.includes(c.name))
-        .reduce((acc, c) => acc + c.width, 0)
+        .filter(
+          (c) =>
+            cragRoutesState.selectedColumns.includes(c.name) ||
+            (cragRoutesState.combine && c.name === "sector")
+        )
+        .reduce((acc, c) => acc + c.width, 0) +
+        (cragRoutesState.combine ? 0 : 32)
     );
-  }, [cragRoutesState.selectedColumns, cragRoutesState.selectedColumns.length]);
+    // if we combined by sector there is another padding level that should be considdered, hence +32px
+  }, [
+    cragRoutesState.selectedColumns,
+    cragRoutesState.selectedColumns.length,
+    cragRoutesState.combine,
+  ]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      setCompact((containerRef.current?.offsetWidth ?? 0) <= breakpoint);
+    const elementToObserve = containerRef?.current;
+    if (!elementToObserve) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const availableWidth = entries[0].contentRect.width;
+      setCompact(availableWidth <= breakpoint);
     });
-    resizeObserver.observe(document.body);
-  });
+    resizeObserver.observe(elementToObserve);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [breakpoint]);
 
   useEffect(() => {
     setCragRoutesState((state) => ({ ...state, compact }));
@@ -273,16 +287,15 @@ function CragRoutes({ crag }: Props) {
   };
 
   return (
-    <div ref={containerRef}>
-      <SSRProvider>
-        <CragRoutesContext.Provider
-          value={{ cragRoutesState, setCragRoutesState }}
-        >
-          <CragRoutesActions />
-
-          <div className="container mx-auto mt-4 sm:px-8">
+    <SSRProvider>
+      <CragRoutesContext.Provider
+        value={{ cragRoutesState, setCragRoutesState }}
+      >
+        <CragRoutesActions />
+        <div className={`mx-auto 2xl:container xs:px-8`}>
+          <div ref={containerRef}>
             {cragRoutesState.combine ||
-            cragRoutesState.search ||
+            cragRoutesState.search?.query ||
             crag.sectors.length == 1 ? (
               <CragRouteList
                 crag={crag}
@@ -298,7 +311,13 @@ function CragRoutes({ crag }: Props) {
                 <div
                   key={sector.id}
                   className={`${
-                    index > 0 ? "border-t border-t-neutral-200" : ""
+                    index > 0
+                      ? "border-t border-t-neutral-200"
+                      : "overflow-hidden rounded-none xs:rounded-t-lg"
+                  } ${
+                    index == crag.sectors.length - 1
+                      ? "overflow-hidden rounded-none xs:rounded-b-lg"
+                      : ""
                   }`}
                 >
                   <CragSector
@@ -312,9 +331,55 @@ function CragRoutes({ crag }: Props) {
               ))
             )}
           </div>
-        </CragRoutesContext.Provider>
-      </SSRProvider>
-    </div>
+        </div>
+      </CragRoutesContext.Provider>
+    </SSRProvider>
+
+    // <SSRProvider>
+    //   <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
+    //     <CragRoutesActions />
+    //     <div className={`mx-auto xs:px-8 2xl:container`}>
+    //       <div ref={containerRef}>
+    //         {router.query.combine ||
+    //         cragRoutesState.search?.query ||
+    //         crag.sectors.length == 1 ? (
+    //           <CragRouteList
+    //             crag={crag}
+    //             routes={crag.sectors.reduce(
+    //               (acc: Route[], sector) => [...acc, ...sector.routes],
+    //               []
+    //             )}
+    //             ascents={ascents}
+    //           />
+    //         ) : (
+    //           // 'By sector' (uncombined) view
+    //           crag.sectors.map((sector, index) => (
+    //             <div
+    //               key={sector.id}
+    //               className={`${
+    //                 index > 0
+    //                   ? "border-t border-t-neutral-200"
+    //                   : "overflow-hidden rounded-none xs:rounded-t-lg"
+    //               } ${
+    //                 index == crag.sectors.length - 1
+    //                   ? "overflow-hidden rounded-none xs:rounded-b-lg"
+    //                   : ""
+    //               }`}
+    //             >
+    //               <CragSector
+    //                 crag={crag}
+    //                 sector={sector as Sector}
+    //                 ascents={ascents}
+    //                 isOpen={expandedSectors.includes(index)}
+    //                 onToggle={() => toggleSector(index)}
+    //               />
+    //             </div>
+    //           ))
+    //         )}
+    //       </div>
+    //     </div>
+    //   </CragRoutesContext.Provider>
+    // </SSRProvider>
   );
 }
 
