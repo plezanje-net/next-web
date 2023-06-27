@@ -31,8 +31,8 @@ function CragHeader({ crag }: Props) {
             <h1 className="pb-8 pt-12 text-3xl">{crag.name}</h1>
           </div>
         </div>
+        <CragTabMenu crag={crag} />
       </div>
-      <CragTabMenu crag={crag} />
     </>
   );
 }

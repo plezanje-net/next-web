@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Crag, Route } from "../../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
-import { useRouter } from "next/router";
 import IconStarFull from "../../ui/icons/star-full";
 import IconComment from "../../ui/icons/comment";
 import IconCheck from "../../ui/icons/check";
@@ -156,7 +155,6 @@ function sortRoutes(
 
 function CragRouteList({ routes, crag, ascents }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
-  const router = useRouter();
 
   routes = filterRoutesByFilter(routes, ascents, cragRoutesState.filter);
 
@@ -166,7 +164,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
 
   routes = sortRoutes(routes, ascents, cragRoutesState.sort);
 
-  const bySector = !router.query.combine;
+  const bySector = !cragRoutesState.combine;
   const someFilter = Object.keys(cragRoutesState.filter || {}).length > 0;
   const someSearchQuery = cragRoutesState.search?.query;
   const noResultsText = `Za izbrane pogoje ${
@@ -205,7 +203,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
               )}
 
               {/* Route's sector */}
-              {router.query.combine && (
+              {cragRoutesState.combine && (
                 <th className="min-w-28 p-4 font-normal">Sektor</th>
               )}
 

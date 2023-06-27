@@ -2,7 +2,6 @@
 import Button from "../../../ui/button";
 import IconMerge from "../../../ui/icons/merge";
 import IconUnmerge from "../../../ui/icons/unmerge";
-import { toggleQueryParam } from "../../../../utils/route-helpers";
 import { CragRoutesContext } from "../../crag-routes";
 import { useContext } from "react";
 

@@ -334,66 +334,8 @@ function CragRoutes({ crag }: Props) {
         </div>
       </CragRoutesContext.Provider>
     </SSRProvider>
-
-    // <SSRProvider>
-    //   <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
-    //     <CragRoutesActions />
-    //     <div className={`mx-auto xs:px-8 2xl:container`}>
-    //       <div ref={containerRef}>
-    //         {router.query.combine ||
-    //         cragRoutesState.search?.query ||
-    //         crag.sectors.length == 1 ? (
-    //           <CragRouteList
-    //             crag={crag}
-    //             routes={crag.sectors.reduce(
-    //               (acc: Route[], sector) => [...acc, ...sector.routes],
-    //               []
-    //             )}
-    //             ascents={ascents}
-    //           />
-    //         ) : (
-    //           // 'By sector' (uncombined) view
-    //           crag.sectors.map((sector, index) => (
-    //             <div
-    //               key={sector.id}
-    //               className={`${
-    //                 index > 0
-    //                   ? "border-t border-t-neutral-200"
-    //                   : "overflow-hidden rounded-none xs:rounded-t-lg"
-    //               } ${
-    //                 index == crag.sectors.length - 1
-    //                   ? "overflow-hidden rounded-none xs:rounded-b-lg"
-    //                   : ""
-    //               }`}
-    //             >
-    //               <CragSector
-    //                 crag={crag}
-    //                 sector={sector as Sector}
-    //                 ascents={ascents}
-    //                 isOpen={expandedSectors.includes(index)}
-    //                 onToggle={() => toggleSector(index)}
-    //               />
-    //             </div>
-    //           ))
-    //         )}
-    //       </div>
-    //     </div>
-    //   </CragRoutesContext.Provider>
-    // </SSRProvider>
   );
 }
-
-// gql`
-//   query MyCragSummary($input: FindActivityRoutesInput) {
-//     myCragSummary(input: $input) {
-//       ascentType
-//       route {
-//         id
-//         slug
-//       }
-//     }
-//   }
-// `;
 
 export {
   cragRouteListColumns,

@@ -11,7 +11,6 @@ import IconStarFull from "../../../ui/icons/star-full";
 import Link from "../../../ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../utils/text-helpers";
-import { useRouter } from "next/router";
 
 interface Props {
   crag: Crag;
@@ -21,7 +20,6 @@ interface Props {
 
 function CragRoute({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
-  const router = useRouter();
 
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
@@ -58,7 +56,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       )}
 
       {/* Route's sector */}
-      {router.query.combine && (
+      {cragRoutesState.combine && (
         <td className="p-4">
           {[route.sector.label, route.sector.name]
             .filter((part) => part != "")
@@ -103,15 +101,14 @@ function CragRoute({ crag, route, ascent }: Props) {
 
 function CragRouteCompact({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
-  const router = useRouter();
 
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
-    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks),
-    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers),
-    nrTries: pluralizeNoun("poskus", route.nrTries),
+    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks!),
+    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers!),
+    nrTries: pluralizeNoun("poskus", route.nrTries!),
   })
     .filter(([key, _]) => displayColumn(key))
     .map(([_, value]) => value)
@@ -152,7 +149,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
             )}
           </div>
         </div>
-        {router.query.combine && (
+        {cragRoutesState.combine && (
           <div className="text-sm">
             v sektorju
             {` ${route.sector.label}${
@@ -161,7 +158,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           </div>
         )}
         {statsText && <div className="text-sm">{statsText}</div>}
-        {!statsText != !router.query.combine && <div className="pb-1"></div>}
+        {!statsText != !cragRoutesState.combine && <div className="pb-1"></div>}
       </div>
     </div>
   );
