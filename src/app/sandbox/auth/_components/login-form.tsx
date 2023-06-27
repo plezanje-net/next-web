@@ -5,6 +5,7 @@ import TextField from "../../../../components/ui/text-field";
 import Button from "../../../../components/ui/button";
 import { SSRProvider } from "react-aria";
 import loginAction from "./login-action";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ function LoginForm() {
   });
   const [loggingIn, setLoggingIn] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const changeHandler = (name: string, value: string) => {
     setFormData({ ...formData, [name]: value });
@@ -25,10 +27,12 @@ function LoginForm() {
 
     const response = await loginAction(formData);
 
-    if (!response) {
-      setLoggingIn(false);
-      setError("Napaka pri prijavi");
+    if (response) {
+      router.refresh();
+      return;
     }
+    setLoggingIn(false);
+    setError("Napaka pri prijavi");
   };
 
   return (

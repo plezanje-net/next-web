@@ -1,11 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
+import logoutAction from "./logout-action";
 
 function LogoutButton() {
   const router = useRouter();
 
-  const logoutHandler = () => {
-    document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+  const logoutHandler = async () => {
+    await logoutAction();
     router.refresh();
   };
 

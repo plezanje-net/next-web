@@ -4,6 +4,7 @@ import { gql } from "@urql/core";
 import urqlServer from "../../../../graphql/urql-server";
 import { LoginDocument } from "../../../../graphql/generated";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 interface FormData {
   email: string;
@@ -12,7 +13,7 @@ interface FormData {
 
 async function loginAction(formData: FormData) {
   const { data } = await urqlServer().mutation(LoginDocument, formData);
-  return data != null && cookies().set("token", data.login.token);
+  return !!(data != null && cookies().set("token", data.login.token));
 }
 
 export default loginAction;

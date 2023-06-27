@@ -16,6 +16,7 @@ type Params = {
 };
 
 async function CragsPage({ params }: { params: Params }) {
+  console.log("rendering CragsPage");
   const { data } = await urqlServer().query(CountryBySlugWithCragsDocument, {
     country: params.countrySlug,
     input: { type: "sport" },
@@ -45,7 +46,7 @@ async function CragsPage({ params }: { params: Params }) {
     <>
       <Breadcrumbs {...breadcrumbsProps} />
       <h1 className="text-3xl font-medium">
-        Plezalisca - {countryBySlug.name}
+        Plezalisca - {countryBySlug.name} - {countryBySlug.crags.length}
       </h1>
       <div>
         {countryBySlug.crags.map((crag: any) => (
