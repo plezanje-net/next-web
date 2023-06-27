@@ -265,15 +265,14 @@ function CragRoutes({ crag }: Props) {
 
   // toggle sector handler update state and silently push it to router
   const toggleSector = (index: number) => {
-    setExpandedSectors((state) => {
-      const i = state.indexOf(index);
-      if (i === -1) {
-        state.push(index);
-      } else {
-        state.splice(i, 1);
-      }
-      return [...state];
-    });
+    const state = [...expandedSectors];
+    const i = state.indexOf(index);
+    if (i === -1) {
+      state.push(index);
+    } else {
+      state.splice(i, 1);
+    }
+    setExpandedSectors(state);
 
     // TODO: save state to router somehow
     // toggleQueryParam(
