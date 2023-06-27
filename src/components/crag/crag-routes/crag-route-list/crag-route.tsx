@@ -10,6 +10,8 @@ import IconStarEmpty from "../../../ui/icons/star-empty";
 import IconStarFull from "../../../ui/icons/star-full";
 import Link from "../../../ui/link";
 import { CragRoutesContext } from "../../crag-routes";
+import { pluralizeNoun } from "../../../../utils/text-helpers";
+import { useRouter } from "next/router";
 
 interface Props {
   crag: Crag;
@@ -19,42 +21,81 @@ interface Props {
 
 function CragRoute({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
+  const router = useRouter();
+
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
+
   return (
     <tr
       aria-label={route.name}
       className="border-b border-neutral-200 last:border-none"
     >
+      {/* # (checkbox) */}
       <td>
-        <Checkbox aria-label="Označi kot preplezano" />
+        <Checkbox aria-label="Označi kot plezano" />
       </td>
-      <td>
-        <RouteLink route={route} crag={crag} />
+
+      {/* Route name */}
+      <td className="py-4 pl-0 pr-4">
+        <RouteLink
+          className="[overflow-wrap:anywhere]"
+          route={route}
+          crag={crag}
+        />
       </td>
+
+      {/* Route difficulty */}
       {displayColumn("difficulty") && (
-        <td>
+        <td className="p-4">
           <RouteGrade route={route} />
         </td>
       )}
+
+      {/* Route length */}
       {displayColumn("length") && (
-        <td>{route.length && `${route.length} m`}</td>
+        <td className="p-4">{route.length && `${route.length} m`}</td>
       )}
-      {displayColumn("nrTicks") && <td>{route.nrTicks}</td>}
-      {displayColumn("nrTries") && <td>{route.nrTries}</td>}
-      {displayColumn("nrClimbers") && <td>{route.nrClimbers}</td>}
+
+      {/* Route's sector */}
+      {router.query.combine && (
+        <td className="p-4">
+          {[route.sector.label, route.sector.name]
+            .filter((part) => part != "")
+            .join(" - ")}
+        </td>
+      )}
+
+      {/* Number of successfull ascents of a route */}
+      {displayColumn("nrTicks") && <td className="p-4">{route.nrTicks}</td>}
+
+      {/* Number of all ascents of a route */}
+      {displayColumn("nrTries") && <td className="p-4">{route.nrTries}</td>}
+
+      {/* Number of different climbers ticked/tried a route */}
+      {displayColumn("nrClimbers") && (
+        <td className="p-4">{route.nrClimbers}</td>
+      )}
+
+      {/* Route star rating */}
       {displayColumn("starRating") && (
-        <td>
+        <td className="p-4">
           <RouteStarRating route={route} />
         </td>
       )}
+
+      {/* Does a route have any comments */}
       {displayColumn("comments") && (
-        <td>
+        <td className="p-4">
           <RouteComments route={route} />
         </td>
       )}
+
+      {/* Logged in user's acents of a route */}
       {displayColumn("myAscents") && (
-        <td>{ascent && <AscentIcon ascent={ascent} />}</td>
+        <td className="py-4 pl-4 pr-0 text-center">
+          {ascent && <AscentIcon className="inline-block" ascent={ascent} />}
+        </td>
       )}
     </tr>
   );
@@ -62,13 +103,15 @@ function CragRoute({ crag, route, ascent }: Props) {
 
 function CragRouteCompact({ crag, route, ascent }: Props) {
   const { cragRoutesState } = useContext(CragRoutesContext);
+  const router = useRouter();
+
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
-    nrTicks: `${route.nrTicks} uspešnih vzponov`,
-    nrClimbers: `${route.nrClimbers} plezalcev`,
-    nrTries: `${route.nrTries} poskusov`,
+    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks),
+    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers),
+    nrTries: pluralizeNoun("poskus", route.nrTries),
   })
     .filter(([key, _]) => displayColumn(key))
     .map(([_, value]) => value)
@@ -79,31 +122,46 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       aria-label={route.name}
       className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
     >
-      <div className="pl-4 pr-3">
-        <Checkbox aria-label="Označi kot preplezano" />
+      <div className="w-7">
+        <Checkbox aria-label="Označi kot plezano" />
       </div>
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
-          <RouteStarRating route={route} size="small" />
+          {displayColumn("starRating") && (
+            <RouteStarRating route={route} size="small" />
+          )}
         </div>
         <div className="flex items-center justify-between">
           <div>
-            {route.difficulty && (
+            {displayColumn("difficulty") && (
               <span className="pr-4">
-                <Grade difficulty={route.difficulty} />
+                <RouteGrade route={route} />
               </span>
             )}
-            {route.length && <span>{route.length} m</span>}
+            {displayColumn("length") && route.length && (
+              <span>{route.length} m</span>
+            )}
           </div>
           <div className="flex space-x-4">
-            <RouteComments route={route} size="small" />
+            {displayColumn("comments") && (
+              <RouteComments route={route} size="small" />
+            )}
             {displayColumn("myAscents") && ascent && (
               <AscentIcon ascent={ascent} size="small" />
             )}
           </div>
         </div>
-        {statsText && <div className="pb-1 text-sm">{statsText}</div>}
+        {router.query.combine && (
+          <div className="text-sm">
+            v sektorju
+            {` ${route.sector.label}${
+              route.sector.label && route.sector.name && " - "
+            }${route.sector.name}`}
+          </div>
+        )}
+        {statsText && <div className="text-sm">{statsText}</div>}
+        {!statsText != !router.query.combine && <div className="pb-1"></div>}
       </div>
     </div>
   );

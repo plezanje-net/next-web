@@ -14,6 +14,7 @@ interface LinkProps extends AriaLinkOptions {
   target?: HTMLAttributeAnchorTarget;
   variant?: "primary" | "secondary";
   children: ReactNode;
+  className?: string;
 }
 
 const Link = forwardRef(function Link(
@@ -39,9 +40,13 @@ const Link = forwardRef(function Link(
         props.isDisabled ? "cursor-default text-neutral-400" : "hover:underline"
       }
       ${
-        isPressed &&
-        (variant === "primary" ? "text-blue-600" : "text-neutral-600")
-      }`}
+        isPressed
+          ? variant === "primary"
+            ? "text-blue-600"
+            : "text-neutral-600"
+          : ""
+      }
+      ${props.className ? props.className : ""}`}
     >
       {props.children}
     </NextLink>
