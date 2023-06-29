@@ -1,11 +1,12 @@
+"use client";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAuth } from "../../utils/providers/auth-provider";
 import IconClose from "../ui/icons/close";
 import IconMenu from "../ui/icons/menu";
 import IconSearch from "../ui/icons/search";
 import Logo from "./logo";
+import { useI18nPathname } from "../../utils/hooks/use-i18n-pathname";
+import { AuthStatus } from "../../utils/auth/auth-status";
 
 type NavLink = {
   label: string;
@@ -13,25 +14,28 @@ type NavLink = {
   isActive: boolean;
 };
 
-function Header() {
-  const authCtx = useAuth();
-  const router = useRouter();
+interface Props {
+  authStatus: AuthStatus;
+}
+
+function Header({ authStatus }: Props) {
+  const i18nPathname = useI18nPathname();
 
   const navLinks: NavLink[] = [
     {
       label: "Plezališča",
       href: "/plezalisca/slovenija",
-      isActive: router.pathname.startsWith("/crags"),
+      isActive: i18nPathname.test(["/{crags}*", "/{crag}*"]),
     },
     {
       label: "Alpinizem",
       href: "/alpinizem",
-      isActive: router.pathname.startsWith("/alpinizem"),
+      isActive: false,
     },
     {
       label: "Plezalni dnevnik",
       href: "/plezalni-dnevnik",
-      isActive: router.pathname.startsWith("/plezalni-dnevnik"),
+      isActive: false,
     },
   ];
 
@@ -41,12 +45,12 @@ function Header() {
     setMenuOpened(!menuOpened);
   };
 
-  const loggedIn = !!authCtx.status;
+  const loggedIn = authStatus?.loggedIn;
 
-  const userFullName = authCtx.status?.user?.fullName;
+  const userFullName = authStatus?.user?.fullName;
   const userFullNameShort = [
-    authCtx.status?.user?.firstname ?? "",
-    authCtx.status?.user?.lastname ?? "",
+    authStatus.user?.firstname ?? "",
+    authStatus.user?.lastname ?? "",
   ]
     .reduce((prev, curr) => prev + curr[0], "")
     .toUpperCase();
@@ -56,7 +60,7 @@ function Header() {
       {/* Logo row */}
       <div className="box-content flex h-20 items-center justify-between">
         {/* Logo */}
-        <Link className="-ml-2 py-1 px-2" href="/">
+        <Link className="-ml-2 px-2 py-1" href="/">
           <Logo />
         </Link>
 

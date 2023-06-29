@@ -1,0 +1,26 @@
+{
+  "routes": [
+    "/{crags}/:countrySlug*",
+    "/{crag}/:cragSlug/{route}/:routeSlug*",
+    "/{crag}/:cragSlug/{comments}",
+    "/{crag}/:cragSlug/{gallery}",
+    "/{crag}/:cragSlug*"
+  ],
+  "translations": {
+    "sl": {
+      "crags": "plezalisca",
+      "crag": "plezalisce",
+      "route": "smer",
+      "comments": "komentarji",
+      "gallery": "galerija"
+    },
+    "en": {
+      "crags": "crags",
+      "crag": "crag",
+      "route": "route",
+      "comments": "comments",
+      "gallery": "gallery"
+    }
+  },
+  "defaultLanguage": "sl"
+}

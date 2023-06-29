@@ -1,3 +1,8 @@
+import {
+  AppRouterInstance,
+  NavigateOptions,
+} from "next/dist/shared/lib/app-router-context";
+import { ReadonlyURLSearchParams } from "next/navigation";
 import { NextRouter } from "next/router";
 
 interface Options {
@@ -7,18 +12,16 @@ interface Options {
 
 // TODO: move somewhere else
 function toggleQueryParam(
-  router: NextRouter,
+  router: AppRouterInstance,
+  pathname: string,
+  searchParams: ReadonlyURLSearchParams,
   routeParam: string,
   newValue: string | string[] | undefined | null,
-  options?: Options
+  options?: NavigateOptions
 ) {
-  let { pathname, asPath, query } = router;
   const newQuery: Record<string, string | string[] | undefined> = {};
 
-  Object.entries(query).forEach(([param, value]) => {
-    if (pathname.includes(`[${param}]`)) {
-      return;
-    }
+  searchParams.forEach((value, param) => {
     if (param != routeParam) {
       newQuery[param] = value;
       return;
@@ -32,14 +35,18 @@ function toggleQueryParam(
     newQuery[routeParam] = newValue;
   }
 
-  router.push(
-    {
-      pathname: asPath.split("?")[0],
-      query: newQuery,
-    },
-    undefined,
-    options
-  );
+  const newParams: string[] = [];
+
+  Object.entries(newQuery).forEach(([param, values]) => {
+    if (typeof values == "string") {
+      newParams.push(`${param}=${values}`);
+    } else {
+      values?.forEach((value) => {
+        newParams.push(`${param}=${value}`);
+      });
+    }
+  });
+  router.push(`${pathname}?${newParams.join("&")}`, options);
 }
 
 export { toggleQueryParam };
