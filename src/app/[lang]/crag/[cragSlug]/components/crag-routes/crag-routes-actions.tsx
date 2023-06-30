@@ -11,7 +11,7 @@ function CragRoutesActions() {
 
   return (
     <div
-      className={`mx-auto items-center px-4 xs:justify-between xs:px-8 2xl:container ${
+      className={`mx-auto items-center px-4 2xl:container xs:justify-between xs:px-8 ${
         cragRoutesState.search?.focus || cragRoutesState.search?.query
           ? "block xs:flex"
           : "flex justify-center"
@@ -26,9 +26,11 @@ function CragRoutesActions() {
           <Columns />
         </div>
 
-        <div className="ml-4 border-l border-neutral-300 pl-4">
-          <CombineSectors />
-        </div>
+        {!cragRoutesState.noSectors && (
+          <div className="ml-4 border-l border-neutral-300 pl-4">
+            <CombineSectors />
+          </div>
+        )}
 
         <div className="ml-4 border-l border-neutral-300 pl-4">
           <Sort />

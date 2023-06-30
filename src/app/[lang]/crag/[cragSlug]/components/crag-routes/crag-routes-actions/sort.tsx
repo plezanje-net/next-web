@@ -29,7 +29,7 @@ function Sort() {
           </span>
         </Button>
       }
-      customOptionsClasses="max-xs:right-[calc((185px-100vw)/2)]"
+      customOptionsClasses={`max-xs:right-[calc((${cragRoutesState.noSectors ? "128px" : "185px"}-100vw)/2)]`}
     >
       {cragRouteListColumns
         .filter(

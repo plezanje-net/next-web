@@ -34,6 +34,7 @@ interface CragRoutesState {
   compact: boolean;
   combine: boolean;
   selectedColumns: string[];
+  noSectors: boolean;
   search?: SearchOptions;
   filter?: FilterOptions;
   sort?: SortOptions;
@@ -61,6 +62,7 @@ const CragRoutesContext = createContext<CragRoutesContextType>({
     compact: true,
     combine: false,
     selectedColumns: [],
+    noSectors: false,
   },
   setCragRoutesState: () => {},
 });
@@ -183,6 +185,11 @@ function CragRoutes({ crag }: Props) {
     selectedColumns: cragRouteListColumns
       .filter(({ isDefault }) => isDefault)
       .map(({ name }) => name),
+
+    noSectors: crag.sectors.length === 1,
+    // TODO: above condition should be adjusted, because we have 2 different use cases:
+    // single sector crag: a crag with a single sector where the sector is shown - might be the case when someone makes a partial contribution
+    // no sectors crag: a crag that is physically only one wall and will never be split into multiple sectors
   });
 
   const [compact, setCompact] = useState(true);
@@ -291,11 +298,15 @@ function CragRoutes({ crag }: Props) {
         value={{ cragRoutesState, setCragRoutesState }}
       >
         <CragRoutesActions />
-        <div className={`mx-auto 2xl:container xs:px-8`}>
+        <div
+          className={`mx-auto 2xl:container ${
+            cragRoutesState.noSectors ? "px-4" : ""
+          } xs:px-8`}
+        >
           <div ref={containerRef}>
             {cragRoutesState.combine ||
             cragRoutesState.search?.query ||
-            crag.sectors.length == 1 ? (
+            cragRoutesState.noSectors ? (
               <CragRouteList
                 crag={crag}
                 routes={crag.sectors.reduce(

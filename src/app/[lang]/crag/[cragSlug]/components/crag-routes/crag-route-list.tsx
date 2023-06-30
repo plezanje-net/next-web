@@ -172,7 +172,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
   } ni rezultatov. Poskusi spremeniti 
   ${someSearchQuery ? "iskalni niz" : ""}${
     someSearchQuery && someFilter ? " ali " : ""
-  }${someFilter ? "nastavljene filtre" : ""}.${!!cragRoutesState.compact}`;
+  }${someFilter ? "nastavljene filtre" : ""}.`;
 
   return (
     <div className={`${!bySector || someSearchQuery ? "px-4 xs:px-0" : ""}`}>

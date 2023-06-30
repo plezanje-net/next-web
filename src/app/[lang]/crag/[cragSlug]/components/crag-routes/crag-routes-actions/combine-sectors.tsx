@@ -15,11 +15,13 @@ function CombineSectors() {
     });
   };
 
+  const disabled = !!cragRoutesState.search?.query || cragRoutesState.noSectors;
+
   return (
     <Button
       renderStyle="icon"
-      onClick={cragRoutesState.search?.query ? () => {} : handleToggleCombine}
-      isDisabled={!!cragRoutesState.search?.query}
+      onClick={disabled ? () => {} : handleToggleCombine}
+      isDisabled={disabled}
     >
       <span className="flex">
         {cragRoutesState.combine || cragRoutesState.search?.query ? (
