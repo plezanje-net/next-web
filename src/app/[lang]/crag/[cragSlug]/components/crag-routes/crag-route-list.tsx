@@ -177,7 +177,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
   return (
     <div className={`${!bySector || someSearchQuery ? "px-4 xs:px-0" : ""}`}>
       {!routes.length ? (
-        <p>{noResultsText}</p>
+        <p className={`${bySector ? "py-4" : ""}`}>{noResultsText}</p>
       ) : !cragRoutesState.compact ? (
         <table className="w-full">
           <thead>
