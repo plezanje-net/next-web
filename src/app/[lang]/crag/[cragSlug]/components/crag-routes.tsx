@@ -318,24 +318,15 @@ function CragRoutes({ crag }: Props) {
             ) : (
               // 'By sector' (uncombined) view
               crag.sectors.map((sector, index) => (
-                <div
-                  key={sector.id}
-                  className={`${
-                    index > 0
-                      ? "border-t border-t-neutral-200"
-                      : "overflow-hidden rounded-none xs:rounded-t-lg"
-                  } ${
-                    index == crag.sectors.length - 1
-                      ? "overflow-hidden rounded-none xs:rounded-b-lg"
-                      : ""
-                  }`}
-                >
+                <div key={sector.id} className={`${index > 0 ? "mt-1" : ""}`}>
                   <CragSector
                     crag={crag}
                     sector={sector as Sector}
                     ascents={ascents}
                     isOpen={expandedSectors.includes(index)}
                     onToggle={() => toggleSector(index)}
+                    first={index === 0}
+                    last={index === crag.sectors.length - 1}
                   />
                 </div>
               ))

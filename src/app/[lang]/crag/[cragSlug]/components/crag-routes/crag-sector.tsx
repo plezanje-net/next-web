@@ -8,9 +8,19 @@ interface Props {
   ascents: Map<string, string>;
   onToggle: () => void;
   isOpen: boolean;
+  first?: boolean;
+  last?: boolean;
 }
 
-function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
+function CragSector({
+  crag,
+  sector,
+  ascents,
+  isOpen,
+  onToggle,
+  first,
+  last,
+}: Props) {
   return (
     <>
       <Accordion
@@ -19,6 +29,8 @@ function CragSector({ crag, sector, ascents, isOpen, onToggle }: Props) {
           .join(" - ")}
         isOpen={isOpen}
         onClick={onToggle}
+        first={first}
+        last={last}
       >
         <div className="mx-4">
           <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />
