@@ -1,9 +1,8 @@
 "use client";
 
-import { FormEvent, useState, useTransition } from "react";
+import { FormEvent, useState } from "react";
 import TextField from "../../../../components/ui/text-field";
 import Button from "../../../../components/ui/button";
-import { SSRProvider } from "react-aria";
 import loginAction from "./login-action";
 import { useRouter } from "next/navigation";
 
@@ -36,35 +35,33 @@ function LoginForm() {
   };
 
   return (
-    <SSRProvider>
-      <form onSubmit={loginHandler} className="max-w-sm">
-        <div className="pt-2">
-          <TextField
-            label="Email"
-            name="email"
-            onChange={(value) => changeHandler("email", value)}
-            value={formData.email}
-            placeholder="Uporabniško ime"
-            isDisabled={loggingIn}
-          />
-        </div>
-        <div className="pt-2">
-          <TextField
-            label="Password"
-            name="password"
-            onChange={(value) => changeHandler("password", value)}
-            value={formData.password}
-            placeholder="Geslo"
-            isDisabled={loggingIn}
-            type="password"
-          />
-        </div>
-        <div className="pt-2">
-          <Button isDisabled={loggingIn}>Login</Button>
-        </div>
-        {error && <div className="pt-2 text-red-500">{error}</div>}
-      </form>
-    </SSRProvider>
+    <form onSubmit={loginHandler} className="max-w-sm">
+      <div className="pt-2">
+        <TextField
+          label="Email"
+          name="email"
+          onChange={(value) => changeHandler("email", value)}
+          value={formData.email}
+          placeholder="Uporabniško ime"
+          isDisabled={loggingIn}
+        />
+      </div>
+      <div className="pt-2">
+        <TextField
+          label="Password"
+          name="password"
+          onChange={(value) => changeHandler("password", value)}
+          value={formData.password}
+          placeholder="Geslo"
+          isDisabled={loggingIn}
+          type="password"
+        />
+      </div>
+      <div className="pt-2">
+        <Button isDisabled={loggingIn}>Login</Button>
+      </div>
+      {error && <div className="pt-2 text-red-500">{error}</div>}
+    </form>
   );
 }
 
