@@ -2,10 +2,10 @@ import { gql } from "@urql/core";
 import {
   DifficultyVote,
   HomeLatestDifficultyVotesDocument,
-} from "../../graphql/generated";
+} from "../../../graphql/generated";
 import LatestDifficultyVote from "./latest-difficulty-votes/latest-difficulty-vote";
 import LatestDifficultyVoteSkeleton from "./latest-difficulty-votes/latest-difficulty-vote-skeleton";
-import urqlServer from "../../graphql/urql-server";
+import urqlServer from "../../../graphql/urql-server";
 
 async function LatestDifficultyVotes() {
   const { data } = await urqlServer().query(HomeLatestDifficultyVotesDocument, {

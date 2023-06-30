@@ -1,5 +1,5 @@
-import LatestAscents from "../components/home/latest-ascents";
-import LatestDifficultyVotes from "../components/home/latest-difficulty-votes";
+import LatestAscents from "./[lang]/components/latest-ascents";
+import LatestDifficultyVotes from "./[lang]/components/latest-difficulty-votes";
 
 function Home() {
   return (

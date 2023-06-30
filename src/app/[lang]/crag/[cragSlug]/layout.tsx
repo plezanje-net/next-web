@@ -1,5 +1,5 @@
 import { gql } from "@urql/core";
-import CragHeader from "../../../../components/crag/crag-header";
+import CragHeader from "./components/crag-header";
 import { Crag, CragHeaderDocument } from "../../../../graphql/generated";
 import urqlServer from "../../../../graphql/urql-server";
 

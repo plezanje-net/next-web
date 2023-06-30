@@ -1,16 +1,16 @@
 import { useContext } from "react";
-import { Crag, Route } from "../../../../graphql/generated";
-import Grade from "../../../grade";
-import RouteLink from "../../../route-link";
-import AscentIcon from "../../../ui/ascent-icon";
-import Checkbox from "../../../ui/checkbox";
-import IconComment from "../../../ui/icons/comment";
-import { IconSize } from "../../../ui/icons/icon";
-import IconStarEmpty from "../../../ui/icons/star-empty";
-import IconStarFull from "../../../ui/icons/star-full";
-import Link from "../../../ui/link";
+import { Crag, Route } from "../../../../../../../graphql/generated";
+import Grade from "../../../../../../../components/grade";
+import RouteLink from "../../../../../../../components/route-link";
+import AscentIcon from "../../../../../../../components/ui/ascent-icon";
+import Checkbox from "../../../../../../../components/ui/checkbox";
+import IconComment from "../../../../../../../components/ui/icons/comment";
+import { IconSize } from "../../../../../../../components/ui/icons/icon";
+import IconStarEmpty from "../../../../../../../components/ui/icons/star-empty";
+import IconStarFull from "../../../../../../../components/ui/icons/star-full";
+import Link from "../../../../../../../components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
-import { pluralizeNoun } from "../../../../utils/text-helpers";
+import { pluralizeNoun } from "../../../../../../../utils/text-helpers";
 
 interface Props {
   crag: Crag;

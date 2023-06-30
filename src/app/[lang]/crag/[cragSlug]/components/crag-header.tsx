@@ -1,5 +1,5 @@
-import { Crag } from "../../graphql/generated";
-import { Breadcrumb, Breadcrumbs } from "../layout/breadcrumbs";
+import { Crag } from "../../../../../graphql/generated";
+import { Breadcrumb, Breadcrumbs } from "../../../../../components/layout/breadcrumbs";
 import CragTabMenu from "./crag-header/crag-tab-menu";
 
 interface Props {

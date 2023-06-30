@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useEffect, useRef, useState } from "react";
-import { Crag, Route, Sector } from "../../graphql/generated";
+import { Crag, Route, Sector } from "../../../../../graphql/generated";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";

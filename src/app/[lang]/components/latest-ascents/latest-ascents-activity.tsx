@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Activity } from "../../../graphql/generated";
-import displayDate from "../../../utils/display-date";
-import CragLink from "../../crag-link";
-import Grade from "../../grade";
-import RouteLink from "../../route-link";
-import IconCollapse from "../../ui/icons/collapse";
-import IconExpand from "../../ui/icons/expand";
+import { Activity } from "../../../../graphql/generated";
+import displayDate from "../../../../utils/display-date";
+import CragLink from "../../../../components/crag-link";
+import Grade from "../../../../components/grade";
+import RouteLink from "../../../../components/route-link";
+import IconCollapse from "../../../../components/ui/icons/collapse";
+import IconExpand from "../../../../components/ui/icons/expand";
 
 type Params = {
   activity: Activity;

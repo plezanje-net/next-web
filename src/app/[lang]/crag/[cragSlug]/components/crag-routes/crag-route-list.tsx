@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { Crag, Route } from "../../../graphql/generated";
+import { Crag, Route } from "../../../../../../graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
-import IconStarFull from "../../ui/icons/star-full";
-import IconComment from "../../ui/icons/comment";
-import IconCheck from "../../ui/icons/check";
+import IconStarFull from "../../../../../../components/ui/icons/star-full";
+import IconComment from "../../../../../../components/ui/icons/comment";
+import IconCheck from "../../../../../../components/ui/icons/check";
 
 interface Props {
   crag: Crag;

@@ -1,7 +1,7 @@
 import { gql } from "@urql/core";
 import { Crag, CragSectorsDocument } from "../../../../graphql/generated";
 import urqlServer from "../../../../graphql/urql-server";
-import CragRoutes from "../../../../components/crag/crag-routes";
+import CragRoutes from "./components/crag-routes";
 
 type Params = {
   cragSlug: string;

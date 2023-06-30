@@ -1,7 +1,7 @@
-import { Activity, HomeLatestAscentsDocument } from "../../graphql/generated";
+import { Activity, HomeLatestAscentsDocument } from "../../../graphql/generated";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
 import LatestAscentsActivitySkeleton from "./latest-ascents/latest-ascents-activity-skeleton";
-import urqlServer from "../../graphql/urql-server";
+import urqlServer from "../../../graphql/urql-server";
 import { gql } from "@urql/core";
 
 async function LatestAscents() {
