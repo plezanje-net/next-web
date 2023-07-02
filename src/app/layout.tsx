@@ -3,6 +3,7 @@ import Head from "next/head";
 import Header from "../components/layout/header";
 import { Poppins } from "next/font/google";
 import authStatus from "../utils/auth/auth-status";
+import ClientProviders from "./components/client-providers";
 
 const poppins = Poppins({
   weight: ["400", "500"],
@@ -45,8 +46,10 @@ async function RootLayout({ children }: Props) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <body className={`text-neutral-900 ${poppins.className}`}>
-        <Header authStatus={await authStatus()} />
-        <main>{children}</main>
+        <ClientProviders>
+          <Header authStatus={await authStatus()} />
+          <main>{children}</main>
+        </ClientProviders>
       </body>
     </html>
   );

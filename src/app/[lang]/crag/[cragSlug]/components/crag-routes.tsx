@@ -4,7 +4,6 @@ import { Crag, Route, Sector } from "../../../../../graphql/generated";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
-import { SSRProvider } from "react-aria";
 
 interface Props {
   crag: Crag;
@@ -293,48 +292,44 @@ function CragRoutes({ crag }: Props) {
   };
 
   return (
-    <SSRProvider>
-      <CragRoutesContext.Provider
-        value={{ cragRoutesState, setCragRoutesState }}
+    <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
+      <CragRoutesActions />
+      <div
+        className={`mx-auto 2xl:container ${
+          cragRoutesState.noSectors ? "px-4" : ""
+        } xs:px-8`}
       >
-        <CragRoutesActions />
-        <div
-          className={`mx-auto 2xl:container ${
-            cragRoutesState.noSectors ? "px-4" : ""
-          } xs:px-8`}
-        >
-          <div ref={containerRef}>
-            {cragRoutesState.combine ||
-            cragRoutesState.search?.query ||
-            cragRoutesState.noSectors ? (
-              <CragRouteList
-                crag={crag}
-                routes={crag.sectors.reduce(
-                  (acc: Route[], sector) => [...acc, ...sector.routes],
-                  []
-                )}
-                ascents={ascents}
-              />
-            ) : (
-              // 'By sector' (uncombined) view
-              crag.sectors.map((sector, index) => (
-                <div key={sector.id} className={`${index > 0 ? "mt-1" : ""}`}>
-                  <CragSector
-                    crag={crag}
-                    sector={sector as Sector}
-                    ascents={ascents}
-                    isOpen={expandedSectors.includes(index)}
-                    onToggle={() => toggleSector(index)}
-                    first={index === 0}
-                    last={index === crag.sectors.length - 1}
-                  />
-                </div>
-              ))
-            )}
-          </div>
+        <div ref={containerRef}>
+          {cragRoutesState.combine ||
+          cragRoutesState.search?.query ||
+          cragRoutesState.noSectors ? (
+            <CragRouteList
+              crag={crag}
+              routes={crag.sectors.reduce(
+                (acc: Route[], sector) => [...acc, ...sector.routes],
+                []
+              )}
+              ascents={ascents}
+            />
+          ) : (
+            // 'By sector' (uncombined) view
+            crag.sectors.map((sector, index) => (
+              <div key={sector.id} className={`${index > 0 ? "mt-1" : ""}`}>
+                <CragSector
+                  crag={crag}
+                  sector={sector as Sector}
+                  ascents={ascents}
+                  isOpen={expandedSectors.includes(index)}
+                  onToggle={() => toggleSector(index)}
+                  first={index === 0}
+                  last={index === crag.sectors.length - 1}
+                />
+              </div>
+            ))
+          )}
         </div>
-      </CragRoutesContext.Provider>
-    </SSRProvider>
+      </div>
+    </CragRoutesContext.Provider>
   );
 }
 
