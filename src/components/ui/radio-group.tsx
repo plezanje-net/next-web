@@ -31,11 +31,11 @@ function RadioGroup(props: RadioGroupProps) {
 
   return (
     <div {...radioGroupProps}>
-      <div {...labelProps} className="inline-block">
+      <div {...labelProps} className="block">
         {label}
       </div>
       <div
-        className={`mt-2 flex items-start ${
+        className={`${label ? "mt-2" : ""} flex items-start ${
           inline ? "space-x-4" : "flex-col space-y-1"
         }`}
       >
