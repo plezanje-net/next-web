@@ -5,7 +5,7 @@ import {
 import {
   Breadcrumbs,
   BreadcrumbsProps,
-} from "../../../../components/layout/breadcrumbs";
+} from "../../../../components/breadcrumbs";
 import CragLink from "../../../../components/crag-link";
 
 import { gql } from "@urql/core";

@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import Head from "next/head";
-import Header from "../components/layout/header";
+import Header from "./components/header";
 import { Poppins } from "next/font/google";
 import authStatus from "../utils/auth/auth-status";
 import ClientProviders from "./components/client-providers";
