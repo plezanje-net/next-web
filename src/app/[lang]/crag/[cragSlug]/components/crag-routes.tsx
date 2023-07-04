@@ -5,10 +5,11 @@ import {
   Route,
   Sector,
 } from "../../../../../graphql/generated";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   crag: Crag;
@@ -246,28 +247,49 @@ function CragRoutes({ crag, mySummary }: Props) {
   }, [compact]);
 
   // Sectors collapse/expand
-  const [expandedSectors, setExpandedSectors] = useState<number[]>([]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = new URLSearchParams(searchParams);
+  const [expandedSectors, setExpandedSectors] = useState<number[]>(
+    params
+      .get("s")
+      ?.split(";")
+      .map((s) => parseInt(s)) ?? []
+  );
 
-  // toggle sector handler update state and silently push it to router
+  const createSectorQuery = useCallback(
+    (index: number) => {
+      const params = new URLSearchParams(searchParams);
+      let sectors =
+        params
+          .get("s")
+          ?.split(";")
+          .map((s) => parseInt(s)) ?? [];
+      let anchor = "";
+      if (sectors.includes(index)) {
+        sectors = sectors.filter((s) => s !== index);
+      } else {
+        sectors.push(index);
+        sectors.sort();
+        anchor = `#s${index}`;
+      }
+
+      if (sectors.length === 0) {
+        params.delete("s");
+      } else {
+        params.set("s", sectors.join(";"));
+      }
+
+      setExpandedSectors(sectors);
+
+      return decodeURIComponent(params.toString()) + anchor;
+    },
+    [searchParams]
+  );
+
   const toggleSector = (index: number) => {
-    const state = [...expandedSectors];
-    const i = state.indexOf(index);
-    if (i === -1) {
-      state.push(index);
-    } else {
-      state.splice(i, 1);
-    }
-    setExpandedSectors(state);
-
-    // TODO: save state to router somehow
-    // toggleQueryParam(
-    //   router,
-    //   pathname,
-    //   searchParams,
-    //   "s",
-    //   expandedSectors.map((s) => `${s}`),
-    //   {}
-    // );
+    router.push(`${pathname}?${createSectorQuery(index)}`);
   };
 
   return (
@@ -293,13 +315,17 @@ function CragRoutes({ crag, mySummary }: Props) {
           ) : (
             // 'By sector' (uncombined) view
             crag.sectors.map((sector, index) => (
-              <div key={sector.id} className={`${index > 0 ? "mt-1" : ""}`}>
+              <div
+                key={sector.id}
+                className={`${index > 0 ? "mt-1" : ""}`}
+                id={`s${index + 1}`}
+              >
                 <CragSector
                   crag={crag}
                   sector={sector as Sector}
                   ascents={ascents}
-                  isOpen={expandedSectors.includes(index)}
-                  onToggle={() => toggleSector(index)}
+                  isOpen={expandedSectors.includes(index + 1)}
+                  onToggle={() => toggleSector(index + 1)}
                   first={index === 0}
                   last={index === crag.sectors.length - 1}
                 />
