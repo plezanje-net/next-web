@@ -1,54 +1,54 @@
 "use client";
-import { Radio, RadioGroup } from "../../../components/ui/radio-group";
+import { RadioGroup, Radio } from "../../../components/ui/radio-group";
 
 function RadioGroupPage() {
   return (
     <div className="m-8">
       <h1 className="text-xl">Radio group demo</h1>
 
+      {/* default example */}
       <div className="mt-10">
-        <RadioGroup label="Choose your favourite" defaultValue="1">
+        <RadioGroup label="Choose your favourite" defaultValue="2">
           <Radio value="1">Krvavica</Radio>
           <Radio value="2">Pleskavica</Radio>
           <Radio value="3">Klobasa</Radio>
         </RadioGroup>
       </div>
 
-      <div className="mt-8">
+      {/* example with one option disabled */}
+      <div className="mt-10">
         <RadioGroup label="Choose your favourite from what is left">
           <Radio value="1">Krvavica</Radio>
           <Radio value="2">Pleskavica</Radio>
-          <Radio value="3" isDisabled>
+          <Radio value="3" disabled>
             Klobasa
           </Radio>
         </RadioGroup>
       </div>
 
-      <div className="mt-8">
-        <RadioGroup label="I chose your favourite" defaultValue="3" isDisabled>
+      {/* example with all options disabled */}
+      <div className="mt-10">
+        <RadioGroup label="I chose your favourite" defaultValue="3" disabled>
           <Radio value="1">Krvavica</Radio>
           <Radio value="2">Pleskavica</Radio>
           <Radio value="3">Klobasa</Radio>
         </RadioGroup>
       </div>
 
-      <div className="mt-8">
-        <RadioGroup
-          label="Choose your favourite"
-          validationState="invalid"
-          errorMessage="You must choose one."
-        >
+      {/* example with error message */}
+      <div className="mt-10">
+        <RadioGroup label="Choose your favourite" error="You must choose one.">
           <Radio value="1">Krvavica</Radio>
           <Radio value="2">Pleskavica</Radio>
           <Radio value="3">Klobasa</Radio>
         </RadioGroup>
       </div>
 
-      <div className="mt-8">
+      {/* example with error message and one option checked */}
+      <div className="mt-10">
         <RadioGroup
           label="Choose your favourite"
-          validationState="invalid"
-          errorMessage="Wrong choice."
+          error="Wrong choice."
           defaultValue="1"
         >
           <Radio value="1">Krvavica</Radio>
@@ -57,7 +57,8 @@ function RadioGroupPage() {
         </RadioGroup>
       </div>
 
-      <div className="mt-8">
+      {/* example with description */}
+      <div className="mt-10">
         <RadioGroup
           label="Choose your favourite"
           description="Choose the route you like the most."
@@ -68,6 +69,7 @@ function RadioGroupPage() {
         </RadioGroup>
       </div>
 
+      {/* example of inline variant */}
       <div className="mt-10">
         <RadioGroup label="Choose your favourite" inline>
           <Radio value="1">Krvavica</Radio>
@@ -93,4 +95,5 @@ function RadioGroupPage() {
     </div>
   );
 }
+
 export default RadioGroupPage;

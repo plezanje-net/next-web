@@ -9,8 +9,11 @@ import GradeRangeSlider, {
   minSliderValue,
   sliderValueToDifficultyMap,
 } from "../../../../../../../components/ui/grade-range-slider";
-import { Radio, RadioGroup } from "../../../../../../../components/ui/radio-group";
 import Checkbox from "../../../../../../../components/ui/checkbox";
+import {
+  Radio,
+  RadioGroup,
+} from "../../../../../../../components/ui/radio-group";
 
 function Filter() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
