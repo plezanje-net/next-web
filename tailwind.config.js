@@ -67,6 +67,12 @@ module.exports = {
         34: "8.5rem", // 136px
         36: "9rem", // 144px
       },
+      maxWidth: {
+        120: "30rem", // 480px
+      },
+      margin: {
+        18: "4.5rem", // 72px
+      },
     },
   },
   plugins: [require("@headlessui/tailwindcss")],

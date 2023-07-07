@@ -65,6 +65,7 @@ function Radio({ value, disabled, children }: RadioProps) {
 }
 
 interface RadioGroupProps {
+  name?: string;
   value?: string;
   onChange?: (value: string) => void;
   label?: string;
@@ -77,6 +78,7 @@ interface RadioGroupProps {
 }
 
 function RadioGroup({
+  name,
   value,
   onChange,
   label,
@@ -89,6 +91,7 @@ function RadioGroup({
 }: RadioGroupProps) {
   return (
     <RadioGroupHUI
+      name={name}
       value={value}
       defaultValue={defaultValue}
       onChange={onChange}

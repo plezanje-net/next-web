@@ -13,7 +13,7 @@ import useForwardedRef from "../../hooks/useForwardedRef";
 interface LinkProps extends AriaLinkOptions {
   href: string | UrlObject;
   target?: HTMLAttributeAnchorTarget;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary";
   children: ReactNode;
   className?: string;
 }
@@ -25,7 +25,21 @@ const Link = forwardRef(function Link(
   const linkRef = useForwardedRef(forwardedRef);
   const { linkProps, isPressed } = useLink(props, linkRef);
 
-  const variant = props.variant || "primary";
+  let classDefault;
+  let classPressed;
+  switch (props.variant) {
+    case "secondary":
+      classDefault = "text-neutral-900";
+      classPressed = "text-neutral-600";
+      break;
+    case "tertiary":
+      classDefault = "text-neutral-500";
+      classPressed = "text-neutral-600";
+      break;
+    default: // primary
+      classDefault = "text-blue-500";
+      classPressed = "text-blue-600";
+  }
 
   return (
     <NextLink
@@ -33,19 +47,11 @@ const Link = forwardRef(function Link(
       ref={linkRef}
       href={props.href}
       target={props.target}
-      className={`focus:underline focus:decoration-double
-      ${
-        variant === "primary" ? "text-blue-500" : "text-neutral-900"
-      } outline-none
+      className={`outline-none focus:underline focus:decoration-double
+      ${classDefault}
+      ${isPressed ? classPressed : ""}
       ${
         props.isDisabled ? "cursor-default text-neutral-400" : "hover:underline"
-      }
-      ${
-        isPressed
-          ? variant === "primary"
-            ? "text-blue-600"
-            : "text-neutral-600"
-          : ""
       }
       ${props.className ? props.className : ""}`}
     >
