@@ -18,7 +18,7 @@ async function CragComments({ params }: { params: Params }) {
 
   return (
     <div className="mx-auto mt-18 max-w-120">
-      <CommentForm cragId={crag.id} />
+      <CommentForm cragId={crag.id} currentUser={currentUser} />
       <div className="mt-12">
         {crag.comments.map((comment) => (
           <div
@@ -26,6 +26,7 @@ async function CragComments({ params }: { params: Params }) {
             className="border-t border-t-neutral-200 py-8 first:border-none"
           >
             <Comment
+              commentId={comment.id}
               datetime={comment.updated}
               text={comment.content}
               author={comment.user}

@@ -6,9 +6,11 @@ import TextArea from "../../../../../../components/ui/text-area";
 import { Radio, RadioGroup } from "../../../../../../components/ui/radio-group";
 import { createComment } from "./create-comment-action";
 import { useRouter } from "next/navigation";
+import { User } from "../../../../../../graphql/generated";
 
 interface Props {
   cragId: string;
+  currentUser: User | null | undefined;
 }
 
 enum CommentType {
@@ -16,7 +18,7 @@ enum CommentType {
   WARNING = "warning",
 }
 
-function CommentForm({ cragId }: Props) {
+function CommentForm({ cragId, currentUser }: Props) {
   const router = useRouter();
 
   const [commentType, setCommentType] = useState<CommentType>(
@@ -30,6 +32,13 @@ function CommentForm({ cragId }: Props) {
     if (!commentContent) {
       return;
     }
+
+    if (!currentUser) {
+      console.log("Prijavi se za oddajo komentarja.");
+      // TODO: open login popup, when such popup is implemented
+      return;
+    }
+
     await createComment(formData);
     router.refresh();
   };
