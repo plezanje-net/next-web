@@ -1,10 +1,10 @@
 "use server";
 
 import { gql } from "urql/core";
-import { CreateCommentDocument } from "../../../../../../graphql/generated";
-import urqlServer from "../../../../../../graphql/urql-server";
+import { CreateCommentDocument } from "../../../../../../../graphql/generated";
+import urqlServer from "../../../../../../../graphql/urql-server";
 
-export async function createComment(formData: FormData) {
+async function createCommentAction(formData: FormData) {
   const result = await urqlServer().mutation(CreateCommentDocument, {
     input: {
       cragId: formData.get("cragId"),
@@ -16,8 +16,11 @@ export async function createComment(formData: FormData) {
   if (result.error) {
     throw new Error("Pri objavi komentarja je prišlo do napake.");
   }
+
   return true;
 }
+
+export default createCommentAction;
 
 gql`
   mutation CreateComment($input: CreateCommentInput!) {

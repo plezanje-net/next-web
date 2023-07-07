@@ -1,8 +1,8 @@
 import { gql } from "urql/core";
 import urqlServer from "../../../../../graphql/urql-server";
 import { Crag, CragCommentsDocument } from "../../../../../graphql/generated";
-import Comment from "./components/comment";
-import CommentForm from "./components/comment-form";
+import Comment, { CommentType } from "./components/comment";
+import AddCommentForm from "./components/add-comment-form";
 import authStatus from "../../../../../utils/auth/auth-status";
 
 interface Params {
@@ -18,7 +18,8 @@ async function CragComments({ params }: { params: Params }) {
 
   return (
     <div className="mx-auto mt-18 max-w-120">
-      <CommentForm cragId={crag.id} currentUser={currentUser} />
+      <AddCommentForm cragId={crag.id} currentUser={currentUser} />
+
       <div className="mt-12">
         {crag.comments.map((comment) => (
           <div
@@ -28,7 +29,8 @@ async function CragComments({ params }: { params: Params }) {
             <Comment
               commentId={comment.id}
               datetime={comment.updated}
-              text={comment.content}
+              content={comment.content}
+              type={comment.type as CommentType}
               author={comment.user}
               currentUser={currentUser}
             />
@@ -39,6 +41,8 @@ async function CragComments({ params }: { params: Params }) {
   );
 }
 
+export default CragComments;
+
 gql`
   query CragComments($crag: String!) {
     cragBySlug(slug: $crag) {
@@ -47,6 +51,7 @@ gql`
       comments {
         id
         content
+        type
         updated
         user {
           id
@@ -56,5 +61,3 @@ gql`
     }
   }
 `;
-
-export default CragComments;

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "../../../../../../components/ui/button";
 import TextArea from "../../../../../../components/ui/text-area";
 import { Radio, RadioGroup } from "../../../../../../components/ui/radio-group";
-import { createComment } from "./create-comment-action";
+import createCommentAction from "./server-actions/create-comment-action";
 import { useRouter } from "next/navigation";
 import { User } from "../../../../../../graphql/generated";
 
@@ -18,7 +18,7 @@ enum CommentType {
   WARNING = "warning",
 }
 
-function CommentForm({ cragId, currentUser }: Props) {
+function AddCommentForm({ cragId, currentUser }: Props) {
   const router = useRouter();
 
   const [commentType, setCommentType] = useState<CommentType>(
@@ -35,11 +35,11 @@ function CommentForm({ cragId, currentUser }: Props) {
 
     if (!currentUser) {
       console.log("Prijavi se za oddajo komentarja.");
-      // TODO: open login popup, when such popup is implemented
+      // TODO: open login modal dialog, when such dialog is implemented
       return;
     }
 
-    await createComment(formData);
+    await createCommentAction(formData);
     router.refresh();
   };
 
@@ -74,4 +74,4 @@ function CommentForm({ cragId, currentUser }: Props) {
   );
 }
 
-export default CommentForm;
+export default AddCommentForm;
