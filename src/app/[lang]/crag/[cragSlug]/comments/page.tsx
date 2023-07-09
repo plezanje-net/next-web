@@ -17,25 +17,27 @@ async function CragComments({ params }: { params: Params }) {
   const currentUser = (await authStatus())?.user;
 
   return (
-    <div className="mx-auto mt-18 max-w-120">
-      <AddCommentForm cragId={crag.id} currentUser={currentUser} />
+    <div className="mx-auto mt-18 w-fit px-4 xs:px-8">
+      <div className="max-w-120">
+        <AddCommentForm cragId={crag.id} currentUser={currentUser} />
 
-      <div className="mt-12">
-        {crag.comments.map((comment) => (
-          <div
-            key={comment.id}
-            className="border-t border-t-neutral-200 py-8 first:border-none"
-          >
-            <Comment
-              commentId={comment.id}
-              datetime={comment.updated}
-              content={comment.content}
-              type={comment.type as CommentType}
-              author={comment.user}
-              currentUser={currentUser}
-            />
-          </div>
-        ))}
+        <div className="mt-12">
+          {crag.comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="border-t border-t-neutral-200 py-8 first:border-none"
+            >
+              <Comment
+                commentId={comment.id}
+                datetime={comment.updated}
+                content={comment.content}
+                type={comment.type as CommentType}
+                author={comment.user}
+                currentUser={currentUser}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

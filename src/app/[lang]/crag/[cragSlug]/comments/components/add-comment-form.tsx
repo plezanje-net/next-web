@@ -47,6 +47,7 @@ function AddCommentForm({ cragId, currentUser }: Props) {
     <div>
       <form action={handleFormAction}>
         <input type="hidden" name="cragId" value={cragId} />
+
         <TextArea
           name="commentContent"
           onChange={setCommentContent}
@@ -54,18 +55,21 @@ function AddCommentForm({ cragId, currentUser }: Props) {
           aria-label="Vnesi komentar ali opozorilo"
         />
 
-        <div className="mt-4 flex items-start justify-between">
-          <RadioGroup
-            name="commentType"
-            inline
-            value={commentType}
-            onChange={(value) => setCommentType(value as CommentType)}
-            defaultValue={CommentType.COMMENT}
-          >
-            <Radio value={CommentType.COMMENT}>komentar</Radio>
-            <Radio value={CommentType.WARNING}>opozorilo</Radio>
-          </RadioGroup>
+        <div className="flex-wrap xs:flex xs:items-start xs:justify-between">
+          <div className="mt-4">
+            <RadioGroup
+              name="commentType"
+              inline
+              value={commentType}
+              onChange={(value) => setCommentType(value as CommentType)}
+              defaultValue={CommentType.COMMENT}
+            >
+              <Radio value={CommentType.COMMENT}>komentar</Radio>
+              <Radio value={CommentType.WARNING}>opozorilo</Radio>
+            </RadioGroup>
+          </div>
           <Button
+            className="ml-auto mt-4"
             isDisabled={!commentContent}
           >{`Objavi ${buttonLabel[commentType]}`}</Button>
         </div>
