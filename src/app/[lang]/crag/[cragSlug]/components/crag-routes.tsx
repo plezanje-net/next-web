@@ -258,54 +258,69 @@ function CragRoutes({ crag, mySummary }: Props) {
       .map((s) => parseInt(s)) ?? []
   );
 
-  const createSectorQuery = useCallback(
-    (index: number) => {
-      const params = new URLSearchParams(searchParams);
-      let sectors =
-        params
-          .get("s")
-          ?.split(";")
-          .map((s) => parseInt(s)) ?? [];
-      let anchor = "";
-      if (sectors.includes(index)) {
-        sectors = sectors.filter((s) => s !== index);
-      } else {
-        sectors.push(index);
-        sectors.sort();
-        anchor = `#s${index}`;
-      }
+  // const createSectorQuery = useCallback(
+  //   (index: number) => {
+  //     const params = new URLSearchParams(searchParams);
+  //     let sectors =
+  //       params
+  //         .get("s")
+  //         ?.split(";")
+  //         .map((s) => parseInt(s)) ?? [];
+  //     let anchor = "";
+  //     if (sectors.includes(index)) {
+  //       sectors = sectors.filter((s) => s !== index);
+  //     } else {
+  //       sectors.push(index);
+  //       sectors.sort();
+  //       anchor = `#s${index}`;
+  //     }
 
-      if (sectors.length === 0) {
-        params.delete("s");
-      } else {
-        params.set("s", sectors.join(";"));
-      }
+  //     if (sectors.length === 0) {
+  //       params.delete("s");
+  //     } else {
+  //       params.set("s", sectors.join(";"));
+  //     }
 
-      setExpandedSectors(sectors);
+  //     setExpandedSectors(sectors);
 
-      return decodeURIComponent(params.toString());
-    },
-    [searchParams]
-  );
+  //     // return decodeURIComponent(params.toString());
+  //   },
+  //   [searchParams]
+  // );
 
-  const saveScrollPosition = useCallback(() => {
-    localStorage.setItem("persistentScroll", window.scrollY.toString());
-  }, []);
+  // const saveScrollPosition = useCallback(() => {
+  //   localStorage.setItem("persistentScroll", window.scrollY.toString());
+  // }, []);
 
   const toggleSector = (index: number) => {
-    saveScrollPosition();
-    router.push(`${pathname}?${createSectorQuery(index)}`, { scroll: false });
+    let sectors = [...expandedSectors];
+    if (expandedSectors.includes(index)) {
+      sectors = sectors.filter((s) => s !== index);
+    } else {
+      sectors.push(index);
+      // sectors.sort();
+    }
+    setExpandedSectors(sectors);
+
+    // console.log(window.location);
+    // const url = new URL(window.location.href);
+    // url.searchParams.set("s", decodeURIComponent(sectors.join(";")));
+    // history.pushState({}, "", url);
+
+    // createSectorQuery(index);
+    // saveScrollPosition();
+    // router.push(`${pathname}?${createSectorQuery(index)}`, { scroll: false });
   };
 
-  useEffect(() => {
-    const persistentScroll = localStorage.getItem("persistentScroll");
-    if (persistentScroll === null) return;
+  // useEffect(() => {
+  //   const persistentScroll = localStorage.getItem("persistentScroll");
+  //   if (persistentScroll === null) return;
 
-    window.scrollTo({ top: Number(persistentScroll) });
+  //   window.scrollTo({ top: Number(persistentScroll) });
 
-    if (Number(persistentScroll) === window.scrollY)
-      localStorage.removeItem("persistentScroll");
-  }, [searchParams]);
+  //   if (Number(persistentScroll) === window.scrollY)
+  //     localStorage.removeItem("persistentScroll");
+  // }, [searchParams]);
 
   return (
     <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
