@@ -63,6 +63,7 @@ const Link = forwardRef(function Link(
         href={props.href}
         target={props.target}
         className={className}
+        prefetch={false}
       >
         {props.children}
       </NextLink>
