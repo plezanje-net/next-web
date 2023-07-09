@@ -1,12 +1,18 @@
 "use client";
+import {
+  ActivityRoute,
+  Crag,
+  Route,
+  Sector,
+} from "../../../../../graphql/generated";
 import { createContext, useEffect, useRef, useState } from "react";
-import { Crag, Route, Sector } from "../../../../../graphql/generated";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
 
 interface Props {
   crag: Crag;
+  mySummary: ActivityRoute[];
 }
 
 interface FilterOptions {
@@ -177,7 +183,7 @@ const cragRouteListColumns: CragRouteListColumn[] = [
   },
 ];
 
-function CragRoutes({ crag }: Props) {
+function CragRoutes({ crag, mySummary }: Props) {
   const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
     compact: true,
     combine: false,
@@ -194,36 +200,9 @@ function CragRoutes({ crag }: Props) {
   const [compact, setCompact] = useState(true);
   const [breakpoint, setBreakpoint] = useState(500);
 
-  // Load user's crag summary if logged in and after server-side render
-  const [ascents, setAscents] = useState<Map<string, string>>(new Map());
-  // const authCtx = useAuth();
-  // const [fetchAscents, setFetchAscents] = useState(false);
-  // const [ascentsResult] = useQuery({
-  //   query: MyCragSummaryDocument,
-  //   variables: {
-  //     input: {
-  //       cragId: crag.id,
-  //     },
-  //   },
-  //   pause: !fetchAscents,
-  // });
-
-  // useEffect(() => {
-  //   if (authCtx.status?.loggedIn) {
-  //     setFetchAscents(true);
-  //   }
-  // }, [authCtx.status]);
-
-  // useEffect(() => {
-  //   setAscents(
-  //     new Map(
-  //       ascentsResult.data?.myCragSummary.map((ascent) => [
-  //         ascent.route.id,
-  //         ascent.ascentType,
-  //       ])
-  //     )
-  //   );
-  // }, [ascentsResult.data]);
+  const ascents = new Map(
+    mySummary.map((ascent) => [ascent.route.id, ascent.ascentType])
+  );
 
   // Resize observer to detect when to switch to compact mode according to selected columns width
   useEffect(() => {

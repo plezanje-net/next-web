@@ -1,7 +1,13 @@
 import { gql } from "@urql/core";
-import { Crag, CragSectorsDocument } from "../../../../graphql/generated";
+import {
+  ActivityRoute,
+  Crag,
+  CragSectorsDocument,
+  MyCragSummaryDocument,
+} from "../../../../graphql/generated";
 import urqlServer from "../../../../graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
+import authStatus from "../../../../utils/auth/auth-status";
 
 type Params = {
   cragSlug: string;
@@ -11,15 +17,40 @@ type Props = {
   params: Params;
 };
 
-async function CragPage({ params }: Props) {
-  const { data } = await urqlServer().query(CragSectorsDocument, {
-    crag: params.cragSlug,
+async function getCragBySlug(crag: string): Promise<Crag> {
+  const {
+    data: { cragBySlug },
+  } = await urqlServer().query(CragSectorsDocument, {
+    crag,
+  });
+  return cragBySlug;
+}
+
+async function getMySummary(crag: string): Promise<ActivityRoute[]> {
+  const { loggedIn } = await authStatus();
+
+  if (!loggedIn) {
+    return [];
+  }
+
+  const {
+    data: { myCragSummary },
+  } = await urqlServer().query(MyCragSummaryDocument, {
+    crag,
   });
 
-  const crag = data.cragBySlug as Crag;
+  return myCragSummary;
+}
+
+async function CragPage({ params: { cragSlug } }: Props) {
+  const [cragBySlug, myCragSummary] = await Promise.all([
+    getCragBySlug(cragSlug),
+    getMySummary(cragSlug),
+  ]);
+
   return (
     <>
-      <CragRoutes crag={crag} />
+      <CragRoutes crag={cragBySlug} mySummary={myCragSummary} />
     </>
   );
 }
@@ -70,6 +101,18 @@ gql`
           }
         }
         bouldersOnly
+      }
+    }
+  }
+`;
+
+gql`
+  query MyCragSummary($input: FindActivityRoutesInput) {
+    myCragSummary(input: $input) {
+      ascentType
+      route {
+        id
+        slug
       }
     }
   }
