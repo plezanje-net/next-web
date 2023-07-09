@@ -283,14 +283,29 @@ function CragRoutes({ crag, mySummary }: Props) {
 
       setExpandedSectors(sectors);
 
-      return decodeURIComponent(params.toString()) + anchor;
+      return decodeURIComponent(params.toString());
     },
     [searchParams]
   );
 
+  const saveScrollPosition = useCallback(() => {
+    localStorage.setItem("persistentScroll", window.scrollY.toString());
+  }, []);
+
   const toggleSector = (index: number) => {
-    router.push(`${pathname}?${createSectorQuery(index)}`);
+    saveScrollPosition();
+    router.push(`${pathname}?${createSectorQuery(index)}`, { scroll: false });
   };
+
+  useEffect(() => {
+    const persistentScroll = localStorage.getItem("persistentScroll");
+    if (persistentScroll === null) return;
+
+    window.scrollTo({ top: Number(persistentScroll) });
+
+    if (Number(persistentScroll) === window.scrollY)
+      localStorage.removeItem("persistentScroll");
+  }, [searchParams]);
 
   return (
     <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
