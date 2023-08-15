@@ -40,6 +40,11 @@ function AddCommentForm({ cragId, currentUser }: Props) {
     }
 
     await createCommentAction(formData);
+
+    // clear form
+    setCommentContent("");
+    setCommentType(CommentType.COMMENT);
+
     router.refresh();
   };
 
@@ -50,6 +55,7 @@ function AddCommentForm({ cragId, currentUser }: Props) {
 
         <TextArea
           name="commentContent"
+          value={commentContent}
           onChange={setCommentContent}
           placeholder="Vnesi komentar ali opozorilo..."
           aria-label="Vnesi komentar ali opozorilo"
