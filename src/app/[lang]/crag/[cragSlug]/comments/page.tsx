@@ -29,7 +29,8 @@ async function CragComments({ params }: { params: Params }) {
             >
               <Comment
                 commentId={comment.id}
-                datetime={comment.updated}
+                updated={comment.updated}
+                created={comment.created}
                 content={comment.content}
                 type={comment.type as CommentType}
                 author={comment.user}
@@ -54,6 +55,7 @@ gql`
         id
         content
         type
+        created
         updated
         user {
           id

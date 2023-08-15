@@ -3,7 +3,8 @@ import CommentActions from "./comment-actions";
 
 interface CommentProps {
   commentId: string;
-  datetime: string;
+  updated: string;
+  created: string;
   content: string | null | undefined; // TODO: fix type when BE marks this field as non nullable
   type: CommentType;
   author: User | null | undefined; // TODO: fix type when BE marks this field as non nullable
@@ -17,7 +18,8 @@ enum CommentType {
 
 function Comment({
   commentId,
-  datetime,
+  updated,
+  created,
   content,
   type,
   author,
@@ -32,7 +34,12 @@ function Comment({
       }`}
     >
       <div className="flex items-end justify-between text-neutral-500">
-        <div>{formatDatetime(datetime)}</div>
+        <div>
+          <div>{formatDatetime(created)}</div>
+          {updated != created && (
+            <div>{`Posodobljeno: ${formatDatetime(updated)}`}</div>
+          )}
+        </div>
         {currentUser && currentUser.id === author?.id && (
           <CommentActions
             commentId={commentId}
