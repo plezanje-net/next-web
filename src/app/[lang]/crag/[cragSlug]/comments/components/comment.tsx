@@ -6,7 +6,7 @@ interface CommentProps {
   datetime: string;
   content: string | null | undefined; // TODO: fix type when BE marks this field as non nullable
   type: CommentType;
-  author: User | null | undefined; // TODO: fix type when BE marks this fiels as non nullable
+  author: User | null | undefined; // TODO: fix type when BE marks this field as non nullable
   currentUser: User | undefined;
 }
 
@@ -24,7 +24,13 @@ function Comment({
   currentUser,
 }: CommentProps) {
   return (
-    <div>
+    <div
+      className={`${
+        type == CommentType.WARNING
+          ? "rounded-lg border border-red-500 bg-red-25 px-6 py-4"
+          : ""
+      }`}
+    >
       <div className="flex items-end justify-between text-neutral-500">
         <div>{formatDatetime(datetime)}</div>
         {currentUser && currentUser.id === author?.id && (

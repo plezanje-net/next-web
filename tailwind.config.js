@@ -46,6 +46,8 @@ module.exports = {
         900: "#171717",
       },
       red: {
+        25: "#FBECEA",
+        50: "#F7D9D5",
         100: "#F0B3AA",
         500: "#d9422b",
       },
@@ -66,9 +68,6 @@ module.exports = {
         32: "8rem", // 128px
         34: "8.5rem", // 136px
         36: "9rem", // 144px
-      },
-      maxWidth: {
-        120: "30rem", // 480px
       },
       margin: {
         18: "4.5rem", // 72px
