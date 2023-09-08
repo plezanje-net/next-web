@@ -1,0 +1,20 @@
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  @apply bg-white  shadow-lg;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-lg;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  @apply text-neutral-500;
+}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+  @apply text-neutral-900;
+}
+
+.leaflet-popup-content {
+  @apply font-sans text-sm text-neutral-900;
+}
