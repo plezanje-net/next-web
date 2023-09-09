@@ -46,9 +46,9 @@ function LazyMap({ children, markers, className, center, zoom }: MapProps) {
             html: ReactDOMServer.renderToString(
               <IconMarker type={marker.type} />
             ),
-            iconSize: [48, 48],
-            iconAnchor: [24, 48],
-            popupAnchor: [0, -36],
+            iconSize: [52, 52],
+            iconAnchor: [26, 52],
+            popupAnchor: [0, -46],
           })}
           position={marker.position}
         >
