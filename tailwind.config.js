@@ -26,7 +26,7 @@ module.exports = {
       blue: {
         100: "#aaccf0",
         // 200: "...",  // will be added if/when needed
-        // 300: "#...",
+        300: "#6ba5e4",
         // 400: "#...",
         500: "#2b7fd9",
         600: "#256cb8",
@@ -74,5 +74,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@headlessui/tailwindcss")],
+  plugins: [
+    require("@headlessui/tailwindcss"),
+    require("@tailwindcss/container-queries"),
+  ],
 };
