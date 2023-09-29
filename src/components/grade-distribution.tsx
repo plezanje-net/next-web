@@ -52,176 +52,250 @@ function GradeDistribution({ crag }: GradeDistributionProps) {
   const gradingSystemId = crag.defaultGradingSystem?.id || "french";
 
   // TODO: define slots for all other grading systems that we want to support. and define some fallback for those we don't
-  const gradeSlots: GradeSlot[] = [
+  const gradeSlotsBySystem = [
     {
-      label: "..4c",
-      grades: ["1", "2", "3", "4a", "4a+", "4b", "4c"],
-      count: 0,
-      colorClass: "bg-blue-100",
+      gradingSystemId: "french",
+      regularSlots: [
+        {
+          label: "..4c",
+          grades: ["1", "2", "3", "4a", "4a+", "4b", "4c"],
+          count: 0,
+          colorClass: "bg-blue-100",
+        },
+        {
+          label: "5a",
+          grades: ["5a", "5a+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "5b",
+          grades: ["5b", "5b+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "5c",
+          grades: ["5c", "5c+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "6a",
+          grades: ["6a", "6a+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "6b",
+          grades: ["6b", "6b+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "6c",
+          grades: ["6c", "6c+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "7a",
+          grades: ["7a", "7a+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "7b",
+          grades: ["7b", "7b+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "7c",
+          grades: ["7c", "7c+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "8a",
+          grades: ["8a", "8a+"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "8b",
+          grades: ["8b", "8b+"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "8c",
+          grades: ["8c", "8c+"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "9a..",
+          grades: ["9a", "9a+", "9b", "9b+", "9c"],
+          count: 0,
+          colorClass: "bg-neutral-700",
+        },
+      ],
+      compactSlots: [
+        {
+          label: "..5a",
+          grades: ["1", "2", "3", "4a", "4a+", "4b", "4c", "5a", "5a+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "5b",
+          grades: ["5b", "5b+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "5c",
+          grades: ["5c", "5c+"],
+          count: 0,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "6a",
+          grades: ["6a", "6a+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "6b",
+          grades: ["6b", "6b+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "6c",
+          grades: ["6c", "6c+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "7a",
+          grades: ["7a", "7a+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "7b",
+          grades: ["7b", "7b+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "7c",
+          grades: ["7c", "7c+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "8a",
+          grades: ["8a", "8a+"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "8b",
+          grades: ["8b", "8b+"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "8c..",
+          grades: ["8c", "8c+", "9a", "9a+", "9b", "9b+", "9c"],
+          count: 0,
+          colorClass: "bg-blue-500",
+        },
+      ],
     },
     {
-      label: "5a",
-      grades: ["5a", "5a+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "5b",
-      grades: ["5b", "5b+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "5c",
-      grades: ["5c", "5c+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "6a",
-      grades: ["6a", "6a+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "6b",
-      grades: ["6b", "6b+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "6c",
-      grades: ["6c", "6c+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "7a",
-      grades: ["7a", "7a+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "7b",
-      grades: ["7b", "7b+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "7c",
-      grades: ["7c", "7c+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "8a",
-      grades: ["8a", "8a+"],
-      count: 0,
-      colorClass: "bg-blue-500",
-    },
-    {
-      label: "8b",
-      grades: ["8b", "8b+"],
-      count: 0,
-      colorClass: "bg-blue-500",
-    },
-    {
-      label: "8c",
-      grades: ["8c", "8c+"],
-      count: 0,
-      colorClass: "bg-blue-500",
-    },
-    {
-      label: "9a..",
-      grades: ["9a", "9a+", "9b", "9b+", "9c"],
-      count: 0,
-      colorClass: "bg-neutral-700",
-    },
-  ];
-
-  const gradeSlotsCompact: GradeSlot[] = [
-    {
-      label: "..5a",
-      grades: ["1", "2", "3", "4a", "4a+", "4b", "4c", "5a", "5a+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "5b",
-      grades: ["5b", "5b+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "5c",
-      grades: ["5c", "5c+"],
-      count: 0,
-      colorClass: "bg-neutral-300",
-    },
-    {
-      label: "6a",
-      grades: ["6a", "6a+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "6b",
-      grades: ["6b", "6b+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "6c",
-      grades: ["6c", "6c+"],
-      count: 0,
-      colorClass: "bg-blue-300",
-    },
-    {
-      label: "7a",
-      grades: ["7a", "7a+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "7b",
-      grades: ["7b", "7b+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "7c",
-      grades: ["7c", "7c+"],
-      count: 0,
-      colorClass: "bg-neutral-500",
-    },
-    {
-      label: "8a",
-      grades: ["8a", "8a+"],
-      count: 0,
-      colorClass: "bg-blue-500",
-    },
-    {
-      label: "8b",
-      grades: ["8b", "8b+"],
-      count: 0,
-      colorClass: "bg-blue-500",
-    },
-    {
-      label: "8c..",
-      grades: ["8c", "8c+", "9a", "9a+", "9b", "9b+", "9c"],
-      count: 0,
-      colorClass: "bg-blue-500",
+      gradingSystemId: "uiaa",
+      regularSlots: [
+        {
+          label: "..III",
+          grades: ["I", "II", "III"],
+          count: 6,
+          colorClass: "bg-blue-100",
+        },
+        {
+          label: "IV",
+          grades: ["IV", "IV+"],
+          count: 3,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "V",
+          grades: ["V-", "V", "V+"],
+          count: 4,
+          colorClass: "bg-neutral-300",
+        },
+        {
+          label: "VI",
+          grades: ["VI-", "VI", "VI+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "VII",
+          grades: ["VII-", "VII", "VII+"],
+          count: 0,
+          colorClass: "bg-blue-300",
+        },
+        {
+          label: "VIII",
+          grades: ["VIII-", "VIII", "VIII+"],
+          count: 0,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "IX",
+          grades: ["IX-", "IX", "IX+"],
+          count: 2,
+          colorClass: "bg-neutral-500",
+        },
+        {
+          label: "X",
+          grades: ["X-", "X", "X+"],
+          count: 4,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "XI",
+          grades: ["XI-", "XI", "XI+"],
+          count: 1,
+          colorClass: "bg-blue-500",
+        },
+        {
+          label: "XII",
+          grades: ["XII-", "XII", "XII+"],
+          count: 2,
+          colorClass: "bg-neutral-700",
+        },
+      ],
     },
   ];
 
   const routes = crag.sectors.map((sector) => sector.routes).flat();
+
+  // pick the slots that are relevant for the current crag
+  const gradeSlots = gradeSlotsBySystem.find(
+    (gradeSlotsBy) => gradeSlotsBy.gradingSystemId === gradingSystemId
+  );
 
   routes.forEach((route) => {
     if (route.difficulty) {
       const grade = difficultyToGrade(route.difficulty, gradingSystemId);
       if (grade) {
         // fill in regular slots
-        const slot = gradeSlots.find((slot) =>
+        const slot = gradeSlots?.regularSlots.find((slot) =>
           slot.grades.includes(grade.name)
         );
         if (slot) {
@@ -229,19 +303,23 @@ function GradeDistribution({ crag }: GradeDistributionProps) {
         }
 
         // fill in compact slots
-        const slotCompact = gradeSlotsCompact.find((slot) =>
-          slot.grades.includes(grade.name)
-        );
-        if (slotCompact) {
-          slotCompact.count++;
+        if (gradeSlots?.compactSlots) {
+          const slotCompact = gradeSlots?.compactSlots.find((slot) =>
+            slot.grades.includes(grade.name)
+          );
+          if (slotCompact) {
+            slotCompact.count++;
+          }
         }
       }
     }
   });
 
-  const maxCount = Math.max(...gradeSlots.map((val) => val.count));
+  const maxCountRegular = Math.max(
+    ...(gradeSlots?.regularSlots.map((val) => val.count) || [])
+  );
   const maxCountCompact = Math.max(
-    ...gradeSlotsCompact.map((val) => val.count)
+    ...(gradeSlots?.compactSlots?.map((val) => val.count) || [])
   );
 
   return (
@@ -250,19 +328,31 @@ function GradeDistribution({ crag }: GradeDistributionProps) {
       <div className="mt-4 @container">
         <div className="bg-neutral-100 p-4 @md:p-6 xs:rounded-lg">
           <div className="hidden w-full items-end justify-between @sm:flex">
-            {gradeSlots.map((gradeSlot, index) => (
-              <Bar key={index} gradeSlot={gradeSlot} maxCount={maxCount} />
+            {gradeSlots?.regularSlots.map((gradeSlot, index) => (
+              <Bar
+                key={index}
+                gradeSlot={gradeSlot}
+                maxCount={maxCountRegular}
+              />
             ))}
           </div>
 
           <div className="flex w-full items-end justify-between @sm:hidden">
-            {gradeSlotsCompact.map((gradeSlot, index) => (
-              <Bar
-                key={index}
-                gradeSlot={gradeSlot}
-                maxCount={maxCountCompact}
-              />
-            ))}
+            {gradeSlots?.compactSlots
+              ? gradeSlots?.compactSlots.map((gradeSlot, index) => (
+                  <Bar
+                    key={index}
+                    gradeSlot={gradeSlot}
+                    maxCount={maxCountCompact}
+                  />
+                ))
+              : gradeSlots?.regularSlots.map((gradeSlot, index) => (
+                  <Bar
+                    key={index}
+                    gradeSlot={gradeSlot}
+                    maxCount={maxCountRegular}
+                  />
+                ))}
           </div>
         </div>
       </div>
