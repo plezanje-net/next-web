@@ -71,12 +71,14 @@ function Dialog({
         <div className="fixed inset-0 overflow-y-auto p-10">
           <DialogHUI.Panel
             ref={initFocusRef}
-            className={`mx-auto rounded-lg bg-white py-10 px-8 shadow-lg ${dialogSize}`}
+            className={`mx-auto rounded-lg bg-white px-8 py-8 shadow-lg ${dialogSize}`}
           >
             <DialogHUI.Title as="h4">{title}</DialogHUI.Title>
-            <DialogHUI.Description className="mt-8" as="div">
-              {children}
-            </DialogHUI.Description>
+            {isOpen && (
+              <DialogHUI.Description className="mt-8" as="div">
+                {children}
+              </DialogHUI.Description>
+            )}
             <div className="mt-10 flex flex-wrap justify-end gap-4">
               <Button variant="secondary" onClick={handleCancel}>
                 {cancel.label}

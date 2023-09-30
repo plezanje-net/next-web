@@ -11,6 +11,7 @@ import IconStarFull from "../../../../../../../components/ui/icons/star-full";
 import Link from "../../../../../../../components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../utils/text-helpers";
+import RouteGrade from "./crag-route/route-grade";
 
 interface Props {
   crag: Crag;
@@ -161,19 +162,6 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         {!statsText != !cragRoutesState.combine && <div className="pb-1"></div>}
       </div>
     </div>
-  );
-}
-
-interface RouteGradeProps {
-  route: Route;
-}
-
-function RouteGrade({ route }: RouteGradeProps) {
-  return (
-    <>
-      {route.isProject && "P"}
-      {route.difficulty && <Grade difficulty={route.difficulty} />}
-    </>
   );
 }
 
