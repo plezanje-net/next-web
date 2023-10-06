@@ -6,8 +6,7 @@ interface VisitsDistributionProps {
 }
 
 function VisitsDistribution({ crag }: VisitsDistributionProps) {
-  // TODO:activityByMonth could be non nullable, as all crags in db have this field
-  const maxCount = Math.max(...(crag.activityByMonth || []));
+  const maxCount = Math.max(...crag.activityByMonth);
 
   const monthNames = [
     "Januar",
@@ -32,16 +31,17 @@ function VisitsDistribution({ crag }: VisitsDistributionProps) {
     nrVisits: number;
   }[] = [];
 
+  // Fill months array of month objects
   for (let i = 0; i < monthNames.length; i++) {
     months[i] = {
       position: i,
       name: monthNames[i],
       nameShort: monthNames[i].substring(0, 3),
-      nrVisits: crag.activityByMonth?.[i] || 0,
+      nrVisits: crag.activityByMonth[i],
     };
   }
 
-  // Sort by number od visits descending
+  // Sort by number of visits descending
   months.sort((a, b) => (a.nrVisits > b.nrVisits ? -1 : 1));
 
   // Assign colors: more visits, more intense
