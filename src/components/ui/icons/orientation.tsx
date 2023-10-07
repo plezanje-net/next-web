@@ -59,7 +59,7 @@ function IconOrientation({ orientations }: IconOrientationProps) {
         cy="12"
         r="8.5"
         className="stroke-neutral-900"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
         fill="none"
       />
       <line
@@ -68,7 +68,7 @@ function IconOrientation({ orientations }: IconOrientationProps) {
         x2="12"
         y2="1"
         className="stroke-neutral-900"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
       />
       <line
         x1="12"
@@ -76,7 +76,7 @@ function IconOrientation({ orientations }: IconOrientationProps) {
         x2="12"
         y2="23"
         className="stroke-neutral-900"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
       />
       <line
         x1="4"
@@ -84,7 +84,7 @@ function IconOrientation({ orientations }: IconOrientationProps) {
         x2="1"
         y2="12"
         className="stroke-neutral-900"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
       />
       <line
         x1="20"
@@ -92,7 +92,7 @@ function IconOrientation({ orientations }: IconOrientationProps) {
         x2="23"
         y2="12"
         className="stroke-neutral-900"
-        strokeWidth="1.5"
+        strokeWidth="1.2"
       />
     </svg>
   );
