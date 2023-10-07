@@ -9,7 +9,7 @@ import { ReactNode } from "react";
 import "./map.css";
 
 interface MapProps {
-  children: ReactNode;
+  children?: ReactNode;
   markers?: {
     type: "parking" | "wall";
     position: [number, number];
@@ -21,7 +21,7 @@ interface MapProps {
 }
 
 function LazyMap({ children, markers, className, center, zoom }: MapProps) {
-  let mapClassName = "h-[600px] w-full rounded-lg";
+  let mapClassName = "h-[600px] w-full xs:rounded-lg";
   if (className) {
     mapClassName = `${mapClassName} ${className}`;
   }

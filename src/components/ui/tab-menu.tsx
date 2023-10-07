@@ -21,7 +21,7 @@ function TabMenu({ items }: TabMenuProps) {
           className={`-mb-px block pb-px
                     ${
                       item.isActive
-                        ? "-mt-px rounded-t-lg border-t border-l border-r border-neutral-200 bg-white"
+                        ? "-mt-px rounded-t-lg border-l border-r border-t border-neutral-200 bg-white"
                         : "px-px"
                     }
                     `}
