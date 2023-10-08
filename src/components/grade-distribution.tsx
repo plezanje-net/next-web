@@ -367,7 +367,7 @@ interface BarProps {
 
 function Bar({ gradeSlot, maxCount }: BarProps) {
   return (
-    <div className="flex w-5 flex-col items-center @md:w-6 @xl:w-8 @3xl:w-10">
+    <div className="@4xl:w-13 flex w-5 flex-col items-center @md:w-6 @xl:w-8 @3xl:w-10">
       <div className="flex h-48 w-full flex-col items-center @md:h-[300px]">
         {/* spacer - empty space above bar */}
         <div

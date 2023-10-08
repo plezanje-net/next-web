@@ -57,6 +57,9 @@ module.exports = {
     },
     extend: {
       screens: { xs: "512px" },
+      width: {
+        13: "3.25rem", // 52px
+      },
       minWidth: {
         8: "2rem", // 32px
         14: "3.5rem", // 56px
