@@ -68,6 +68,10 @@ async function CragInfoPage({ params }: { params: Params }) {
             <div className="ml-4 hidden border-l border-neutral-200 pl-4 sm:flex">
               <ApproachTimeAndHeight />
             </div>
+
+            <div className="ml-4 hidden border-l border-neutral-200 pl-4 xl:flex">
+              <ApproachTimeHeightAnglesSeasonsAndRainproof />
+            </div>
           </div>
 
           <div>
@@ -76,47 +80,8 @@ async function CragInfoPage({ params }: { params: Params }) {
         </div>
 
         {/* row 2: some icons (based on screen size) and all other icons. Wrapping in 'groups' */}
-        <div className="mt-4 block sm:flex">
-          <div className="">
-            <div className="flex sm:hidden">
-              <ApproachTimeAndHeight />
-            </div>
-
-            {/* wall angles */}
-            <div className="mt-4 flex gap-5 sm:mt-0">
-              <div className="text-neutral-300">
-                <IconSlab />
-              </div>
-              <div className="text-neutral-300">
-                <IconVertical />
-              </div>
-              <div>
-                <IconOverhang />
-              </div>
-              <div>
-                <IconRoof />
-              </div>
-            </div>
-          </div>
-
-          {/* best seasons and rainproof */}
-          <div className="mt-4 flex gap-5 sm:ml-4 sm:mt-0 sm:border-l sm:border-neutral-200 sm:pl-4">
-            <div>
-              <IconSpring />
-            </div>
-            <div className="text-neutral-300">
-              <IconSummer />
-            </div>
-            <div>
-              <IconAutumn />
-            </div>
-            <div className="text-neutral-300">
-              <IconWinter />
-            </div>
-            <div className="ml-4 border-l border-neutral-200 pl-4">
-              <IconRainproof />
-            </div>
-          </div>
+        <div className="mt-4 block sm:flex xl:hidden">
+          <ApproachTimeHeightAnglesSeasonsAndRainproof />
         </div>
       </div>
 
@@ -209,6 +174,54 @@ function ApproachTimeAndHeight() {
       <div className="ml-4 flex items-end border-l border-neutral-200 pl-4">
         <IconHeight />
         <span className="-ml-1.5 font-medium">10-40 m</span>
+      </div>
+    </>
+  );
+}
+
+function ApproachTimeHeightAnglesSeasonsAndRainproof() {
+  return (
+    <>
+      <div>
+        <div className="flex sm:hidden">
+          <ApproachTimeAndHeight />
+        </div>
+
+        {/* wall angles */}
+        <div className="mt-4 flex gap-5 sm:mt-0">
+          <div className="text-neutral-300">
+            <IconSlab />
+          </div>
+          <div className="text-neutral-300">
+            <IconVertical />
+          </div>
+          <div>
+            <IconOverhang />
+          </div>
+          <div>
+            <IconRoof />
+          </div>
+        </div>
+      </div>
+
+      {/* best seasons and rainproof */}
+      <div className="mt-4 flex gap-5 sm:ml-4 sm:mt-0 sm:border-l sm:border-neutral-200 sm:pl-4">
+        <div>
+          <IconSpring />
+        </div>
+        <div className="text-neutral-300">
+          <IconSummer />
+        </div>
+        <div>
+          <IconAutumn />
+        </div>
+        <div className="text-neutral-300">
+          <IconWinter />
+        </div>
+
+        <div className="ml-4 border-l border-neutral-200 pl-4">
+          <IconRainproof />
+        </div>
       </div>
     </>
   );
