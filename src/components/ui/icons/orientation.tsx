@@ -1,13 +1,4 @@
-enum Orientation {
-  NORTH = "north",
-  NORTHEAST = "northeast",
-  EAST = "east",
-  SOUTHEAST = "southeast",
-  SOUTH = "south",
-  SOUTHWEST = "southwest",
-  WEST = "west",
-  NORTHWEST = "northwest",
-}
+import { Orientation } from "@/graphql/generated";
 
 interface IconOrientationProps {
   orientations: Orientation[];
@@ -22,35 +13,35 @@ function IconOrientation({ orientations }: IconOrientationProps) {
       height={40}
       className="fill-current text-blue-500"
     >
-      {orientations.includes(Orientation.NORTH) && (
+      {orientations.includes(Orientation.North) && (
         <path d="M 12,12 l -5.65685424949238 -5.65685424949238 a 8 8 0 0 1 11.3137084989848 0 z" />
       )}
 
-      {orientations.includes(Orientation.NORTHEAST) && (
+      {orientations.includes(Orientation.Northeast) && (
         <path d="M 12,12 l 0 -8 a 8 8 0 0 1 8 8 z" />
       )}
 
-      {orientations.includes(Orientation.EAST) && (
+      {orientations.includes(Orientation.East) && (
         <path d="M 12,12 l 5.65685424949238 -5.65685424949238 a 8 8 0 0 1 0 11.3137084989848 z" />
       )}
 
-      {orientations.includes(Orientation.SOUTHEAST) && (
+      {orientations.includes(Orientation.Southeast) && (
         <path d="M 12,12 l 8 0 a 8 8 0 0 1 -8 8 z" />
       )}
 
-      {orientations.includes(Orientation.SOUTH) && (
+      {orientations.includes(Orientation.South) && (
         <path d="M 12,12 l 5.65685424949238 5.65685424949238 a 8 8 0 0 1 -11.3137084989848 0 z" />
       )}
 
-      {orientations.includes(Orientation.SOUTHWEST) && (
+      {orientations.includes(Orientation.Southwest) && (
         <path d="M 12,12 l 0 8 a 8 8 0 0 1 -8 -8 z" />
       )}
 
-      {orientations.includes(Orientation.WEST) && (
+      {orientations.includes(Orientation.West) && (
         <path d="M 12,12 l -5.65685424949238 5.65685424949238 a 8 8  0 0 1 0 -11.3137084989848 0 z" />
       )}
 
-      {orientations.includes(Orientation.NORTHWEST) && (
+      {orientations.includes(Orientation.Northwest) && (
         <path d="M 12,12 l -8 0 a 8 8 0 0 1 8 -8 z" />
       )}
 
@@ -99,4 +90,3 @@ function IconOrientation({ orientations }: IconOrientationProps) {
 }
 
 export default IconOrientation;
-export { Orientation };

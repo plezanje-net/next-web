@@ -1,6 +1,12 @@
 import { gql } from "urql/core";
 import urqlServer from "@/graphql/urql-server";
-import { Crag, CragInfoDocument } from "@/graphql/generated";
+import {
+  Crag,
+  CragInfoDocument,
+  Orientation,
+  Season,
+  WallAngle,
+} from "@/graphql/generated";
 import Image from "next/image";
 import IconWalk from "@/components/ui/icons/walk";
 import IconHeight from "@/components/ui/icons/height";
@@ -15,14 +21,14 @@ import IconWinter from "@/components/ui/icons/winter";
 import IconRainproof from "@/components/ui/icons/rainproof";
 import IconParking from "@/components/ui/icons/parking";
 import IconWall from "@/components/ui/icons/wall";
-import IconOrientation, {
-  Orientation,
-} from "@/components/ui/icons/orientation";
+import IconOrientation from "@/components/ui/icons/orientation";
 import GradeDistribution from "@/components/grade-distribution";
 import VisitsDistribution from "@/components/visits-distribution";
 import sampleImage from "@/public/sample-cover.jpeg";
 import Map from "@/components/map/map";
 import Button from "@/components/ui/button";
+import IconMissing from "@/components/ui/icons/missing";
+import Link from "@/components/ui/link";
 
 interface Params {
   cragSlug: string;
@@ -30,47 +36,103 @@ interface Params {
 
 /*
 TODO:
--- fill with real data:
-  - orientations
-  - walk time
-  - route heights
-  - wall angles
-  - best seasons
-  - rainproof
+-- fill with real data:  
   - cover photo
-  - description
   - access
   - gps coords
   - map
 
--- connect button
-
+-- enable button
+-- enable links
 */
+
+interface CragInfo extends Crag {
+  minRouteLength: number | null;
+  maxRouteLength: number | null;
+}
+
+// TODO: after this page's layout is tested remove this dummy filler
+const DUMMY_DATA = true;
+// const DUMMY_DATA = false;
 
 async function CragInfoPage({ params }: { params: Params }) {
   const { data } = await urqlServer().query(CragInfoDocument, {
     crag: params.cragSlug,
   });
 
-  const crag = data.cragBySlug as Crag;
+  const crag: CragInfo = data.cragBySlug;
+
+  // Find lenghts of shortest and longest route.
+  const routeLengths = crag.sectors
+    .flatMap((sector) => sector.routes)
+    .map((route) => route.length || 0)
+    .filter((length) => !!length);
+
+  [crag.minRouteLength, crag.maxRouteLength] = [
+    routeLengths.length ? Math.max(...routeLengths) : null,
+    routeLengths.length ? Math.min(...routeLengths) : null,
+  ];
+
+  // TODO: remove dummy logic after tested
+  if (DUMMY_DATA) {
+    crag.orientations = [Orientation.North];
+    crag.approachTime = 10;
+    crag.minRouteLength = 10;
+    crag.maxRouteLength = 15;
+    crag.wallAngles = [WallAngle.Slab, WallAngle.Overhang];
+    crag.seasons = [Season.Summer, Season.Spring];
+    crag.rainProof = true;
+
+    crag.description =
+      "Plezališče je oktobra 2015 opremila skupina 9 francoskih plezalcev (http://www.ffcam.fr/croatie-excellence-equipement.html) na pobudo domačina z Brača Iva Ljubetića-Šteke, vse težje smeri (do 8c) je prvi preplezal Mathieu Bouyoud. Smeri so večinoma dolge (do 50 m) in navpične do zmerno previsne. <br /> Levo od glavnega sektorja je 5 nekoliko krajših smeri neznanega avtorja (ocene srednjih treh so zelo približne). Prva (Shiva) in zadnja (San) imata ime napisano na vstopu. Skala še ni očiščena, čelada zelo priporočljiva. Stena je obrnjena na SZ. Plezanje je možno celo leto, tudi ob toplih, suhih zimah, čeprav je stena cel dan v senci.";
+  }
+
+  // Find out if any data depicted with icons is missing and if so, construct appropriate messages.
+  const iconDataMissing: string[] = [];
+
+  !crag.orientations && iconDataMissing.push("orientaciji");
+  !crag.approachTime && iconDataMissing.push("času dostopa");
+  !crag.minRouteLength &&
+    !crag.maxRouteLength &&
+    iconDataMissing.push("dolžinah smeri");
+  !crag.wallAngles && iconDataMissing.push("naklonu stene");
+  !crag.seasons && iconDataMissing.push("sezoni");
+  crag.rainProof === null && iconDataMissing.push("odpornosti na dež");
+
+  let iconDataMissingMsg;
+  let iconDataMissingActionLinkMsg;
+
+  if (iconDataMissing.length > 1) {
+    iconDataMissingMsg = `Plezališče nima podatkov o ${iconDataMissing
+      .slice(0, -1)
+      .join(", ")} in ${iconDataMissing[iconDataMissing.length - 1]}.`;
+    iconDataMissingActionLinkMsg = "Dodaj manjkajoče podatke";
+  } else {
+    iconDataMissingMsg = `Plezališče nima podatka o ${
+      iconDataMissing[iconDataMissing.length - 1]
+    }.`;
+    iconDataMissingActionLinkMsg = `Dodaj podatek o ${
+      iconDataMissing[iconDataMissing.length - 1]
+    }`;
+  }
 
   return (
     <>
-      {/* icons and actions */}
+      {/* Icons and edit button */}
       <div className="mx-auto px-4 2xl:container xs:px-8">
-        {/* row 1: some icons (based on screen size) and actions */}
+        {/* Row 1: some icons (based on screen size) and button. */}
         <div className="mt-7 flex justify-between">
           <div className="flex">
-            <IconOrientation
-              orientations={[Orientation.NORTH, Orientation.SOUTH]}
-            />
+            {crag.orientations && (
+              <IconOrientation orientations={crag.orientations} />
+            )}
 
-            <div className="ml-4 hidden border-l border-neutral-200 pl-4 sm:flex">
-              <ApproachTimeAndHeight />
+            <div className="hidden sm:flex">
+              <ApproachTimeAndHeight crag={crag} />
             </div>
 
-            <div className="ml-4 hidden border-l border-neutral-200 pl-4 xl:flex">
-              <ApproachTimeHeightAnglesSeasonsAndRainproof />
+            <div className="hidden xl:flex">
+              <ApproachTimeHeightAnglesSeasonsAndRainproof crag={crag} />
             </div>
           </div>
 
@@ -79,13 +141,24 @@ async function CragInfoPage({ params }: { params: Params }) {
           </div>
         </div>
 
-        {/* row 2: some icons (based on screen size) and all other icons. Wrapping in 'groups' */}
+        {/* Row 2 or row 2 and 3 and 4: some icons and all other icons (based on screen size). */}
         <div className="mt-4 block sm:flex xl:hidden">
-          <ApproachTimeHeightAnglesSeasonsAndRainproof />
+          <ApproachTimeHeightAnglesSeasonsAndRainproof crag={crag} />
         </div>
+
+        {/* If any data depicted with icons is missing invite user to fill it out. */}
+        {iconDataMissing.length > 0 && (
+          <div className="mt-4 flex">
+            <IconMissing />
+            <div className="ml-2">
+              {iconDataMissingMsg}{" "}
+              <Link href="">{iconDataMissingActionLinkMsg}</Link>.
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* cover image and description */}
+      {/* Cover image and description. */}
       <div className="mx-auto mt-7 grid grid-cols-1 gap-x-7 gap-y-10 2xl:container xs:px-8 lg:grid-cols-2">
         <Image
           src={sampleImage}
@@ -96,23 +169,20 @@ async function CragInfoPage({ params }: { params: Params }) {
         <div className="mx-4 xs:mx-0">
           <h4>Opis plezališča</h4>
           <p className="mt-4">
-            Plezališče je oktobra 2015 opremila skupina 9 francoskih plezalcev
-            (http://www.ffcam.fr/croatie-excellence-equipement.html) na pobudo
-            domačina z Brača Iva Ljubetića-Šteke, vse težje smeri (do 8c) je
-            prvi preplezal Mathieu Bouyoud. Smeri so večinoma dolge (do 50 m) in
-            navpične do zmerno previsne.
-            <br />
-            Levo od glavnega sektorja je 5 nekoliko krajših smeri neznanega
-            avtorja (ocene srednjih treh so zelo približne). Prva (Shiva) in
-            zadnja (San) imata ime napisano na vstopu. Skala še ni očiščena,
-            čelada zelo priporočljiva. Stena je obrnjena na SZ. Plezanje je
-            možno celo leto, tudi ob toplih, suhih zimah, čeprav je stena cel
-            dan v senci.
+            {crag.description || (
+              <span className="flex">
+                <IconMissing />
+                <span className="ml-2">
+                  Plezališče nima opisa.{" "}
+                  <Link href="">Dodaj opis plezališča</Link>.
+                </span>
+              </span>
+            )}
           </p>
         </div>
       </div>
 
-      {/* grade distro, visits distro, access, map */}
+      {/* Grade distro, visits distro, access, map. */}
       <div className="mx-auto mt-10 grid grid-cols-1 gap-x-7 gap-y-10 2xl:container xs:px-8 md:grid-cols-2 lg:grid-cols-3">
         <div className="md:col-span-2">
           <GradeDistribution crag={crag} />
@@ -164,67 +234,190 @@ async function CragInfoPage({ params }: { params: Params }) {
   );
 }
 
-function ApproachTimeAndHeight() {
+function ApproachTimeAndHeight({ crag }: { crag: CragInfo }) {
   return (
     <>
-      <div className="flex items-end">
-        <IconWalk />
-        <span className="-ml-0.5 font-medium">20 min</span>
+      {crag.approachTime && (
+        <div className="flex items-end">
+          <Spacer className={`hidden ${crag.orientations ? "sm:block" : ""}`} />
+          <IconWalk />
+          <span className="-ml-0.5 font-medium">{crag.approachTime} min</span>
+        </div>
+      )}
+
+      {crag.minRouteLength && (
+        <div className="flex items-end">
+          <Spacer
+            className={`
+              ${crag.approachTime ? "block" : "hidden"}
+              ${crag.orientations || crag.approachTime ? "sm:block" : ""}
+              `}
+          />
+          <IconHeight />
+          <span className="-ml-1.5 font-medium">
+            {`${crag.minRouteLength}${
+              crag.minRouteLength !== crag.maxRouteLength
+                ? `-${crag.maxRouteLength}`
+                : ""
+            } m`}
+          </span>
+        </div>
+      )}
+    </>
+  );
+}
+
+function ApproachTimeHeightAnglesSeasonsAndRainproof({
+  crag,
+}: {
+  crag: CragInfo;
+}) {
+  return (
+    <>
+      <div>
+        {/* Approach time and height. */}
+        <div className="flex sm:hidden">
+          <ApproachTimeAndHeight crag={crag} />
+        </div>
+
+        {/* Wall angles. */}
+        {crag.wallAngles && (
+          <div className="mt-4 flex sm:mt-0">
+            <Spacer
+              className={`
+                hidden
+                ${
+                  crag.orientations || crag.approachTime || crag.minRouteLength
+                    ? "xl:block"
+                    : ""
+                }`}
+            />
+            <div
+              className={`${
+                crag.wallAngles.includes(WallAngle.Slab)
+                  ? ""
+                  : "text-neutral-300"
+              }`}
+            >
+              <IconSlab />
+            </div>
+            <div
+              className={`ml-4 ${
+                crag.wallAngles.includes(WallAngle.Vertical)
+                  ? ""
+                  : "text-neutral-300"
+              }`}
+            >
+              <IconVertical />
+            </div>
+            <div
+              className={`ml-4 ${
+                crag.wallAngles.includes(WallAngle.Overhang)
+                  ? ""
+                  : "text-neutral-300"
+              }`}
+            >
+              <IconOverhang />
+            </div>
+            <div
+              className={`ml-4 ${
+                crag.wallAngles.includes(WallAngle.Roof)
+                  ? ""
+                  : "text-neutral-300"
+              }`}
+            >
+              <IconRoof />
+            </div>
+          </div>
+        )}
       </div>
-      <div className="ml-4 flex items-end border-l border-neutral-200 pl-4">
-        <IconHeight />
-        <span className="-ml-1.5 font-medium">10-40 m</span>
+
+      {/* Best seasons and rainproof. */}
+      <div className={`mt-4 flex sm:mt-0`}>
+        {crag.seasons && (
+          <>
+            <Spacer
+              className={`
+               hidden
+               ${crag.wallAngles ? "sm:block" : ""}
+               ${
+                 crag.orientations ||
+                 crag.approachTime ||
+                 crag.minRouteLength ||
+                 crag.wallAngles ||
+                 crag.seasons
+                   ? "xl:block"
+                   : ""
+               }`}
+            />
+            <div className="flex gap-5">
+              <div
+                className={`${
+                  crag.seasons.includes(Season.Spring) ? "" : "text-neutral-300"
+                }`}
+              >
+                <IconSpring />
+              </div>
+              <div
+                className={`${
+                  crag.seasons.includes(Season.Summer) ? "" : "text-neutral-300"
+                }`}
+              >
+                <IconSummer />
+              </div>
+              <div
+                className={`${
+                  crag.seasons.includes(Season.Autumn) ? "" : "text-neutral-300"
+                }`}
+              >
+                <IconAutumn />
+              </div>
+              <div
+                className={`${
+                  crag.seasons.includes(Season.Winter) ? "" : "text-neutral-300"
+                }`}
+              >
+                <IconWinter />
+              </div>
+            </div>
+          </>
+        )}
+
+        {crag.rainProof !== null && (
+          <>
+            <Spacer
+              className={`
+                ${crag.seasons ? "block" : "hidden"}
+                ${crag.seasons || crag.wallAngles ? "sm:block" : ""}
+                ${
+                  crag.orientations ||
+                  crag.approachTime ||
+                  crag.minRouteLength ||
+                  crag.wallAngles ||
+                  crag.seasons
+                    ? "xl:block"
+                    : ""
+                }
+                `}
+            />
+            <div className={`${!!crag.rainProof ? "" : "text-neutral-300"}`}>
+              <IconRainproof />
+            </div>
+          </>
+        )}
       </div>
     </>
   );
 }
 
-function ApproachTimeHeightAnglesSeasonsAndRainproof() {
-  return (
-    <>
-      <div>
-        <div className="flex sm:hidden">
-          <ApproachTimeAndHeight />
-        </div>
+// Vertical divider between icon groups.
+function Spacer({ className }: { className?: string }) {
+  let spacerClasses = "ml-4 h-10 border-l border-neutral-200 pl-4";
+  if (className) {
+    spacerClasses += ` ${className}`;
+  }
 
-        {/* wall angles */}
-        <div className="mt-4 flex gap-5 sm:mt-0">
-          <div className="text-neutral-300">
-            <IconSlab />
-          </div>
-          <div className="text-neutral-300">
-            <IconVertical />
-          </div>
-          <div>
-            <IconOverhang />
-          </div>
-          <div>
-            <IconRoof />
-          </div>
-        </div>
-      </div>
-
-      {/* best seasons and rainproof */}
-      <div className="mt-4 flex gap-5 sm:ml-4 sm:mt-0 sm:border-l sm:border-neutral-200 sm:pl-4">
-        <div>
-          <IconSpring />
-        </div>
-        <div className="text-neutral-300">
-          <IconSummer />
-        </div>
-        <div>
-          <IconAutumn />
-        </div>
-        <div className="text-neutral-300">
-          <IconWinter />
-        </div>
-
-        <div className="ml-4 border-l border-neutral-200 pl-4">
-          <IconRainproof />
-        </div>
-      </div>
-    </>
-  );
+  return <div className={spacerClasses}></div>;
 }
 
 gql`
@@ -237,12 +430,18 @@ gql`
         routes {
           id
           difficulty
+          length
         }
       }
       defaultGradingSystem {
         id
       }
       activityByMonth
+      orientations
+      approachTime
+      wallAngles
+      seasons
+      rainProof
     }
   }
 `;
