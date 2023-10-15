@@ -61,6 +61,7 @@ module.exports = {
         13: "3.25rem", // 52px
       },
       minWidth: {
+        0.5: "0.125rem", // 2px
         8: "2rem", // 32px
         14: "3.5rem", // 56px
         16: "4rem", // 64px
