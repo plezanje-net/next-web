@@ -30,8 +30,11 @@ async function VisitsDistributionPage() {
   return (
     <div className="mb-20">
       <div className="mt-20 grid grid-cols-1 gap-7 xs:mx-8 md:grid-cols-2 lg:grid-cols-3">
-        <div className="">
-          <VisitsByMonth crag={crag} />
+        <div>
+          <h4 className="mx-4 xs:mx-0">Obiskanost po mesecih</h4>
+          <div className="mt-4">
+            <VisitsByMonth crag={crag} />
+          </div>
         </div>
         <div className="lg:col-span-2">
           <h4 className="mx-4 xs:mx-0">Lorem Ipsum</h4>

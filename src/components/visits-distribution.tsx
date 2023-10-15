@@ -50,20 +50,24 @@ function VisitsDistribution({ crag }: VisitsDistributionProps) {
   months[6].color = months[7].color = months[8].color = "bg-neutral-300";
   months[9].color = months[10].color = months[11].color = "bg-neutral-200";
 
+  // In any case, possible zeroes should be colored as least intense
+  months.map((month) => {
+    month.nrVisits === 0 && (month.color = "bg-neutral-200");
+  });
+
   // Sort back to original order
   months.sort((a, b) => (a.position > b.position ? 1 : -1));
 
   return (
     <div className="@container">
-      <h4 className="mx-4 xs:mx-0">Obiskanost po mesecih</h4>
-      <div className="mt-4 grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 bg-neutral-100 p-4 xs:rounded-lg xs:p-6">
+      <div className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 bg-neutral-100 p-4 xs:rounded-lg xs:p-6">
         {months.map((month) => (
           <Fragment key={month.name}>
             <div className="hidden text-right @md:block">{month.name}</div>
             <div className="text-right @md:hidden">{month.nameShort}</div>
             <div className="h-5">
               <div
-                className={`h-full rounded ${month.color}`}
+                className={`h-full min-w-0.5 rounded ${month.color}`}
                 style={{
                   width: `${(month.nrVisits / maxCount) * 100}%`,
                 }}

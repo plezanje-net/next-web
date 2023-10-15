@@ -27,7 +27,10 @@ async function GradeDistributionPage() {
     <div className="mb-20">
       <div className="mt-20 grid grid-cols-1 gap-7 xs:mx-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <GradeDistribution crag={crag} />
+          <h4 className="mx-4 xs:mx-0">Distribucija težavnosti</h4>
+          <div className="mt-4">
+            <GradeDistribution crag={crag} />
+          </div>
         </div>
         <div>
           <h4 className="mx-4 xs:mx-0">Lorem Ipsum</h4>

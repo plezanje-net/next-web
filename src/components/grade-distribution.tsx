@@ -323,37 +323,30 @@ function GradeDistribution({ crag }: GradeDistributionProps) {
   );
 
   return (
-    <div>
-      <h4 className="mx-4 xs:mx-0">Distribucija težavnosti</h4>
-      <div className="mt-4 @container">
-        <div className="bg-neutral-100 p-4 @md:p-6 xs:rounded-lg">
-          <div className="hidden w-full items-end justify-between @sm:flex">
-            {gradeSlots?.regularSlots.map((gradeSlot, index) => (
-              <Bar
-                key={index}
-                gradeSlot={gradeSlot}
-                maxCount={maxCountRegular}
-              />
-            ))}
-          </div>
+    <div className="@container">
+      <div className="bg-neutral-100 p-4 @md:p-6 xs:rounded-lg">
+        <div className="hidden w-full items-end justify-between @sm:flex">
+          {gradeSlots?.regularSlots.map((gradeSlot, index) => (
+            <Bar key={index} gradeSlot={gradeSlot} maxCount={maxCountRegular} />
+          ))}
+        </div>
 
-          <div className="flex w-full items-end justify-between @sm:hidden">
-            {gradeSlots?.compactSlots
-              ? gradeSlots?.compactSlots.map((gradeSlot, index) => (
-                  <Bar
-                    key={index}
-                    gradeSlot={gradeSlot}
-                    maxCount={maxCountCompact}
-                  />
-                ))
-              : gradeSlots?.regularSlots.map((gradeSlot, index) => (
-                  <Bar
-                    key={index}
-                    gradeSlot={gradeSlot}
-                    maxCount={maxCountRegular}
-                  />
-                ))}
-          </div>
+        <div className="flex w-full items-end justify-between @sm:hidden">
+          {gradeSlots?.compactSlots
+            ? gradeSlots?.compactSlots.map((gradeSlot, index) => (
+                <Bar
+                  key={index}
+                  gradeSlot={gradeSlot}
+                  maxCount={maxCountCompact}
+                />
+              ))
+            : gradeSlots?.regularSlots.map((gradeSlot, index) => (
+                <Bar
+                  key={index}
+                  gradeSlot={gradeSlot}
+                  maxCount={maxCountRegular}
+                />
+              ))}
         </div>
       </div>
     </div>
@@ -367,7 +360,7 @@ interface BarProps {
 
 function Bar({ gradeSlot, maxCount }: BarProps) {
   return (
-    <div className="@4xl:w-13 flex w-5 flex-col items-center @md:w-6 @xl:w-8 @3xl:w-10">
+    <div className="flex w-5 flex-col items-center @md:w-6 @xl:w-8 @3xl:w-10 @4xl:w-13">
       <div className="flex h-48 w-full flex-col items-center @md:h-[300px]">
         {/* spacer - empty space above bar */}
         <div
