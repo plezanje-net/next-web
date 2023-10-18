@@ -8,26 +8,13 @@ import { gradingSystems } from "@/utils/grading-systems";
 
 interface Props {
   route: Route;
+  difficultyVotes: DifficultyVote[];
 }
 
-function DifficultyVotes({ route }: Props) {
-  const [difficultyVotes, setDifficultyVotes] = useState<DifficultyVote[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    difficultyVotesAction(route.id)
-      .then((votes) => {
-        setDifficultyVotes(votes);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Napaka pri nalaganju glasov.");
-      });
-  }, [route.id]);
-
-  if (error) return <div className="text-red-500">{error}</div>;
-  if (loading) return <div>Nalagam...</div>;
+function DifficultyVotes({ route, difficultyVotes }: Props) {
+  const routeGradeDifficulty = route.difficulty
+    ? diffToGrade(route.difficulty, "french", false).difficulty
+    : null;
 
   const nrVotesPerDifficulty = difficultyVotes.reduce(
     (acc, vote) => ({
@@ -36,15 +23,14 @@ function DifficultyVotes({ route }: Props) {
     }),
     {} as Record<number, number>
   );
+
+  if (routeGradeDifficulty && !nrVotesPerDifficulty[routeGradeDifficulty]) {
+    nrVotesPerDifficulty[routeGradeDifficulty] = 0;
+  }
+
   const maxVotesPerDifficulty = Math.max(
     ...Object.values(nrVotesPerDifficulty)
   );
-
-  // const mainHighlightedDifficulty = route.difficulty && difficultyVotes[route.difficulty] ?
-
-  const routeGradeDifficulty = route.difficulty
-    ? diffToGrade(route.difficulty, "french", false).difficulty
-    : null;
 
   return (
     <>
@@ -60,18 +46,22 @@ function DifficultyVotes({ route }: Props) {
               </td>
               <td className="w-full">
                 <span
-                  className={`float-left block h-5 ${
+                  className={`float-left block h-5 w-0.5 ${
                     nrVotes === maxVotesPerDifficulty && "w-full"
                   } rounded ${
                     routeGradeDifficulty === parseInt(difficulty)
                       ? "bg-blue-500"
                       : "bg-neutral-200"
                   }`}
-                  style={{
-                    width: `${Math.round(
-                      (nrVotes / maxVotesPerDifficulty) * 100
-                    )}%`,
-                  }}
+                  style={
+                    nrVotes > 0
+                      ? {
+                          width: `${Math.round(
+                            (nrVotes / maxVotesPerDifficulty) * 100
+                          )}%`,
+                        }
+                      : {}
+                  }
                 ></span>
                 <span className="relative float-left">
                   <span className="absolute whitespace-nowrap pl-3 align-middle text-sm">

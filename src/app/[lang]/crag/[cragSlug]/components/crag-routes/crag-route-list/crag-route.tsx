@@ -47,7 +47,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route difficulty */}
       {displayColumn("difficulty") && (
         <td className="p-4">
-          <RouteGrade route={route} />
+          <RouteGrade route={route} crag={crag} />
         </td>
       )}
 
@@ -134,7 +134,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           <div>
             {displayColumn("difficulty") && (
               <span className="pr-4">
-                <RouteGrade route={route} />
+                <RouteGrade route={route} crag={crag} />
               </span>
             )}
             {displayColumn("length") && route.length && (
