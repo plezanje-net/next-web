@@ -16,7 +16,6 @@ type Params = {
 };
 
 async function CragsPage({ params }: { params: Params }) {
-  console.log("rendering CragsPage");
   const { data } = await urqlServer().query(CountryBySlugWithCragsDocument, {
     country: params.countrySlug,
     input: { type: "sport" },
