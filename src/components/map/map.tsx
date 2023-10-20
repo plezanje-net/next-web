@@ -1,11 +1,11 @@
 import dynamic from "next/dynamic";
-import { MapProps } from "./lazy-map";
+import { TLazyMapProps as TMapProps } from "./lazy-map";
 
 const LazyMap = dynamic(() => import("./lazy-map"), {
   ssr: false,
 });
 
-function Map({ className, ...rest }: MapProps) {
+function Map({ className, ...rest }: TMapProps) {
   // prevent layout shift by placing classes onto a wrapper so that space is 'reserved' until the map loads
   let mapClassName = "h-[600px] w-full xs:rounded-lg";
   if (className) {

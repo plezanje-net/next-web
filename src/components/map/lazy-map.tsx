@@ -1,37 +1,62 @@
 "use client";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import L from "leaflet";
+import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ReactDOMServer from "react-dom/server";
 import IconMarker from "../ui/icons/marker";
 import { ReactNode } from "react";
 import "./map.css";
 
-interface MapProps {
-  children?: ReactNode;
-  markers?: {
-    type: "parking" | "wall";
-    position: [number, number];
-    popupContent?: string;
-  }[];
-  className?: string;
-  center: [number, number];
-  zoom: number;
-}
+type TMarker = {
+  type: "parking" | "wall";
+  position: [number, number];
+  popupContent?: ReactNode;
+};
 
-function LazyMap({ children, markers, className, center, zoom }: MapProps) {
+type TLazyMapProps = {
+  children?: ReactNode;
+  markers?: TMarker[];
+  className?: string;
+  center?: [number, number];
+  zoom?: number;
+  autoBounds?: boolean;
+};
+
+function LazyMap({
+  children,
+  markers,
+  className,
+  center,
+  zoom,
+  autoBounds,
+}: TLazyMapProps) {
   let mapClassName = "h-[600px] w-full xs:rounded-lg";
   if (className) {
     mapClassName = `${mapClassName} ${className}`;
   }
 
+  // if autoBounds is set to true, then use map markers to determine zoom and center (so that all markes are visible)
+  // otherwise use the passed in center and zoom
+  const boundsOrCenterAndZoom: {
+    center?: [number, number];
+    bounds?: L.LatLngBoundsExpression;
+    boundsOptions?: FitBoundsOptions;
+    zoom?: number;
+  } = {};
+  if (autoBounds && markers) {
+    boundsOrCenterAndZoom.bounds = markers.map((marker) => marker.position);
+    boundsOrCenterAndZoom.boundsOptions = { padding: [30, 60] };
+  } else {
+    boundsOrCenterAndZoom.center = center;
+    boundsOrCenterAndZoom.zoom = zoom;
+  }
+
   return (
     <MapContainer
-      className={mapClassName}
-      center={center}
-      zoom={zoom}
+      {...boundsOrCenterAndZoom}
       scrollWheelZoom={false}
+      className={mapClassName}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -61,5 +86,5 @@ function LazyMap({ children, markers, className, center, zoom }: MapProps) {
   );
 }
 
-export type { MapProps };
+export type { TLazyMapProps, TMarker };
 export default LazyMap;

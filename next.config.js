@@ -26,6 +26,16 @@ const nextConfig = {
     });
     return rewritesArray;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: process.env.IMAGES_PROTOCOL,
+        hostname: process.env.IMAGES_HOSTNAME,
+        port: "",
+        pathname: `${process.env.IMAGES_PATHNAME}/**`,
+      },
+    ],
+  },
 };
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
