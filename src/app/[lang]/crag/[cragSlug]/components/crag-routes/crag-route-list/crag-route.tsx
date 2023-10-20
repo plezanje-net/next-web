@@ -11,6 +11,7 @@ import IconStarFull from "../../../../../../../components/ui/icons/star-full";
 import Link from "../../../../../../../components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../utils/text-helpers";
+import RouteGrade from "./crag-route/route-grade";
 
 interface Props {
   crag: Crag;
@@ -46,7 +47,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route difficulty */}
       {displayColumn("difficulty") && (
         <td className="p-4">
-          <RouteGrade route={route} />
+          <RouteGrade route={route} crag={crag} />
         </td>
       )}
 
@@ -133,7 +134,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           <div>
             {displayColumn("difficulty") && (
               <span className="pr-4">
-                <RouteGrade route={route} />
+                <RouteGrade route={route} crag={crag} />
               </span>
             )}
             {displayColumn("length") && route.length && (
@@ -161,19 +162,6 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         {!statsText != !cragRoutesState.combine && <div className="pb-1"></div>}
       </div>
     </div>
-  );
-}
-
-interface RouteGradeProps {
-  route: Route;
-}
-
-function RouteGrade({ route }: RouteGradeProps) {
-  return (
-    <>
-      {route.isProject && "P"}
-      {route.difficulty && <Grade difficulty={route.difficulty} />}
-    </>
   );
 }
 

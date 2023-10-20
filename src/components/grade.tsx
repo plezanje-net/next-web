@@ -11,6 +11,7 @@ type Props = {
 
 type GradeDisplay = {
   name: string;
+  difficulty?: number;
   modifier: -1 | 0 | 1;
 };
 
@@ -22,7 +23,6 @@ function Grade({
   disabled = false,
 }: Props) {
   const gradeDisplay = diffToGrade(
-    gradingSystems as GradingSystem[],
     difficulty,
     gradingSystemId,
     displayIntermediate
@@ -30,8 +30,7 @@ function Grade({
   return <>{gradeDisplay.name}</>;
 }
 
-function diffToGrade(
-  gradingSystems: GradingSystem[],
+export function diffToGrade(
   difficulty: number,
   gradingSystemId: string,
   legacy: boolean = false
@@ -62,11 +61,13 @@ function diffToGrade(
   if (difficulty <= grades[0].difficulty) {
     return {
       name: grades[0].name,
+      difficulty: grades[0].difficulty,
       modifier: 0,
     };
   } else if (difficulty >= grades[grades.length - 1].difficulty) {
     return {
       name: grades[grades.length - 1].name,
+      difficulty: grades[grades.length - 1].difficulty,
       modifier: 0,
     };
   }
@@ -91,11 +92,13 @@ function diffToGrade(
         ) {
           return {
             name: curr.name,
+            difficulty: curr.difficulty,
             modifier: 0,
           };
         } else {
           return {
             name: curr.name,
+            difficulty: curr.difficulty,
             modifier: -1,
           };
         }
@@ -108,17 +111,20 @@ function diffToGrade(
         ) {
           return {
             name: curr.name,
+            difficulty: curr.difficulty,
             modifier: 0,
           };
         } else {
           return {
             name: curr.name,
+            difficulty: curr.difficulty,
             modifier: +1,
           };
         }
       } else {
         return {
           name: curr.name,
+          difficulty: curr.difficulty,
           modifier: 0,
         };
       }

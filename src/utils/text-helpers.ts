@@ -38,6 +38,19 @@ const pluralizeNoun = (noun: string, count: number) => {
         default:
           return `${count} plezalcev`;
       }
+
+    case "glas":
+      switch (count % 100) {
+        case 1:
+          return `${count} glas`;
+        case 2:
+          return `${count} glasova`;
+        case 3:
+        case 4:
+          return `${count} glasovi`;
+        default:
+          return `${count} glasov`;
+      }
   }
 };
 
