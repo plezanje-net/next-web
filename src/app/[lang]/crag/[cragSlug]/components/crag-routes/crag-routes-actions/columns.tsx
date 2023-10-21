@@ -24,8 +24,6 @@ function Columns() {
           </span>
         </Button>
       }
-      // TODO: on <xs screens column options on noSector crags get pushed of screen. below solution is not suitable. it is a real corner case but need to find sthg better
-      // customOptionsClasses={`max-xs:right-[calc((14px-100vw)/2)]`}
     >
       {cragRouteListColumns
         .filter(({ isOptional }) => isOptional)

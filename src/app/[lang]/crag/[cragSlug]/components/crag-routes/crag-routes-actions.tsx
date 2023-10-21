@@ -11,7 +11,7 @@ function CragRoutesActions() {
 
   return (
     <div
-      className={`mx-auto items-center px-4 2xl:container xs:justify-between xs:px-8 ${
+      className={`mx-auto rotate-0 items-center px-4 2xl:container xs:justify-between xs:px-8 ${
         cragRoutesState.search?.focus || cragRoutesState.search?.query
           ? "block xs:flex"
           : "flex justify-center"
