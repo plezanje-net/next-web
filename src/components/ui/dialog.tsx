@@ -13,8 +13,8 @@ interface DialogProps {
   children: ReactElement;
   title: string;
   openTrigger: ReactElement;
-  confirm: { label: string; callback?: () => void };
-  cancel: { label: string; callback?: () => void };
+  confirm?: { label: string; callback?: () => void };
+  cancel?: { label: string; callback?: () => void };
   dialogSize?: DialogSize;
   closeWithEscOrPressOutside?: boolean;
   closeCallback?: () => void;
@@ -80,10 +80,14 @@ function Dialog({
               </DialogHUI.Description>
             )}
             <div className="mt-10 flex flex-wrap justify-end gap-4">
-              <Button variant="secondary" onClick={handleCancel}>
-                {cancel.label}
-              </Button>
-              <Button onClick={handleConfirm}>{confirm.label}</Button>
+              {cancel && (
+                <Button variant="secondary" onClick={handleCancel}>
+                  {cancel.label}
+                </Button>
+              )}
+              {confirm && (
+                <Button onClick={handleConfirm}>{confirm.label}</Button>
+              )}
             </div>
           </DialogHUI.Panel>
         </div>

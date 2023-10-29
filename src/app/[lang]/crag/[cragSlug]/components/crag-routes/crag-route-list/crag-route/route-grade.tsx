@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import Dialog, {
   DialogSize,
 } from "../../../../../../../../components/ui/dialog";
@@ -8,6 +7,7 @@ import Grade from "@/components/grade";
 import useIsVisible from "@/hooks/useIsVisible";
 import { useEffect, useRef, useState } from "react";
 import difficultyVotesAction from "./server-actions/difficulty-votes-action";
+import Button from "@/components/ui/button";
 
 interface RouteGradeProps {
   route: Route;
@@ -15,14 +15,8 @@ interface RouteGradeProps {
 }
 
 function RouteGrade({ route, crag }: RouteGradeProps) {
-  const router = useRouter();
   const ref = useRef<HTMLButtonElement>(null);
-  const handleOpenRoutePage = () => {
-    router.push(`/plezalisce/${crag.slug}/smer/${route.slug}`);
-  };
-
   const visible = useIsVisible(ref);
-
   const [difficultyVotes, setDifficultyVotes] = useState<DifficultyVote[]>([]);
 
   useEffect(() => {
@@ -38,13 +32,12 @@ function RouteGrade({ route, crag }: RouteGradeProps) {
   ) : (
     <Dialog
       openTrigger={
-        <button ref={ref}>
-          {route.difficulty && <Grade difficulty={route.difficulty} />}
-        </button>
+        <Button renderStyle="icon" ref={ref}>
+          <>{route.difficulty && <Grade difficulty={route.difficulty} />}</>
+        </Button>
       }
       dialogSize={DialogSize.medium}
       title="Glasovi uporabnikov"
-      confirm={{ label: "Več", callback: handleOpenRoutePage }}
       cancel={{ label: "Zapri" }}
     >
       <DifficultyVotes route={route} difficultyVotes={difficultyVotes} />
