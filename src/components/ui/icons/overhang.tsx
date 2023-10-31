@@ -1,10 +1,18 @@
-function IconOverhang() {
+import { IconSize } from "./icon-size";
+
+type TIconOverhangProps = {
+  size: IconSize.small | IconSize.large;
+};
+
+function IconOverhang({ size }: TIconOverhangProps) {
+  const sizePx = size === IconSize.small ? "20" : "40";
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 40 40"
-      width="40"
-      height="40"
+      width={sizePx}
+      height={sizePx}
       className="fill-current"
     >
       <path d="M15 2L25 38H38V2H15Z" />

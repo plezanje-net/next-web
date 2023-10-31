@@ -29,6 +29,7 @@ import Button from "@/components/ui/button";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import { TMarker } from "@/components/map/lazy-map";
+import { IconSize } from "@/components/ui/icons/icon-size";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -62,8 +63,8 @@ type TParkings = {
 };
 
 // TODO: after this page's layout is tested remove this dummy filler
-// const DUMMY_DATA = true;
-const DUMMY_DATA = false;
+const DUMMY_DATA = true;
+// const DUMMY_DATA = false;
 
 async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
   const response = await urqlServer().query(CragInfoDocument, {
@@ -204,7 +205,10 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
         <div className="mt-7 flex justify-between">
           <div className="flex">
             {crag.orientations && (
-              <IconOrientation orientations={crag.orientations} />
+              <IconOrientation
+                orientations={crag.orientations}
+                size={IconSize.large}
+              />
             )}
 
             <div className="hidden sm:flex">
@@ -412,7 +416,7 @@ function ApproachTimeAndHeight({ crag }: { crag: TCragInfo }) {
           <IconGroupDivider
             className={`hidden ${crag.orientations ? "sm:block" : ""}`}
           />
-          <IconWalk />
+          <IconWalk size={IconSize.large} />
           <span className="-ml-0.5 font-medium">{crag.approachTime} min</span>
         </div>
       )}
@@ -471,7 +475,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                   : "text-neutral-300"
               }`}
             >
-              <IconSlab />
+              <IconSlab size={IconSize.large} />
             </div>
             <div
               className={`ml-4 ${
@@ -480,7 +484,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                   : "text-neutral-300"
               }`}
             >
-              <IconVertical />
+              <IconVertical size={IconSize.large} />
             </div>
             <div
               className={`ml-4 ${
@@ -489,7 +493,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                   : "text-neutral-300"
               }`}
             >
-              <IconOverhang />
+              <IconOverhang size={IconSize.large} />
             </div>
             <div
               className={`ml-4 ${
@@ -498,7 +502,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                   : "text-neutral-300"
               }`}
             >
-              <IconRoof />
+              <IconRoof size={IconSize.large} />
             </div>
           </div>
         )}
@@ -528,28 +532,28 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                   crag.seasons.includes(Season.Spring) ? "" : "text-neutral-300"
                 }`}
               >
-                <IconSpring />
+                <IconSpring size={IconSize.large} />
               </div>
               <div
                 className={`${
                   crag.seasons.includes(Season.Summer) ? "" : "text-neutral-300"
                 }`}
               >
-                <IconSummer />
+                <IconSummer size={IconSize.large} />
               </div>
               <div
                 className={`${
                   crag.seasons.includes(Season.Autumn) ? "" : "text-neutral-300"
                 }`}
               >
-                <IconAutumn />
+                <IconAutumn size={IconSize.large} />
               </div>
               <div
                 className={`${
                   crag.seasons.includes(Season.Winter) ? "" : "text-neutral-300"
                 }`}
               >
-                <IconWinter />
+                <IconWinter size={IconSize.large} />
               </div>
             </div>
           </>
@@ -573,7 +577,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                 `}
             />
             <div className={`${!!crag.rainProof ? "" : "text-neutral-300"}`}>
-              <IconRainproof />
+              <IconRainproof size={IconSize.large} />
             </div>
           </>
         )}

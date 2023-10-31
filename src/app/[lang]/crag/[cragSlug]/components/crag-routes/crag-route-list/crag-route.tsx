@@ -1,11 +1,10 @@
 import { useContext } from "react";
 import { Crag, Route } from "../../../../../../../graphql/generated";
-import Grade from "../../../../../../../components/grade";
 import RouteLink from "../../../../../../../components/route-link";
 import AscentIcon from "../../../../../../../components/ui/ascent-icon";
 import Checkbox from "../../../../../../../components/ui/checkbox";
+import { IconSize } from "@/components/ui/icons/icon-size";
 import IconComment from "../../../../../../../components/ui/icons/comment";
-import { IconSize } from "../../../../../../../components/ui/icons/icon";
 import IconStarEmpty from "../../../../../../../components/ui/icons/star-empty";
 import IconStarFull from "../../../../../../../components/ui/icons/star-full";
 import Link from "../../../../../../../components/ui/link";
@@ -79,14 +78,14 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route star rating */}
       {displayColumn("starRating") && (
         <td className="p-4">
-          <RouteStarRating route={route} />
+          <RouteStarRating route={route} size={IconSize.regular} />
         </td>
       )}
 
       {/* Does a route have any comments */}
       {displayColumn("comments") && (
         <td className="p-4">
-          <RouteComments route={route} />
+          <RouteComments route={route} size={IconSize.regular} />
         </td>
       )}
 
@@ -127,7 +126,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
           {displayColumn("starRating") && (
-            <RouteStarRating route={route} size="small" />
+            <RouteStarRating route={route} size={IconSize.small} />
           )}
         </div>
         <div className="flex items-center justify-between">
@@ -143,7 +142,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           </div>
           <div className="flex space-x-4">
             {displayColumn("comments") && (
-              <RouteComments route={route} size="small" />
+              <RouteComments route={route} size={IconSize.small} />
             )}
             {displayColumn("myAscents") && ascent && (
               <AscentIcon ascent={ascent} size="small" />
@@ -167,7 +166,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
 
 interface RouteStarRatingProps {
   route: Route;
-  size?: IconSize;
+  size: IconSize.small | IconSize.regular;
 }
 
 function RouteStarRating({ route, size }: RouteStarRatingProps) {
@@ -181,7 +180,7 @@ function RouteStarRating({ route, size }: RouteStarRatingProps) {
 
 interface RouteCommentsProps {
   route: Route;
-  size?: IconSize;
+  size: IconSize.small | IconSize.regular;
 }
 
 function RouteComments({ route, size }: RouteCommentsProps) {

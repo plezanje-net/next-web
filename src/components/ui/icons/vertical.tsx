@@ -1,10 +1,17 @@
-function IconVertical() {
+import { IconSize } from "./icon-size";
+
+type TIconVerticalProps = {
+  size: IconSize.small | IconSize.large;
+};
+
+function IconVertical({ size }: TIconVerticalProps) {
+  const sizePx = size === IconSize.small ? "20" : "40";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 40 40"
-      width="40"
-      height="40"
+      width={sizePx}
+      height={sizePx}
       className="fill-current"
     >
       <path d="M20 2V38H38V2H20Z" />
