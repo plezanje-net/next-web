@@ -1,4 +1,5 @@
 "use client";
+import { IconSize } from "@/components/ui/icons/icon-size";
 import Button from "../../../components/ui/button";
 import IconAid from "../../../components/ui/icons/aid";
 import IconColumns from "../../../components/ui/icons/columns";
@@ -107,7 +108,11 @@ function SelectPage() {
             <Option id="2" value="hrenovka" disabled>
               Hrenovka
             </Option>
-            <Option id="3" value="pecenica" icon={<IconStarFull />}>
+            <Option
+              id="3"
+              value="pecenica"
+              icon={<IconStarFull size={IconSize.small} />}
+            >
               Pečenica
             </Option>
             <Option id="4" value="krvavica">
