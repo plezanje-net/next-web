@@ -5,6 +5,7 @@ import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
 import IconStarFull from "../../../../../../components/ui/icons/star-full";
 import IconComment from "../../../../../../components/ui/icons/comment";
 import IconCheck from "../../../../../../components/ui/icons/check";
+import { IconSize } from "@/components/ui/icons/icon-size";
 
 interface Props {
   crag: Crag;
@@ -225,14 +226,14 @@ function CragRouteList({ routes, crag, ascents }: Props) {
               {/* Route star rating */}
               {cragRoutesState.selectedColumns.includes("starRating") && (
                 <th className="w-14 min-w-14 p-4">
-                  <IconStarFull />
+                  <IconStarFull size={IconSize.regular} />
                 </th>
               )}
 
               {/* Does a route have any comments */}
               {cragRoutesState.selectedColumns.includes("comments") && (
                 <th className="w-14 min-w-14 p-4">
-                  <IconComment />
+                  <IconComment size={IconSize.regular} />
                 </th>
               )}
 

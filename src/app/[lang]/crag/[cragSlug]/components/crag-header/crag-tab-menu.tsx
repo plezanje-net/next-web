@@ -7,6 +7,7 @@ import IconGallery from "../../../../../../components/ui/icons/gallery";
 import IconInfo from "../../../../../../components/ui/icons/info";
 import IconRoutes from "../../../../../../components/ui/icons/routes";
 import TabMenu, { TabMenuItem } from "../../../../../../components/ui/tab-menu";
+import { IconSize } from "@/components/ui/icons/icon-size";
 
 interface Props {
   crag: Crag;
@@ -32,7 +33,7 @@ function CragTabMenu({ crag }: Props) {
       label: "Komentarji",
       link: `/plezalisce/${crag.slug}/komentarji`,
       isActive: i18nPathname.test([`/{crag}/${crag.slug}/{comments}`]),
-      icon: <IconComment />,
+      icon: <IconComment size={IconSize.regular} />,
     },
     {
       label: "Galerija",
