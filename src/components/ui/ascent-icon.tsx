@@ -1,34 +1,33 @@
 import IconAid from "./icons/aid";
 import IconAllFree from "./icons/all-free";
-import IconClose from "./icons/close";
+import IconAttempt from "./icons/attempt";
 import IconFlash from "./icons/flash";
-import { IconSize } from "./icons/icon";
+import { IconSize } from "./icons/icon-size";
 import IconOnsight from "./icons/onsight";
 import IconRedPoint from "./icons/red-point";
 import IconRepeat from "./icons/repeat";
 
 interface Props {
   ascent: string;
-  size?: IconSize;
-  className?: string;
+  size: IconSize.small | IconSize.regular;
 }
 
-function AscentIcon({ ascent, size, className }: Props) {
+function AscentIcon({ ascent, size }: Props) {
   switch (ascent) {
     case "onsight":
-      return <IconOnsight className={className} size={size} />;
+      return <IconOnsight size={size} />;
     case "flash":
-      return <IconFlash className={className} size={size} />;
+      return <IconFlash size={size} />;
     case "redpoint":
-      return <IconRedPoint className={className} size={size} />;
+      return <IconRedPoint size={size} />;
     case "repeat":
-      return <IconRepeat className={className} size={size} />;
+      return <IconRepeat size={size} />;
     case "allfree":
-      return <IconAllFree className={className} size={size} />;
+      return <IconAllFree size={size} />;
     case "aid":
-      return <IconAid className={className} size={size} />;
+      return <IconAid size={size} />;
     case "attempt":
-      return <IconClose className={className} size={size} />;
+      return <IconAttempt size={size} />;
   }
 
   return <></>;

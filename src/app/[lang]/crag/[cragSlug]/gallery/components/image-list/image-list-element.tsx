@@ -1,3 +1,4 @@
+import { IconSize } from "@/components/ui/icons/icon-size";
 import IconPhoto from "@/components/ui/icons/photo";
 import { Image } from "@/graphql/generated";
 import NextImage from "next/image";
@@ -25,7 +26,7 @@ function ImageListElement({ image, baseUrl }: TImageListElementParams) {
       {title && <div className="pt-2">{title}</div>}
       {author && (
         <div className="text-sm">
-          <IconPhoto className="inline pr-1" size="small" />
+          <IconPhoto className="inline pr-1" size={IconSize.small} />
           {author}
         </div>
       )}

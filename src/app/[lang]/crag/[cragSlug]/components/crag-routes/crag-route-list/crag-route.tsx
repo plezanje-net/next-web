@@ -92,7 +92,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Logged in user's acents of a route */}
       {displayColumn("myAscents") && (
         <td className="py-4 pl-4 pr-0 text-center">
-          {ascent && <AscentIcon className="inline-block" ascent={ascent} />}
+          {ascent && <AscentIcon ascent={ascent} size={IconSize.regular} />}
         </td>
       )}
     </tr>
@@ -145,7 +145,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
               <RouteComments route={route} size={IconSize.small} />
             )}
             {displayColumn("myAscents") && ascent && (
-              <AscentIcon ascent={ascent} size="small" />
+              <AscentIcon ascent={ascent} size={IconSize.small} />
             )}
           </div>
         </div>

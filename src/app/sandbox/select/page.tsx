@@ -118,7 +118,11 @@ function SelectPage() {
             <Option id="4" value="krvavica">
               Krvavica
             </Option>
-            <Option id="5" value="klobasa" icon={<IconAid />}>
+            <Option
+              id="5"
+              value="klobasa"
+              icon={<IconAid size={IconSize.small} />}
+            >
               Klobasa
             </Option>
             <Option id="6" value="sunka">

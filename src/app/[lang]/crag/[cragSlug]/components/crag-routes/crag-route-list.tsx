@@ -239,8 +239,8 @@ function CragRouteList({ routes, crag, ascents }: Props) {
 
               {/* Logged in user's acents of a route */}
               {cragRoutesState.selectedColumns.includes("myAscents") && (
-                <th className="w-16 min-w-16 py-4 pl-4 pr-0 text-center">
-                  <IconCheck className="inline-block" />
+                <th className="min-w-10 w-10 py-4 pl-4 pr-0">
+                  <IconCheck />
                 </th>
               )}
             </tr>
