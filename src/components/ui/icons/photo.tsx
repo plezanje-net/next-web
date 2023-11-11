@@ -1,11 +1,36 @@
-import Icon, { IconProps } from "./icon";
+import { IconSize } from "./icon-size";
 
-function IconPhoto(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M12 16.2C13.7674 16.2 15.2 14.7674 15.2 13C15.2 11.2327 13.7674 9.80005 12 9.80005C10.2327 9.80005 8.80005 11.2327 8.80005 13C8.80005 14.7674 10.2327 16.2 12 16.2Z" />
-      <path d="M9 3L7.17 5H4C2.9 5 2 5.9 2 7V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V7C22 5.9 21.1 5 20 5H16.83L15 3H9ZM12 18C9.24 18 7 15.76 7 13C7 10.24 9.24 8 12 8C14.76 8 17 10.24 17 13C17 15.76 14.76 18 12 18Z" />
-    </Icon>
-  );
+type TIconPhotoProps = {
+  size: IconSize.small | IconSize.regular;
+};
+
+function IconPhoto({ size }: TIconPhotoProps) {
+  switch (size) {
+    case IconSize.small:
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          width="20"
+          height="20"
+          className="fill-current"
+        >
+          <path d="M480-264q72 0 120-49t48-119q0-69-48-118.5T480-600q-72 0-120 49.5T312-432q0 70 48 119t120 49Zm0-72q-42 0-69-27t-27-68q0-40 27-68.5t69-28.5q42 0 69 28.5t27 68.5q0 41-27 68t-69 27ZM168-144q-29 0-50.5-21.5T96-216v-432q0-29 21.5-50.5T168-720h120l72-96h240l72 96h120q30 0 51 21.5t21 50.5v432q0 29-21 50.5T792-144H168Z" />
+        </svg>
+      );
+
+    case IconSize.regular:
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          width="24"
+          height="24"
+          className="fill-current"
+        >
+          <path d="M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240l74 80h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Z" />
+        </svg>
+      );
+  }
 }
 export default IconPhoto;
