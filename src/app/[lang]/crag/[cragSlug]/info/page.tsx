@@ -30,6 +30,7 @@ import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import { TMarker } from "@/components/map/lazy-map";
 import { IconSize } from "@/components/ui/icons/icon-size";
+import IconMore from "@/components/ui/icons/more";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -202,7 +203,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
       {/* Icons and edit button */}
       <div className="mx-auto px-4 2xl:container xs:px-8">
         {/* Row 1: some icons (based on screen size) and button. */}
-        <div className="mt-7 flex justify-between">
+        <div className="mt-7 flex items-center justify-between">
           <div className="flex">
             {crag.orientations && (
               <IconOrientation
@@ -211,22 +212,22 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
               />
             )}
 
-            <div className="hidden sm:flex">
+            <div className="hidden xs:flex">
               <ApproachTimeAndHeight crag={crag} />
             </div>
 
-            <div className="hidden xl:flex">
+            <div className="hidden lg:flex">
               <ApproachTimeHeightAnglesSeasonsAndRainproof crag={crag} />
             </div>
           </div>
 
           <div>
-            <Button variant="secondary">Uredi plezališče</Button>
+            <IconMore />
           </div>
         </div>
 
         {/* Row 2 or row 2 and 3 and 4: some icons and all other icons (based on screen size). */}
-        <div className="mt-4 block sm:flex xl:hidden">
+        <div className="mt-4 block sm:flex lg:hidden">
           <ApproachTimeHeightAnglesSeasonsAndRainproof crag={crag} />
         </div>
 
@@ -414,7 +415,7 @@ function ApproachTimeAndHeight({ crag }: { crag: TCragInfo }) {
       {crag.approachTime && (
         <div className="flex items-end">
           <IconGroupDivider
-            className={`hidden ${crag.orientations ? "sm:block" : ""}`}
+            className={`hidden ${crag.orientations ? "xs:block" : ""}`}
           />
           <IconWalk size={IconSize.large} />
           <span className="-ml-0.5 font-medium">{crag.approachTime} min</span>
@@ -426,7 +427,7 @@ function ApproachTimeAndHeight({ crag }: { crag: TCragInfo }) {
           <IconGroupDivider
             className={`
               ${crag.approachTime ? "block" : "hidden"}
-              ${crag.orientations || crag.approachTime ? "sm:block" : ""}
+              ${crag.orientations || crag.approachTime ? "xs:block" : ""}
               `}
           />
           <IconHeight />
@@ -452,7 +453,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
     <>
       <div>
         {/* Approach time and height. */}
-        <div className="flex sm:hidden">
+        <div className="flex xs:hidden">
           <ApproachTimeAndHeight crag={crag} />
         </div>
 
@@ -464,7 +465,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                 hidden
                 ${
                   crag.orientations || crag.approachTime || crag.minRouteLength
-                    ? "xl:block"
+                    ? "lg:block"
                     : ""
                 }`}
             />
@@ -522,7 +523,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                  crag.minRouteLength ||
                  crag.wallAngles ||
                  crag.seasons
-                   ? "xl:block"
+                   ? "lg:block"
                    : ""
                }`}
             />
