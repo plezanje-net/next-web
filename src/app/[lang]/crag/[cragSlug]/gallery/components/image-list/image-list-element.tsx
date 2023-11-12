@@ -6,9 +6,14 @@ import NextImage from "next/image";
 type TImageListElementParams = {
   image: Image;
   baseUrl: string;
+  onClick: () => void;
 };
 
-function ImageListElement({ image, baseUrl }: TImageListElementParams) {
+function ImageListElement({
+  image,
+  baseUrl,
+  onClick,
+}: TImageListElementParams) {
   const { id, path, extension, maxIntrinsicWidth, aspectRatio, title, author } =
     image;
   return (
@@ -22,6 +27,7 @@ function ImageListElement({ image, baseUrl }: TImageListElementParams) {
         className="rounded-lg"
         quality={100}
         priority
+        onClick={onClick}
       />
       {title && <div className="pt-2">{title}</div>}
       {author && <div className="text-sm">{author}</div>}

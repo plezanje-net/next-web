@@ -12,6 +12,8 @@
     "gengradsys": "node ./src/scripts/generate-grading-systems.mjs"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/modifiers": "^7.0.0",
     "@headlessui/react": "^1.7.15",
     "@headlessui/tailwindcss": "^0.1.2",
     "@react-stately/slider": "^3.2.4",
