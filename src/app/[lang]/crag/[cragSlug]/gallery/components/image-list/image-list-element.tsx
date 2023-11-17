@@ -30,7 +30,12 @@ function ImageListElement({
         onClick={onClick}
       />
       {title && <div className="pt-2">{title}</div>}
-      {author && <div className="text-sm">{author}</div>}
+      {author && (
+        <div className="flex items-center gap-0.5 text-sm">
+          <IconPhoto size={IconSize.small} />
+          <span>{author}</span>
+        </div>
+      )}
     </div>
   );
 }

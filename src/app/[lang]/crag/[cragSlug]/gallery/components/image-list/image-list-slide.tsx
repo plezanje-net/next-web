@@ -1,3 +1,4 @@
+import { IconSize } from "@/components/ui/icons/icon-size";
 import IconPhoto from "@/components/ui/icons/photo";
 import { Image } from "@/graphql/generated";
 import NextImage from "next/image";
@@ -12,9 +13,9 @@ function ImageSlide({ image, positionClass, baseUrl }: TImageSlideParams) {
   const { title, author } = image;
   return (
     <div
-      className={`absolute flex h-full w-full items-center justify-center ${positionClass}`}
+      className={`absolute flex h-full w-full flex-col items-center justify-center ${positionClass}`}
     >
-      <div className="text-center">
+      <div className="overflow-hidden">
         <NextImage
           src={`${baseUrl}/${image.path}.${image.extension}`}
           width={image.maxIntrinsicWidth}
@@ -22,15 +23,16 @@ function ImageSlide({ image, positionClass, baseUrl }: TImageSlideParams) {
           alt={`${image.title}`}
           quality={100}
           priority
+          className="h-full w-full object-contain"
         />
-        {title && <div className="pt-2">{title}</div>}
-        {author && (
-          <div className="text-sm">
-            <IconPhoto className="inline pr-1" size="small" />
-            {author}
-          </div>
-        )}
       </div>
+      {title && <div className="pt-2">{title}</div>}
+      {author && (
+        <div className="flex items-center gap-0.5 text-sm">
+          <IconPhoto size={IconSize.small} />
+          <span>{author}</span>
+        </div>
+      )}
     </div>
   );
 }
