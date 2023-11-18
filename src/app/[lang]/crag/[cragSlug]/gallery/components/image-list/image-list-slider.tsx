@@ -7,6 +7,7 @@ import ImageSlide from "./image-list-slide";
 import { DndContext, DragEndEvent, useDraggable } from "@dnd-kit/core";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import IconPhoto from "@/components/ui/icons/photo";
+import useKeyDown from "@/hooks/useKeyDown";
 
 type TImageListLightboxParams = {
   images: Image[];
@@ -105,6 +106,15 @@ function ImageListSlider({
       handlePrevious();
     }
   }
+
+  useKeyDown(
+    (key) => {
+      if (key === "Escape") onClose();
+      if (key === "ArrowLeft") handlePrevious();
+      if (key === "ArrowRight") handleNext();
+    },
+    ["ArrowLeft", "ArrowRight", "Escape"]
+  );
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full flex-col bg-white">
