@@ -33,7 +33,9 @@ function Accordion({
         {isOpen ? <IconCollapse /> : <IconExpand />}
       </button>
       {isOpen && (
-        <div className="border-t border-t-neutral-200">{children}</div>
+        <div className="border-b border-t border-b-neutral-200 border-t-neutral-200">
+          {children}
+        </div>
       )}
     </div>
   );
