@@ -1,11 +1,45 @@
 "use client";
+
+import CheckboxHUI from "@/components/ui/checkboxhui";
 import Checkbox from "../../../components/ui/checkbox";
+import { useState } from "react";
 
 function CheckboxPage() {
+  const [checked, setChecked] = useState(false);
+
   return (
     <div className="m-8">
       <h1 className="text-xl">Checkbox demo</h1>
 
+      {/* hui */}
+      <div className="mt-10">
+        <CheckboxHUI label="Check me out" />
+      </div>
+
+      <div className="mt-1">
+        <CheckboxHUI label="Uncheck me" checked />
+      </div>
+
+      <div className="mt-1">
+        <CheckboxHUI label="Cannot check me" disabled />
+      </div>
+      <div className="mt-1">
+        <CheckboxHUI label="Cannot uncheck me" disabled checked />
+      </div>
+
+      <div className="mt-1">
+        <CheckboxHUI
+          label="Check and control me"
+          onChange={(value) => setChecked(value)}
+          checked={checked}
+        />
+      </div>
+      <div className="mt-1">
+        State of last checkbox is:{" "}
+        {checked ? <span>checked</span> : <span>not checked</span>}
+      </div>
+
+      {/* aria */}
       <div className="mt-10">
         <Checkbox>Check me, I am unchecked</Checkbox>
       </div>
