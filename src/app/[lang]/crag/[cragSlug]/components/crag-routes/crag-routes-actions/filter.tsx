@@ -9,11 +9,11 @@ import GradeRangeSlider, {
   minSliderValue,
   sliderValueToDifficultyMap,
 } from "../../../../../../../components/ui/grade-range-slider";
-import Checkbox from "../../../../../../../components/ui/checkbox";
 import {
   Radio,
   RadioGroup,
 } from "../../../../../../../components/ui/radio-group";
+import Checkbox from "@/components/ui/checkbox";
 
 function Filter() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
@@ -146,24 +146,27 @@ function Filter() {
         <div className="flex flex-col">
           <div>Glede na lepoto</div>
           <div className="mt-2">
-            <Checkbox
-              isSelected={marvelousFilterValue}
-              onChange={setMarvelousFilterValue}
-            >
-              Čudovita
-            </Checkbox>
-            <Checkbox
-              isSelected={beautifulFilterValue}
-              onChange={setBeautifulFilterValue}
-            >
-              Lepa
-            </Checkbox>
-            <Checkbox
-              isSelected={unremarkableFilterValue}
-              onChange={setUnremarkableFilterValue}
-            >
-              Nič posebnega
-            </Checkbox>
+            <div>
+              <Checkbox
+                label="Čudovita"
+                checked={marvelousFilterValue}
+                onChange={setMarvelousFilterValue}
+              />
+            </div>
+            <div className="mt-1">
+              <Checkbox
+                label="Lepa"
+                checked={beautifulFilterValue}
+                onChange={setBeautifulFilterValue}
+              />
+            </div>
+            <div className="mt-1">
+              <Checkbox
+                label="Nič posebnega"
+                checked={unremarkableFilterValue}
+                onChange={setUnremarkableFilterValue}
+              />
+            </div>
           </div>
         </div>
 

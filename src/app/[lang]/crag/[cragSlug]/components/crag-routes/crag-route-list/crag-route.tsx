@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Crag, Route } from "../../../../../../../graphql/generated";
 import RouteLink from "../../../../../../../components/route-link";
 import AscentIcon from "../../../../../../../components/ui/ascent-icon";
-import Checkbox from "../../../../../../../components/ui/checkbox";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconComment from "../../../../../../../components/ui/icons/comment";
 import IconStarEmpty from "../../../../../../../components/ui/icons/star-empty";
@@ -11,6 +10,7 @@ import Link from "../../../../../../../components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../utils/text-helpers";
 import RouteGrade from "./crag-route/route-grade";
+import Checkbox from "@/components/ui/checkbox";
 
 interface Props {
   crag: Crag;
@@ -31,7 +31,7 @@ function CragRoute({ crag, route, ascent }: Props) {
     >
       {/* # (checkbox) */}
       <td>
-        <Checkbox aria-label="Označi kot plezano" />
+        <Checkbox label="Označi kot plezano" hideLabel />
       </td>
 
       {/* Route name */}
@@ -120,7 +120,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
     >
       <div className="w-7">
-        <Checkbox aria-label="Označi kot plezano" />
+        <Checkbox label="Označi kot plezano" hideLabel />
       </div>
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
