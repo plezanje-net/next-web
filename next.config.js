@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    serverActions: true,
-  },
+  experimental: {},
   rewrites() {
     const rewrites = require("./src/rewrites.json");
     const rewritesArray = [];
