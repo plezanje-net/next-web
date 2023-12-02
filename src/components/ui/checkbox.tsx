@@ -16,12 +16,12 @@ function Checkbox({
   hideLabel = false,
 }: TCheckboxProps) {
   return (
-    <div className="flex h-6 items-center">
+    <div className="flex items-center">
       <Switch
         defaultChecked={!onChange ? checked : undefined}
         checked={onChange ? checked : undefined}
         onChange={onChange}
-        className="group -my-0.5 -ml-1.5 flex items-center outline-none"
+        className="group -my-0.5 -ml-1.5 flex items-start outline-none"
         disabled={disabled}
       >
         {({ checked }) => (
@@ -50,7 +50,9 @@ function Checkbox({
                 />
               </svg>
             </div>
-            <span className={`${hideLabel ? "sr-only" : ""}`}>{label}</span>
+            <span className={`mt-0.5 text-left ${hideLabel ? "sr-only" : ""}`}>
+              {label}
+            </span>
           </>
         )}
       </Switch>
