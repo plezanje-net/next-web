@@ -5,11 +5,21 @@ import {
   Route,
   Sector,
 } from "../../../../../graphql/generated";
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  useQueryState,
+} from "next-usequerystate";
 
 interface Props {
   crag: Crag;
@@ -247,50 +257,10 @@ function CragRoutes({ crag, mySummary }: Props) {
   }, [compact]);
 
   // Sectors collapse/expand
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const params = new URLSearchParams(searchParams);
-  const [expandedSectors, setExpandedSectors] = useState<number[]>(
-    params
-      .get("s")
-      ?.split(";")
-      .map((s) => parseInt(s)) ?? []
+  const [expandedSectors, setExpandedSectors] = useQueryState(
+    "sectors",
+    parseAsArrayOf(parseAsInteger).withDefault([])
   );
-
-  // const createSectorQuery = useCallback(
-  //   (index: number) => {
-  //     const params = new URLSearchParams(searchParams);
-  //     let sectors =
-  //       params
-  //         .get("s")
-  //         ?.split(";")
-  //         .map((s) => parseInt(s)) ?? [];
-  //     let anchor = "";
-  //     if (sectors.includes(index)) {
-  //       sectors = sectors.filter((s) => s !== index);
-  //     } else {
-  //       sectors.push(index);
-  //       sectors.sort();
-  //       anchor = `#s${index}`;
-  //     }
-
-  //     if (sectors.length === 0) {
-  //       params.delete("s");
-  //     } else {
-  //       params.set("s", sectors.join(";"));
-  //     }
-
-  //     setExpandedSectors(sectors);
-
-  //     // return decodeURIComponent(params.toString());
-  //   },
-  //   [searchParams]
-  // );
-
-  // const saveScrollPosition = useCallback(() => {
-  //   localStorage.setItem("persistentScroll", window.scrollY.toString());
-  // }, []);
 
   const toggleSector = (index: number) => {
     let sectors = [...expandedSectors];
@@ -298,29 +268,23 @@ function CragRoutes({ crag, mySummary }: Props) {
       sectors = sectors.filter((s) => s !== index);
     } else {
       sectors.push(index);
-      // sectors.sort();
+      sectors.sort();
     }
     setExpandedSectors(sectors);
-
-    // console.log(window.location);
-    // const url = new URL(window.location.href);
-    // url.searchParams.set("s", decodeURIComponent(sectors.join(";")));
-    // history.pushState({}, "", url);
-
-    // createSectorQuery(index);
-    // saveScrollPosition();
-    // router.push(`${pathname}?${createSectorQuery(index)}`, { scroll: false });
   };
 
-  // useEffect(() => {
-  //   const persistentScroll = localStorage.getItem("persistentScroll");
-  //   if (persistentScroll === null) return;
-
-  //   window.scrollTo({ top: Number(persistentScroll) });
-
-  //   if (Number(persistentScroll) === window.scrollY)
-  //     localStorage.removeItem("persistentScroll");
-  // }, [searchParams]);
+  useLayoutEffect(() => {
+    const updatePosition = () => {
+      localStorage.setItem("persistentScroll", window.scrollY.toString());
+    };
+    const persistentScroll = localStorage.getItem("persistentScroll");
+    if (persistentScroll) {
+      window.scrollTo({ top: Number(persistentScroll) });
+    }
+    window.addEventListener("scroll", updatePosition);
+    updatePosition();
+    return () => window.removeEventListener("scroll", updatePosition);
+  }, []);
 
   return (
     <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>

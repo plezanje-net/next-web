@@ -1,7 +1,7 @@
 import {
   AppRouterInstance,
   NavigateOptions,
-} from "next/dist/shared/lib/app-router-context";
+} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { NextRouter } from "next/router";
 
