@@ -1,10 +1,4 @@
-import { IconSize } from "./icon-size";
-
-type TIconMapProps = {
-  size: IconSize.regular;
-};
-
-function IconMap({ size }: TIconMapProps) {
+function IconMap() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
