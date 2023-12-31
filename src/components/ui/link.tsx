@@ -29,7 +29,8 @@ const Link = forwardRef(function Link(
   );
 
   // default classes for a link
-  let className = "outline-none focus:underline focus:decoration-double";
+  let className =
+    "outline-none focus-visible:underline focus-visible:decoration-double";
 
   // classes that might be passed in by the parent
   className += props.className ? " " + props.className : "";
