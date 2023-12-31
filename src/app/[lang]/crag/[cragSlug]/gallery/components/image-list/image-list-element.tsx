@@ -24,12 +24,7 @@ function ImageListElement({ image, baseUrl }: TImageListElementParams) {
         priority
       />
       {title && <div className="pt-2">{title}</div>}
-      {author && (
-        <div className="text-sm">
-          <IconPhoto className="inline pr-1" size={IconSize.small} />
-          {author}
-        </div>
-      )}
+      {author && <div className="text-sm">{author}</div>}
     </div>
   );
 }
