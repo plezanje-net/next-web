@@ -15,6 +15,8 @@ type Params = {
   countrySlug: string;
 };
 
+// TODO: Do we need this page at all?
+
 async function CragsPage({ params }: { params: Params }) {
   const { data } = await urqlServer().query(CountryBySlugWithCragsDocument, {
     country: params.countrySlug,
