@@ -40,6 +40,14 @@ gql`
           slug
         }
       }
+      orientations
+      minDifficulty
+      maxDifficulty
+      seasons
+      rainproof
+      wallAngles
+      approachTime
+      nrRoutesByGrade
     }
   }
 `;
@@ -49,9 +57,11 @@ gql`
     countries {
       name
       slug
+      nrCrags
       areas {
         name
         slug
+        nrCrags
       }
     }
   }

@@ -59,6 +59,7 @@ module.exports = {
       screens: { xs: "512px" },
       width: {
         13: "3.25rem", // 52px
+        30: "7.5rem", // 120px
       },
       minWidth: {
         0.5: "0.125rem", // 2px

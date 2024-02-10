@@ -94,7 +94,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     crag.maxRouteLength = 15;
     crag.wallAngles = [WallAngle.Slab, WallAngle.Overhang];
     crag.seasons = [Season.Summer, Season.Spring];
-    crag.rainProof = true;
+    crag.rainproof = true;
 
     crag.coverImage = {
       id: "",
@@ -131,7 +131,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     iconDataMissing.push("dolžinah smeri");
   !crag.wallAngles && iconDataMissing.push("naklonu stene");
   !crag.seasons && iconDataMissing.push("sezoni");
-  crag.rainProof === null && iconDataMissing.push("odpornosti na dež");
+  crag.rainproof === null && iconDataMissing.push("odpornosti na dež");
 
   let iconDataMissingMsg;
   let iconDataMissingActionLinkMsg;
@@ -560,7 +560,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
           </>
         )}
 
-        {crag.rainProof !== null && (
+        {crag.rainproof !== null && (
           <>
             <IconGroupDivider
               className={`
@@ -577,7 +577,7 @@ function ApproachTimeHeightAnglesSeasonsAndRainproof({
                 }
                 `}
             />
-            <div className={`${!!crag.rainProof ? "" : "text-neutral-300"}`}>
+            <div className={`${!!crag.rainproof ? "" : "text-neutral-300"}`}>
               <IconRainproof size={IconSize.large} />
             </div>
           </>
@@ -626,7 +626,7 @@ gql`
       approachTime
       wallAngles
       seasons
-      rainProof
+      rainproof
       coverImage {
         id
         path
