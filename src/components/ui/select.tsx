@@ -120,7 +120,7 @@ function Select({
         }`}
       >
         <Listbox.Options className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-          {children}
+          <div className="max-h-80 overflow-auto">{children}</div>
         </Listbox.Options>
       </div>
     </Listbox>
