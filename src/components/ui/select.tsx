@@ -35,6 +35,7 @@ interface SelectProps {
   placeholder?: string;
   multi?: boolean;
   customTrigger?: ReactElement;
+  disabled?: boolean;
 }
 
 function Select({
@@ -45,6 +46,7 @@ function Select({
   placeholder,
   multi,
   customTrigger,
+  disabled,
 }: SelectProps) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let valueToLabel: {
@@ -81,14 +83,19 @@ function Select({
       onChange={onChange}
       multiple={multi}
       className="relative bg-white"
+      disabled={disabled}
     >
       {label && <Listbox.Label>{label}</Listbox.Label>}
       {customTrigger ? (
         <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
       ) : (
         <Listbox.Button
-          className={`relative flex w-full justify-between gap-2 rounded-lg border border-neutral-400 py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
+          className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
             label ? "mt-1" : ""
+          } ${
+            disabled
+              ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+              : "border-neutral-400"
           }`}
         >
           {!!value?.length ? (

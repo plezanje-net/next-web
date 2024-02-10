@@ -118,6 +118,26 @@ function SelectPage() {
         </div>
       </div>
 
+      <div className="mt-14 w-80">
+        <h5>A disabled select</h5>
+        <div className="mt-4">
+          <Select
+            label="Izberi možnost"
+            placeholder="Izberi možnost"
+            value="pleskavica"
+            onChange={() => {}}
+            disabled
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
+          </Select>
+        </div>
+      </div>
+
       <div className="mt-14">
         <h5>A select with a custom trigger</h5>
         <div className="mt-4">
