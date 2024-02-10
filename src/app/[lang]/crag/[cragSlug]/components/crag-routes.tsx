@@ -53,7 +53,7 @@ interface CragRoutesState {
   noSectors: boolean;
   search?: SearchOptions;
   filter?: FilterOptions;
-  sort?: SortOptions;
+  sort: SortOptions;
 }
 
 interface CragRouteListColumn {
@@ -79,6 +79,7 @@ const CragRoutesContext = createContext<CragRoutesContextType>({
     combine: false,
     selectedColumns: [],
     noSectors: false,
+    sort: { column: "select", direction: "asc" },
   },
   setCragRoutesState: () => {},
 });
@@ -201,6 +202,7 @@ function CragRoutes({ crag, mySummary }: Props) {
     selectedColumns: cragRouteListColumns
       .filter(({ isDefault }) => isDefault)
       .map(({ name }) => name),
+    sort: { column: "select", direction: "asc" },
 
     noSectors: crag.sectors.length === 1,
     // TODO: above condition should be adjusted, because we have 2 different use cases:

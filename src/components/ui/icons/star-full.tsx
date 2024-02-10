@@ -2,9 +2,10 @@ import { IconSize } from "./icon-size";
 
 type TIconStarFullProps = {
   size: IconSize.small | IconSize.regular;
+  inline?: boolean;
 };
 
-function IconStarFull({ size }: TIconStarFullProps) {
+function IconStarFull({ size, inline = false }: TIconStarFullProps) {
   switch (size) {
     case IconSize.small:
       return (
@@ -13,7 +14,9 @@ function IconStarFull({ size }: TIconStarFullProps) {
           viewBox="0 -960 960 960"
           width="20"
           height="20"
-          className="fill-current"
+          className={`fill-current ${
+            inline ? "relative bottom-[1px] inline" : ""
+          }`}
         >
           <path d="m243-96 63-266L96-541l276-24 108-251 108 252 276 23-210 179 63 266-237-141L243-96Z" />
         </svg>
