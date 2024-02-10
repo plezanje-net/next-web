@@ -23,7 +23,7 @@ function Sort() {
       value={`${cragRoutesState.sort.column},${cragRoutesState.sort.direction}`}
       onChange={handleSortChange}
       customTrigger={
-        <Button renderStyle="icon">
+        <Button variant="quaternary">
           <span className="flex">
             <IconSort />
             <span className="ml-2 max-lg:hidden">Uredi</span>

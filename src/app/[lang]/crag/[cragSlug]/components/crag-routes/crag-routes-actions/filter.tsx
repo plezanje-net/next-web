@@ -114,7 +114,7 @@ function Filter() {
   return (
     <Dialog
       openTrigger={
-        <Button renderStyle="icon">
+        <Button variant="quaternary">
           <span className="flex">
             <IconFilter />
             <span>

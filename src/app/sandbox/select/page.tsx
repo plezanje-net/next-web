@@ -143,7 +143,7 @@ function SelectPage() {
         <div className="mt-4">
           <Select
             customTrigger={
-              <Button renderStyle="icon">
+              <Button variant="quaternary">
                 <IconColumns />
               </Button>
             }

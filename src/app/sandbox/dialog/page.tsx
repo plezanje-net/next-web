@@ -51,7 +51,7 @@ function DialogPage() {
           <Dialog
             title="Test Dialog"
             openTrigger={
-              <Button renderStyle="icon">
+              <Button variant="quaternary">
                 <IconFilter />
               </Button>
             }

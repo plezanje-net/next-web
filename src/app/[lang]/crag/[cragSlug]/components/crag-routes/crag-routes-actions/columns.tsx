@@ -17,7 +17,7 @@ function Columns() {
       value={cragRoutesState.selectedColumns}
       onChange={handleSelectedColumnsChange}
       customTrigger={
-        <Button renderStyle="icon">
+        <Button variant="quaternary">
           <span className="flex">
             <IconColumns />
             <span className="ml-2 max-lg:hidden">Izberi stolpce</span>

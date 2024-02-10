@@ -74,10 +74,11 @@ function AddCommentForm({ cragId, currentUser }: Props) {
               <Radio value={CommentType.WARNING}>opozorilo</Radio>
             </RadioGroup>
           </div>
-          <Button
-            className="ml-auto mt-4"
-            isDisabled={!commentContent}
-          >{`Objavi ${buttonLabel[commentType]}`}</Button>
+          <div className="ml-auto mt-4 w-fit">
+            <Button
+              disabled={!commentContent}
+            >{`Objavi ${buttonLabel[commentType]}`}</Button>
+          </div>
         </div>
       </form>
     </div>

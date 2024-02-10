@@ -32,7 +32,7 @@ function RouteGrade({ route, crag }: RouteGradeProps) {
   ) : (
     <Dialog
       openTrigger={
-        <Button renderStyle="icon" ref={ref}>
+        <Button variant="quaternary" ref={ref}>
           <>{route.difficulty && <Grade difficulty={route.difficulty} />}</>
         </Button>
       }
