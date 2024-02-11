@@ -14,10 +14,10 @@ function Columns() {
   return (
     <Select
       multi
-      defaultValue={cragRoutesState.selectedColumns}
+      value={cragRoutesState.selectedColumns}
       onChange={handleSelectedColumnsChange}
       customTrigger={
-        <Button renderStyle="icon">
+        <Button variant="quaternary">
           <span className="flex">
             <IconColumns />
             <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
@@ -28,7 +28,7 @@ function Columns() {
       {cragRouteListColumns
         .filter(({ isOptional }) => isOptional)
         .map((column) => (
-          <Option key={column.name} id={column.name} value={column.name}>
+          <Option key={column.name} value={column.name}>
             {column.label}
           </Option>
         ))}

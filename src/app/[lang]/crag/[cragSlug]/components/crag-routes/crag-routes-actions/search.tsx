@@ -59,23 +59,24 @@ function Search() {
 
   return (
     <>
-      <Button
-        className={`${
+      <div
+        className={
           cragRoutesState.search?.focus || cragRoutesState.search?.query
             ? "hidden"
             : "xs:hidden"
-        }`}
-        renderStyle="icon"
-        onClick={handleSearchIconClick}
+        }
       >
-        <IconSearch />
-      </Button>
+        <Button variant="quaternary" onClick={handleSearchIconClick}>
+          <IconSearch />
+        </Button>
+      </div>
+
       <div
-        className={`${
+        className={
           cragRoutesState.search?.focus || cragRoutesState.search?.query
             ? "block"
             : "hidden xs:block"
-        }`}
+        }
       >
         <TextField
           ref={searchFieldRef}
@@ -86,11 +87,9 @@ function Search() {
           value={cragRoutesState.search?.query || ""}
           suffix={
             cragRoutesState.search?.query && (
-              <span className="flex">
-                <Button renderStyle="icon" onClick={handleClearIconClick}>
-                  <IconClose />
-                </Button>
-              </span>
+              <Button variant="quaternary" onClick={handleClearIconClick}>
+                <IconClose />
+              </Button>
             )
           }
           onBlur={handleSearchFieldBlur}
