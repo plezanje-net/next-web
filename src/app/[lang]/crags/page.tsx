@@ -48,6 +48,9 @@ gql`
       wallAngles
       approachTime
       nrRoutesByGrade
+      hasSport
+      hasBoulder
+      hasMultipitch
     }
   }
 `;

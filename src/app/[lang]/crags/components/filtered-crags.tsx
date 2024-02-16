@@ -66,6 +66,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     countries: parseAsArrayOf(parseAsString).withDefault([]),
     areas: parseAsArrayOf(parseAsString).withDefault([]),
     onMapOnly: parseAsBoolean.withDefault(false),
+    routeTypes: parseAsArrayOf(parseAsString).withDefault([]),
     orientations: parseAsArrayOf(parseAsString).withDefault([]),
     difficulty: parseAsArrayOf(parseAsInteger).withDefault(
       difficultyFilterDefault
@@ -85,6 +86,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     countries: string[];
     areas: string[];
     onMapOnly: boolean;
+    routeTypes: string[];
     orientations: string[];
     difficulty: number[];
     seasons: string[];
@@ -106,6 +108,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       countries: filters.countries.length ? filters.countries : null,
       areas: filters.areas.length ? filters.areas : null,
       onMapOnly: filters.onMapOnly || null,
+      routeTypes: filters.routeTypes.length ? filters.routeTypes : null,
       orientations: filters.orientations.length ? filters.orientations : null,
       difficulty: filters.difficulty[0] !== 0 ? filters.difficulty : null,
       seasons: filters.seasons.length ? filters.seasons : null,
@@ -131,6 +134,12 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       // area
       ((crag.area && filters.areas.includes(crag.area.slug)) ||
         filters.areas.length == 0) &&
+      //
+      // route types
+      ((crag.hasSport && filters.routeTypes.includes("sport")) ||
+        (crag.hasBoulder && filters.routeTypes.includes("boulder")) ||
+        (crag.hasMultipitch && filters.routeTypes.includes("multipitch")) ||
+        filters.routeTypes.length == 0) &&
       //
       // orientations
       ((crag.orientations &&
@@ -204,13 +213,6 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     )
   );
 
-  // TODO: dummy, until we determine how to handle this (divide crags or not)
-  const routeTypes = {
-    sport: "športne",
-    boulder: "balvani",
-    multipitch: "večraztežajne",
-  };
-
   function handleCountryFilterChange(checked: boolean, country: string) {
     setFilters((filters) => {
       if (checked) {
@@ -256,6 +258,24 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   function handleOnMapOnlyFilterChange(checked: boolean) {
     setFilters((filters) => {
       return defaultToNull({ ...filters, onMapOnly: checked });
+    });
+  }
+
+  function handleRouteTypeFilterChange(checked: boolean, routeType: string) {
+    setFilters((filters) => {
+      if (checked) {
+        // add routeType
+        return defaultToNull({
+          ...filters,
+          routeTypes: [...filters.routeTypes, routeType],
+        });
+      } else {
+        // remove routeType
+        return defaultToNull({
+          ...filters,
+          routeTypes: filters.routeTypes.filter((a) => a != routeType),
+        });
+      }
     });
   }
 
@@ -497,11 +517,15 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
           <CheckboxesFilterGroup
             title="Tip smeri"
-            options={routeTypes}
+            options={{
+              sport: "športne",
+              boulder: "balvani",
+              multipitch: "večraztežajne",
+            }}
             nrShown="all"
-            checkedOptions={[]}
-            onChange={() => {
-              console.log("dummy");
+            checkedOptions={filters.routeTypes}
+            onChange={(checked, routeType) => {
+              handleRouteTypeFilterChange(checked, routeType);
             }}
           />
 
