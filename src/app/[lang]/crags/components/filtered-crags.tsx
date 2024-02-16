@@ -51,18 +51,16 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       .difficulty || 2100,
   ];
 
-  const [minApproachTime, maxApproachTime] = [
-    crags.reduce(
-      (min, crag) =>
-        crag.approachTime && crag.approachTime < min ? crag.approachTime : min,
-      Infinity
-    ),
-    crags.reduce(
-      (max, crag) =>
-        crag.approachTime && crag.approachTime > max ? crag.approachTime : max,
-      0
-    ),
-  ];
+  const maxApproachTime = crags.reduce(
+    (max, crag) =>
+      crag.approachTime && crag.approachTime > max ? crag.approachTime : max,
+    0
+  );
+  const minApproachTime = crags.reduce(
+    (min, crag) =>
+      crag.approachTime && crag.approachTime < min ? crag.approachTime : min,
+    maxApproachTime
+  );
 
   const [filters, setFilters] = useQueryStates({
     countries: parseAsArrayOf(parseAsString).withDefault([]),
