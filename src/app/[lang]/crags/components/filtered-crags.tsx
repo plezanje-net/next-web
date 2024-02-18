@@ -34,7 +34,16 @@ import {
   parseAsString,
   useQueryStates,
 } from "next-usequerystate";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import useResizeObserver from "@/hooks/useResizeObserver";
+import CragListCards from "./crag-list-cards";
+import CragListTable from "./crag-list-table";
+
+type TCragListColumn = {
+  name: string;
+  label: string;
+  width: number;
+};
 
 type TFilteredCragsProps = {
   crags: Crag[];
@@ -395,6 +404,60 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     setFiltersPaneOpened(!filtersPaneOpened);
   };
 
+  const cragListColumns: TCragListColumn[] = [
+    { name: "name", label: "Ime", width: 200 },
+    { name: "difficulty", label: "Težavnost", width: 152 },
+    { name: "nrRoutes", label: "Št. smeri", width: 100 },
+    { name: "orientations", label: "Orientacija", width: 120 },
+    { name: "approach", label: "Čas dostopa", width: 136 },
+    { name: "seasons", label: "Sezona", width: 136 },
+    { name: "wallAngles", label: "Naklon stene", width: 136 },
+    {
+      name: "rainproof",
+      label: "Možno plezanje v dežju",
+      width: 216,
+    },
+    { name: "routeTypes", label: "Tip smeri", width: 168 },
+    { name: "country", label: "Država", width: 120 },
+    { name: "area", label: "Območje", width: 136 },
+  ];
+
+  // TODO: make cols selectable from the select cols dropdown
+  const [selectedColumns, setSelectedColumns] = useState([
+    "name",
+    "difficulty",
+    // "nrRoutes",
+    // "orientations",
+    // "approach",
+    "seasons",
+    // "wallAngles",
+    // "rainproof",
+    // "routeTypes",
+    // "country",
+    // "area",
+  ]);
+
+  const [compact, setCompact] = useState(true);
+
+  const neededWidth = selectedColumns
+    .map(
+      (colName) =>
+        cragListColumns.find(
+          (column) => column.name == colName
+        ) as TCragListColumn
+    )
+    .reduce((sum, { width }) => sum + width, -32);
+
+  const onResize = useCallback(
+    (target: HTMLDivElement, entry: ResizeObserverEntry) => {
+      const availableWidth = entry.contentRect.width;
+      console.log(availableWidth);
+      setCompact(availableWidth < neededWidth);
+    },
+    [neededWidth]
+  );
+  const containerRef = useResizeObserver(onResize);
+
   return (
     <>
       <ContentHeader
@@ -636,10 +699,17 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         </div>
 
         {/* List of crags */}
-        <div className="md:ml-5">
-          {filteredCrags.map((crag: Crag) => (
-            <div key={crag.id}>{crag.name}</div>
-          ))}
+        <div ref={containerRef} className="w-full overflow-hidden md:ml-5">
+          {compact ? (
+            <CragListCards crags={filteredCrags} />
+          ) : (
+            <CragListTable
+              crags={filteredCrags}
+              columns={Object.values(cragListColumns).filter((column) =>
+                selectedColumns.includes(column.name)
+              )}
+            />
+          )}
         </div>
       </div>
     </>
@@ -824,3 +894,4 @@ function DifficultyRangeFilterGroup({
 }
 
 export default FilteredCrags;
+export type { TCragListColumn };

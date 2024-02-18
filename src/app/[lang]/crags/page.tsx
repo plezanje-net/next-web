@@ -51,6 +51,7 @@ gql`
       hasSport
       hasBoulder
       hasMultipitch
+      nrRoutes
     }
   }
 `;
