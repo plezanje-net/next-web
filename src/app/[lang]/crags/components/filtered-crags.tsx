@@ -43,6 +43,7 @@ type TCragListColumn = {
   name: string;
   label: string;
   width: number;
+  isOptional: boolean;
 };
 
 type TFilteredCragsProps = {
@@ -405,30 +406,40 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   };
 
   const cragListColumns: TCragListColumn[] = [
-    { name: "name", label: "Ime", width: 200 },
-    { name: "difficulty", label: "Težavnost", width: 152 },
-    { name: "nrRoutes", label: "Št. smeri", width: 100 },
-    { name: "orientations", label: "Orientacija", width: 120 },
-    { name: "approach", label: "Čas dostopa", width: 136 },
-    { name: "seasons", label: "Sezona", width: 136 },
-    { name: "wallAngles", label: "Naklon stene", width: 136 },
+    { name: "name", label: "Ime", width: 200, isOptional: false },
+    { name: "difficulty", label: "Težavnost", width: 152, isOptional: true },
+    { name: "nrRoutes", label: "Št. smeri", width: 100, isOptional: true },
+    {
+      name: "orientations",
+      label: "Orientacija",
+      width: 120,
+      isOptional: true,
+    },
+    {
+      name: "approachTime",
+      label: "Čas dostopa",
+      width: 136,
+      isOptional: true,
+    },
+    { name: "seasons", label: "Sezona", width: 136, isOptional: true },
+    { name: "wallAngles", label: "Naklon stene", width: 136, isOptional: true },
     {
       name: "rainproof",
       label: "Možno plezanje v dežju",
       width: 216,
+      isOptional: true,
     },
-    { name: "routeTypes", label: "Tip smeri", width: 168 },
-    { name: "country", label: "Država", width: 120 },
-    { name: "area", label: "Območje", width: 136 },
+    { name: "routeTypes", label: "Tip smeri", width: 168, isOptional: true },
+    { name: "country", label: "Država", width: 120, isOptional: true },
+    { name: "area", label: "Območje", width: 136, isOptional: true },
   ];
 
-  // TODO: make cols selectable from the select cols dropdown
   const [selectedColumns, setSelectedColumns] = useState([
     "name",
     "difficulty",
-    // "nrRoutes",
-    // "orientations",
-    // "approach",
+    "nrRoutes",
+    "orientations",
+    "approachTime",
     "seasons",
     // "wallAngles",
     // "rainproof",
@@ -451,7 +462,6 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   const onResize = useCallback(
     (target: HTMLDivElement, entry: ResizeObserverEntry) => {
       const availableWidth = entry.contentRect.width;
-      console.log(availableWidth);
       setCompact(availableWidth < neededWidth);
     },
     [neededWidth]
@@ -479,7 +489,8 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         for <md: filter pane is triggered by filter icon
         for >=md: filter pane is always visible, filter icon dissapears
       */}
-      <div className="mx-auto flex items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
+
+      <div className="mx-auto flex rotate-0 items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
         <div className="flex items-center justify-center">
           <Button variant="quaternary">
             <IconMap />
@@ -494,9 +505,27 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          <Button variant="quaternary">
-            <IconColumns />
-          </Button>
+          <Select
+            multi
+            customTrigger={
+              <Button variant="quaternary">
+                <span className="flex">
+                  <IconColumns />
+                  <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
+                </span>
+              </Button>
+            }
+            value={selectedColumns}
+            onChange={setSelectedColumns}
+          >
+            {cragListColumns
+              .filter((column) => column.isOptional)
+              .map((column) => (
+                <Option key={column.name} value={column.name}>
+                  {column.label}
+                </Option>
+              ))}
+          </Select>
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
@@ -532,6 +561,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       </div>
 
       {/* Main content */}
+
       <div className="mx-auto flex items-start px-4 2xl:container xs:px-8">
         {/* Filters pane */}
         {/* on >=md pane is always visible and is displayed as a card
@@ -701,7 +731,12 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         {/* List of crags */}
         <div ref={containerRef} className="w-full overflow-hidden md:ml-5">
           {compact ? (
-            <CragListCards crags={filteredCrags} />
+            <CragListCards
+              crags={filteredCrags}
+              columns={Object.values(cragListColumns).filter((column) =>
+                selectedColumns.includes(column.name)
+              )}
+            />
           ) : (
             <CragListTable
               crags={filteredCrags}

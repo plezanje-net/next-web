@@ -9,7 +9,6 @@ type TCragListTableProps = {
 };
 
 function CragListTable({ crags, columns }: TCragListTableProps) {
-  console.log(columns);
   return (
     <table className="w-full">
       <thead>
@@ -18,7 +17,9 @@ function CragListTable({ crags, columns }: TCragListTableProps) {
             return (
               <th
                 key={column.name}
-                className="p-4 font-normal first:pl-0 last:pr-0 last:text-right"
+                className={`p-4 font-normal first:pl-0 last:pr-0 ${
+                  columns.length > 1 ? "last:text-right" : ""
+                }`}
                 style={{
                   minWidth: `${
                     (column.width -

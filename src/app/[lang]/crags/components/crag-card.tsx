@@ -9,12 +9,40 @@ import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
+import { TCragListColumn } from "./filtered-crags";
 
 type TCragCardProps = {
   crag: Crag;
+  columns: TCragListColumn[];
 };
 
-function CragCard({ crag }: TCragCardProps) {
+function CragCard({ crag, columns }: TCragCardProps) {
+  const showOrientations =
+    !!columns.find((column) => column.name == "orientations") &&
+    !!crag.orientations;
+  const showArea =
+    !!columns.find((column) => column.name == "area") && !!crag.area;
+  const showCountry = !!columns.find((column) => column.name == "country");
+  const showRouteTypes = !!columns.find(
+    (column) => column.name == "routeTypes"
+  );
+  const showNrRoutes = !!columns.find((column) => column.name == "nrRoutes");
+  const showDifficulty =
+    !!columns.find((column) => column.name == "difficulty") &&
+    !!crag.minDifficulty &&
+    !!crag.maxDifficulty;
+  const showApproachTime =
+    !!columns.find((column) => column.name == "approachTime") &&
+    !!crag.approachTime;
+  const showSeasons =
+    !!columns.find((column) => column.name == "seasons") && !!crag.seasons;
+  const showWallAngles =
+    !!columns.find((column) => column.name == "wallAngles") &&
+    !!crag.wallAngles;
+  const showRainproof =
+    !!columns.find((column) => column.name == "rainproof") &&
+    crag.rainproof != null;
+
   return (
     <div className="border-b border-neutral-200 py-4">
       {/* row 1 */}
@@ -25,11 +53,11 @@ function CragCard({ crag }: TCragCardProps) {
           </Link>
         </div>
 
-        {crag.orientations && (
+        {showOrientations && (
           <div className="flex items-center justify-end">
             <IconOrientation size={IconSize.small} />
             <div className="ml-1">
-              <Orientations orientations={crag.orientations} />
+              <Orientations orientations={crag.orientations || []} />
             </div>
           </div>
         )}
@@ -37,75 +65,85 @@ function CragCard({ crag }: TCragCardProps) {
 
       {/* row 2 */}
       <div>
-        {crag.area && <>{crag.area.name}, </>}
-        {crag.country.name}
+        {[
+          ...(showArea ? [crag.area?.name] : []),
+          ...(showCountry ? [crag.country.name] : []),
+        ].join(", ")}
       </div>
 
       {/* row 3 */}
       <div className="text-sm">
-        <RouteTypes
-          hasSport={crag.hasSport}
-          hasBoulder={crag.hasBoulder}
-          hasMultipitch={crag.hasMultipitch}
-        />
-
-        {`, ${crag.nrRoutes} smeri`}
-
-        {crag.minDifficulty && crag.maxDifficulty && (
+        {showRouteTypes && (
           <>
-            {" "}
+            <RouteTypes
+              hasSport={crag.hasSport}
+              hasBoulder={crag.hasBoulder}
+              hasMultipitch={crag.hasMultipitch}
+            />
+
+            {(showNrRoutes || showDifficulty) && ", "}
+          </>
+        )}
+
+        {showNrRoutes && `${crag.nrRoutes} smeri`}
+
+        {showDifficulty && (
+          <>
+            {showNrRoutes && " "}
             <GradeFromTo
-              minDifficulty={crag.minDifficulty}
-              maxDifficulty={crag.maxDifficulty}
+              minDifficulty={crag.minDifficulty as number}
+              maxDifficulty={crag.maxDifficulty as number}
             />
           </>
         )}
       </div>
 
       {/* row 4 - icons */}
-      <div className="mt-2 flex items-center text-sm font-medium">
-        {/* Approach time */}
-        {crag.approachTime && (
-          <>
-            <IconWalk size={IconSize.small} />
-            <div className="ml-px">{crag.approachTime} min</div>
-          </>
-        )}
+      {(showApproachTime || showSeasons || showWallAngles || showRainproof) && (
+        <div className="mt-2 flex items-center text-sm font-medium">
+          {/* Approach time */}
+          {showApproachTime && (
+            <>
+              <IconWalk size={IconSize.small} />
+              <div className="ml-px">{crag.approachTime} min</div>
+            </>
+          )}
 
-        {/* Best seasons */}
-        {crag.seasons && (
-          <>
-            {crag.approachTime && (
-              <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
-            )}
-            <Seasons seasons={crag.seasons} />
-          </>
-        )}
+          {/* Best seasons */}
+          {showSeasons && (
+            <>
+              {showApproachTime && (
+                <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
+              )}
+              <Seasons seasons={crag.seasons || []} />
+            </>
+          )}
 
-        {/* Wall angles */}
-        {crag.wallAngles && (
-          <>
-            {(crag.approachTime || crag.seasons) && (
-              <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
-            )}
+          {/* Wall angles */}
+          {showWallAngles && (
+            <>
+              {(showApproachTime || showSeasons) && (
+                <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
+              )}
 
-            <WallAngles wallAngles={crag.wallAngles} />
-          </>
-        )}
+              <WallAngles wallAngles={crag.wallAngles || []} />
+            </>
+          )}
 
-        {/* Rainproof */}
-        {crag.rainproof !== null && (
-          <>
-            {(crag.approachTime || crag.seasons || crag.wallAngles) && (
-              <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
-            )}
+          {/* Rainproof */}
+          {showRainproof && (
+            <>
+              {(showApproachTime || showSeasons || showWallAngles) && (
+                <div className="ml-2 h-5 border-l border-neutral-200 pl-2"></div>
+              )}
 
-            <div className={crag.rainproof ? "" : "text-neutral-200"}>
-              <IconRainproof size={IconSize.small} />
-            </div>
-          </>
-        )}
-      </div>
+              <div className={crag.rainproof ? "" : "text-neutral-200"}>
+                <IconRainproof size={IconSize.small} />
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

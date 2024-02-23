@@ -40,7 +40,7 @@ function CragRow({ crag, columns }: TCragRowProps) {
             );
             break;
 
-          case "approach":
+          case "approachTime":
             cellContent = crag.approachTime && <>{crag.approachTime} min</>;
             break;
 
@@ -48,7 +48,11 @@ function CragRow({ crag, columns }: TCragRowProps) {
             cellContent = crag.seasons && (
               <Seasons
                 seasons={crag.seasons}
-                align={index == columns.length - 1 ? "right" : "left"}
+                align={
+                  index == columns.length - 1 && columns.length > 1
+                    ? "right"
+                    : "left"
+                }
               />
             );
             break;
@@ -57,7 +61,11 @@ function CragRow({ crag, columns }: TCragRowProps) {
             cellContent = crag.wallAngles && (
               <WallAngles
                 wallAngles={crag.wallAngles}
-                align={index == columns.length - 1 ? "right" : "left"}
+                align={
+                  index == columns.length - 1 && columns.length > 1
+                    ? "right"
+                    : "left"
+                }
               />
             );
             break;
@@ -89,7 +97,9 @@ function CragRow({ crag, columns }: TCragRowProps) {
         return (
           <td
             key={index}
-            className="hyphens-auto break-words p-4 [word-break:break-word] first:pl-0 last:pr-0 last:text-right"
+            className={`hyphens-auto break-words p-4 [word-break:break-word] first:pl-0 last:pr-0 ${
+              columns.length > 1 ? "last:text-right" : ""
+            }`}
           >
             {cellContent}
           </td>
