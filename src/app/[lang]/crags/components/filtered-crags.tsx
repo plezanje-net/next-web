@@ -448,6 +448,23 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     // "area",
   ]);
 
+  const [sort, setSort] = useState("name,asc");
+
+  // Sort crags based on sort state
+  const [sortField, sortDir] = sort.split(",");
+  const numericalDirection = sortDir === "asc" ? 1 : -1;
+  const collator = new Intl.Collator("sl");
+  crags.sort((c1, c2) => {
+    switch (sortField) {
+      case "name":
+        return collator.compare(c1.name, c2.name) * numericalDirection;
+
+      case "nrRoutes":
+        return (c1.nrRoutes - c2.nrRoutes) * numericalDirection;
+    }
+    return 0;
+  });
+
   const [compact, setCompact] = useState<boolean | null>(null);
 
   const neededWidth = selectedColumns
@@ -493,7 +510,10 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       <div className="x-auto relative z-10 flex rotate-0 items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
         <div className="flex items-center justify-center">
           <Button variant="quaternary">
-            <IconMap />
+            <div className="flex">
+              <IconMap />
+              <span className="ml-2 max-lg:hidden">Pokaži zemljevid</span>
+            </div>
           </Button>
 
           <div className="flex items-center md:hidden">
@@ -509,10 +529,10 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
             multi
             customTrigger={
               <Button variant="quaternary">
-                <span className="flex">
+                <div className="flex">
                   <IconColumns />
                   <span className="ml-2 max-lg:hidden">Izberi stolpce</span>
-                </span>
+                </div>
               </Button>
             }
             value={selectedColumns}
@@ -529,9 +549,23 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          <Button variant="quaternary">
-            <IconSort />
-          </Button>
+          <Select
+            customTrigger={
+              <Button variant="quaternary">
+                <div className="flex">
+                  <IconSort />
+                  <span className="ml-2 max-lg:hidden">Uredi</span>
+                </div>
+              </Button>
+            }
+            value={sort}
+            onChange={setSort}
+          >
+            <Option value="name,asc">Po abecedi, naraščajoče</Option>
+            <Option value="name,desc">Po abecedi, padajoče</Option>
+            <Option value="nrRoutes,desc">Po št. smeri, padajoče</Option>
+            <Option value="nrRoutes,asc">Po št. smeri, naraščajoče</Option>
+          </Select>
 
           <div className="flex items-center sm:hidden">
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
