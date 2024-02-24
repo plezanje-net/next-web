@@ -448,7 +448,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     // "area",
   ]);
 
-  const [compact, setCompact] = useState(true);
+  const [compact, setCompact] = useState<boolean | null>(null);
 
   const neededWidth = selectedColumns
     .map(
@@ -729,7 +729,12 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         </div>
 
         {/* List of crags */}
-        <div ref={containerRef} className="w-full overflow-hidden md:ml-5">
+        <div
+          ref={containerRef}
+          className={`w-full overflow-hidden md:ml-5 ${
+            compact === null ? "opacity-0" : ""
+          }`}
+        >
           {compact ? (
             <CragListCards
               crags={filteredCrags}
