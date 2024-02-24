@@ -490,7 +490,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         for >=md: filter pane is always visible, filter icon dissapears
       */}
 
-      <div className="mx-auto flex rotate-0 items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
+      <div className="x-auto relative z-10 flex rotate-0 items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
         <div className="flex items-center justify-center">
           <Button variant="quaternary">
             <IconMap />
