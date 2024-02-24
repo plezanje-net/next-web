@@ -454,7 +454,8 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   const [sortField, sortDir] = sort.split(",");
   const numericalDirection = sortDir === "asc" ? 1 : -1;
   const collator = new Intl.Collator("sl");
-  crags.sort((c1, c2) => {
+
+  filteredCrags.sort((c1, c2) => {
     switch (sortField) {
       case "name":
         return collator.compare(c1.name, c2.name) * numericalDirection;
