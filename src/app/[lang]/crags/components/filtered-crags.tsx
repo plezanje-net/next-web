@@ -462,6 +462,23 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
       case "nrRoutes":
         return (c1.nrRoutes - c2.nrRoutes) * numericalDirection;
+
+      case "maxDifficulty":
+        return (
+          ((c1.maxDifficulty || 0) - (c2.maxDifficulty || 0)) *
+          numericalDirection
+        );
+
+      case "minDifficulty":
+        return (
+          ((c1.minDifficulty || 0) - (c2.minDifficulty || 0)) *
+          numericalDirection
+        );
+
+      case "approachTime":
+        return (
+          ((c1.approachTime || 0) - (c2.approachTime || 0)) * numericalDirection
+        );
     }
     return 0;
   });
@@ -564,8 +581,24 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
           >
             <Option value="name,asc">Po abecedi, naraščajoče</Option>
             <Option value="name,desc">Po abecedi, padajoče</Option>
-            <Option value="nrRoutes,desc">Po št. smeri, padajoče</Option>
             <Option value="nrRoutes,asc">Po št. smeri, naraščajoče</Option>
+            <Option value="nrRoutes,desc">Po št. smeri, padajoče</Option>
+            <Option value="maxDifficulty,asc">
+              Po najtežji smeri, naraščajoče
+            </Option>
+            <Option value="maxDifficulty,desc">
+              Po najtežji smeri, padajoče
+            </Option>
+            <Option value="minDifficulty,asc">
+              Po najlažji smeri, naraščajoče
+            </Option>
+            <Option value="minDifficulty,desc">
+              Po najlažji smeri, padajoče
+            </Option>
+            <Option value="approachTime,asc">
+              Po času dostopa, naraščajoče
+            </Option>
+            <Option value="approachTime,desc">Po času dostopa, padajoče</Option>
           </Select>
 
           <div className="flex items-center sm:hidden">
