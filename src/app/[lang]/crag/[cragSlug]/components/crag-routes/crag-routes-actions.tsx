@@ -17,7 +17,7 @@ function CragRoutesActions() {
           : "flex justify-center"
       }`}
     >
-      <div className="flex items-center justify-center py-5">
+      <div className="flex items-center justify-center py-4 xs:py-5">
         <div>
           <Filter />
         </div>

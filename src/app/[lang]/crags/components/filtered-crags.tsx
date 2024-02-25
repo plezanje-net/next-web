@@ -34,10 +34,11 @@ import {
   parseAsString,
   useQueryStates,
 } from "next-usequerystate";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import CragListCards from "./crag-list-cards";
 import CragListTable from "./crag-list-table";
+import { filterEntitiesBySearchTerm } from "@/utils/search-helpers";
 
 type TCragListColumn = {
   name: string;
@@ -134,7 +135,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   }
 
   // Filter crags based on filters state
-  const filteredCrags = crags.filter(
+  let filteredCrags = crags.filter(
     (crag: Crag) =>
       //
       // country
@@ -483,6 +484,23 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     return 0;
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocus, setSearchFocus] = useState(false);
+
+  // Filter crags based on search term
+  if (searchQuery) {
+    filteredCrags = filterEntitiesBySearchTerm(filteredCrags, searchQuery);
+  }
+
+  const searchFieldRef = useRef<HTMLInputElement>(null);
+  const handleSearchIconClick = () => {
+    setSearchFocus(true);
+
+    setTimeout(() => {
+      searchFieldRef.current && searchFieldRef.current.focus();
+    }, 0);
+  };
+
   const [compact, setCompact] = useState<boolean | null>(null);
 
   const neededWidth = selectedColumns
@@ -525,8 +543,12 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         for >=md: filter pane is always visible, filter icon dissapears
       */}
 
-      <div className="x-auto relative z-10 flex rotate-0 items-center justify-center px-4 py-4 2xl:container xs:px-8 sm:justify-between">
-        <div className="flex items-center justify-center">
+      <div
+        className={`x-auto relative z-10 rotate-0 items-center justify-center px-4 2xl:container xs:px-8 sm:justify-between ${
+          searchFocus || searchQuery ? "block sm:flex" : "flex justify-center"
+        }`}
+      >
+        <div className="flex items-center justify-center py-4 sm:py-5">
           <Button variant="quaternary">
             <div className="flex">
               <IconMap />
@@ -603,7 +625,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
           <div className="flex items-center sm:hidden">
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
-            <Button variant="quaternary">
+            <Button variant="quaternary" onClick={handleSearchIconClick}>
               <IconSearch />
             </Button>
           </div>
@@ -614,15 +636,27 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
           </Button>
         </div>
 
-        <div className="hidden min-w-0 xs:ml-8 xs:w-80 xs:border-none sm:block">
+        <div
+          className={`min-w-0 sm:ml-8 sm:w-80 ${
+            searchFocus || searchQuery
+              ? "mb-6 block sm:mb-0"
+              : "hidden sm:block"
+          }`}
+        >
           <TextField
+            ref={searchFieldRef}
+            value={searchQuery}
+            onChange={setSearchQuery}
+            onBlur={() => setSearchFocus(false)}
             prefix={<IconSearch />}
             placeholder="Poišči po imenu"
             aria-label="Poišči po imenu"
             suffix={
-              <Button variant="quaternary">
-                <IconClose />
-              </Button>
+              searchQuery && (
+                <Button variant="quaternary" onClick={() => setSearchQuery("")}>
+                  <IconClose />
+                </Button>
+              )
             }
           />
         </div>
@@ -630,7 +664,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
       {/* Main content */}
 
-      <div className="mx-auto flex items-start px-4 2xl:container xs:px-8">
+      <div className="xs:pxds-8 pxdsa-4 mx-auto flex items-start 2xl:container md:px-8">
         {/* Filters pane */}
         {/* on >=md pane is always visible and is displayed as a card
             on <md pane slides in from the side when filters are being changed */}
