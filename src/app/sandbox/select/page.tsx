@@ -1,12 +1,29 @@
 "use client";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import Button from "../../../components/ui/button";
-import IconAid from "../../../components/ui/icons/aid";
 import IconColumns from "../../../components/ui/icons/columns";
 import IconStarFull from "../../../components/ui/icons/star-full";
 import { Select, Option } from "../../../components/ui/select";
+import { gradingSystems } from "@/utils/grading-systems";
+
+import { useState } from "react";
+import IconRepeat from "@/components/ui/icons/repeat";
 
 function SelectPage() {
+  const grades = gradingSystems.find((gs) => gs.id === "french")?.grades || [];
+
+  const [s1Value, setS1Value] = useState("");
+  const [s2Value, setS2Value] = useState("pleskavica");
+  const [s3Value, setS3Value] = useState<string[]>([]);
+  const [s4Value, setS4Value] = useState<string[]>(["pleskavica", "klobasa"]);
+  const [s5Value, setS5Value] = useState("");
+  const [s6Value, setS6Value] = useState("");
+  const [s7Value, setS7Value] = useState("");
+  const [s8Value, setS8Value] = useState("");
+  const [s9Value, setS9Value] = useState("");
+  const [s10Value, setS10Value] = useState("");
+  const [s11Value, setS11Value] = useState("");
+
   return (
     <div className="m-8">
       <h3>Select demo</h3>
@@ -14,25 +31,18 @@ function SelectPage() {
       <div className="mt-14 w-80">
         <h5>A default select</h5>
         <div className="mt-4">
-          <Select label="Izberi možnost" placeholder="Izberi možnost">
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
+          <Select
+            label="Izberi možnost"
+            placeholder="Izberi možnost"
+            value={s1Value}
+            onChange={setS1Value}
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
           </Select>
         </div>
       </div>
@@ -42,27 +52,16 @@ function SelectPage() {
         <div className="mt-4">
           <Select
             label="Izberi možnost"
-            defaultValue="pleskavica"
             placeholder="Izberi možnost"
+            value={s2Value}
+            onChange={setS2Value}
           >
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
           </Select>
         </div>
       </div>
@@ -70,25 +69,19 @@ function SelectPage() {
       <div className="mt-14 w-80">
         <h5>Multiselect</h5>
         <div className="mt-4">
-          <Select label="Izberi več možnosti" placeholder="Izberi..." multi>
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
+          <Select
+            label="Izberi več možnosti"
+            placeholder="Izberi..."
+            multi
+            value={s3Value}
+            onChange={setS3Value}
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
           </Select>
         </div>
       </div>
@@ -98,36 +91,49 @@ function SelectPage() {
         <div className="mt-4">
           <Select
             label="Izberi več možnosti"
-            defaultValue={["pleskavica", "klobasa"]}
             placeholder="Izberi..."
             multi
+            value={s4Value}
+            onChange={setS4Value}
           >
-            <Option id="1" value="pleskavica">
-              Pleskavica
+            <Option value="pleskavica">
+              <span>
+                <IconStarFull size={IconSize.small} inline />
+                <span className="pl-1">Pleskavica</span>
+              </span>
             </Option>
-            <Option id="2" value="hrenovka" disabled>
+            <Option value="hrenovka" disabled>
               Hrenovka
             </Option>
-            <Option
-              id="3"
-              value="pecenica"
-              icon={<IconStarFull size={IconSize.small} />}
-            >
-              Pečenica
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">
+              <span>
+                <IconRepeat size={IconSize.small} inline />
+                <span className="pl-1">Šunka</span>
+              </span>
             </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option
-              id="5"
-              value="klobasa"
-              icon={<IconAid size={IconSize.small} />}
-            >
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
+          </Select>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>A disabled select</h5>
+        <div className="mt-4">
+          <Select
+            label="Izberi možnost"
+            placeholder="Izberi možnost"
+            value="pleskavica"
+            onChange={() => {}}
+            disabled
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
           </Select>
         </div>
       </div>
@@ -137,30 +143,20 @@ function SelectPage() {
         <div className="mt-4">
           <Select
             customTrigger={
-              <Button renderStyle="icon">
+              <Button variant="quaternary">
                 <IconColumns />
               </Button>
             }
+            value={s5Value}
+            onChange={setS5Value}
           >
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
-            <Option id="7" value="longname">
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
+            <Option value="longname">
               A route with an unusually long name
             </Option>
           </Select>
@@ -170,25 +166,18 @@ function SelectPage() {
       <div className="mt-14 w-96">
         <h5>A wide select</h5>
         <div className="mt-4">
-          <Select label="Izberi možnost" placeholder="Izberi možnost">
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
+          <Select
+            label="Izberi možnost"
+            placeholder="Izberi možnost"
+            value={s6Value}
+            onChange={setS6Value}
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
           </Select>
         </div>
       </div>
@@ -196,26 +185,19 @@ function SelectPage() {
       <div className="mt-14 w-40">
         <h5>A narrow select</h5>
         <div className="mt-4">
-          <Select label="Izberi možnost" placeholder="Izberi možnost">
-            <Option id="1" value="pleskavica">
-              Pleskavica
-            </Option>
-            <Option id="2" value="hrenovka">
-              Hrenovka
-            </Option>
-            <Option id="3" value="pecenica">
-              Pečenica
-            </Option>
-            <Option id="4" value="krvavica">
-              Krvavica
-            </Option>
-            <Option id="5" value="klobasa">
-              Klobasa
-            </Option>
-            <Option id="6" value="sunka">
-              Šunka
-            </Option>
-            <Option id="7" value="longname">
+          <Select
+            label="Izberi možnost"
+            placeholder="Izberi možnost"
+            value={s7Value}
+            onChange={setS7Value}
+          >
+            <Option value="pleskavica">Pleskavica</Option>
+            <Option value="hrenovka">Hrenovka</Option>
+            <Option value="pecenica">Pečenica</Option>
+            <Option value="krvavica">Krvavica</Option>
+            <Option value="klobasa">Klobasa</Option>
+            <Option value="sunka">Šunka</Option>
+            <Option value="longname">
               A route with an unusually long name
             </Option>
           </Select>
@@ -226,72 +208,64 @@ function SelectPage() {
         <h5>Selects in a flex</h5>
         <div className="mt-4 flex gap-4">
           <div className="min-w-0 flex-1">
-            <Select label="Izberi možnost" placeholder="Izberi možnost">
-              <Option id="1" value="pleskavica">
+            <Select
+              label="Izberi možnost"
+              placeholder="Izberi možnost"
+              value={s8Value}
+              onChange={setS8Value}
+            >
+              <Option value="pleskavica">
                 A route with an unusually long name
               </Option>
-              <Option id="2" value="hrenovka">
-                Hrenovka
-              </Option>
-              <Option id="3" value="pecenica">
-                Pečenica do vrha
-              </Option>
-              <Option id="4" value="krvavica">
-                Krvavica
-              </Option>
-              <Option id="5" value="klobasa">
-                Klobasa
-              </Option>
-              <Option id="6" value="sunka">
-                Šunka
-              </Option>
+              <Option value="hrenovka">Hrenovka</Option>
+              <Option value="pecenica">Pečenica do vrha</Option>
+              <Option value="krvavica">Krvavica</Option>
+              <Option value="klobasa">Klobasa</Option>
+              <Option value="sunka">Šunka</Option>
             </Select>
           </div>
           <div className="min-w-0 flex-1">
-            <Select label="Izberi možnost" placeholder="Izberi možnost">
-              <Option id="1" value="pleskavica">
-                Pleskavica
-              </Option>
-              <Option id="2" value="hrenovka">
-                Hrenovka
-              </Option>
-              <Option id="3" value="pecenica">
-                Pečenica do vrha
-              </Option>
-              <Option id="4" value="krvavica">
-                Krvavica
-              </Option>
-              <Option id="5" value="klobasa">
-                Klobasa
-              </Option>
-              <Option id="6" value="sunka">
-                Šunka
-              </Option>
+            <Select
+              label="Izberi možnost"
+              placeholder="Izberi možnost"
+              value={s9Value}
+              onChange={setS9Value}
+            >
+              <Option value="pleskavica">Pleskavica</Option>
+              <Option value="hrenovka">Hrenovka</Option>
+              <Option value="pecenica">Pečenica do vrha</Option>
+              <Option value="krvavica">Krvavica</Option>
+              <Option value="klobasa">Klobasa</Option>
+              <Option value="sunka">Šunka</Option>
             </Select>
           </div>
           <div className="min-w-0 flex-1">
-            <Select label="Izberi možnost" placeholder="Izberi možnost">
-              <Option id="1" value="pleskavica">
-                Pleskavica
-              </Option>
-              <Option id="2" value="hrenovka">
-                Hrenovka
-              </Option>
-              <Option id="3" value="pecenica">
-                Pečenica
-              </Option>
-              <Option id="4" value="krvavica">
-                Krvavica
-              </Option>
-              <Option id="5" value="klobasa">
-                Klobasa
-              </Option>
-              <Option id="6" value="sunka">
-                Šunka
-              </Option>
+            <Select
+              label="Izberi možnost"
+              placeholder="Izberi možnost"
+              value={s10Value}
+              onChange={setS10Value}
+            >
+              <Option value="pleskavica">Pleskavica</Option>
+              <Option value="hrenovka">Hrenovka</Option>
+              <Option value="pecenica">Pečenica</Option>
+              <Option value="krvavica">Krvavica</Option>
+              <Option value="klobasa">Klobasa</Option>
+              <Option value="sunka">Šunka</Option>
             </Select>
           </div>
         </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>A select for grades</h5>
+        <Select value={s11Value} onChange={setS11Value}>
+          {grades.map((grade) => (
+            <Option key={grade.id} value={grade.name}>
+              {grade.name}
+            </Option>
+          ))}
+        </Select>
       </div>
     </div>
   );

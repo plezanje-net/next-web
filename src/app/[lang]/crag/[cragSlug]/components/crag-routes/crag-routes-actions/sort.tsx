@@ -20,9 +20,10 @@ function Sort() {
 
   return (
     <Select
+      value={`${cragRoutesState.sort.column},${cragRoutesState.sort.direction}`}
       onChange={handleSortChange}
       customTrigger={
-        <Button renderStyle="icon">
+        <Button variant="quaternary">
           <span className="flex">
             <IconSort />
             <span className="ml-2 max-lg:hidden">Uredi</span>
@@ -37,20 +38,12 @@ function Sort() {
             !column.excludeFromSort
         )
         .flatMap((column) => [
-          <Option
-            key={`${column.name},asc`}
-            id={`${column.name},asc`}
-            value={`${column.name},asc`}
-          >
+          <Option key={`${column.name},asc`} value={`${column.name},asc`}>
             {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
               column.sortAscLabel
             }`}
           </Option>,
-          <Option
-            key={`${column.name},desc`}
-            id={`${column.name},desc`}
-            value={`${column.name},desc`}
-          >
+          <Option key={`${column.name},desc`} value={`${column.name},desc`}>
             {`${column.sortLabel}${column.sortLabel ? ", " : ""}${
               column.sortDescLabel
             }`}

@@ -1,10 +1,14 @@
-import Icon, { IconProps } from "./icon";
-
-function IconExpand(props: IconProps) {
+function IconExpand() {
   return (
-    <Icon {...props}>
-      <path d="M12 15.375L6 9.37498L7.4 7.97498L12 12.575L16.6 7.97498L18 9.37498L12 15.375Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      height="24"
+      width="24"
+      className="fill-current"
+    >
+      <path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z" />
+    </svg>
   );
 }
 export default IconExpand;

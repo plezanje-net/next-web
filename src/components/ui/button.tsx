@@ -6,69 +6,59 @@ import {
 } from "react";
 
 interface ButtonProps {
-  className?: string;
   children: ReactElement | string;
-  variant?: "primary" | "secondary";
-  renderStyle?: "button" | "icon";
-  isDisabled?: boolean;
+  variant?: "primary" | "secondary" | "tertiary" | "quaternary";
+  disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button = forwardRef(function Button(
-  props: ButtonProps,
+  { children, variant = "primary", disabled, onClick }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
-  const {
-    variant,
-    renderStyle,
-    isDisabled,
-    className,
-    children,
-    ...otherProps
-  } = props;
+  let buttonStyles =
+    "flex outline-none focus-visible:ring focus-visible:ring-blue-100";
 
-  let buttonStyles = className ? `${className} flex` : "flex";
-  switch (renderStyle) {
-    case "icon":
-      buttonStyles += ` fill-current outline-none focus-visible:ring focus-visible:ring-blue-100 rounded
-      ${
-        isDisabled
-          ? "text-neutral-400 cursor-default"
-          : "hover:text-blue-500 active:text-blue-600"
-      }`;
+  switch (variant) {
+    case "primary":
+      buttonStyles += " rounded-lg py-2 px-7 font-medium text-white";
+      buttonStyles += disabled
+        ? " bg-blue-100 cursor-default"
+        : " bg-blue-500 hover:bg-blue-600 active:bg-blue-700";
       break;
 
-    case "button":
-    default:
-      buttonStyles +=
-        " rounded-lg py-2 px-7 outline-none focus-visible:ring focus-visible:ring-blue-100 font-medium";
-      switch (variant) {
-        case "secondary":
-          buttonStyles += `
-          ${
-            isDisabled
-              ? "bg-neutral-100 text-neutral-400 cursor-default"
-              : "bg-neutral-200 hover:bg-neutral-300 active:bg-neutral-400"
-          }`;
-          break;
+    case "secondary":
+      buttonStyles += " rounded-lg py-2 px-7 font-medium";
+      buttonStyles += disabled
+        ? " bg-neutral-100 text-neutral-400 cursor-default"
+        : " bg-neutral-200 hover:bg-neutral-300 active:bg-neutral-400";
+      break;
 
-        case "primary":
-        default:
-          buttonStyles += ` text-white 
-          ${
-            isDisabled
-              ? "bg-blue-100 cursor-default"
-              : "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
-          }`;
-          break;
-      }
+    case "tertiary":
+      buttonStyles += " rounded p-1";
+      buttonStyles += disabled
+        ? " text-blue-100 cursor-default"
+        : " text-blue-500 hover:text-blue-600 active:text-blue-700";
+      break;
+
+    case "quaternary":
+      buttonStyles += " rounded p-1";
+      buttonStyles += disabled
+        ? " text-neutral-400 cursor-default"
+        : " hover:text-blue-500 active:text-blue-600";
       break;
   }
 
   return (
-    <button ref={ref} {...otherProps} className={buttonStyles}>
+    <button
+      ref={ref}
+      className={buttonStyles}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
 });
+
 export default Button;

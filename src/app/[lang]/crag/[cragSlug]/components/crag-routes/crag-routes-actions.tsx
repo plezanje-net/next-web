@@ -17,34 +17,35 @@ function CragRoutesActions() {
           : "flex justify-center"
       }`}
     >
-      <div className="flex justify-center py-6">
+      <div className="flex items-center justify-center py-5">
         <div>
           <Filter />
         </div>
-
-        <div className="ml-4 border-l border-neutral-300 pl-4">
-          <Columns />
-        </div>
-
+        <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+        <Columns />
         {!cragRoutesState.noSectors && (
-          <div className="ml-4 border-l border-neutral-300 pl-4">
+          <>
+            <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
             <CombineSectors />
-          </div>
+          </>
         )}
-
-        <div className="ml-4 border-l border-neutral-300 pl-4">
-          <Sort />
-        </div>
+        <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+        <Sort />
       </div>
 
       <div
-        className={`min-w-0 xs:ml-8 xs:w-80 xs:border-none ${
+        className={`flex min-w-0 items-center xs:ml-8 xs:w-80 ${
           !cragRoutesState.search?.focus && !cragRoutesState.search?.query
-            ? "ml-4 border-l border-neutral-300 pl-4"
+            ? ""
             : "mb-6 xs:mb-0"
         }`}
       >
-        <Search />
+        {!cragRoutesState.search?.focus && !cragRoutesState.search?.query && (
+          <div className="ml-3 h-6 border-l border-neutral-300 pr-3 xs:hidden"></div>
+        )}
+        <div className="flex-1">
+          <Search />
+        </div>
       </div>
     </div>
   );

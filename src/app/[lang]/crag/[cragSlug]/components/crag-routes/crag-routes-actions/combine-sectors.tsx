@@ -19,9 +19,9 @@ function CombineSectors() {
 
   return (
     <Button
-      renderStyle="icon"
+      variant="quaternary"
       onClick={disabled ? () => {} : handleToggleCombine}
-      isDisabled={disabled}
+      disabled={disabled}
     >
       <span className="flex">
         {cragRoutesState.combine || cragRoutesState.search?.query ? (

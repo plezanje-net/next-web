@@ -2,9 +2,10 @@ import { IconSize } from "./icon-size";
 
 type TIconAidProps = {
   size: IconSize.small | IconSize.regular;
+  inline?: boolean;
 };
 
-function IconAid({ size }: TIconAidProps) {
+function IconAid({ size, inline = false }: TIconAidProps) {
   switch (size) {
     case IconSize.small:
       return (
@@ -13,7 +14,9 @@ function IconAid({ size }: TIconAidProps) {
           viewBox="0 -960 960 960"
           width="20"
           height="20"
-          className="fill-current"
+          className={`fill-current ${
+            inline ? "relative bottom-[1px] inline" : ""
+          }`}
         >
           <path d="M132-192q-15.3 0-25.65-11Q96-214 96-229.111q0-8.889 3.867-16.569 3.866-7.681 11.6-12.199L444-491v-73q0-15.3 11.122-25.65Q466.244-600 482-600q20 0 33-14.442t13-34.5Q528-669 514-682.5T480-696q-20 0-34 14t-14 34h-72q0-50 35.202-85t85-35Q530-768 565-733.379t35 84.202Q600-609 577-576.5 554-544 516-533v42l332.533 234.043q7.734 4.536 11.6 12.246Q864-237 864-228q0 15.3-10.35 25.65Q843.3-192 828-192H132Zm114-72h468L480-428 246-264Z" />
         </svg>

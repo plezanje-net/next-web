@@ -73,7 +73,7 @@ const TextField = forwardRef(function TextField(
                     `}
         />
 
-        {suffix && <div className="mx-2">{suffix}</div>}
+        {suffix && <div className="mx-1">{suffix}</div>}
       </div>
 
       {description && !errorMessage && (
