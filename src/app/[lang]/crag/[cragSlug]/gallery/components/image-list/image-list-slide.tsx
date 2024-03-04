@@ -23,7 +23,7 @@ function ImageSlide({ image, positionClass, baseUrl }: TImageSlideParams) {
           alt={`${image.title}`}
           quality={100}
           priority
-          className="h-full w-full object-contain"
+          className="h-full object-contain"
         />
       </div>
       {title && <div className="pt-2">{title}</div>}
