@@ -17,7 +17,7 @@ async function CragGalleryPage({ params }: { params: TCragGalleryPageParams }) {
   const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
 
   return (
-    <div className="mt-18 px-4 xs:px-8">
+    <div className="mx-auto mt-18 px-4 2xl:container xs:px-8">
       <ImageList images={images} baseUrl={imagesBaseUrl} />
     </div>
   );
