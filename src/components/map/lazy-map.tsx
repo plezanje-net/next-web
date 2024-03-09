@@ -1,18 +1,12 @@
 "use client";
 
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import ReactDOMServer from "react-dom/server";
-import IconMarker from "../ui/icons/marker";
 import { ReactNode } from "react";
 import "./map.css";
-
-type TMarker = {
-  type: "parking" | "wall";
-  position: [number, number];
-  popupContent?: ReactNode;
-};
+import React from "react";
+import MapMarker, { TMarker } from "./map-marker";
 
 type TLazyMapProps = {
   children?: ReactNode;
@@ -64,21 +58,7 @@ function LazyMap({
       />
 
       {markers?.map((marker, index) => (
-        <Marker
-          key={index}
-          icon={L.divIcon({
-            className: "",
-            html: ReactDOMServer.renderToString(
-              <IconMarker type={marker.type} />
-            ),
-            iconSize: [52, 52],
-            iconAnchor: [26, 52],
-            popupAnchor: [0, -46],
-          })}
-          position={marker.position}
-        >
-          <Popup>{marker.popupContent}</Popup>
-        </Marker>
+        <MapMarker key={index} marker={marker} index={index} />
       ))}
 
       {children}
@@ -86,5 +66,5 @@ function LazyMap({
   );
 }
 
-export type { TLazyMapProps, TMarker };
+export type { TLazyMapProps };
 export default LazyMap;

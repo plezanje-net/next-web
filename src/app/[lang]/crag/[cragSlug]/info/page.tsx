@@ -28,9 +28,9 @@ import Map from "@/components/map/map";
 import Button from "@/components/ui/button";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
-import { TMarker } from "@/components/map/lazy-map";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
+import { TMarker } from "@/components/map/map-marker";
 
 type TCragInfoPageParams = {
   cragSlug: string;
