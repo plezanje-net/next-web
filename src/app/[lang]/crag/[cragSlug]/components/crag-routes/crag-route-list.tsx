@@ -6,6 +6,7 @@ import IconStarFull from "../../../../../../components/ui/icons/star-full";
 import IconComment from "../../../../../../components/ui/icons/comment";
 import IconCheck from "../../../../../../components/ui/icons/check";
 import { IconSize } from "@/components/ui/icons/icon-size";
+import { filterEntitiesBySearchTerm } from "@/utils/search-helpers";
 
 interface Props {
   crag: Crag;
@@ -71,35 +72,6 @@ function filterRoutesByFilter(
   return routes;
 }
 
-function escape(searchTerm: string): string {
-  return searchTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-}
-
-function ignoreAccents(searchTerm: string): string {
-  return searchTerm
-    .replace(/[cčć]/gi, "[cčć]")
-    .replace(/[sš]/gi, "[sš]")
-    .replace(/[zž]/gi, "[zž]")
-    .replace(/[aàáâäæãåā]/gi, "[aàáâäæãåā]")
-    .replace(/[eèéêëēėę]/gi, "[eèéêëēėę]")
-    .replace(/[iîïíīįì]/gi, "[iîïíīįì]")
-    .replace(/[oôöòóœøōõ]/gi, "[oôöòóœøōõ]")
-    .replace(/[uûüùúū]/gi, "[uûüùúū]")
-    .replace(/[dđ]/gi, "[dđ]");
-}
-
-function filterRoutesBySearchTerm(
-  routes: Route[],
-  searchTerm: string
-): Route[] {
-  searchTerm = searchTerm.toLowerCase();
-  searchTerm = escape(searchTerm);
-  searchTerm = ignoreAccents(searchTerm);
-  const regExp = new RegExp(searchTerm);
-
-  return routes.filter((route) => regExp.test(route.name.toLowerCase()));
-}
-
 function sortRoutes(
   routes: Route[],
   ascents: Map<string, string>,
@@ -160,7 +132,7 @@ function CragRouteList({ routes, crag, ascents }: Props) {
   routes = filterRoutesByFilter(routes, ascents, cragRoutesState.filter);
 
   if (cragRoutesState.search?.query) {
-    routes = filterRoutesBySearchTerm(routes, cragRoutesState.search.query);
+    routes = filterEntitiesBySearchTerm(routes, cragRoutesState.search.query);
   }
 
   routes = sortRoutes(routes, ascents, cragRoutesState.sort);

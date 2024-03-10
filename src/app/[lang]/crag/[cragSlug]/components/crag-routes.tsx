@@ -5,13 +5,7 @@ import {
   Route,
   Sector,
 } from "../../../../../graphql/generated";
-import {
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useLayoutEffect, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
@@ -20,6 +14,7 @@ import {
   parseAsInteger,
   useQueryState,
 } from "next-usequerystate";
+import useResizeObserver from "@/hooks/useResizeObserver";
 
 interface Props {
   crag: Crag;
@@ -47,7 +42,7 @@ interface SearchOptions {
 }
 
 interface CragRoutesState {
-  compact: boolean;
+  compact: boolean | null;
   combine: boolean;
   selectedColumns: string[];
   noSectors: boolean;
@@ -75,7 +70,7 @@ interface CragRoutesContextType {
 
 const CragRoutesContext = createContext<CragRoutesContextType>({
   cragRoutesState: {
-    compact: true,
+    compact: null,
     combine: false,
     selectedColumns: [],
     noSectors: false,
@@ -197,7 +192,7 @@ const cragRouteListColumns: CragRouteListColumn[] = [
 
 function CragRoutes({ crag, mySummary }: Props) {
   const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
-    compact: true,
+    compact: null,
     combine: false,
     selectedColumns: cragRouteListColumns
       .filter(({ isDefault }) => isDefault)
@@ -210,53 +205,32 @@ function CragRoutes({ crag, mySummary }: Props) {
     // no sectors crag: a crag that is physically only one wall and will never be split into multiple sectors
   });
 
-  const [compact, setCompact] = useState(true);
-  const [breakpoint, setBreakpoint] = useState(500);
-
   const ascents = new Map(
     mySummary.map((ascent) => [ascent.route.id, ascent.ascentType])
   );
 
-  // Resize observer to detect when to switch to compact mode according to selected columns width
-  useEffect(() => {
-    setBreakpoint(
-      cragRouteListColumns
-        .filter(
-          (c) =>
-            cragRoutesState.selectedColumns.includes(c.name) ||
-            (cragRoutesState.combine && c.name === "sector")
-        )
-        .reduce((acc, c) => acc + c.width, 0) +
-        (cragRoutesState.combine ? 0 : 32)
-    );
-    // if we combined by sector there is another padding level that should be considdered, hence +32px
-  }, [
-    cragRoutesState.selectedColumns,
-    cragRoutesState.selectedColumns.length,
-    cragRoutesState.combine,
-  ]);
+  const neededWidth =
+    cragRouteListColumns
+      .filter(
+        (c) =>
+          cragRoutesState.selectedColumns.includes(c.name) ||
+          (cragRoutesState.combine && c.name === "sector")
+      )
+      .reduce((acc, c) => acc + c.width, 0) +
+    (cragRoutesState.combine ? 0 : 32);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const elementToObserve = containerRef?.current;
-    if (!elementToObserve) {
-      return;
-    }
+  const onResize = useCallback(
+    (target: HTMLDivElement, entry: ResizeObserverEntry) => {
+      const availableWidth = entry.contentRect.width;
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      const availableWidth = entries[0].contentRect.width;
-      setCompact(availableWidth <= breakpoint);
-    });
-    resizeObserver.observe(elementToObserve);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [breakpoint]);
-
-  useEffect(() => {
-    setCragRoutesState((state) => ({ ...state, compact }));
-  }, [compact]);
+      setCragRoutesState((state) => ({
+        ...state,
+        compact: availableWidth < neededWidth,
+      }));
+    },
+    [neededWidth]
+  );
+  const containerRef = useResizeObserver(onResize);
 
   // Sectors collapse/expand
   const [expandedSectors, setExpandedSectors] = useQueryState(
@@ -296,7 +270,10 @@ function CragRoutes({ crag, mySummary }: Props) {
           cragRoutesState.noSectors ? "px-4" : ""
         } xs:px-8`}
       >
-        <div ref={containerRef}>
+        <div
+          ref={containerRef}
+          className={`${cragRoutesState.compact === null ? "opacity-0" : ""}`}
+        >
           {cragRoutesState.combine ||
           cragRoutesState.search?.query ||
           cragRoutesState.noSectors ? (

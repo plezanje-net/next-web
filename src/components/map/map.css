@@ -1,6 +1,6 @@
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  @apply bg-white  shadow-lg;
+  @apply bg-white shadow-lg;
 }
 
 .leaflet-popup-content-wrapper {
