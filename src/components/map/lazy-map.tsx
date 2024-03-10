@@ -5,7 +5,6 @@ import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { ReactNode } from "react";
 import "./map.css";
-import React from "react";
 import MapMarker, { TMarker } from "./map-marker";
 
 type TLazyMapProps = {

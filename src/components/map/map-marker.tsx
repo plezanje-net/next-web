@@ -1,8 +1,7 @@
 import { Marker, Popup } from "react-leaflet";
-import L, { FitBoundsOptions } from "leaflet";
+import L from "leaflet";
 import IconMarker from "../ui/icons/marker";
-import { createRoot } from "react-dom/client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { useClientRenderToString } from "@/hooks/useClientRenderToString";
 
 type TMapMarkerProps = {
