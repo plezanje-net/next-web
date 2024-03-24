@@ -5,6 +5,7 @@ import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
 import { TCragListColumn } from "./filtered-crags";
+import Link from "@/components/ui/link";
 
 type TCragRowProps = {
   crag: Crag;
@@ -18,7 +19,11 @@ function CragRow({ crag, columns }: TCragRowProps) {
         let cellContent;
         switch (column.name) {
           case "name":
-            cellContent = crag.name;
+            cellContent = (
+              <Link href={`/plezalisce/${crag.slug}`} variant="secondary">
+                {crag.name}
+              </Link>
+            );
             break;
 
           case "difficulty":

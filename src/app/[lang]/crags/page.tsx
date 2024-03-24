@@ -23,7 +23,7 @@ export default CragsPage;
 
 gql`
   query AllCrags {
-    crags {
+    crags(input: { type: "sport" }) {
       id
       slug
       name
