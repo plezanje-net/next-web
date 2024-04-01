@@ -132,11 +132,11 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         <div className="flex items-center justify-between">
           <div className="flex">
             {displayColumn("difficulty") && (
-              <span className="pr-4">
+              <div className="-m-1 pr-4">
                 <RouteGrade route={route} crag={crag} />
-              </span>
+              </div>
             )}
-            {displayColumn("length") && route.length && (
+            {displayColumn("length") && !!route.length && (
               <span>{route.length} m</span>
             )}
           </div>
