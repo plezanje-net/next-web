@@ -1,6 +1,6 @@
 {
   "routes": [
-    "/{crags}/:countrySlug*",
+    "/{crags}",
     "/{crag}/:cragSlug/{route}/:routeSlug*",
     "/{crag}/:cragSlug/{comments}",
     "/{crag}/:cragSlug/{gallery}",
