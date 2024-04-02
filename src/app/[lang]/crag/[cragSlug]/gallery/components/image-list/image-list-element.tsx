@@ -18,17 +18,19 @@ function ImageListElement({
     image;
   return (
     <div key={id} className="mb-4 break-inside-avoid-column">
-      <NextImage
-        src={`${baseUrl}/${path}.${extension}`}
-        width={maxIntrinsicWidth}
-        height={maxIntrinsicWidth / aspectRatio}
-        sizes="(max-width: 512px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        alt={`${title}`}
-        className="rounded-lg"
-        quality={100}
-        priority
-        onClick={onClick}
-      />
+      <div className="text-center">
+        <NextImage
+          src={`${baseUrl}/${path}.${extension}`}
+          width={maxIntrinsicWidth}
+          height={maxIntrinsicWidth / aspectRatio}
+          sizes="(max-width: 512px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          alt={`${title}`}
+          className="inline-block rounded-lg"
+          quality={100}
+          priority
+          onClick={onClick}
+        />
+      </div>
       {title && <div className="pt-2">{title}</div>}
       {author && (
         <div className="flex items-center gap-0.5 text-sm">
