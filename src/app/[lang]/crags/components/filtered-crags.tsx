@@ -407,10 +407,41 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     setFiltersPaneOpened(!filtersPaneOpened);
   };
 
+  // Do we expect routes and boulders? -> adjust column label accordingly
+  let nrRoutesLabel;
+  let nrRoutesWidth;
+
+  if (
+    (filters.routeTypes.includes("boulder") &&
+      (filters.routeTypes.includes("sport") ||
+        filters.routeTypes.includes("multipitch"))) ||
+    filters.routeTypes.length == 0
+  ) {
+    nrRoutesLabel = "Št. smeri/problemov";
+    nrRoutesWidth = 200;
+  } else if (
+    filters.routeTypes.includes("boulder") &&
+    !(
+      filters.routeTypes.includes("sport") ||
+      filters.routeTypes.includes("multipitch")
+    )
+  ) {
+    nrRoutesLabel = "Št. problemov";
+    nrRoutesWidth = 144;
+  } else {
+    nrRoutesLabel = "Št. smeri";
+    nrRoutesWidth = 100;
+  }
+
   const cragListColumns: TCragListColumn[] = [
     { name: "name", label: "Ime", width: 200, isOptional: false },
     { name: "difficulty", label: "Težavnost", width: 152, isOptional: true },
-    { name: "nrRoutes", label: "Št. smeri", width: 100, isOptional: true },
+    {
+      name: "nrRoutes",
+      label: nrRoutesLabel,
+      width: nrRoutesWidth,
+      isOptional: true,
+    },
     {
       name: "orientations",
       label: "Orientacija",

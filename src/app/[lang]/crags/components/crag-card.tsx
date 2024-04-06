@@ -10,6 +10,7 @@ import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
 import { TCragListColumn } from "./filtered-crags";
+import NrRoutes from "./nr-routes";
 
 type TCragCardProps = {
   crag: Crag;
@@ -85,7 +86,14 @@ function CragCard({ crag, columns }: TCragCardProps) {
           </>
         )}
 
-        {showNrRoutes && `${crag.nrRoutes} smeri`}
+        {showNrRoutes && (
+          <NrRoutes
+            nrRoutes={crag.nrRoutes}
+            hasSport={crag.hasSport}
+            hasBoulder={crag.hasBoulder}
+            hasMultipitch={crag.hasMultipitch}
+          />
+        )}
 
         {showDifficulty && (
           <>
