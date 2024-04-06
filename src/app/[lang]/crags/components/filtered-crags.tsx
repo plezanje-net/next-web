@@ -864,16 +864,25 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
               )}
             />
           ) : (
-            <CragListTable
-              crags={filteredCrags}
-              columns={Object.values(cragListColumns).filter((column) =>
-                selectedColumns.includes(column.name)
-              )}
-            />
+            filteredCrags.length > 0 && (
+              <CragListTable
+                crags={filteredCrags}
+                columns={Object.values(cragListColumns).filter((column) =>
+                  selectedColumns.includes(column.name)
+                )}
+              />
+            )
           )}
+
           <div className="pt-4 text-center">
-            Plezališča, ki ga iščeš, ni na seznamu?{" "}
-            <Link href="">Dodaj plezališče.</Link>
+            {filteredCrags.length == 0 ? (
+              <>Ni plezališč, ki bi ustrezali izbranim filtrom.</>
+            ) : (
+              <>
+                Plezališča, ki ga iščeš, ni na seznamu?{" "}
+                <Link href="">Dodaj plezališče.</Link>
+              </>
+            )}
           </div>
         </div>
       </div>
