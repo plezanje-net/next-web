@@ -14,7 +14,7 @@ type TCragRowProps = {
 
 function CragRow({ crag, columns }: TCragRowProps) {
   return (
-    <tr className="border-b border-neutral-200 last:border-none">
+    <tr className="border-b border-neutral-200">
       {columns.map((column, index) => {
         let cellContent;
         switch (column.name) {

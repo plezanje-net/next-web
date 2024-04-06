@@ -871,6 +871,10 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
               )}
             />
           )}
+          <div className="pt-4 text-center">
+            Plezališča, ki ga iščeš, ni na seznamu?{" "}
+            <Link href="">Dodaj plezališče.</Link>
+          </div>
         </div>
       </div>
     </>

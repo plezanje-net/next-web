@@ -44,7 +44,7 @@ function CragCard({ crag, columns }: TCragCardProps) {
     crag.rainproof != null;
 
   return (
-    <div className="border-t border-neutral-200 px-4 py-4 xs:px-8 md:px-0">
+    <div className="border-t border-neutral-200 px-4 py-4 last:border-b xs:px-8 md:px-0">
       {/* row 1 */}
       <div className="flex items-center justify-between">
         <div className="font-medium">
