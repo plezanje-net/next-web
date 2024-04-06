@@ -436,19 +436,32 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     { name: "area", label: "Območje", width: 136, isOptional: true },
   ];
 
-  const [selectedColumns, setSelectedColumns] = useState([
-    "name",
-    "difficulty",
-    "nrRoutes",
-    "orientations",
-    "approachTime",
-    "seasons",
-    // "wallAngles",
-    // "rainproof",
-    // "routeTypes",
-    // "country",
-    // "area",
-  ]);
+  function getDefaultColumns() {
+    const columns = localStorage.getItem("columns");
+    if (columns) {
+      return JSON.parse(columns);
+    } else {
+      return [
+        "name",
+        "difficulty",
+        "nrRoutes",
+        "orientations",
+        "approachTime",
+        "seasons",
+        "wallAngles",
+        "rainproof",
+      ];
+    }
+  }
+
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    getDefaultColumns()
+  );
+
+  function handleSelectedColumnsChange(columns: string[]) {
+    setSelectedColumns(columns);
+    localStorage.setItem("columns", JSON.stringify(columns));
+  }
 
   const [sort, setSort] = useQueryState(
     "sort",
@@ -580,7 +593,9 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
               </Button>
             }
             value={selectedColumns}
-            onChange={setSelectedColumns}
+            onChange={(columns: string[]) =>
+              handleSelectedColumnsChange(columns)
+            }
           >
             {cragListColumns
               .filter((column) => column.isOptional)
