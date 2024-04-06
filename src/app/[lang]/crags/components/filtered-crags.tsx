@@ -561,7 +561,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       */}
 
       <div
-        className={`x-auto relative z-10 rotate-0 items-center justify-center px-4 2xl:container xs:px-8 sm:justify-between ${
+        className={`x-auto relative z-10 mx-auto rotate-0 items-center justify-center px-4 2xl:container xs:px-8 sm:justify-between ${
           searchFocus || searchQuery ? "block sm:flex" : "flex justify-center"
         }`}
       >
