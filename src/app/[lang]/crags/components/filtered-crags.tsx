@@ -32,6 +32,7 @@ import {
   parseAsBoolean,
   parseAsInteger,
   parseAsString,
+  useQueryState,
   useQueryStates,
 } from "next-usequerystate";
 import { useCallback, useRef, useState } from "react";
@@ -449,7 +450,10 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     // "area",
   ]);
 
-  const [sort, setSort] = useState("name,asc");
+  const [sort, setSort] = useQueryState(
+    "sort",
+    parseAsString.withDefault("name,asc")
+  );
 
   // Sort crags based on sort state
   const [sortField, sortDir] = sort.split(",");
