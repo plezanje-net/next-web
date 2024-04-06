@@ -714,7 +714,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
       {/* Main content */}
 
-      <div className="xs:pxds-8 pxdsa-4 mx-auto flex items-start 2xl:container md:px-8">
+      <div className="mx-auto flex items-start 2xl:container md:px-8">
         {/* Filters pane */}
         {/* on >=md pane is always visible and is displayed as a card
             on <md pane slides in from the side when filters are being changed */}
@@ -882,38 +882,39 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
         {/* List of crags */}
         <div
-          ref={containerRef}
           className={`w-full overflow-hidden md:ml-5 ${
             compact === null ? "opacity-0" : ""
-          }`}
+          } ${compact ? "border-t border-neutral-200" : ""}`}
         >
-          {compact ? (
-            <CragListCards
-              crags={filteredCrags}
-              columns={Object.values(cragListColumns).filter((column) =>
-                selectedColumns.includes(column.name)
-              )}
-            />
-          ) : (
-            filteredCrags.length > 0 && (
-              <CragListTable
+          <div ref={containerRef} className="px-4 xs:px-8 md:px-0">
+            {compact ? (
+              <CragListCards
                 crags={filteredCrags}
                 columns={Object.values(cragListColumns).filter((column) =>
                   selectedColumns.includes(column.name)
                 )}
               />
-            )
-          )}
-
-          <div className="pt-4 text-center">
-            {filteredCrags.length == 0 ? (
-              <>Ni plezališč, ki bi ustrezali izbranim filtrom.</>
             ) : (
-              <>
-                Plezališča, ki ga iščeš, ni na seznamu?{" "}
-                <Link href="">Dodaj plezališče.</Link>
-              </>
+              filteredCrags.length > 0 && (
+                <CragListTable
+                  crags={filteredCrags}
+                  columns={Object.values(cragListColumns).filter((column) =>
+                    selectedColumns.includes(column.name)
+                  )}
+                />
+              )
             )}
+
+            <div className="pt-4 text-center">
+              {filteredCrags.length == 0 ? (
+                <>Ni plezališč, ki bi ustrezali izbranim filtrom.</>
+              ) : (
+                <>
+                  Plezališča, ki ga iščeš, ni na seznamu?{" "}
+                  <Link href="">Dodaj plezališče.</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
