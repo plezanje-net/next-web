@@ -35,7 +35,7 @@ import {
   useQueryState,
   useQueryStates,
 } from "next-usequerystate";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import CragListCards from "./crag-list-cards";
 import CragListTable from "./crag-list-table";
@@ -467,31 +467,27 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     { name: "area", label: "Območje", width: 136, isOptional: true },
   ];
 
-  function getDefaultColumns() {
-    const columns = localStorage.getItem("columns");
-    if (columns) {
-      return JSON.parse(columns);
-    } else {
-      return [
-        "name",
-        "difficulty",
-        "nrRoutes",
-        "orientations",
-        "approachTime",
-        "seasons",
-        "wallAngles",
-        "rainproof",
-      ];
-    }
-  }
+  const [selectedColumns, setSelectedColumns] = useState([
+    "name",
+    "difficulty",
+    "nrRoutes",
+    "orientations",
+    "approachTime",
+    "seasons",
+    "wallAngles",
+    "rainproof",
+  ]);
 
-  const [selectedColumns, setSelectedColumns] = useState<string[]>(
-    getDefaultColumns()
-  );
+  useEffect(() => {
+    const columns = localStorage.getItem("crags-columns");
+    if (columns) {
+      setSelectedColumns(JSON.parse(columns));
+    }
+  }, []);
 
   function handleSelectedColumnsChange(columns: string[]) {
     setSelectedColumns(columns);
-    localStorage.setItem("columns", JSON.stringify(columns));
+    localStorage.setItem("crags-columns", JSON.stringify(columns));
   }
 
   const [sort, setSort] = useQueryState(
