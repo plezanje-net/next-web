@@ -2,12 +2,18 @@ import IconClose from "@/components/ui/icons/close";
 import IconLeft from "@/components/ui/icons/left";
 import IconRight from "@/components/ui/icons/right";
 import { Image } from "@/graphql/generated";
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import ImageSlide from "./image-list-slide";
-import { DndContext, DragEndEvent, useDraggable } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  Modifier,
+  useDraggable,
+} from "@dnd-kit/core";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import IconPhoto from "@/components/ui/icons/photo";
 import useKeyDown from "@/hooks/useKeyDown";
+import Button from "@/components/ui/button";
 
 type TImageListLightboxParams = {
   images: Image[];
@@ -58,15 +64,6 @@ function ImageListSlider({
   const [index, setIndex] = useState<number>(
     images.findIndex((image) => image.id === id)
   );
-
-  const [currentImage, setCurrentImage] = useState<Image>(images[index]);
-  const [prevImage, setPrevImage] = useState<Image>(
-    images[(index + images.length - 1) % images.length]
-  );
-  const [nextImage, setNextImage] = useState<Image>(
-    images[(index + 1) % images.length]
-  );
-
   const [transformX, setTransformX] = useState<number>(0);
   const [transitionActive, setTransitionActive] = useState<boolean>(false);
 
@@ -93,9 +90,6 @@ function ImageListSlider({
     setTransformX(0);
     const newIndex = (index + direction + images.length) % images.length;
     setIndex(newIndex);
-    setCurrentImage(images[newIndex]);
-    setPrevImage(images[(newIndex + images.length - 1) % images.length]);
-    setNextImage(images[(newIndex + 1) % images.length]);
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -107,6 +101,13 @@ function ImageListSlider({
     }
   }
 
+  function applyPositionClass(key: number) {
+    if (key === index) return "left-0";
+    if (key === (index - 1) % images.length) return "-left-full";
+    if (key === (index + 1) % images.length) return "left-full";
+    return "top-full";
+  }
+
   useKeyDown(
     (key) => {
       if (key === "Escape") onClose();
@@ -116,20 +117,45 @@ function ImageListSlider({
     ["ArrowLeft", "ArrowRight", "Escape"]
   );
 
+  const restrictToSlideEdges = useCallback<Modifier>(
+    ({ transform }) => {
+      let { x } = transform;
+
+      if (index == 0 && x > 0) {
+        x = 0;
+      }
+      if (index == images.length - 1 && x < 0) {
+        x = 0;
+      }
+
+      return {
+        ...transform,
+        x,
+      };
+    },
+    [index, images.length]
+  );
+
   return (
     <div className="fixed left-0 top-0 flex h-full w-full flex-col bg-white">
-      <div className="flex h-16 items-center justify-end p-4">
+      <div className="flex h-12 items-center justify-end p-4">
         <button onClick={onClose}>
           <IconClose />
         </button>
       </div>
       <div className="flex flex-1 items-center justify-center">
-        <div className="p-4" onClick={handlePrevious}>
-          <IconLeft />
+        <div className="flex w-14 justify-center">
+          <Button
+            onClick={handlePrevious}
+            variant="quaternary"
+            disabled={index == 0}
+          >
+            <IconLeft />
+          </Button>
         </div>
         <div className="h-full w-full flex-1 overflow-hidden">
           <DndContext
-            modifiers={[restrictToHorizontalAxis]}
+            modifiers={[restrictToHorizontalAxis, restrictToSlideEdges]}
             onDragEnd={handleDragEnd}
           >
             <Draggable
@@ -141,29 +167,28 @@ function ImageListSlider({
               transformX={transformX}
               disabled={transitionActive}
             >
-              <ImageSlide
-                baseUrl={baseUrl}
-                image={prevImage}
-                positionClass="-left-full"
-              />
-              <ImageSlide
-                baseUrl={baseUrl}
-                image={currentImage}
-                positionClass="left-0"
-              />
-              <ImageSlide
-                baseUrl={baseUrl}
-                image={nextImage}
-                positionClass="left-full"
-              />
+              {images.map((image, key) => (
+                <ImageSlide
+                  key={key}
+                  baseUrl={baseUrl}
+                  image={image}
+                  positionClass={applyPositionClass(key)}
+                />
+              ))}
             </Draggable>
           </DndContext>
         </div>
-        <div className="p-4" onClick={handleNext}>
-          <IconRight />
+        <div className="flex w-12 justify-center">
+          <Button
+            onClick={handleNext}
+            variant="quaternary"
+            disabled={index == images.length - 1}
+          >
+            <IconRight />
+          </Button>
         </div>
       </div>
-      <div className="h-16"></div>
+      <div className="h-12"></div>
     </div>
   );
 }
