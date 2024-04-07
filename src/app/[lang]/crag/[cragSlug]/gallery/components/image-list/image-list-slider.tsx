@@ -11,7 +11,6 @@ import {
   useDraggable,
 } from "@dnd-kit/core";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
-import IconPhoto from "@/components/ui/icons/photo";
 import useKeyDown from "@/hooks/useKeyDown";
 import Button from "@/components/ui/button";
 
@@ -66,6 +65,7 @@ function ImageListSlider({
   );
   const [transformX, setTransformX] = useState<number>(0);
   const [transitionActive, setTransitionActive] = useState<boolean>(false);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   function handlePrevious() {
     if (transitionActive) {
@@ -138,21 +138,25 @@ function ImageListSlider({
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full flex-col bg-white">
-      <div className="flex h-12 items-center justify-end p-4">
-        <button onClick={onClose}>
-          <IconClose />
-        </button>
-      </div>
-      <div className="flex flex-1 items-center justify-center">
-        <div className="flex w-14 justify-center">
-          <Button
-            onClick={handlePrevious}
-            variant="quaternary"
-            disabled={index == 0}
-          >
-            <IconLeft />
-          </Button>
+      {!isFullScreen && (
+        <div className="flex h-12 items-center justify-end p-4">
+          <button onClick={onClose}>
+            <IconClose />
+          </button>
         </div>
+      )}
+      <div className="flex flex-1 items-center justify-center">
+        {!isFullScreen && (
+          <div className="flex w-14 justify-center">
+            <Button
+              onClick={handlePrevious}
+              variant="quaternary"
+              disabled={index == 0}
+            >
+              <IconLeft />
+            </Button>
+          </div>
+        )}
         <div className="h-full w-full flex-1 overflow-hidden">
           <DndContext
             modifiers={[restrictToHorizontalAxis, restrictToSlideEdges]}
@@ -163,7 +167,7 @@ function ImageListSlider({
                 transitionActive
                   ? "transition-transform duration-500 ease-in-out"
                   : ""
-              }`}
+              } ${isFullScreen ? "!transform-none" : ""}`}
               transformX={transformX}
               disabled={transitionActive}
             >
@@ -173,20 +177,24 @@ function ImageListSlider({
                   baseUrl={baseUrl}
                   image={image}
                   positionClass={applyPositionClass(key)}
+                  isFullScreen={isFullScreen && key === index}
+                  toggleFullScreen={() => setIsFullScreen(!isFullScreen)}
                 />
               ))}
             </Draggable>
           </DndContext>
         </div>
-        <div className="flex w-12 justify-center">
-          <Button
-            onClick={handleNext}
-            variant="quaternary"
-            disabled={index == images.length - 1}
-          >
-            <IconRight />
-          </Button>
-        </div>
+        {!isFullScreen && (
+          <div className="flex w-12 justify-center">
+            <Button
+              onClick={handleNext}
+              variant="quaternary"
+              disabled={index == images.length - 1}
+            >
+              <IconRight />
+            </Button>
+          </div>
+        )}
       </div>
       <div className="h-12"></div>
     </div>
