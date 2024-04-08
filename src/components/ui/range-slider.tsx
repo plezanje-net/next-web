@@ -37,13 +37,30 @@ function RangeSlider(props: SliderProps) {
       )}
 
       {/* Track and thumbs */}
-      <div {...trackProps} ref={trackRef} className="mt-2 h-6 w-full">
+      <div
+        {...trackProps}
+        ref={trackRef}
+        className="w-[calc(100%-16px) mx-2 mt-2 h-6"
+      >
         {/* Track's background */}
+        {/* left 'overhang' (part that is under the thumb when the thumb position is leftmost (track is otherwise 1/2 of thumb width to short)) */}
+        <div
+          className={`absolute top-1/2 -ml-2 block h-0.5 w-2 -translate-y-2/4 ${
+            state.isDisabled ? "bg-neutral-200" : "bg-neutral-400"
+          }`}
+        ></div>
+        {/* central/main part of the track background*/}
         <div
           className={`absolute top-1/2 block h-0.5 w-full -translate-y-2/4 
                       ${
                         state.isDisabled ? "bg-neutral-200" : "bg-neutral-400"
                       }`}
+        ></div>
+        {/* right 'overhang' */}
+        <div
+          className={`absolute right-0 top-1/2 -mr-2 block h-0.5 w-2 -translate-y-2/4 ${
+            state.isDisabled ? "bg-neutral-200" : "bg-neutral-400"
+          }`}
         ></div>
 
         {/* 'Active' part of the track */}
