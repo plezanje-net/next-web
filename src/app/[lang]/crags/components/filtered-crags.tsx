@@ -834,28 +834,12 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
 
           {/* do not show the slider if min and max are the same as it makes no sense then */}
           {minApproachTime != maxApproachTime && (
-            <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-              <RangeSlider
-                label="Čas dostopa"
-                value={filters.approachTime}
-                minValue={minApproachTime}
-                maxValue={maxApproachTime}
-                step={1}
-                valueToLabelMap={
-                  new Map(
-                    Array(maxApproachTime - minApproachTime + 1)
-                      .fill(0)
-                      .map((_v, i) => [
-                        i + minApproachTime,
-                        `${i + minApproachTime} min`,
-                      ])
-                  )
-                }
-                onChange={(value) =>
-                  handleApproachTimeFilterChange(value as [number, number])
-                }
-              />
-            </div>
+            <ApproachTimeRangeFilterGroup
+              filterState={filters.approachTime}
+              minApproachTime={minApproachTime}
+              maxApproachTime={maxApproachTime}
+              onChange={handleApproachTimeFilterChange}
+            />
           )}
 
           <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
@@ -1091,6 +1075,64 @@ function DifficultyRangeFilterGroup({
             </div>
           </div>
         ))}
+    </div>
+  );
+}
+
+type TApproachTimeRangeFilterGroup = {
+  minApproachTime: number;
+  maxApproachTime: number;
+  filterState: number[];
+  onChange: (value: [number, number]) => void;
+};
+function ApproachTimeRangeFilterGroup({
+  filterState,
+  minApproachTime,
+  maxApproachTime,
+  onChange,
+}: TApproachTimeRangeFilterGroup) {
+  const [expanded, setExpanded] = useState(true);
+
+  function handleToggleExpanded() {
+    setExpanded(!expanded);
+  }
+
+  return (
+    <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
+      {/* Header that can collapse the filter group */}
+      <div className="-mx-1">
+        <button
+          className="w-full rounded px-1 outline-none ring-blue-100 focus-visible:ring"
+          onClick={handleToggleExpanded}
+        >
+          <div className="flex items-start justify-between">
+            <div id="approach-time-rs-label">Čas dostopa</div>
+            {expanded ? <IconCollapse /> : <IconExpand />}
+          </div>
+        </button>
+      </div>
+
+      {/* Filter content */}
+      {expanded && (
+        <RangeSlider
+          aria-labelledby="approach-time-rs-label"
+          value={filterState}
+          minValue={minApproachTime}
+          maxValue={maxApproachTime}
+          step={1}
+          valueToLabelMap={
+            new Map(
+              Array(maxApproachTime - minApproachTime + 1)
+                .fill(0)
+                .map((_v, i) => [
+                  i + minApproachTime,
+                  `${i + minApproachTime} min`,
+                ])
+            )
+          }
+          onChange={(value) => onChange(value as [number, number])}
+        />
+      )}
     </div>
   );
 }
