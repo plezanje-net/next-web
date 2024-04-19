@@ -3,20 +3,14 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import Button from "@/components/ui/button";
-import Checkbox from "@/components/ui/checkbox";
 import IconClose from "@/components/ui/icons/close";
-import IconCollapse from "@/components/ui/icons/collapse";
 import IconColumns from "@/components/ui/icons/columns";
-import IconExpand from "@/components/ui/icons/expand";
 import IconFilter from "@/components/ui/icons/filter";
-import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMap from "@/components/ui/icons/map";
 import IconMore from "@/components/ui/icons/more";
-import IconReset from "@/components/ui/icons/reset";
 import IconSearch from "@/components/ui/icons/search";
 import IconSort from "@/components/ui/icons/sort";
 import Link from "@/components/ui/link";
-import RangeSlider from "@/components/ui/range-slider";
 import { Option, Select } from "@/components/ui/select";
 import TextField from "@/components/ui/text-field";
 import {
@@ -40,6 +34,14 @@ import useResizeObserver from "@/hooks/useResizeObserver";
 import CragListCards from "./crag-list-cards";
 import CragListTable from "./crag-list-table";
 import { filterEntitiesBySearchTerm } from "@/utils/search-helpers";
+import {
+  BooleanFilter,
+  MultiFilter,
+  NrInRangeFilter,
+  RangeFilter,
+} from "./filtersHelp";
+import ActiveFilters from "./active-filters";
+import FiltersPane from "./filters-pane";
 
 type TCragListColumn = {
   name: string;
@@ -55,13 +57,14 @@ type TFilteredCragsProps = {
 
 function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   // For now we can only filter by french grades. Will add other grading systems in a future task
-  const difficultyFilterDefault = [
-    0,
-    gradingSystems.find((gs) => (gs.id = "french"))?.grades[0].difficulty ||
-      100,
-    gradingSystems.find((gs) => (gs.id = "french"))?.grades.slice(-1)[0]
-      .difficulty || 2100,
-  ];
+  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades;
+  if (!frenchGrades) return "Error getting grades.";
+  const minDifficulty = frenchGrades[0].difficulty;
+  const maxDifficulty = frenchGrades.slice(-1)[0].difficulty;
+  const diffToGradeMap = frenchGrades.reduce((prev, cur) => {
+    prev[cur.difficulty] = cur.name;
+    return prev;
+  }, {} as Record<string, string>);
 
   const maxApproachTime = crags.reduce(
     (max, crag) =>
@@ -74,15 +77,18 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     maxApproachTime
   );
 
+  // TODO: rename this to filtersState or sthg and rename filtersData to filters...
   const [filters, setFilters] = useQueryStates({
     countries: parseAsArrayOf(parseAsString).withDefault([]),
     areas: parseAsArrayOf(parseAsString).withDefault([]),
     onMapOnly: parseAsBoolean.withDefault(false),
     routeTypes: parseAsArrayOf(parseAsString).withDefault([]),
     orientations: parseAsArrayOf(parseAsString).withDefault([]),
-    difficulty: parseAsArrayOf(parseAsInteger).withDefault(
-      difficultyFilterDefault
-    ),
+    difficulty: parseAsArrayOf(parseAsInteger).withDefault([
+      0,
+      minDifficulty,
+      maxDifficulty,
+    ]),
     seasons: parseAsArrayOf(parseAsString).withDefault([]),
     rainproof: parseAsBoolean.withDefault(false),
     wallAngles: parseAsArrayOf(parseAsString).withDefault([]),
@@ -207,7 +213,9 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   countries
     .filter((country) => country.nrCrags > 0)
     .sort((c1, c2) => c1.name.localeCompare(c2.name))
-    .forEach((country) => (shownCountries[country.slug] = country.name));
+    .forEach((country) => {
+      shownCountries[country.slug] = country.name;
+    });
 
   // A list of areas to choose from in the filter pane (only areas of countries currently visible)
   let shownAreas: Record<string, string> = {};
@@ -224,6 +232,179 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       aName1.localeCompare(aName2)
     )
   );
+
+  const filtersData = {
+    country: new MultiFilter(
+      "Država",
+      filters.countries,
+      shownCountries,
+      5,
+      handleCountryFilterChange,
+      handleCountryFilterReset
+    ),
+
+    area: new MultiFilter(
+      "Območje",
+      filters.areas,
+      shownAreas,
+      5,
+      (checked, area) => {
+        handleMultiFilterChange("areas", checked, area);
+      },
+      () => {
+        handleMultiFilterReset("areas");
+      }
+    ),
+
+    onMapOnly: new BooleanFilter(
+      "Prikaži samo vidna na zemljevidu",
+      filters.onMapOnly,
+      false,
+      (checked) => {
+        handleBooleanFilterChange("onMapOnly", checked);
+      },
+      () => {
+        handleBooleanFilterChange("onMapOnly", false);
+      }
+    ),
+
+    routeType: new MultiFilter(
+      "Tip smeri",
+      filters.routeTypes,
+      {
+        sport: "športne",
+        boulder: "balvani",
+        multipitch: "večraztežajne",
+      },
+      "all",
+      (checked, routeType) => {
+        handleMultiFilterChange("routeTypes", checked, routeType);
+      },
+      () => {
+        handleMultiFilterReset("routeTypes");
+      }
+    ),
+
+    orientation: new MultiFilter(
+      "Orientacija",
+      filters.orientations,
+      {
+        [Orientation.North.toLowerCase()]: "sever",
+        [Orientation.Northeast.toLowerCase()]: "severovzhod",
+        [Orientation.East.toLowerCase()]: "vzhod",
+        [Orientation.Southeast.toLowerCase()]: "jugovzhod",
+        [Orientation.South.toLowerCase()]: "jug",
+        [Orientation.Southwest.toLowerCase()]: "jugozahod",
+        [Orientation.West.toLowerCase()]: "zahod",
+        [Orientation.Northwest.toLowerCase()]: "severozahod",
+      },
+      "all",
+      (checked, orientation) => {
+        handleMultiFilterChange("orientations", checked, orientation);
+      },
+      () => {
+        handleMultiFilterReset("orientations");
+      }
+    ),
+
+    difficulty: new NrInRangeFilter(
+      "Težavnost",
+      {
+        nr: filters.difficulty[0],
+        from: filters.difficulty[1],
+        to: filters.difficulty[2],
+      },
+      "smer",
+      diffToGradeMap,
+      handleDifficultyFilterChange,
+      () => {
+        handleDifficultyFilterChange(0, minDifficulty, maxDifficulty);
+      }
+    ),
+
+    season: new MultiFilter(
+      "Sezona",
+      filters.seasons,
+      {
+        [Season.Spring.toLowerCase()]: "pomlad",
+        [Season.Summer.toLowerCase()]: "poletje",
+        [Season.Autumn.toLowerCase()]: "jesen",
+        [Season.Winter.toLowerCase()]: "zima",
+      },
+      "all",
+      (checked, season) => {
+        handleMultiFilterChange("seasons", checked, season);
+      },
+      () => {
+        handleMultiFilterReset("seasons");
+      }
+    ),
+
+    rainproof: new BooleanFilter(
+      "Možno plezanje v dežju",
+      filters.rainproof,
+      false,
+      (checked) => {
+        handleBooleanFilterChange("rainproof", checked);
+      },
+      () => {
+        handleBooleanFilterChange("rainproof", false);
+      }
+    ),
+
+    wallAngle: new MultiFilter(
+      "Naklon stene",
+      filters.wallAngles,
+      {
+        [WallAngle.Slab.toLowerCase()]: "plošče",
+        [WallAngle.Vertical.toLowerCase()]: "vertikale",
+        [WallAngle.Overhang.toLowerCase()]: "previsi",
+        [WallAngle.Roof.toLowerCase()]: "strehe",
+      },
+      "all",
+      (checked, wallAngle) =>
+        handleMultiFilterChange("wallAngles", checked, wallAngle),
+      () => {
+        handleMultiFilterReset("wallAngles");
+      }
+    ),
+
+    approachTime: new RangeFilter(
+      "Čas dostopa",
+      { from: filters.approachTime[0], to: filters.approachTime[1] },
+      minApproachTime,
+      maxApproachTime,
+      "min",
+      handleApproachTimeFilterChange,
+      () => {
+        handleApproachTimeFilterChange(minApproachTime, maxApproachTime);
+      }
+    ),
+
+    showUnknown: new BooleanFilter(
+      "Prikaži tudi plezališča kjer so podatki neznani",
+      filters.showUnknown,
+      false,
+      (checked) => {
+        handleBooleanFilterChange("showUnknown", checked);
+      },
+      () => {
+        handleBooleanFilterChange("showUnknown", false);
+      }
+    ),
+  };
+
+  function handleCountryFilterReset() {
+    setFilters((filters) => {
+      // remove country
+      return defaultToNull({
+        ...filters,
+        countries: [],
+        // when a country is removed, we should also remove all (possibly selected) areas of this country
+        areas: [],
+      });
+    });
+  }
 
   function handleCountryFilterChange(checked: boolean, country: string) {
     setFilters((filters) => {
@@ -252,146 +433,66 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
     });
   }
 
-  function handleAreaFilterChange(checked: boolean, area: string) {
+  function handleBooleanFilterChange(filterName: string, checked: boolean) {
     setFilters((filters) => {
-      if (checked) {
-        // add area
-        return defaultToNull({ ...filters, areas: [...filters.areas, area] });
-      } else {
-        // remove area
-        return defaultToNull({
-          ...filters,
-          areas: filters.areas.filter((a) => a != area),
-        });
-      }
+      return defaultToNull({ ...filters, [filterName]: checked });
     });
   }
 
-  function handleOnMapOnlyFilterChange(checked: boolean) {
-    setFilters((filters) => {
-      return defaultToNull({ ...filters, onMapOnly: checked });
-    });
-  }
-
-  function handleRouteTypeFilterChange(checked: boolean, routeType: string) {
-    setFilters((filters) => {
-      if (checked) {
-        // add routeType
-        return defaultToNull({
-          ...filters,
-          routeTypes: [...filters.routeTypes, routeType],
-        });
-      } else {
-        // remove routeType
-        return defaultToNull({
-          ...filters,
-          routeTypes: filters.routeTypes.filter((a) => a != routeType),
-        });
-      }
-    });
-  }
-
-  function handleOrientationFilterChange(
+  function handleMultiFilterChange(
+    filterName:
+      | "countries"
+      | "areas"
+      | "routeTypes"
+      | "orientations"
+      | "seasons"
+      | "wallAngles",
     checked: boolean,
-    orientation: string
+    valueChanged: string
   ) {
     setFilters((filters) => {
       if (checked) {
-        // add orientation
+        // add the value to the group (check it)
         return defaultToNull({
           ...filters,
-          orientations: [...filters.orientations, orientation],
+          [filterName]: [...filters[filterName], valueChanged],
         });
       } else {
-        // remove orientation
+        // remove the changed value (uncheck) from the group
         return defaultToNull({
           ...filters,
-          orientations: filters.orientations.filter((a) => a != orientation),
+          [filterName]: filters[filterName].filter((v) => v != valueChanged),
         });
       }
     });
   }
 
-  function handleDifficultyFilterChange(
-    select: "minNrRoutes" | "minDifficulty" | "maxDifficulty",
-    value: string
-  ) {
-    // update state
+  function handleMultiFilterReset(filterName: string) {
     setFilters((filters) => {
-      const difficultyFilter = filters.difficulty;
-      switch (select) {
-        case "minNrRoutes":
-          difficultyFilter[0] = +value;
-          break;
-        case "minDifficulty":
-          difficultyFilter[1] = +value;
-          break;
-        case "maxDifficulty":
-          difficultyFilter[2] = +value;
-          break;
-      }
-      return defaultToNull({ ...filters, difficulty: difficultyFilter });
-    });
-  }
-
-  function handleSeasonFilterChange(checked: boolean, season: string) {
-    setFilters((filters) => {
-      if (checked) {
-        // add season
-        return defaultToNull({
-          ...filters,
-          seasons: [...filters.seasons, season],
-        });
-      } else {
-        // remove season
-        return defaultToNull({
-          ...filters,
-          seasons: filters.seasons.filter((a) => a != season),
-        });
-      }
-    });
-  }
-
-  function handleRainproofFilterChange(checked: boolean) {
-    setFilters((filters) => {
-      return defaultToNull({ ...filters, rainproof: checked });
-    });
-  }
-
-  function handleWallAngleFilterChange(checked: boolean, wallAngle: string) {
-    setFilters((filters) => {
-      if (checked) {
-        // add wall angle
-        return defaultToNull({
-          ...filters,
-          wallAngles: [...filters.wallAngles, wallAngle],
-        });
-      } else {
-        // remove wall angle
-        return defaultToNull({
-          ...filters,
-          wallAngles: filters.wallAngles.filter((a) => a != wallAngle),
-        });
-      }
-    });
-  }
-
-  function handleApproachTimeFilterChange(value: [number, number]) {
-    setFilters((filters) => {
+      // remove all (uncheck) values from the group
       return defaultToNull({
         ...filters,
-        approachTime: value,
+        [filterName]: [],
       });
     });
   }
 
-  function handleShowUnknownFilterChange(checked: boolean) {
+  function handleDifficultyFilterChange(nr: number, from: number, to: number) {
     setFilters((filters) => {
-      return defaultToNull({ ...filters, showUnknown: checked });
+      return defaultToNull({ ...filters, difficulty: [nr, from, to] });
     });
   }
 
-  function handleResetFilters() {
+  function handleApproachTimeFilterChange(min: number, max: number) {
+    setFilters((filters) => {
+      return defaultToNull({
+        ...filters,
+        approachTime: [min, max],
+      });
+    });
+  }
+
+  function handleResetAllFilters() {
     setFilters((filters) => {
       const resetFilters = {} as TNFilters;
       for (let key in filters) {
@@ -411,6 +512,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   let nrRoutesLabel;
   let nrRoutesWidth;
 
+  // TODO: should we really adjust col size based on types of routes -> this causes unpredictable results, that is same column selection but different filter, could change display type between card/table...
   if (
     (filters.routeTypes.includes("boulder") &&
       (filters.routeTypes.includes("sport") ||
@@ -711,154 +813,11 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       {/* Main content */}
 
       <div className="mx-auto flex items-start 2xl:container md:px-8">
-        {/* Filters pane */}
-        {/* on >=md pane is always visible and is displayed as a card
-            on <md pane slides in from the side when filters are being changed */}
-        <div
-          className={`absolute left-0 w-80 shrink-0 rounded-r-lg bg-neutral-100 transition-transform md:relative md:block md:rounded-lg ${
-            filtersPaneOpened
-              ? "translate-x-0"
-              : "-translate-x-80 md:translate-x-0"
-          }`}
-        >
-          <div className="flex px-8 pb-1 pt-6">
-            <div>
-              <IconFilter />
-            </div>
-            <div className="ml-4">Filtriraj</div>
-          </div>
-
-          <CheckboxesFilterGroup
-            title="Država"
-            options={shownCountries}
-            nrShown={5}
-            checkedOptions={filters.countries}
-            onChange={handleCountryFilterChange}
-          />
-
-          {Object.keys(shownAreas).length > 0 && (
-            <CheckboxesFilterGroup
-              title="Območje"
-              options={shownAreas}
-              nrShown={5}
-              checkedOptions={filters.areas}
-              onChange={(checked, area) => {
-                handleAreaFilterChange(checked, area);
-              }}
-            />
-          )}
-
-          <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-            <Checkbox
-              label="Prikaži samo vidna na zemljevidu"
-              checked={filters.onMapOnly}
-              onChange={handleOnMapOnlyFilterChange}
-            />
-          </div>
-
-          <CheckboxesFilterGroup
-            title="Tip smeri"
-            options={{
-              sport: "športne",
-              boulder: "balvani",
-              multipitch: "večraztežajne",
-            }}
-            nrShown="all"
-            checkedOptions={filters.routeTypes}
-            onChange={(checked, routeType) => {
-              handleRouteTypeFilterChange(checked, routeType);
-            }}
-          />
-
-          <CheckboxesFilterGroup
-            title="Orientacija"
-            options={{
-              [Orientation.North.toLowerCase()]: "sever",
-              [Orientation.Northeast.toLowerCase()]: "severovzhod",
-              [Orientation.East.toLowerCase()]: "vzhod",
-              [Orientation.Southeast.toLowerCase()]: "jugovzhod",
-              [Orientation.South.toLowerCase()]: "jug",
-              [Orientation.Southwest.toLowerCase()]: "jugozahod",
-              [Orientation.West.toLowerCase()]: "zahod",
-              [Orientation.Northwest.toLowerCase()]: "severozahod",
-            }}
-            nrShown="all"
-            checkedOptions={filters.orientations}
-            onChange={(checked, orientation) => {
-              handleOrientationFilterChange(checked, orientation);
-            }}
-          />
-
-          <DifficultyRangeFilterGroup
-            filterState={filters.difficulty as [number, number, number]}
-            onChange={handleDifficultyFilterChange}
-          />
-
-          <CheckboxesFilterGroup
-            title="Sezona"
-            options={{
-              [Season.Spring.toLowerCase()]: "pomlad",
-              [Season.Summer.toLowerCase()]: "poletje",
-              [Season.Autumn.toLowerCase()]: "jesen",
-              [Season.Winter.toLowerCase()]: "zima",
-            }}
-            nrShown="all"
-            checkedOptions={filters.seasons}
-            onChange={(checked, season) => {
-              handleSeasonFilterChange(checked, season);
-            }}
-          />
-
-          <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-            <Checkbox
-              label="Možno plezanje v dežju"
-              checked={filters.rainproof}
-              onChange={handleRainproofFilterChange}
-            />
-          </div>
-
-          <CheckboxesFilterGroup
-            title="Naklon stene"
-            options={{
-              [WallAngle.Slab.toLowerCase()]: "plošče",
-              [WallAngle.Vertical.toLowerCase()]: "vertikale",
-              [WallAngle.Overhang.toLowerCase()]: "previsi",
-              [WallAngle.Roof.toLowerCase()]: "strehe",
-            }}
-            nrShown="all"
-            checkedOptions={filters.wallAngles}
-            onChange={(checked, wallAngle) => {
-              handleWallAngleFilterChange(checked, wallAngle);
-            }}
-          />
-
-          {/* do not show the slider if min and max are the same as it makes no sense then */}
-          {minApproachTime != maxApproachTime && (
-            <ApproachTimeRangeFilterGroup
-              filterState={filters.approachTime}
-              minApproachTime={minApproachTime}
-              maxApproachTime={maxApproachTime}
-              onChange={handleApproachTimeFilterChange}
-            />
-          )}
-
-          <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-            <Checkbox
-              label="Prikaži tudi plezališča kjer so podatki neznani"
-              checked={filters.showUnknown}
-              onChange={handleShowUnknownFilterChange}
-            />
-          </div>
-
-          <div className="mt-5 border-t border-neutral-200 px-8 pb-5 pt-4">
-            <Button variant="tertiary" onClick={handleResetFilters}>
-              <span className="flex gap-2">
-                <IconReset size={IconSize.regular} />
-                Ponastavi vse
-              </span>
-            </Button>
-          </div>
-        </div>
+        <FiltersPane
+          open={filtersPaneOpened}
+          filtersData={filtersData}
+          onResetAll={handleResetAllFilters}
+        />
 
         {/* List of crags */}
         <div
@@ -866,6 +825,9 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
             compact === null ? "opacity-0" : ""
           } ${compact ? "border-t border-neutral-200" : ""}`}
         >
+          {/* Filters chips */}
+          <ActiveFilters filters={filtersData} />
+
           <div ref={containerRef} className="px-4 xs:px-8 md:px-0">
             {compact ? (
               <CragListCards
@@ -884,7 +846,6 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
                 />
               )
             )}
-
             <div className="pt-4 text-center">
               {filteredCrags.length == 0 ? (
                 <>Ni plezališč, ki bi ustrezali izbranim filtrom.</>
@@ -899,241 +860,6 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         </div>
       </div>
     </>
-  );
-}
-
-type TCheckboxesFilterGroupProps = {
-  title: string;
-  nrShown: number | "all";
-  options: Record<string, string>;
-  checkedOptions: string[];
-  onChange: (checked: boolean, optionValue: string) => void;
-};
-
-function CheckboxesFilterGroup({
-  title,
-  options,
-  nrShown,
-  checkedOptions,
-  onChange,
-}: TCheckboxesFilterGroupProps) {
-  const [expanded, setExpanded] = useState(true);
-  const [showAll, setShowAll] = useState(false);
-
-  function handleToggleExpanded() {
-    setExpanded(!expanded);
-  }
-
-  function handleToggleShowAll() {
-    setShowAll(!showAll);
-  }
-
-  if (nrShown != "all" && Object.keys(options).length <= nrShown) {
-    nrShown = "all";
-  }
-
-  return (
-    <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-      {/* Header that can collapse the filter group */}
-      <div className="-mx-1">
-        <button
-          className="w-full rounded px-1 outline-none ring-blue-100 focus-visible:ring"
-          onClick={handleToggleExpanded}
-        >
-          <div className="flex items-start justify-between">
-            <div>{title}</div>
-            {expanded ? <IconCollapse /> : <IconExpand />}
-          </div>
-        </button>
-      </div>
-
-      {/* Filter group content/options(checkboxes) */}
-      {expanded && (
-        <div className="mt-2">
-          {Object.entries(options)
-            .slice(
-              0,
-              showAll || nrShown === "all"
-                ? Object.keys(options).length
-                : nrShown
-            )
-            .map(([optionValue, optionLabel], index) => (
-              <div key={optionValue} className={`${index > 0 ? "mt-1" : ""}`}>
-                <Checkbox
-                  label={optionLabel}
-                  onChange={(checked) => {
-                    onChange(checked, optionValue);
-                  }}
-                  checked={checkedOptions.includes(optionValue)}
-                />
-              </div>
-            ))}
-          {nrShown !== "all" && (
-            <div className="mt-1">
-              <Link onPress={handleToggleShowAll}>
-                {showAll ? "Prikaži manj" : "Prikaži vse"}
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-type TDifficultyRangeFilterGroup = {
-  filterState: [number, number, number];
-  onChange: (
-    select: "minNrRoutes" | "minDifficulty" | "maxDifficulty",
-    value: string
-  ) => void;
-};
-
-function DifficultyRangeFilterGroup({
-  filterState,
-  onChange,
-}: TDifficultyRangeFilterGroup) {
-  const [expanded, setExpanded] = useState(true);
-
-  function handleToggleExpanded() {
-    setExpanded(!expanded);
-  }
-
-  // For now only french grading system is used for filtering by grade. Other systems will be added in a future task
-  const grades = gradingSystems.find((gs) => gs.id === "french")?.grades;
-
-  return (
-    <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-      {/* Header that can collapse the filter group */}
-      <div className="-mx-1">
-        <button
-          className="w-full rounded px-1 outline-none ring-blue-100 focus-visible:ring"
-          onClick={handleToggleExpanded}
-        >
-          <div className="flex items-start justify-between">
-            <div>Težavnost</div>
-            {expanded ? <IconCollapse /> : <IconExpand />}
-          </div>
-        </button>
-      </div>
-
-      {/* Filter group content */}
-      {expanded &&
-        (grades === undefined ? (
-          <div className="mt-2">Napaka pri nalaganju ocen.</div>
-        ) : (
-          <div className="mt-2">
-            <div className="flex items-center gap-2">
-              vsaj
-              <div className="w-30">
-                <Select
-                  value={`${filterState[0]}`}
-                  onChange={(value: string) => onChange("minNrRoutes", value)}
-                >
-                  {Array(11)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Option key={i} value={`${i}`}>
-                        {`${i}`}
-                      </Option>
-                    ))}
-                </Select>
-              </div>
-              smeri
-            </div>
-            <div className="mt-2 flex items-center gap-2">
-              med
-              <div className="w-30 shrink-0">
-                <Select
-                  disabled={filterState[0] == 0}
-                  value={`${filterState[1]}`}
-                  onChange={(value: string) => onChange("minDifficulty", value)}
-                >
-                  {grades.map((grade) => (
-                    <Option key={grade.id} value={`${grade.difficulty}`}>
-                      {grade.name}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className="mt-2 flex items-center gap-2">
-              in
-              <div className="w-30 shrink-0">
-                <Select
-                  disabled={filterState[0] == 0}
-                  value={`${filterState[2]}`}
-                  onChange={(value: string) => onChange("maxDifficulty", value)}
-                >
-                  {grades.map((grade) => (
-                    <Option key={grade.id} value={`${grade.difficulty}`}>
-                      {grade.name}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </div>
-        ))}
-    </div>
-  );
-}
-
-type TApproachTimeRangeFilterGroup = {
-  minApproachTime: number;
-  maxApproachTime: number;
-  filterState: number[];
-  onChange: (value: [number, number]) => void;
-};
-function ApproachTimeRangeFilterGroup({
-  filterState,
-  minApproachTime,
-  maxApproachTime,
-  onChange,
-}: TApproachTimeRangeFilterGroup) {
-  const [expanded, setExpanded] = useState(true);
-
-  function handleToggleExpanded() {
-    setExpanded(!expanded);
-  }
-
-  return (
-    <div className="mt-5 border-t border-neutral-200 px-8 pt-5">
-      {/* Header that can collapse the filter group */}
-      <div className="-mx-1">
-        <button
-          className="w-full rounded px-1 outline-none ring-blue-100 focus-visible:ring"
-          onClick={handleToggleExpanded}
-        >
-          <div className="flex items-start justify-between">
-            <div id="approach-time-rs-label">Čas dostopa</div>
-            {expanded ? <IconCollapse /> : <IconExpand />}
-          </div>
-        </button>
-      </div>
-
-      {/* Filter content */}
-      {expanded && (
-        <RangeSlider
-          aria-labelledby="approach-time-rs-label"
-          value={filterState}
-          minValue={minApproachTime}
-          maxValue={maxApproachTime}
-          step={1}
-          valueToLabelMap={
-            new Map(
-              Array(maxApproachTime - minApproachTime + 1)
-                .fill(0)
-                .map((_v, i) => [
-                  i + minApproachTime,
-                  `${i + minApproachTime} min`,
-                ])
-            )
-          }
-          onChange={(value) => onChange(value as [number, number])}
-        />
-      )}
-    </div>
   );
 }
 
