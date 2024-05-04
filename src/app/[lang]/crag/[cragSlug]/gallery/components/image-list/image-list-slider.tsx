@@ -110,7 +110,7 @@ function ImageListSlider({
 
   useKeyDown(
     (key) => {
-      if (key === "Escape") onClose();
+      if (key === "Escape") isFullScreen ? setIsFullScreen(false) : onClose();
       if (key === "ArrowLeft") handlePrevious();
       if (key === "ArrowRight") handleNext();
     },
@@ -167,7 +167,7 @@ function ImageListSlider({
                 transitionActive
                   ? "transition-transform duration-500 ease-in-out"
                   : ""
-              } ${isFullScreen ? "!transform-none" : ""}`}
+              }`}
               transformX={transformX}
               disabled={transitionActive}
             >
@@ -177,7 +177,7 @@ function ImageListSlider({
                   baseUrl={baseUrl}
                   image={image}
                   positionClass={applyPositionClass(key)}
-                  isFullScreen={isFullScreen && key === index}
+                  isFullScreen={isFullScreen}
                   toggleFullScreen={() => setIsFullScreen(!isFullScreen)}
                 />
               ))}

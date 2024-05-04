@@ -43,7 +43,7 @@ function ImageSlide({
       <div></div>
       <div
         className={`overflow-hidden ${
-          isFullScreen && "fixed left-0 top-0 h-full w-full"
+          isFullScreen && "left-0 top-0 h-full w-full"
         }`}
       >
         <NextImage
