@@ -163,7 +163,7 @@ function ImageListSlider({
             onDragEnd={handleDragEnd}
           >
             <Draggable
-              className={`relative h-full w-full flex-1 ${
+              className={`relative h-full w-full flex-1 cursor-default outline-none ${
                 transitionActive
                   ? "transition-transform duration-500 ease-in-out"
                   : ""
