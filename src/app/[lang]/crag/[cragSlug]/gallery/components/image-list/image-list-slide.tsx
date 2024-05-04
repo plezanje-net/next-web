@@ -54,7 +54,7 @@ function ImageSlide({
           alt={`${image.title}`}
           quality={100}
           priority
-          className="mx-auto h-full w-auto object-contain"
+          className="mx-auto h-full select-none object-contain"
           onDoubleClick={toggleFullScreen}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
