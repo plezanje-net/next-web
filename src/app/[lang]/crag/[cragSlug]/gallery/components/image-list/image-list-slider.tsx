@@ -147,7 +147,7 @@ function ImageListSlider({
       )}
       <div className="flex flex-1 items-center justify-center">
         {!isFullScreen && (
-          <div className="flex w-14 justify-center">
+          <div className="flex w-12 justify-center">
             <Button
               onClick={handlePrevious}
               variant="quaternary"
@@ -196,7 +196,7 @@ function ImageListSlider({
           </div>
         )}
       </div>
-      <div className="h-12"></div>
+      {!isFullScreen && <div className="h-12"></div>}
     </div>
   );
 }
