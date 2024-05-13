@@ -111,8 +111,8 @@ function ImageListSlider({
   useKeyDown(
     (key) => {
       if (key === "Escape") isFullScreen ? setIsFullScreen(false) : onClose();
-      if (key === "ArrowLeft") handlePrevious();
-      if (key === "ArrowRight") handleNext();
+      if (key === "ArrowLeft" && index > 0) handlePrevious();
+      if (key === "ArrowRight" && index < images.length - 1) handleNext();
     },
     ["ArrowLeft", "ArrowRight", "Escape"]
   );
