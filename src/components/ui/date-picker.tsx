@@ -389,9 +389,11 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
   );
 
   useLayoutEffect(() => {
-    setDayInputWidth(calcInputWidth(`${value.day}`));
-    setMonthInputWidth(calcInputWidth(`${value.month}`));
-    setYearInputWidth(calcInputWidth(`${value.year}`));
+    document.fonts.ready.then(() => {
+      setDayInputWidth(calcInputWidth(`${value.day}`));
+      setMonthInputWidth(calcInputWidth(`${value.month}`));
+      setYearInputWidth(calcInputWidth(`${value.year}`));
+    });
   }, [value]);
 
   return (
