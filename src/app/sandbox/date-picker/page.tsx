@@ -12,7 +12,7 @@ function DatePickerPage() {
 
   return (
     <div>
-      <div>
+      <div className="relative mx-auto mt-8 w-80">
         <DatePicker value={value} onChange={setValue} />
       </div>
     </div>

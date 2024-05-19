@@ -12,6 +12,9 @@ import IconCalendar from "./icons/calendar";
 import IconLeft from "./icons/left";
 import IconRight from "./icons/right";
 import dayjs from "dayjs";
+import IconExpand from "./icons/expand";
+import IconCheck from "./icons/check";
+import FocusTrap from "focus-trap-react";
 
 type TDate = {
   day: number | "dd";
@@ -34,6 +37,21 @@ const monthNamesShort = [
   "Dec",
 ];
 
+const monthNamesFull = [
+  "Januar",
+  "Februar",
+  "Marec",
+  "April",
+  "Maj",
+  "Junij",
+  "Julij",
+  "Avgust",
+  "September",
+  "Oktober",
+  "November",
+  "December",
+];
+
 type TDatePickerProps = {
   value: TDate;
   onChange: (value: TDate) => void;
@@ -49,10 +67,15 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
 
+  const monthsPaneRef = useRef<HTMLDivElement>(null);
+  const yearsPaneRef = useRef<HTMLDivElement>(null);
+
   const today = dayjs();
 
   const closeCalendarPane = useCallback(() => {
     setCalendarPaneOpened(false);
+    setMonthsPaneOpened(false);
+    setYearsPaneOpened(false);
     setShownMonthAndYear({
       month: value.month == "mm" ? today.month() + 1 : value.month,
       year: value.year == "llll" ? today.year() : value.year,
@@ -61,15 +84,38 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
   useEffect(() => {
     const clickOutsideListener = (e: MouseEvent) => {
-      // Close the calendar pane if it is opened and a click outside of it ocurred
+      // exceptions
+      if (
+        calendarButtonRef.current &&
+        calendarButtonRef.current.contains(e.target as Node)
+      ) {
+        // calendar icon button was clicked, do nothing, this is handled elsewhere
+        return;
+      }
+      if (
+        monthsPaneRef.current &&
+        monthsPaneRef.current.contains(e.target as Node)
+      ) {
+        // month selection dropdown/pane, do not close calendar pane, it is on top and handled elsewhere
+        return;
+      }
+      if (
+        yearsPaneRef.current &&
+        yearsPaneRef.current.contains(e.target as Node)
+      ) {
+        // year selection dropdown/pane, do not close calendar pane, year dropdown is on top and handled elsewhere
+        return;
+      }
+
+      // close the calendar pane if it is opened and a click outside of it ocurred
       if (
         calendarPaneOpened &&
         calendarPaneRef.current &&
-        !calendarPaneRef.current.contains(e.target as Node) &&
-        calendarButtonRef.current &&
-        !calendarButtonRef.current.contains(e.target as Node)
+        !calendarPaneRef.current.contains(e.target as Node)
       ) {
         closeCalendarPane();
+        setMonthsPaneOpened(false);
+        setYearsPaneOpened(false);
       }
     };
     document.addEventListener("mousedown", clickOutsideListener);
@@ -79,7 +125,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     };
   }, [calendarPaneOpened, closeCalendarPane]);
 
-  const handleCalButtonClick = () => {
+  const handleCalendarButtonClick = () => {
     if (calendarPaneOpened) {
       closeCalendarPane();
     } else {
@@ -396,8 +442,56 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     });
   }, [value]);
 
+  const [monthsPaneOpened, setMonthsPaneOpened] = useState(false);
+
+  const handleMonthTitleClick = () => {
+    setMonthsPaneOpened(true);
+  };
+
+  const handleMonthClick = (month: number) => {
+    setShownMonthAndYear({ ...shownMonthAndYear, month: month + 1 });
+    setMonthsPaneOpened(false);
+  };
+
+  const monthsPaneSelectedMonthRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (monthsPaneOpened && monthsPaneSelectedMonthRef.current) {
+      monthsPaneSelectedMonthRef.current.scrollIntoView(false);
+    }
+  }, [monthsPaneOpened]);
+
+  const [yearsPaneOpened, setYearsPaneOpened] = useState(false);
+  const handleYearTitleClick = () => {
+    setYearsPaneOpened(true);
+  };
+
+  const handleYearClick = (year: number) => {
+    setShownMonthAndYear({ ...shownMonthAndYear, year: year });
+    setYearsPaneOpened(false);
+  };
+
+  const yearsPaneSelectedYearRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (yearsPaneOpened && yearsPaneSelectedYearRef.current) {
+      yearsPaneSelectedYearRef.current.scrollIntoView(false);
+    }
+  }, [yearsPaneOpened]);
+
+  const getYearsPaneRange = (year: number) => {
+    let shift = year - 10;
+    if (shift < 1) {
+      shift = 1;
+    }
+    if (shift + 20 > 9999) {
+      shift = 9999 - 20;
+    }
+
+    return Array.from({ length: 21 }, (_, i) => i + shift);
+  };
+
   return (
-    <div className="mx-auto mt-8 w-80 ">
+    <div>
       {/* day, month, year 'manual' inputs */}
       <div
         className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 `}
@@ -455,7 +549,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
         <Button
           variant="quaternary"
-          onClick={handleCalButtonClick}
+          onClick={handleCalendarButtonClick}
           ref={calendarButtonRef}
         >
           <IconCalendar />
@@ -471,28 +565,49 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
           <div className="flex justify-between">
             {/* month choice */}
             <div className="flex items-center">
-              <Button variant="quaternary" onClick={handlePrevMonthClick}>
+              <Button
+                variant="quaternary"
+                onClick={handlePrevMonthClick}
+                disabled={
+                  shownMonthAndYear.month == 1 && shownMonthAndYear.year == 1
+                }
+              >
                 <IconLeft />
               </Button>
-              <Button variant="quaternary">
+              <Button variant="quaternary" onClick={handleMonthTitleClick}>
                 <span className="px-1">
                   {monthNamesShort[shownMonthAndYear.month - 1]}
                 </span>
               </Button>
-              <Button variant="quaternary" onClick={handleNextMonthClick}>
+              <Button
+                variant="quaternary"
+                onClick={handleNextMonthClick}
+                disabled={
+                  shownMonthAndYear.month == 12 &&
+                  shownMonthAndYear.year == 9999
+                }
+              >
                 <IconRight />
               </Button>
             </div>
 
             {/* year choice */}
             <div className="flex items-center">
-              <Button variant="quaternary" onClick={handlePrevYearClick}>
+              <Button
+                variant="quaternary"
+                onClick={handlePrevYearClick}
+                disabled={shownMonthAndYear.year == 1}
+              >
                 <IconLeft />
               </Button>
-              <Button variant="quaternary">
+              <Button variant="quaternary" onClick={handleYearTitleClick}>
                 <span className="px-1">{shownMonthAndYear.year}</span>
               </Button>
-              <Button variant="quaternary" onClick={handleNextYearClick}>
+              <Button
+                variant="quaternary"
+                onClick={handleNextYearClick}
+                disabled={shownMonthAndYear.year == 9999}
+              >
                 <IconRight />
               </Button>
             </div>
@@ -511,6 +626,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
               ))}
             </div>
             {/* days numbers */}
+
             <MonthDays
               month={shownMonthAndYear.month}
               year={shownMonthAndYear.year}
@@ -520,6 +636,113 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
           </div>
         </div>
       )}
+
+      {/* 'direct' month select */}
+      {monthsPaneOpened && (
+        <div
+          ref={monthsPaneRef}
+          className="absolute mt-2 w-[296px] overflow-hidden rounded-lg border border-neutral-400 bg-white"
+        >
+          <div
+            className="flex justify-between border-b border-neutral-200 px-12 pb-3 pt-4"
+            onClick={() => setMonthsPaneOpened(false)}
+          >
+            <div className="flex gap-2">
+              <div>{monthNamesFull[shownMonthAndYear.month - 1]}</div>
+              <IconExpand />
+            </div>
+            <div className="text-neutral-400">{shownMonthAndYear.year}</div>
+          </div>
+
+          <div className="max-h-80 overflow-auto">
+            {monthNamesFull.map((monthName, index) => (
+              <div
+                ref={
+                  shownMonthAndYear.month == index + 1
+                    ? monthsPaneSelectedMonthRef
+                    : null
+                }
+                key={index}
+                onClick={() => {
+                  handleMonthClick(index);
+                }}
+              >
+                <MonthOrYearOption
+                  selected={shownMonthAndYear.month == index + 1}
+                >
+                  {monthName}
+                </MonthOrYearOption>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 'direct' year select */}
+      {yearsPaneOpened && (
+        <div
+          ref={yearsPaneRef}
+          className="absolute mt-2 w-[296px] overflow-hidden rounded-lg border border-neutral-400 bg-white"
+        >
+          <div
+            className="flex justify-between border-b border-neutral-200 pb-3 pl-12 pr-4 pt-4"
+            onClick={() => setYearsPaneOpened(false)}
+          >
+            <div className="text-neutral-400">
+              {monthNamesFull[shownMonthAndYear.month - 1]}
+            </div>
+
+            <div className="flex gap-2">
+              <div>{shownMonthAndYear.year}</div>
+              <IconExpand />
+            </div>
+          </div>
+
+          <div className="max-h-80 overflow-auto">
+            {getYearsPaneRange(shownMonthAndYear.year).map((year, index) => (
+              <div
+                ref={
+                  shownMonthAndYear.year == year
+                    ? yearsPaneSelectedYearRef
+                    : null
+                }
+                key={index}
+                onClick={() => {
+                  handleYearClick(year);
+                }}
+              >
+                <MonthOrYearOption selected={shownMonthAndYear.year == +year}>
+                  {`${year}`}
+                </MonthOrYearOption>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MonthOrYearOption({
+  selected,
+  children,
+}: {
+  selected: boolean;
+  children: string;
+}) {
+  return (
+    <div className="flex cursor-pointer justify-between gap-4 py-2 pl-12 pr-2 hover:bg-neutral-100 hover:text-blue-500">
+      <span
+        className={`overflow-hidden text-ellipsis whitespace-nowrap ${
+          selected ? "text-blue-500" : ""
+        }`}
+      >
+        {children}
+      </span>
+
+      <div className={`text-neutral-900 ${selected ? "visible" : "invisible"}`}>
+        <IconCheck />
+      </div>
     </div>
   );
 }
@@ -647,7 +870,7 @@ function Day({
 }
 
 // TODO: trap focus inside the opened pane
-// TODO: month, year selects
+// TODO: handle esc key
 
 export default DatePicker;
 export type { TDate };
