@@ -3,7 +3,7 @@ import {
   useEffect,
   useRef,
   useState,
-  KeyboardEvent,
+  KeyboardEvent as RKeyboardEvent,
   useCallback,
   useLayoutEffect,
 } from "react";
@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import IconExpand from "./icons/expand";
 import IconCheck from "./icons/check";
 import FocusTrap from "focus-trap-react";
+import { Listbox } from "@headlessui/react";
 
 type TDate = {
   day: number | "dd";
@@ -52,6 +53,40 @@ const monthNamesFull = [
   "December",
 ];
 
+// Some local helpers //
+
+/**
+ * given a current year it generates an array of 21 years wher given year is as close to the middle as possible (min year is 1 and max is 9999).
+ */
+const getYearsRange = (year: number) => {
+  let shift = year - 10;
+  if (shift < 1) {
+    shift = 1;
+  }
+  if (shift + 20 > 9999) {
+    shift = 9999 - 20;
+  }
+
+  return Array.from({ length: 21 }, (_, i) => i + shift);
+};
+
+/**
+ * Given a month and a year returns number of days in the month. Assumes max possible nr. of days where month and/or year is not known
+ */
+const getDayMax = (month: number | "mm", year: number | "llll") => {
+  let date;
+  if (month != "mm" && year != "llll") {
+    date = dayjs()
+      .month(month - 1)
+      .year(year);
+  } else if (month != "mm") {
+    date = dayjs().month(month - 1);
+  } else {
+    return 31;
+  }
+  return date.daysInMonth();
+};
+
 type TDatePickerProps = {
   value: TDate;
   onChange: (value: TDate) => void;
@@ -72,16 +107,23 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
   const today = dayjs();
 
+  const handleCalendarButtonClick = () => {
+    if (calendarPaneOpened) {
+      closeCalendarPane();
+    } else {
+      setCalendarPaneOpened(true);
+    }
+  };
+
   const closeCalendarPane = useCallback(() => {
     setCalendarPaneOpened(false);
-    setMonthsPaneOpened(false);
-    setYearsPaneOpened(false);
     setShownMonthAndYear({
       month: value.month == "mm" ? today.month() + 1 : value.month,
       year: value.year == "llll" ? today.year() : value.year,
     });
   }, [value, today]);
 
+  // close calendar pane if clicked outside
   useEffect(() => {
     const clickOutsideListener = (e: MouseEvent) => {
       // exceptions
@@ -109,13 +151,10 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
       // close the calendar pane if it is opened and a click outside of it ocurred
       if (
-        calendarPaneOpened &&
         calendarPaneRef.current &&
         !calendarPaneRef.current.contains(e.target as Node)
       ) {
         closeCalendarPane();
-        setMonthsPaneOpened(false);
-        setYearsPaneOpened(false);
       }
     };
     document.addEventListener("mousedown", clickOutsideListener);
@@ -123,27 +162,33 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     return () => {
       document.removeEventListener("mousedown", clickOutsideListener);
     };
+  }, [closeCalendarPane]);
+
+  // close calendar pane if esc pressed
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (calendarPaneOpened && e.key === "Escape") {
+        closeCalendarPane();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [calendarPaneOpened, closeCalendarPane]);
 
-  const handleCalendarButtonClick = () => {
-    if (calendarPaneOpened) {
-      closeCalendarPane();
-    } else {
-      setCalendarPaneOpened(true);
-    }
-  };
-
-  function handleDayClick(date: TDate) {
+  const handleDayClick = (date: TDate) => {
     onChange(date);
     setCalendarPaneOpened(false);
-  }
+  };
 
   const [shownMonthAndYear, setShownMonthAndYear] = useState({
     month: value.month == "mm" ? today.month() + 1 : value.month,
     year: value.year == "llll" ? today.year() : value.year,
   });
 
-  function handlePrevMonthClick() {
+  const handlePrevMonthClick = () => {
     if (shownMonthAndYear.month == 1) {
       setShownMonthAndYear({ month: 12, year: shownMonthAndYear.year - 1 });
     } else {
@@ -152,9 +197,9 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
         year: shownMonthAndYear.year,
       });
     }
-  }
+  };
 
-  function handleNextMonthClick() {
+  const handleNextMonthClick = () => {
     if (shownMonthAndYear.month == 12) {
       setShownMonthAndYear({ month: 1, year: shownMonthAndYear.year + 1 });
     } else {
@@ -163,40 +208,23 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
         year: shownMonthAndYear.year,
       });
     }
-  }
+  };
 
-  function handlePrevYearClick() {
+  const handlePrevYearClick = () => {
     setShownMonthAndYear({
       month: shownMonthAndYear.month,
       year: shownMonthAndYear.year - 1,
     });
-  }
+  };
 
-  function handleNextYearClick() {
+  const handleNextYearClick = () => {
     setShownMonthAndYear({
       month: shownMonthAndYear.month,
       year: shownMonthAndYear.year + 1,
     });
-  }
-
-  /**
-   * Given a month and a year returns number of days in the month. Assumes max possible nr. of days where month and/or year is not known
-   */
-  const getDayMax = (month: number | "mm", year: number | "llll") => {
-    let date;
-    if (month != "mm" && year != "llll") {
-      date = dayjs()
-        .month(month - 1)
-        .year(year);
-    } else if (month != "mm") {
-      date = dayjs().month(month - 1);
-    } else {
-      return 31;
-    }
-    return date.daysInMonth();
   };
 
-  const handleDayKeyDown = (e: KeyboardEvent) => {
+  const handleDayKeyDown = (e: RKeyboardEvent) => {
     let newDay = value.day;
     const dayMax = getDayMax(value.month, value.year);
 
@@ -262,7 +290,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     }
   };
 
-  const handleMonthKeyDown = (e: KeyboardEvent) => {
+  const handleMonthKeyDown = (e: RKeyboardEvent) => {
     let newMonth = value.month;
 
     switch (e.key) {
@@ -345,7 +373,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     }
   };
 
-  const handleYearKeyDown = (e: KeyboardEvent) => {
+  const handleYearKeyDown = (e: RKeyboardEvent) => {
     let newYear = value.year;
 
     switch (e.key) {
@@ -424,15 +452,9 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     return width;
   };
 
-  const [dayInputWidth, setDayInputWidth] = useState(
-    calcInputWidth(`${value.day}`)
-  );
-  const [monthInputWidth, setMonthInputWidth] = useState(
-    calcInputWidth(`${value.month}`)
-  );
-  const [yearInputWidth, setYearInputWidth] = useState(
-    calcInputWidth(`${value.year}`)
-  );
+  const [dayInputWidth, setDayInputWidth] = useState(0);
+  const [monthInputWidth, setMonthInputWidth] = useState(0);
+  const [yearInputWidth, setYearInputWidth] = useState(0);
 
   useLayoutEffect(() => {
     document.fonts.ready.then(() => {
@@ -441,54 +463,6 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
       setYearInputWidth(calcInputWidth(`${value.year}`));
     });
   }, [value]);
-
-  const [monthsPaneOpened, setMonthsPaneOpened] = useState(false);
-
-  const handleMonthTitleClick = () => {
-    setMonthsPaneOpened(true);
-  };
-
-  const handleMonthClick = (month: number) => {
-    setShownMonthAndYear({ ...shownMonthAndYear, month: month + 1 });
-    setMonthsPaneOpened(false);
-  };
-
-  const monthsPaneSelectedMonthRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (monthsPaneOpened && monthsPaneSelectedMonthRef.current) {
-      monthsPaneSelectedMonthRef.current.scrollIntoView(false);
-    }
-  }, [monthsPaneOpened]);
-
-  const [yearsPaneOpened, setYearsPaneOpened] = useState(false);
-  const handleYearTitleClick = () => {
-    setYearsPaneOpened(true);
-  };
-
-  const handleYearClick = (year: number) => {
-    setShownMonthAndYear({ ...shownMonthAndYear, year: year });
-    setYearsPaneOpened(false);
-  };
-
-  const yearsPaneSelectedYearRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (yearsPaneOpened && yearsPaneSelectedYearRef.current) {
-      yearsPaneSelectedYearRef.current.scrollIntoView(false);
-    }
-  }, [yearsPaneOpened]);
-
-  const getYearsPaneRange = (year: number) => {
-    let shift = year - 10;
-    if (shift < 1) {
-      shift = 1;
-    }
-    if (shift + 20 > 9999) {
-      shift = 9999 - 20;
-    }
-
-    return Array.from({ length: 21 }, (_, i) => i + shift);
-  };
 
   return (
     <div>
@@ -558,192 +532,214 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
       {/* calendar pane */}
       {calendarPaneOpened && (
-        <div
-          ref={calendarPaneRef}
-          className="absolute mt-2 w-[296px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
-        >
-          <div className="flex justify-between">
-            {/* month choice */}
-            <div className="flex items-center">
-              <Button
-                variant="quaternary"
-                onClick={handlePrevMonthClick}
-                disabled={
-                  shownMonthAndYear.month == 1 && shownMonthAndYear.year == 1
-                }
-              >
-                <IconLeft />
-              </Button>
-              <Button variant="quaternary" onClick={handleMonthTitleClick}>
-                <span className="px-1">
-                  {monthNamesShort[shownMonthAndYear.month - 1]}
-                </span>
-              </Button>
-              <Button
-                variant="quaternary"
-                onClick={handleNextMonthClick}
-                disabled={
-                  shownMonthAndYear.month == 12 &&
-                  shownMonthAndYear.year == 9999
-                }
-              >
-                <IconRight />
-              </Button>
-            </div>
-
-            {/* year choice */}
-            <div className="flex items-center">
-              <Button
-                variant="quaternary"
-                onClick={handlePrevYearClick}
-                disabled={shownMonthAndYear.year == 1}
-              >
-                <IconLeft />
-              </Button>
-              <Button variant="quaternary" onClick={handleYearTitleClick}>
-                <span className="px-1">{shownMonthAndYear.year}</span>
-              </Button>
-              <Button
-                variant="quaternary"
-                onClick={handleNextYearClick}
-                disabled={shownMonthAndYear.year == 9999}
-              >
-                <IconRight />
-              </Button>
-            </div>
-          </div>
-
-          {/* days */}
-          <div className="mt-2">
-            {/* days names */}
-            <div className="flex">
-              {["P", "T", "S", "Č", "P", "S", "N"].map((dayName, i) => (
-                <Fragment key={i}>
-                  <div className="flex h-10 w-10 items-center justify-center">
-                    {dayName}
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-            {/* days numbers */}
-
-            <MonthDays
-              month={shownMonthAndYear.month}
-              year={shownMonthAndYear.year}
-              selectedDate={value}
-              onDayClick={handleDayClick}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* 'direct' month select */}
-      {monthsPaneOpened && (
-        <div
-          ref={monthsPaneRef}
-          className="absolute mt-2 w-[296px] overflow-hidden rounded-lg border border-neutral-400 bg-white"
-        >
+        <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
           <div
-            className="flex justify-between border-b border-neutral-200 px-12 pb-3 pt-4"
-            onClick={() => setMonthsPaneOpened(false)}
+            ref={calendarPaneRef}
+            className="absolute mt-2 w-[296px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
           >
-            <div className="flex gap-2">
-              <div>{monthNamesFull[shownMonthAndYear.month - 1]}</div>
-              <IconExpand />
-            </div>
-            <div className="text-neutral-400">{shownMonthAndYear.year}</div>
-          </div>
-
-          <div className="max-h-80 overflow-auto">
-            {monthNamesFull.map((monthName, index) => (
-              <div
-                ref={
-                  shownMonthAndYear.month == index + 1
-                    ? monthsPaneSelectedMonthRef
-                    : null
-                }
-                key={index}
-                onClick={() => {
-                  handleMonthClick(index);
-                }}
-              >
-                <MonthOrYearOption
-                  selected={shownMonthAndYear.month == index + 1}
+            <div className="flex justify-between">
+              {/* month shuffler */}
+              <div className="flex items-center">
+                <Button
+                  variant="quaternary"
+                  onClick={handlePrevMonthClick}
+                  disabled={
+                    shownMonthAndYear.month == 1 && shownMonthAndYear.year == 1
+                  }
                 >
-                  {monthName}
-                </MonthOrYearOption>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+                  <IconLeft />
+                </Button>
 
-      {/* 'direct' year select */}
-      {yearsPaneOpened && (
-        <div
-          ref={yearsPaneRef}
-          className="absolute mt-2 w-[296px] overflow-hidden rounded-lg border border-neutral-400 bg-white"
-        >
-          <div
-            className="flex justify-between border-b border-neutral-200 pb-3 pl-12 pr-4 pt-4"
-            onClick={() => setYearsPaneOpened(false)}
-          >
-            <div className="text-neutral-400">
-              {monthNamesFull[shownMonthAndYear.month - 1]}
+                {/* 'direct' month select */}
+                <Month
+                  value={shownMonthAndYear.month}
+                  onChange={(m) => {
+                    setShownMonthAndYear((smy) => ({ ...smy, month: m }));
+                  }}
+                  year={shownMonthAndYear.year}
+                />
+
+                <Button
+                  variant="quaternary"
+                  onClick={handleNextMonthClick}
+                  disabled={
+                    shownMonthAndYear.month == 12 &&
+                    shownMonthAndYear.year == 9999
+                  }
+                >
+                  <IconRight />
+                </Button>
+              </div>
+
+              {/* year shuffler */}
+              <div className="flex items-center">
+                <Button
+                  variant="quaternary"
+                  onClick={handlePrevYearClick}
+                  disabled={shownMonthAndYear.year == 1}
+                >
+                  <IconLeft />
+                </Button>
+
+                {/* 'direct' year select */}
+                <Year
+                  value={shownMonthAndYear.year}
+                  onChange={(y) => {
+                    setShownMonthAndYear((smy) => ({ ...smy, year: y }));
+                  }}
+                  month={shownMonthAndYear.month}
+                />
+
+                <Button
+                  variant="quaternary"
+                  onClick={handleNextYearClick}
+                  disabled={shownMonthAndYear.year == 9999}
+                >
+                  <IconRight />
+                </Button>
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              <div>{shownMonthAndYear.year}</div>
-              <IconExpand />
+            {/* days */}
+            <div className="mt-2">
+              {/* days names */}
+              <div className="flex">
+                {["P", "T", "S", "Č", "P", "S", "N"].map((dayName, i) => (
+                  <Fragment key={i}>
+                    <div className="flex h-10 w-10 items-center justify-center">
+                      {dayName}
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+              {/* days numbers */}
+
+              <MonthDays
+                month={shownMonthAndYear.month}
+                year={shownMonthAndYear.year}
+                selectedDate={value}
+                onDayClick={handleDayClick}
+              />
             </div>
           </div>
-
-          <div className="max-h-80 overflow-auto">
-            {getYearsPaneRange(shownMonthAndYear.year).map((year, index) => (
-              <div
-                ref={
-                  shownMonthAndYear.year == year
-                    ? yearsPaneSelectedYearRef
-                    : null
-                }
-                key={index}
-                onClick={() => {
-                  handleYearClick(year);
-                }}
-              >
-                <MonthOrYearOption selected={shownMonthAndYear.year == +year}>
-                  {`${year}`}
-                </MonthOrYearOption>
-              </div>
-            ))}
-          </div>
-        </div>
+        </FocusTrap>
       )}
     </div>
   );
 }
 
-function MonthOrYearOption({
-  selected,
-  children,
-}: {
-  selected: boolean;
-  children: string;
-}) {
+type TYearProps = {
+  value: number;
+  onChange: (year: number) => void;
+  month: number;
+};
+
+function Year({ value, onChange, month }: TYearProps) {
   return (
-    <div className="flex cursor-pointer justify-between gap-4 py-2 pl-12 pr-2 hover:bg-neutral-100 hover:text-blue-500">
-      <span
-        className={`overflow-hidden text-ellipsis whitespace-nowrap ${
-          selected ? "text-blue-500" : ""
-        }`}
-      >
+    <Listbox value={value} onChange={onChange}>
+      {({ open }) => (
+        <>
+          <Listbox.Button as={Fragment}>
+            {open ? (
+              <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white pl-12 pr-4">
+                <div className="text-neutral-400">
+                  {monthNamesFull[month - 1]}
+                </div>
+
+                <div className="flex gap-2">
+                  {value}
+                  <IconExpand />
+                </div>
+              </div>
+            ) : (
+              <Button variant="quaternary">
+                <span className="px-1">{value}</span>
+              </Button>
+            )}
+          </Listbox.Button>
+
+          <Listbox.Options className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
+            <div className="max-h-80 overflow-auto ">
+              {getYearsRange(value).map((year, index) => (
+                <MontOrYearOption key={index} value={year}>
+                  {year}
+                </MontOrYearOption>
+              ))}
+            </div>
+          </Listbox.Options>
+        </>
+      )}
+    </Listbox>
+  );
+}
+
+type TMonthProps = {
+  value: number;
+  onChange: (month: number) => void;
+  year: number;
+};
+
+function Month({ value, onChange, year }: TMonthProps) {
+  return (
+    <Listbox value={value} onChange={onChange}>
+      {({ open }) => (
+        <>
+          <Listbox.Button as={Fragment}>
+            {open ? (
+              <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white px-12">
+                <div className="flex gap-2">
+                  {monthNamesFull[value - 1]}
+                  <IconExpand />
+                </div>
+                <div className="text-neutral-400">{year}</div>
+              </div>
+            ) : (
+              <Button variant="quaternary">
+                <span className="px-1">{monthNamesShort[value - 1]}</span>
+              </Button>
+            )}
+          </Listbox.Button>
+
+          <Listbox.Options className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+            <div className="max-h-80 overflow-auto">
+              {monthNamesFull.map((monthName, index) => (
+                <MontOrYearOption key={index} value={index + 1}>
+                  {monthName}
+                </MontOrYearOption>
+              ))}
+            </div>
+          </Listbox.Options>
+        </>
+      )}
+    </Listbox>
+  );
+}
+
+interface MontOrYearOptionProps {
+  value: number;
+  children: string | number;
+  disabled?: boolean;
+}
+
+function MontOrYearOption({
+  value,
+  children,
+  disabled,
+}: MontOrYearOptionProps) {
+  return (
+    <Listbox.Option
+      key={value}
+      value={value}
+      disabled={disabled}
+      className="flex cursor-pointer justify-between gap-4 py-2 pl-12 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
+    >
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
         {children}
       </span>
-
-      <div className={`text-neutral-900 ${selected ? "visible" : "invisible"}`}>
+      <div className="invisible text-neutral-900 ui-selected:visible">
         <IconCheck />
       </div>
-    </div>
+    </Listbox.Option>
   );
 }
 
@@ -869,8 +865,7 @@ function Day({
   );
 }
 
-// TODO: trap focus inside the opened pane
-// TODO: handle esc key
+// TODO: calendar days keyboard navigation
 
 export default DatePicker;
 export type { TDate };

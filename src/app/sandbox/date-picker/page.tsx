@@ -5,6 +5,9 @@ import { useState } from "react";
 
 function DatePickerPage() {
   const [value, setValue] = useState<TDate>({
+    // day: 19,
+    // month: 5,
+    // year: 2024,
     day: "dd",
     month: "mm",
     year: "llll",
