@@ -853,12 +853,12 @@ function Day({
         <div className="h-10 w-10"></div>
       ) : (
         <div className="h-10 w-10 p-1">
-          <div
-            className={`flex h-full w-full cursor-pointer items-center justify-center rounded-full text-center align-middle ${stateClasses}`}
+          <button
+            className={`flex h-full w-full cursor-pointer items-center justify-center rounded-full text-center align-middle focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${stateClasses}`}
             onClick={onClick}
           >
             {number}
-          </div>
+          </button>
         </div>
       )}
     </>
