@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.0.3",
-    "@headlessui/tailwindcss": "^0.1.2",
+    "@headlessui/tailwindcss": "^0.2.0",
     "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",
     "@tailwindcss/container-queries": "^0.1.1",
@@ -49,7 +49,7 @@
     "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.3",
     "postcss": "^8.4.19",
-    "prettier-plugin-tailwindcss": "^0.1.13",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.2.4"
   }
 }
