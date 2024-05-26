@@ -7,7 +7,7 @@ function IconRight() {
       width="24"
       className="fill-current"
     >
-      <path d="M9.4 18L8 16.6L12.6 12L8 7.4L9.4 6L15.4 12L9.4 18Z" />
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
     </svg>
   );
 }
