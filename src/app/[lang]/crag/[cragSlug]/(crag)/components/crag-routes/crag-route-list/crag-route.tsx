@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Crag, Route } from "@/graphql/generated";
-import RouteLink from "../../../../../../../../components/route-link";
+import RouteLink from "@/components/route-link";
 import AscentIcon from "@/components/ui/ascent-icon";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconComment from "@/components/ui/icons/comment";

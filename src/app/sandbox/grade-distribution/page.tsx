@@ -1,5 +1,5 @@
 import { gql } from "urql/core";
-import GradeDistribution from "../../../components/grade-distribution";
+import GradeDistribution from "@/components/grade-distribution";
 import { Crag, CragDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 
