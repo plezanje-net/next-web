@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import RangeSlider from "../../../components/ui/range-slider";
+import RangeSlider from "@/components/ui/range-slider";
 
 function RangeSliderPage() {
   // These two maps are hardcoded here as an example only

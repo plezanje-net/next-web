@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Select, Option } from "../../../../../../../../components/ui/select";
+import { Select, Option } from "@/components/ui/select";
 import { CragRoutesContext, cragRouteListColumns } from "../../crag-routes";
-import Button from "../../../../../../../../components/ui/button";
-import IconColumns from "../../../../../../../../components/ui/icons/columns";
+import Button from "@/components/ui/button";
+import IconColumns from "@/components/ui/icons/columns";
 
 function Columns() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);

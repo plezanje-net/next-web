@@ -5,9 +5,9 @@ import displayDate from "../../../../utils/display-date";
 import CragLink from "../../../../components/crag-link";
 import Grade from "../../../../components/grade";
 import RouteLink from "../../../../components/route-link";
-import IconCollapse from "../../../../components/ui/icons/collapse";
-import IconExpand from "../../../../components/ui/icons/expand";
-import IconRight from "../../../../components/ui/icons/right";
+import IconCollapse from "@/components/ui/icons/collapse";
+import IconExpand from "@/components/ui/icons/expand";
+import IconRight from "@/components/ui/icons/right";
 
 type Params = {
   difficultyVote: DifficultyVote;

@@ -1,5 +1,5 @@
 "use client";
-import TextArea from "../../../components/ui/text-area";
+import TextArea from "@/components/ui/text-area";
 
 function TextAreaPage() {
   return (

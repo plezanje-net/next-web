@@ -2,13 +2,11 @@
 
 import { Crag } from "../../../../../../../graphql/generated";
 import { useI18nPathname } from "../../../../../../../utils/hooks/use-i18n-pathname";
-import IconComment from "../../../../../../../components/ui/icons/comment";
-import IconGallery from "../../../../../../../components/ui/icons/gallery";
-import IconInfo from "../../../../../../../components/ui/icons/info";
-import IconRoutes from "../../../../../../../components/ui/icons/routes";
-import TabMenu, {
-  TabMenuItem,
-} from "../../../../../../../components/ui/tab-menu";
+import IconComment from "@/components/ui/icons/comment";
+import IconGallery from "@/components/ui/icons/gallery";
+import IconInfo from "@/components/ui/icons/info";
+import IconRoutes from "@/components/ui/icons/routes";
+import TabMenu, { TabMenuItem } from "@/components/ui/tab-menu";
 import { IconSize } from "@/components/ui/icons/icon-size";
 
 interface Props {

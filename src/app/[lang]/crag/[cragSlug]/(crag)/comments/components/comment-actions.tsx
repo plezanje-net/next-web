@@ -1,15 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Dialog, { DialogSize } from "../../../../../../../components/ui/dialog";
-import Link from "../../../../../../../components/ui/link";
+import Dialog, { DialogSize } from "@/components/ui/dialog";
+import Link from "@/components/ui/link";
 import updateCommentAction from "./server-actions/update-comment-action";
 import deleteCommentAction from "./server-actions/delete-comment-action";
-import TextArea from "../../../../../../../components/ui/text-area";
-import {
-  Radio,
-  RadioGroup,
-} from "../../../../../../../components/ui/radio-group";
+import TextArea from "@/components/ui/text-area";
+import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { CommentType } from "./comment";
 

@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { Crag, Route } from "../../../../../../../../graphql/generated";
 import RouteLink from "../../../../../../../../components/route-link";
-import AscentIcon from "../../../../../../../../components/ui/ascent-icon";
+import AscentIcon from "@/components/ui/ascent-icon";
 import { IconSize } from "@/components/ui/icons/icon-size";
-import IconComment from "../../../../../../../../components/ui/icons/comment";
-import IconStarEmpty from "../../../../../../../../components/ui/icons/star-empty";
-import IconStarFull from "../../../../../../../../components/ui/icons/star-full";
-import Link from "../../../../../../../../components/ui/link";
+import IconComment from "@/components/ui/icons/comment";
+import IconStarEmpty from "@/components/ui/icons/star-empty";
+import IconStarFull from "@/components/ui/icons/star-full";
+import Link from "@/components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../../utils/text-helpers";
 import RouteGrade from "./crag-route/route-grade";
