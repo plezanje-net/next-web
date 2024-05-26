@@ -1,10 +1,14 @@
-import Icon, { IconProps } from "./icon";
-
-function IconLeft(props: IconProps) {
+function IconLeft() {
   return (
-    <Icon {...props}>
-      <path d="M14.6 18L16 16.6L11.4 12L16 7.4L14.6 6L8.6 12L14.6 18Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      height="24"
+      width="24"
+      className="fill-current"
+    >
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+    </svg>
   );
 }
 export default IconLeft;
