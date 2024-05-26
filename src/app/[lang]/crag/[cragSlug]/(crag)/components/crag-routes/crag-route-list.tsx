@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Crag, Route } from "../../../../../../../graphql/generated";
+import { Crag, Route } from "@/graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
 import IconStarFull from "@/components/ui/icons/star-full";

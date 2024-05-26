@@ -4,8 +4,8 @@ import {
   Crag,
   CragSectorsDocument,
   MyCragSummaryDocument,
-} from "../../../../../graphql/generated";
-import urqlServer from "../../../../../graphql/urql-server";
+} from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
 import authStatus from "../../../../../utils/auth/auth-status";
 

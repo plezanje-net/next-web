@@ -1,4 +1,4 @@
-import { GradingSystem } from "../graphql/generated";
+import { GradingSystem } from "@/graphql/generated";
 import { gradingSystems } from "../utils/grading-systems";
 
 type Props = {

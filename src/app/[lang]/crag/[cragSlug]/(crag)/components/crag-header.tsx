@@ -1,4 +1,4 @@
-import { Crag } from "../../../../../../graphql/generated";
+import { Crag } from "@/graphql/generated";
 import {
   Breadcrumb,
   Breadcrumbs,

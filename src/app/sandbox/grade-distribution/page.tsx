@@ -1,7 +1,7 @@
 import { gql } from "urql/core";
 import GradeDistribution from "../../../components/grade-distribution";
-import { Crag, CragDocument } from "../../../graphql/generated";
-import urqlServer from "../../../graphql/urql-server";
+import { Crag, CragDocument } from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
 
 async function getCragBySlug(crag: string): Promise<Crag> {
   const {

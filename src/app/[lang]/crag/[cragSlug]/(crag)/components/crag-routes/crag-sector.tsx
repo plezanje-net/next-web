@@ -1,4 +1,4 @@
-import { Crag, Sector } from "../../../../../../../graphql/generated";
+import { Crag, Sector } from "@/graphql/generated";
 import Accordion from "@/components/ui/accordion";
 import CragRouteList from "./crag-route-list";
 

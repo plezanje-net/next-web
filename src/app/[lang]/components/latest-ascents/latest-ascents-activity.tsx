@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Activity } from "../../../../graphql/generated";
+import { Activity } from "@/graphql/generated";
 import displayDate from "../../../../utils/display-date";
 import CragLink from "../../../../components/crag-link";
 import Grade from "../../../../components/grade";

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Crag } from "../graphql/generated";
+import { Crag } from "@/graphql/generated";
 
 interface VisitsDistributionProps {
   crag: Crag;

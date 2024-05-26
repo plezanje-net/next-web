@@ -1,5 +1,5 @@
 "use client";
-import { Crag } from "../graphql/generated";
+import { Crag } from "@/graphql/generated";
 import Link from "./ui/link";
 
 type Props = {
