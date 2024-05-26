@@ -1,8 +1,8 @@
 "use server";
 
 import { gql } from "@urql/core";
-import urqlServer from "../../../../graphql/urql-server";
-import { LoginDocument } from "../../../../graphql/generated";
+import urqlServer from "@/graphql/urql-server";
+import { LoginDocument } from "@/graphql/generated";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 

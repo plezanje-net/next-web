@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { gql, useQuery } from "urql";
-import { ProfileDocument, User } from "../../graphql/generated";
+import { ProfileDocument, User } from "@/graphql/generated";
 
 type AuthStatus = {
   loggedIn: boolean;

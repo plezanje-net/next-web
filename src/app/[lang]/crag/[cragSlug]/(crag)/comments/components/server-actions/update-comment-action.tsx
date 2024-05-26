@@ -1,8 +1,8 @@
 "use server";
 
 import { gql } from "urql/core";
-import { UpdateCommentDocument } from "../../../../../../../../graphql/generated";
-import urqlServer from "../../../../../../../../graphql/urql-server";
+import { UpdateCommentDocument } from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
 import { CommentType } from "../comment";
 
 async function updateCommentAction(

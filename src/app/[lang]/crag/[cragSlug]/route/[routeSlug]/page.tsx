@@ -2,12 +2,11 @@ import { RouteBySlugDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import RouteHeader from "./components/route-header";
-import Accordion from "@/components/ui/accordion";
 import RouteSection from "./components/route-section";
 import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
 import authStatus from "@/utils/auth/auth-status";
-import DifficultyVotes from "../../../../../../components/difficulty-votes";
+import DifficultyVotes from "@/components/difficulty-votes";
 
 type Params = {
   cragSlug: string;

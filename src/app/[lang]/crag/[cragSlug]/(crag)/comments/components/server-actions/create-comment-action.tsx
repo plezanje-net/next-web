@@ -1,8 +1,8 @@
 "use server";
 
 import { gql } from "urql/core";
-import { CreateCommentDocument } from "../../../../../../../../graphql/generated";
-import urqlServer from "../../../../../../../../graphql/urql-server";
+import { CreateCommentDocument } from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
 
 async function createCommentAction(formData: FormData) {
   const result = await urqlServer().mutation(CreateCommentDocument, {

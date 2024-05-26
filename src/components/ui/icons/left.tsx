@@ -1,4 +1,4 @@
-function IconRight() {
+function IconLeft() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,8 +7,8 @@ function IconRight() {
       width="24"
       className="fill-current"
     >
-      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
     </svg>
   );
 }
-export default IconRight;
+export default IconLeft;
