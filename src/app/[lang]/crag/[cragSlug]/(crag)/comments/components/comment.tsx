@@ -1,4 +1,4 @@
-import { User } from "../../../../../../graphql/generated";
+import { User } from "../../../../../../../graphql/generated";
 import CommentActions from "./comment-actions";
 
 interface CommentProps {

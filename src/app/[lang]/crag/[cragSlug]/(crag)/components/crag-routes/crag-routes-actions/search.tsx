@@ -1,9 +1,9 @@
 import { useContext, useRef } from "react";
-import IconSearch from "../../../../../../../components/ui/icons/search";
-import TextField from "../../../../../../../components/ui/text-field";
+import IconSearch from "../../../../../../../../components/ui/icons/search";
+import TextField from "../../../../../../../../components/ui/text-field";
 import { CragRoutesContext } from "../../crag-routes";
-import Button from "../../../../../../../components/ui/button";
-import IconClose from "../../../../../../../components/ui/icons/close";
+import Button from "../../../../../../../../components/ui/button";
+import IconClose from "../../../../../../../../components/ui/icons/close";
 
 function Search() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);

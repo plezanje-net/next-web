@@ -4,7 +4,7 @@ import {
   Crag,
   Route,
   Sector,
-} from "../../../../../graphql/generated";
+} from "../../../../../../graphql/generated";
 import { createContext, useCallback, useLayoutEffect, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
