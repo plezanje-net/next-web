@@ -3,7 +3,7 @@ import urqlServer from "@/graphql/urql-server";
 import { Crag, CragCommentsDocument } from "@/graphql/generated";
 import Comment, { CommentType } from "./components/comment";
 import AddCommentForm from "./components/add-comment-form";
-import authStatus from "../../../../../../utils/auth/auth-status";
+import authStatus from "@/utils/auth/auth-status";
 
 interface Params {
   cragSlug: string;

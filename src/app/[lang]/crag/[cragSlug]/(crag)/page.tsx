@@ -7,7 +7,7 @@ import {
 } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
-import authStatus from "../../../../../utils/auth/auth-status";
+import authStatus from "@/utils/auth/auth-status";
 
 type Params = {
   cragSlug: string;

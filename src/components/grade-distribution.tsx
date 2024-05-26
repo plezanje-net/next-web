@@ -1,5 +1,5 @@
 import { Crag } from "@/graphql/generated";
-import { gradingSystems } from "../utils/grading-systems";
+import { gradingSystems } from "@/utils/grading-systems";
 
 // TODO: we decided to keep half grades for voting and lose modifiers on calculated grades. this becomes much simpler now. move to Grade??
 function difficultyToGrade(difficulty: number, gradingSystemId: string) {

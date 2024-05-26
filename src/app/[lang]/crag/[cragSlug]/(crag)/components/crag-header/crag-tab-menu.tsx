@@ -1,7 +1,7 @@
 "use client";
 
 import { Crag } from "@/graphql/generated";
-import { useI18nPathname } from "../../../../../../../utils/hooks/use-i18n-pathname";
+import { useI18nPathname } from "@/utils/hooks/use-i18n-pathname";
 import IconComment from "@/components/ui/icons/comment";
 import IconGallery from "@/components/ui/icons/gallery";
 import IconInfo from "@/components/ui/icons/info";

@@ -1,4 +1,4 @@
-import authStatus from "../../../utils/auth/auth-status";
+import authStatus from "@/utils/auth/auth-status";
 import LoginForm from "./_components/login-form";
 import LogoutButton from "./_components/logout-button";
 
