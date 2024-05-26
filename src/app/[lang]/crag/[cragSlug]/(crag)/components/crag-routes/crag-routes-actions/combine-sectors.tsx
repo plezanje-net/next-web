@@ -1,7 +1,7 @@
 // import { useRouter } from "next/router";
-import Button from "../../../../../../../components/ui/button";
-import IconMerge from "../../../../../../../components/ui/icons/merge";
-import IconUnmerge from "../../../../../../../components/ui/icons/unmerge";
+import Button from "@/components/ui/button";
+import IconMerge from "@/components/ui/icons/merge";
+import IconUnmerge from "@/components/ui/icons/unmerge";
 import { CragRoutesContext } from "../../crag-routes";
 import { useContext } from "react";
 

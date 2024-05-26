@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import Button from "../../../../../../../components/ui/button";
-import IconSort from "../../../../../../../components/ui/icons/sort";
-import { Select, Option } from "../../../../../../../components/ui/select";
+import Button from "@/components/ui/button";
+import IconSort from "@/components/ui/icons/sort";
+import { Select, Option } from "@/components/ui/select";
 import { CragRoutesContext, cragRouteListColumns } from "../../crag-routes";
 
 function Sort() {

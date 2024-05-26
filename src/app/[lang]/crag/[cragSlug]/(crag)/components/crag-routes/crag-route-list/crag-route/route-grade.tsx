@@ -1,6 +1,4 @@
-import Dialog, {
-  DialogSize,
-} from "../../../../../../../../components/ui/dialog";
+import Dialog, { DialogSize } from "@/components/ui/dialog";
 import DifficultyVotes from "./difficulty-votes";
 import { Crag, DifficultyVote, Route } from "@/graphql/generated";
 import Grade from "@/components/grade";

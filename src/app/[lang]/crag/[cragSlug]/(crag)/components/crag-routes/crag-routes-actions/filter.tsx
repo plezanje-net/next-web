@@ -1,18 +1,15 @@
 import { useContext, useState } from "react";
-import Button from "../../../../../../../components/ui/button";
-import IconFilter from "../../../../../../../components/ui/icons/filter";
-import Dialog, { DialogSize } from "../../../../../../../components/ui/dialog";
+import Button from "@/components/ui/button";
+import IconFilter from "@/components/ui/icons/filter";
+import Dialog, { DialogSize } from "@/components/ui/dialog";
 import { CragRoutesContext, FilterOptions } from "../../crag-routes";
 import GradeRangeSlider, {
   difficultyToSliderValueMap,
   maxSliderValue,
   minSliderValue,
   sliderValueToDifficultyMap,
-} from "../../../../../../../components/ui/grade-range-slider";
-import {
-  Radio,
-  RadioGroup,
-} from "../../../../../../../components/ui/radio-group";
+} from "@/components/ui/grade-range-slider";
+import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import Checkbox from "@/components/ui/checkbox";
 
 function Filter() {

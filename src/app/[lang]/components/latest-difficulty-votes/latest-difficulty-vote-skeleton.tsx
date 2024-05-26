@@ -1,4 +1,4 @@
-import IconRight from "../../../../components/ui/icons/right";
+import IconRight from "@/components/ui/icons/right";
 
 function LatestDifficultyVoteSkeleton() {
   return (

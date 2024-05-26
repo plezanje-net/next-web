@@ -1,4 +1,4 @@
-import { Crag, Route } from "../graphql/generated";
+import { Crag, Route } from "@/graphql/generated";
 import Link from "./ui/link";
 
 type Props = {
