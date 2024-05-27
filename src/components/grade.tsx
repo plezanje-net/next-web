@@ -35,7 +35,7 @@ export function diffToGrade(
   gradingSystemId: string,
   legacy: boolean = false
 ): GradeDisplay {
-  const grades = gradingSystems.find(
+  const grades = Object.values(gradingSystems).find(
     (gradingSystem) => gradingSystem.id === gradingSystemId
   )?.grades;
 

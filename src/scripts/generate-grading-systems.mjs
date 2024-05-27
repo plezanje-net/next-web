@@ -45,11 +45,20 @@ const response = await fetch(url, {
 
 const data = await response.json();
 
+const gradingSystemsAsObject = {};
+
+data.data.gradingSystems.forEach((gradingSystem) => {
+  const camelId = gradingSystem.id.replace(/(?!^)-(.)/g, (_, char) =>
+    char.toUpperCase()
+  );
+  gradingSystemsAsObject[camelId] = gradingSystem;
+});
+
 fs.writeFileSync(
   fullFilePath,
   "/* This is an auto-generated file. */\n" +
     "export const gradingSystems = " +
-    JSON.stringify(data.data.gradingSystems)
+    JSON.stringify(gradingSystemsAsObject)
 );
 
 console.log("All grading systems stored into " + fullFilePath);

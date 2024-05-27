@@ -57,7 +57,7 @@ type TFilteredCragsProps = {
 
 function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   // For now we can only filter by french grades. Will add other grading systems in a future task
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades;
+  const frenchGrades = gradingSystems.french.grades;
   if (!frenchGrades) return "Error getting grades.";
   const minDifficulty = frenchGrades[0].difficulty;
   const maxDifficulty = frenchGrades.slice(-1)[0].difficulty;

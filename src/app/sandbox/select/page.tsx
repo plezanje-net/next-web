@@ -10,7 +10,7 @@ import { useState } from "react";
 import IconRepeat from "@/components/ui/icons/repeat";
 
 function SelectPage() {
-  const grades = gradingSystems.find((gs) => gs.id === "french")?.grades || [];
+  const grades = gradingSystems.french.grades;
 
   const [s1Value, setS1Value] = useState("");
   const [s2Value, setS2Value] = useState("pleskavica");
