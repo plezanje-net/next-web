@@ -57,8 +57,8 @@ type TFilteredCragsProps = {
 
 function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
   // For now we can only filter by french grades. Will add other grading systems in a future task
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades;
-  if (!frenchGrades) return "Error getting grades.";
+  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades!;
+
   const minDifficulty = frenchGrades[0].difficulty;
   const maxDifficulty = frenchGrades.slice(-1)[0].difficulty;
   const diffToGradeMap = frenchGrades.reduce((prev, cur) => {
@@ -690,7 +690,7 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
       */}
 
       <div
-        className={`x-auto relative z-10 mx-auto rotate-0 items-center justify-center px-4 2xl:container xs:px-8 sm:justify-between ${
+        className={`x-auto relative z-10 mx-auto rotate-0 items-center justify-center border-b border-b-neutral-200 px-4 2xl:container xs:px-8 sm:justify-between md:border-b-0 ${
           searchFocus || searchQuery ? "block sm:flex" : "flex justify-center"
         }`}
       >
@@ -823,12 +823,15 @@ function FilteredCrags({ crags, countries }: TFilteredCragsProps) {
         <div
           className={`w-full overflow-hidden md:ml-5 ${
             compact === null ? "opacity-0" : ""
-          } ${compact ? "border-t border-neutral-200" : ""}`}
+          }`}
         >
           {/* Filters chips */}
           <ActiveFilters filters={filtersData} />
 
-          <div ref={containerRef} className="px-4 xs:px-8 md:px-0">
+          <div
+            ref={containerRef}
+            className="px-4 xs:px-8 md:border-t md:border-t-neutral-200 md:px-0"
+          >
             {compact ? (
               <CragListCards
                 crags={filteredCrags}

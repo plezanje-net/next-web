@@ -6,14 +6,20 @@ type TActiveFiltersProps = {
 };
 
 function ActiveFilters({ filters }: TActiveFiltersProps) {
+  const activeFilters = Object.values(filters).filter((filter) =>
+    filter.isActive()
+  );
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {Object.values(filters)
-        .filter((filter) => filter.isActive())
-        .map((filter) => (
-          <FilterChip key={filter.label} filter={filter} />
-        ))}
-    </div>
+    <>
+      {activeFilters.length > 0 && (
+        <div className="mx-2 flex flex-wrap gap-2 border-b border-b-neutral-200 py-2 xs:mx-8 md:mx-0 md:border-b-0 md:pt-0">
+          {activeFilters.map((filter) => (
+            <FilterChip key={filter.label} filter={filter} />
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 
