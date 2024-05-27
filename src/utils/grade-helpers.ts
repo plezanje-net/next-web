@@ -1,7 +1,7 @@
 import { gradingSystems } from "./grading-systems";
 
 function difficultyToGrade(difficulty: number, gradingSystemId: string) {
-  const grades = gradingSystems.find(
+  const grades = Object.values(gradingSystems).find(
     (gradingSystem) => gradingSystem.id === gradingSystemId
   )?.grades;
 
