@@ -1,6 +1,7 @@
 import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
 import { Select, Option } from "@/components/ui/select";
+import { pluralizeNoun } from "@/utils/text-helpers";
 import { useState } from "react";
 
 type TDifficultyFilterProps = {
@@ -58,7 +59,7 @@ function DifficultyFilter({
                   ))}
               </Select>
             </div>
-            smeri
+            {pluralizeNoun("smer", value.nr, true)}
           </div>
           <div className="mt-2 flex items-center gap-2">
             med
