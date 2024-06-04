@@ -323,6 +323,7 @@ export type DifficultyVote = {
 };
 
 export type FindActivitiesInput = {
+  activityTypes?: InputMaybe<Array<Scalars['String']>>;
   cragId?: InputMaybe<Scalars['String']>;
   dateFrom?: InputMaybe<Scalars['DateTime']>;
   dateTo?: InputMaybe<Scalars['DateTime']>;
@@ -887,10 +888,11 @@ export type Query = {
   latestImages: Array<Image>;
   latestTicks: Array<ActivityRoute>;
   myActivities: PaginatedActivities;
+  myActivitiesStatistics: Array<StatsActivities>;
   myActivityRoutes: PaginatedActivityRoutes;
-  myActivityStatistics: Array<StatsActivities>;
   myClubs: Array<Club>;
   myCragSummary: Array<ActivityRoute>;
+  myRoutesStatistics: Array<StatsRoutes>;
   peak: Peak;
   popularCrags: Array<PopularCrag>;
   profile: User;
@@ -1018,17 +1020,22 @@ export type QueryMyActivitiesArgs = {
 };
 
 
+export type QueryMyActivitiesStatisticsArgs = {
+  input?: InputMaybe<FindActivitiesInput>;
+};
+
+
 export type QueryMyActivityRoutesArgs = {
   input?: InputMaybe<FindActivityRoutesInput>;
 };
 
 
-export type QueryMyActivityStatisticsArgs = {
+export type QueryMyCragSummaryArgs = {
   input?: InputMaybe<FindActivityRoutesInput>;
 };
 
 
-export type QueryMyCragSummaryArgs = {
+export type QueryMyRoutesStatisticsArgs = {
   input?: InputMaybe<FindActivityRoutesInput>;
 };
 
@@ -1209,6 +1216,13 @@ export type StarRatingVote = {
 
 export type StatsActivities = {
   __typename?: 'StatsActivities';
+  nr_activities: Scalars['Int'];
+  type: Scalars['String'];
+  year: Scalars['Int'];
+};
+
+export type StatsRoutes = {
+  __typename?: 'StatsRoutes';
   ascent_type: Scalars['String'];
   difficulty: Scalars['Float'];
   nr_routes: Scalars['Int'];

@@ -7,6 +7,8 @@ import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
 import authStatus from "@/utils/auth/auth-status";
 import DifficultyVotes from "@/components/difficulty-votes";
+import IconMissing from "@/components/ui/icons/missing";
+import Link from "@/components/ui/link";
 
 type Params = {
   cragSlug: string;
@@ -32,7 +34,18 @@ async function RoutePage({ params }: { params: Params }) {
         <RouteSection label="Osnovni podatki">
           <RouteInfo route={route} />
         </RouteSection>
-        <RouteSection label="Opis">{route.description}</RouteSection>
+        <RouteSection label="Opis">
+          {route.description || (
+            <span className="flex">
+              <div className="min-w-4">
+                <IconMissing />
+              </div>
+              <span className="ml-2">
+                Smer nima opisa. <Link href="">Dodaj opis.</Link>
+              </span>
+            </span>
+          )}
+        </RouteSection>
         <RouteSection label="Javni vzponi">
           <RouteAscents
             routeId={route.id}
