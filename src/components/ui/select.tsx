@@ -1,4 +1,10 @@
-import { Listbox } from "@headlessui/react";
+import {
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import React, { Children, Fragment, ReactElement } from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
@@ -11,7 +17,7 @@ interface OptionProps {
 
 function Option({ value, children, disabled }: OptionProps) {
   return (
-    <Listbox.Option
+    <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
@@ -23,7 +29,7 @@ function Option({ value, children, disabled }: OptionProps) {
       <div className="invisible text-neutral-900 ui-selected:visible">
         <IconCheck />
       </div>
-    </Listbox.Option>
+    </ListboxOption>
   );
 }
 
@@ -85,11 +91,11 @@ function Select({
       className="relative bg-white"
       disabled={disabled}
     >
-      {label && <Listbox.Label>{label}</Listbox.Label>}
+      {label && <Label>{label}</Label>}
       {customTrigger ? (
-        <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
+        <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
       ) : (
-        <Listbox.Button
+        <ListboxButton
           className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
             label ? "mt-1" : ""
           } ${
@@ -111,7 +117,7 @@ function Select({
           <div>
             <IconExpand />
           </div>
-        </Listbox.Button>
+        </ListboxButton>
       )}
 
       <div
@@ -119,9 +125,9 @@ function Select({
           customTrigger ? "w-auto whitespace-nowrap" : "w-full"
         }`}
       >
-        <Listbox.Options className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+        <ListboxOptions className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
           <div className="max-h-80 overflow-auto">{children}</div>
-        </Listbox.Options>
+        </ListboxOptions>
       </div>
     </Listbox>
   );

@@ -1,5 +1,10 @@
 import { cloneElement, ReactElement, useRef, useState } from "react";
-import { Dialog as DialogHUI } from "@headlessui/react";
+import {
+  Description,
+  Dialog as DialogHUI,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
 import Button from "./button";
 
 export enum DialogSize {
@@ -69,15 +74,15 @@ function Dialog({
 
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 overflow-y-auto p-10">
-          <DialogHUI.Panel
+          <DialogPanel
             ref={initFocusRef}
             className={`mx-auto rounded-lg bg-white px-8 py-8 shadow-lg ${dialogSize}`}
           >
-            <DialogHUI.Title as="h4">{title}</DialogHUI.Title>
+            <DialogTitle as="h4">{title}</DialogTitle>
             {isOpen && (
-              <DialogHUI.Description className="mt-8" as="div">
+              <Description className="mt-8" as="div">
                 {children}
-              </DialogHUI.Description>
+              </Description>
             )}
             <div className="mt-10 flex flex-wrap justify-end gap-4">
               {cancel && (
@@ -89,7 +94,7 @@ function Dialog({
                 <Button onClick={handleConfirm}>{confirm.label}</Button>
               )}
             </div>
-          </DialogHUI.Panel>
+          </DialogPanel>
         </div>
       </DialogHUI>
     </>
