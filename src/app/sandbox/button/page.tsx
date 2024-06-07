@@ -1,6 +1,6 @@
 "use client";
 import IconColumns from "@/components/ui/icons/columns";
-import Button from "../../../components/ui/button";
+import Button from "@/components/ui/button";
 
 function ButtonPage() {
   return (

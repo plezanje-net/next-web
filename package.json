@@ -14,6 +14,8 @@
   "dependencies": {
     "@headlessui/react": "^2.0.3",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/modifiers": "^7.0.0",
     "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",
     "@tailwindcss/container-queries": "^0.1.1",
@@ -24,6 +26,7 @@
     "dayjs": "^1.11.11",
     "eslint": "^8.42.0",
     "eslint-config-next": "^14.0.3",
+    "focus-trap-react": "^10.2.3",
     "graphql": "^16.6.0",
     "leaflet": "^1.9.4",
     "next": "^14.1.4",

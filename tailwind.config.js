@@ -23,6 +23,7 @@ module.exports = {
       medium: 500,
     },
     colors: {
+      transparent: "transparent",
       white: "#ffffff",
       blue: {
         50: "#d5e5f7",

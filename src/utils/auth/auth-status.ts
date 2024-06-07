@@ -1,7 +1,7 @@
 import { gql } from "@urql/core";
-import { ProfileDocument, User } from "../../graphql/generated";
+import { ProfileDocument, User } from "@/graphql/generated";
 import getAuthToken from "./auth-token";
-import urqlServer from "../../graphql/urql-server";
+import urqlServer from "@/graphql/urql-server";
 
 export type AuthStatus = {
   loggedIn: boolean;
