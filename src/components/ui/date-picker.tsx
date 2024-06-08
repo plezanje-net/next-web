@@ -3,8 +3,7 @@ import {
   useEffect,
   useRef,
   useState,
-  KeyboardEvent as RKeyboardEvent,
-  useCallback,
+  KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
 } from "react";
 import Button from "./button";
@@ -63,7 +62,7 @@ const monthNamesFull = [
 // Some local helpers //
 
 /**
- * given a current year it generates an array of 21 years wher given year is as close to the middle as possible (min year is 1 and max is 9999).
+ * Given a current year it generates an array of 21 years wher given year is as close to the middle as possible (min year is 1 and max is 9999).
  */
 const getYearsRange = (year: number) => {
   let shift = year - 10;
@@ -78,7 +77,7 @@ const getYearsRange = (year: number) => {
 };
 
 /**
- * Given a month and a year returns number of days in the month. Assumes max possible nr. of days where month and/or year is not known
+ * Given a month and a year returns number of days in the month. Assumes max possible nr. of days in case month and/or year is not known
  */
 const getDayMax = (month: number | "mm", year: number | "llll") => {
   let date;
@@ -117,19 +116,15 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
 
   const handleCalendarButtonClick = () => {
     if (calendarPaneOpened) {
-      closeCalendarPane();
+      setCalendarPaneOpened(false);
     } else {
+      setShownMonthAndYear({
+        month: value.month == "mm" ? today.month() + 1 : value.month,
+        year: value.year == "llll" ? today.year() : value.year,
+      });
       setCalendarPaneOpened(true);
     }
   };
-
-  const closeCalendarPane = useCallback(() => {
-    setCalendarPaneOpened(false);
-    setShownMonthAndYear({
-      month: value.month == "mm" ? today.month() + 1 : value.month,
-      year: value.year == "llll" ? today.year() : value.year,
-    });
-  }, [value, today]);
 
   // close calendar pane if clicked outside
   useEffect(() => {
@@ -162,7 +157,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
         calendarPaneRef.current &&
         !calendarPaneRef.current.contains(e.target as Node)
       ) {
-        closeCalendarPane();
+        setCalendarPaneOpened(false);
       }
     };
     document.addEventListener("mousedown", clickOutsideListener);
@@ -170,13 +165,13 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     return () => {
       document.removeEventListener("mousedown", clickOutsideListener);
     };
-  }, [closeCalendarPane]);
+  }, []);
 
   // close calendar pane if esc pressed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (calendarPaneOpened && e.key === "Escape") {
-        closeCalendarPane();
+        setCalendarPaneOpened(false);
       }
     };
 
@@ -184,7 +179,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [calendarPaneOpened, closeCalendarPane]);
+  }, [calendarPaneOpened]);
 
   const handleDayClick = (date: TDate) => {
     onChange(date);
@@ -232,7 +227,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     });
   };
 
-  const handleDayKeyDown = (e: RKeyboardEvent) => {
+  const handleDayKeyDown = (e: ReactKeyboardEvent) => {
     let newDay = value.day;
     const dayMax = getDayMax(value.month, value.year);
 
@@ -298,7 +293,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     }
   };
 
-  const handleMonthKeyDown = (e: RKeyboardEvent) => {
+  const handleMonthKeyDown = (e: ReactKeyboardEvent) => {
     let newMonth = value.month;
 
     switch (e.key) {
@@ -381,7 +376,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     }
   };
 
-  const handleYearKeyDown = (e: RKeyboardEvent) => {
+  const handleYearKeyDown = (e: ReactKeyboardEvent) => {
     let newYear = value.year;
 
     switch (e.key) {
@@ -648,7 +643,7 @@ function Year({ value, onChange, month }: TYearProps) {
     <Listbox value={value} onChange={onChange}>
       {({ open }) => (
         <>
-          <Listbox.Button as={Fragment}>
+          <ListboxButton as={Fragment}>
             {open ? (
               <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white pl-12 pr-4">
                 <div className="text-neutral-400">
@@ -665,9 +660,9 @@ function Year({ value, onChange, month }: TYearProps) {
                 <span className="px-1">{value}</span>
               </Button>
             )}
-          </Listbox.Button>
+          </ListboxButton>
 
-          <Listbox.Options className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
             <div className="max-h-80 overflow-auto ">
               {getYearsRange(value).map((year, index) => (
                 <MontOrYearOption key={index} value={year}>
@@ -675,7 +670,7 @@ function Year({ value, onChange, month }: TYearProps) {
                 </MontOrYearOption>
               ))}
             </div>
-          </Listbox.Options>
+          </ListboxOptions>
         </>
       )}
     </Listbox>
