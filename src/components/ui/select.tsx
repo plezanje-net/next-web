@@ -97,7 +97,7 @@ function Select({
       ) : (
         <ListboxButton
           className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
-            label ? "mt-1" : ""
+            label ? "mt-2" : ""
           } ${
             disabled
               ? "border-neutral-300 bg-neutral-100 text-neutral-400"
