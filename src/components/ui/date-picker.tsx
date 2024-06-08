@@ -15,7 +15,14 @@ import dayjs from "dayjs";
 import IconExpand from "./icons/expand";
 import IconCheck from "./icons/check";
 import FocusTrap from "focus-trap-react";
-import { Field, Label, Listbox } from "@headlessui/react";
+import {
+  Field,
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 
 type TDate = {
   day: number | "dd";
@@ -686,7 +693,7 @@ function Month({ value, onChange, year }: TMonthProps) {
     <Listbox value={value} onChange={onChange}>
       {({ open }) => (
         <>
-          <Listbox.Button as={Fragment}>
+          <ListboxButton as={Fragment}>
             {open ? (
               <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white px-12">
                 <div className="flex gap-2">
@@ -700,9 +707,9 @@ function Month({ value, onChange, year }: TMonthProps) {
                 <span className="px-1">{monthNamesShort[value - 1]}</span>
               </Button>
             )}
-          </Listbox.Button>
+          </ListboxButton>
 
-          <Listbox.Options className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
             <div className="max-h-80 overflow-auto">
               {monthNamesFull.map((monthName, index) => (
                 <MontOrYearOption key={index} value={index + 1}>
@@ -710,7 +717,7 @@ function Month({ value, onChange, year }: TMonthProps) {
                 </MontOrYearOption>
               ))}
             </div>
-          </Listbox.Options>
+          </ListboxOptions>
         </>
       )}
     </Listbox>
@@ -729,7 +736,7 @@ function MontOrYearOption({
   disabled,
 }: MontOrYearOptionProps) {
   return (
-    <Listbox.Option
+    <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
@@ -741,7 +748,7 @@ function MontOrYearOption({
       <div className="invisible text-neutral-900 ui-selected:visible">
         <IconCheck />
       </div>
-    </Listbox.Option>
+    </ListboxOption>
   );
 }
 
