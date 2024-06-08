@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 import IconExpand from "./icons/expand";
 import IconCheck from "./icons/check";
 import FocusTrap from "focus-trap-react";
-import { Listbox } from "@headlessui/react";
+import { Field, Label, Listbox } from "@headlessui/react";
 
 type TDate = {
   day: number | "dd";
@@ -90,9 +90,10 @@ const getDayMax = (month: number | "mm", year: number | "llll") => {
 type TDatePickerProps = {
   value: TDate;
   onChange: (value: TDate) => void;
+  label?: string;
 };
 
-function DatePicker({ value, onChange }: TDatePickerProps) {
+function DatePicker({ value, onChange, label }: TDatePickerProps) {
   const [calendarPaneOpened, setCalendarPaneOpened] = useState(false);
 
   const calendarPaneRef = useRef<HTMLDivElement>(null);
@@ -465,10 +466,11 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
   }, [value]);
 
   return (
-    <div>
+    <Field>
+      {label && <Label>{label}</Label>}
       {/* day, month, year 'manual' inputs */}
       <div
-        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 `}
+        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""}`}
       >
         <div>
           <input
@@ -624,7 +626,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
           </div>
         </FocusTrap>
       )}
-    </div>
+    </Field>
   );
 }
 
@@ -779,10 +781,10 @@ function MonthDays({
       selectedDate.day == d
         ? "selected"
         : today.year() == year &&
-          today.month() + 1 == month &&
-          today.date() == d
-        ? "today"
-        : "default";
+            today.month() + 1 == month &&
+            today.date() == d
+          ? "today"
+          : "default";
 
     // add day to week
     days[week].push({ date: d, state: dayState });
