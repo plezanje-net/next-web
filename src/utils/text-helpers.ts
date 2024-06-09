@@ -1,4 +1,8 @@
-const pluralizeNoun = (noun: string, count: number) => {
+const pluralizeNoun = (
+  noun: string,
+  count: number,
+  nounOnly: boolean = false
+) => {
   switch (noun) {
     case "uspešen vzpon":
       switch (count % 100) {
@@ -50,6 +54,40 @@ const pluralizeNoun = (noun: string, count: number) => {
           return `${count} glasovi`;
         default:
           return `${count} glasov`;
+      }
+
+    case "smer":
+      switch (count % 100) {
+        case 1:
+          return nounOnly ? "smer" : `${count} smer`;
+        default:
+          return nounOnly ? "smeri" : `${count} smeri`;
+      }
+
+    case "problem":
+      switch (count % 100) {
+        case 1:
+          return `${count} problem`;
+        case 2:
+          return `${count} problema`;
+        case 3:
+        case 4:
+          return `${count} problemi`;
+        default:
+          return `${count} problemov`;
+      }
+
+    case "smer/problem":
+      switch (count % 100) {
+        case 1:
+          return `${count} smer/problem`;
+        case 2:
+          return `${count} smeri/problema`;
+        case 3:
+        case 4:
+          return `${count} smeri/problemi`;
+        default:
+          return `${count} smeri/problemov`;
       }
   }
 };
