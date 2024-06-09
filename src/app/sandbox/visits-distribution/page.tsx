@@ -1,10 +1,7 @@
 import { gql } from "urql/core";
-import {
-  Crag,
-  CragActivitiesByMonthDocument,
-} from "../../../graphql/generated";
-import urqlServer from "../../../graphql/urql-server";
-import VisitsByMonth from "../../../components/visits-distribution";
+import { Crag, CragActivitiesByMonthDocument } from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
+import VisitsByMonth from "@/components/visits-distribution";
 
 async function getCragBySlug(crag: string): Promise<Crag> {
   const {

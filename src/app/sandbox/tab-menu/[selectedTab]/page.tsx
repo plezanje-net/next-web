@@ -1,5 +1,5 @@
 "use client";
-import TabMenu, { TabMenuItem } from "../../../../components/ui/tab-menu";
+import TabMenu, { TabMenuItem } from "@/components/ui/tab-menu";
 
 interface Params {
   params: { selectedTab?: string };

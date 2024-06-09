@@ -1,7 +1,7 @@
 "use client";
-import IconClose from "../../../components/ui/icons/close";
-import IconSearch from "../../../components/ui/icons/search";
-import TextField from "../../../components/ui/text-field";
+import IconClose from "@/components/ui/icons/close";
+import IconSearch from "@/components/ui/icons/search";
+import TextField from "@/components/ui/text-field";
 
 function TextFieldPage() {
   return (
