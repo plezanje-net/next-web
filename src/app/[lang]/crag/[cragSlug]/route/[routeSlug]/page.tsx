@@ -26,6 +26,7 @@ async function RoutePage({ params }: { params: Params }) {
     routeSlug,
     includeMyAscents: !!user,
     userId: user?.id,
+    pageSize: 10,
   });
 
   return (
@@ -52,15 +53,16 @@ async function RoutePage({ params }: { params: Params }) {
           <RouteAscents
             routeId={route.id}
             activityRoutes={route.activityRoutes.items}
+            pageCount={route.activityRoutes.meta.pageCount}
           />
         </RouteSection>
         {user && (
           <RouteSection label="Moji vzponi">
-            <RouteAscents
+            {/* <RouteAscents
               routeId={route.id}
               activityRoutes={route.myAscents.items}
               myAscents
-            />
+            /> */}
           </RouteSection>
         )}
         <RouteSection label="Težavnost">
@@ -80,6 +82,7 @@ gql`
     $routeSlug: String!
     $includeMyAscents: Boolean!
     $userId: String
+    $pageSize: Int
   ) {
     routeBySlug(cragSlug: $cragSlug, routeSlug: $routeSlug) {
       id
@@ -95,7 +98,7 @@ gql`
       myAscents: activityRoutes(
         input: {
           userId: $userId
-          pageSize: 10
+          pageSize: $pageSize
           orderBy: { field: "date", direction: "DESC" }
         }
       ) @include(if: $includeMyAscents) {
@@ -111,7 +114,7 @@ gql`
       }
       activityRoutes(
         input: {
-          pageSize: 10
+          pageSize: $pageSize
           orderBy: { field: "date", direction: "DESC" }
           ascentType: ["onsight", "flash", "redpoint"]
         }
@@ -124,6 +127,9 @@ gql`
             fullName
             id
           }
+        }
+        meta {
+          pageCount
         }
       }
       difficultyVotes {

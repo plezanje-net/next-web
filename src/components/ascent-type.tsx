@@ -1,5 +1,6 @@
 import AscentIcon from "@/components/ui/ascent-icon";
 import { IconSize } from "@/components/ui/icons/icon-size";
+import IconToprope from "./ui/icons/toprope";
 
 type TAscentTypeProps = {
   ascentType: string;
@@ -16,10 +17,16 @@ function AscentType({ ascentType }: TAscentTypeProps) {
     attempt: "neuspel poskus",
   };
 
+  const isTopRope = ascentType.startsWith("t_");
+  const baseAscentType = isTopRope ? ascentType.slice(2) : ascentType;
+
   return (
     <div className="flex gap-1">
-      <AscentIcon ascent={ascentType} size={IconSize.regular} />
-      <span className="hidden sm:inline">{text[ascentType]}</span>
+      {isTopRope && <IconToprope size={IconSize.regular} />}
+      <AscentIcon ascent={baseAscentType} size={IconSize.regular} />
+      <span className="hidden @md:inline">
+        {text[baseAscentType]} {isTopRope && " z varovanjem od zgoraj"}
+      </span>
     </div>
   );
 }
