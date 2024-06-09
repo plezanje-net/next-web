@@ -4,7 +4,7 @@ type TRouteTypesProps = {
   hasMultipitch: boolean;
 };
 
-function routeTypes({ hasSport, hasBoulder, hasMultipitch }: TRouteTypesProps) {
+function RouteTypes({ hasSport, hasBoulder, hasMultipitch }: TRouteTypesProps) {
   const routeTypes = [];
   hasSport && routeTypes.push("športno plezanje");
   hasBoulder && routeTypes.push("balvani");
@@ -13,4 +13,4 @@ function routeTypes({ hasSport, hasBoulder, hasMultipitch }: TRouteTypesProps) {
   return routeTypes.join(" in ");
 }
 
-export default routeTypes;
+export default RouteTypes;

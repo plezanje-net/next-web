@@ -9,42 +9,37 @@ import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
-import { TCragListColumn } from "./filtered-crags";
+import NrRoutes from "./nr-routes";
+import { useCragsContext } from "../../crags-context";
 
 type TCragCardProps = {
   crag: Crag;
-  columns: TCragListColumn[];
 };
 
-function CragCard({ crag, columns }: TCragCardProps) {
+function CragCard({ crag }: TCragCardProps) {
+  const { columns } = useCragsContext();
+
   const showOrientations =
-    !!columns.find((column) => column.name == "orientations") &&
-    !!crag.orientations;
-  const showArea =
-    !!columns.find((column) => column.name == "area") && !!crag.area;
-  const showCountry = !!columns.find((column) => column.name == "country");
-  const showRouteTypes = !!columns.find(
-    (column) => column.name == "routeTypes"
-  );
-  const showNrRoutes = !!columns.find((column) => column.name == "nrRoutes");
+    columns.selectedState.includes("orientations") && !!crag.orientations;
+  const showArea = columns.selectedState.includes("area") && !!crag.area;
+  const showCountry = columns.selectedState.includes("country");
+  const showRouteTypes = columns.selectedState.includes("routeTypes");
+  const showNrRoutes = columns.selectedState.includes("nrRoutes");
   const showDifficulty =
-    !!columns.find((column) => column.name == "difficulty") &&
+    columns.selectedState.includes("difficulty") &&
     !!crag.minDifficulty &&
     !!crag.maxDifficulty;
   const showApproachTime =
-    !!columns.find((column) => column.name == "approachTime") &&
-    !!crag.approachTime;
+    columns.selectedState.includes("approachTime") && !!crag.approachTime;
   const showSeasons =
-    !!columns.find((column) => column.name == "seasons") && !!crag.seasons;
+    columns.selectedState.includes("seasons") && !!crag.seasons;
   const showWallAngles =
-    !!columns.find((column) => column.name == "wallAngles") &&
-    !!crag.wallAngles;
+    columns.selectedState.includes("wallAngles") && !!crag.wallAngles;
   const showRainproof =
-    !!columns.find((column) => column.name == "rainproof") &&
-    crag.rainproof != null;
+    columns.selectedState.includes("rainproof") && crag.rainproof != null;
 
   return (
-    <div className="border-t border-neutral-200 px-4 py-4 xs:px-8 md:px-0">
+    <div className="border-b border-neutral-200 py-4">
       {/* row 1 */}
       <div className="flex items-center justify-between">
         <div className="font-medium">
@@ -85,7 +80,14 @@ function CragCard({ crag, columns }: TCragCardProps) {
           </>
         )}
 
-        {showNrRoutes && `${crag.nrRoutes} smeri`}
+        {showNrRoutes && (
+          <NrRoutes
+            nrRoutes={crag.nrRoutes}
+            hasSport={crag.hasSport}
+            hasBoulder={crag.hasBoulder}
+            hasMultipitch={crag.hasMultipitch}
+          />
+        )}
 
         {showDifficulty && (
           <>

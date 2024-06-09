@@ -25,6 +25,7 @@ module.exports = {
       transparent: "transparent",
       white: "#ffffff",
       blue: {
+        50: "#d5e5f7",
         100: "#aaccf0",
         200: "#8ab9ea",
         300: "#6ba5e4",
