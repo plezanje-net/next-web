@@ -4,18 +4,19 @@ import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
-import { TCragListColumn } from "./filtered-crags";
 import Link from "@/components/ui/link";
+import { useCragsContext } from "../../crags-context";
 
 type TCragRowProps = {
   crag: Crag;
-  columns: TCragListColumn[];
 };
 
-function CragRow({ crag, columns }: TCragRowProps) {
+function CragRow({ crag }: TCragRowProps) {
+  const { columns } = useCragsContext();
+
   return (
-    <tr className="border-b border-neutral-200 last:border-none">
-      {columns.map((column, index) => {
+    <tr className="border-b border-neutral-200">
+      {columns.shown.map((column, index) => {
         let cellContent;
         switch (column.name) {
           case "name":
@@ -54,7 +55,7 @@ function CragRow({ crag, columns }: TCragRowProps) {
               <Seasons
                 seasons={crag.seasons}
                 align={
-                  index == columns.length - 1 && columns.length > 1
+                  index == columns.shown.length - 1 && columns.shown.length > 1
                     ? "right"
                     : "left"
                 }
@@ -67,7 +68,7 @@ function CragRow({ crag, columns }: TCragRowProps) {
               <WallAngles
                 wallAngles={crag.wallAngles}
                 align={
-                  index == columns.length - 1 && columns.length > 1
+                  index == columns.shown.length - 1 && columns.shown.length > 1
                     ? "right"
                     : "left"
                 }
@@ -103,7 +104,7 @@ function CragRow({ crag, columns }: TCragRowProps) {
           <td
             key={index}
             className={`hyphens-auto break-words p-4 [word-break:break-word] first:pl-0 last:pr-0 ${
-              columns.length > 1 ? "last:text-right" : ""
+              columns.shown.length > 1 ? "last:text-right" : ""
             }`}
           >
             {cellContent}

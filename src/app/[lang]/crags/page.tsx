@@ -1,9 +1,10 @@
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import { AllCountriesDocument, AllCragsDocument } from "@/graphql/generated";
-import FilteredCrags from "./components/filtered-crags";
+import { CragsProvider } from "./components/crags-context";
+import Crags from "./components/crags";
 
-async function CragsPage() {
+async function Crags2Page() {
   const cragsDataPromise = urqlServer().query(AllCragsDocument, {});
   const countriesDataPromise = urqlServer().query(AllCountriesDocument, {});
   const [{ data: cragsData }, { data: countriesData }] = await Promise.all([
@@ -12,14 +13,16 @@ async function CragsPage() {
   ]);
 
   return (
-    <FilteredCrags
-      crags={cragsData.crags}
-      countries={countriesData.countries}
-    />
+    <CragsProvider
+      allCrags={cragsData.crags}
+      allCountries={countriesData.countries}
+    >
+      <Crags />
+    </CragsProvider>
   );
 }
 
-export default CragsPage;
+export default Crags2Page;
 
 gql`
   query AllCrags {
