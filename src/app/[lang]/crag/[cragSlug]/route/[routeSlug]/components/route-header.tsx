@@ -26,9 +26,9 @@ function RouteHeader({ route }: TRouteHeaderProps) {
   ];
 
   return (
-    <div className="h-52 border-b border-b-neutral-200 bg-neutral-100">
+    <div className="border-b border-b-neutral-200 bg-neutral-100">
       <div className="mx-auto px-4 2xl:container xs:px-8">
-        <div className="pt-4">
+        <div className="py-4">
           <Breadcrumbs items={breadcrumbs} />
           <h1 className="pb-12 pt-12 text-3xl">{route.name}</h1>
         </div>

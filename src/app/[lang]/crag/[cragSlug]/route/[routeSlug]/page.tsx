@@ -1,7 +1,6 @@
 import { RouteBySlugDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
-import RouteHeader from "./components/route-header";
 import RouteSection from "./components/route-section";
 import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
@@ -9,6 +8,8 @@ import authStatus from "@/utils/auth/auth-status";
 import DifficultyVotes from "@/components/difficulty-votes";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
+import RouteToolbar from "./components/route-toolbar";
+import RouteHeader from "./components/route-header";
 
 type Params = {
   cragSlug: string;
@@ -30,6 +31,7 @@ async function RoutePage({ params }: { params: Params }) {
   return (
     <>
       <RouteHeader route={route} />
+      <RouteToolbar route={route} />
       <div className="mx-auto px-4 2xl:container xs:px-8">
         <RouteSection label="Osnovni podatki">
           <RouteInfo route={route} />
@@ -162,6 +164,11 @@ gql`
         id
         name
         label
+        routes {
+          id
+          name
+          slug
+        }
       }
     }
   }

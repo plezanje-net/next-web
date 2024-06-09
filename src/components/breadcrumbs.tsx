@@ -21,7 +21,7 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
 
   return (
     <nav {...navProps}>
-      <ol className="flex">
+      <ol>
         {props.items.map((item, i) => (
           <BreadcrumbItem
             key={i}
@@ -49,7 +49,7 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
     ref
   );
   return (
-    <li>
+    <li className="inline-block">
       <Link
         {...itemProps}
         ref={ref}
