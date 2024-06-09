@@ -24,7 +24,7 @@ function Header({ authStatus }: Props) {
   const navLinks: NavLink[] = [
     {
       label: "Plezališča",
-      href: "/plezalisca?countries=slovenija&routeTypes=sport",
+      href: "/plezalisca?country=slovenija&routeType=sport",
       isActive: i18nPathname.test(["/{crags}*", "/{crag}*"]),
     },
     {

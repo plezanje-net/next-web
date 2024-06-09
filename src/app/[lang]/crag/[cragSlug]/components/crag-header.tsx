@@ -14,7 +14,7 @@ function CragHeader({ crag }: Props) {
     },
     {
       label: "Plezališča",
-      link: `/plezalisca/${crag.country.slug}`,
+      link: `/plezalisca?country=${crag.country.slug}`,
     },
     {
       label: crag.name,
