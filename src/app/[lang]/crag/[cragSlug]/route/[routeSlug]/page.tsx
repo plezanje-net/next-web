@@ -36,11 +36,14 @@ async function RoutePage({ params }: { params: Params }) {
     <>
       <RouteHeader route={route} />
       <RouteToolbar route={route} />
-      <div className="mx-auto px-4 2xl:container xs:px-8">
-        <RouteSection label="Osnovni podatki">
+      <div className="mx-auto flex flex-wrap px-4 2xl:container xs:px-8">
+        <RouteSection label="Osnovni podatki" className="xl:w-1/2 xl:pr-3">
           <RouteInfo route={route} />
         </RouteSection>
-        <RouteSection label="Opis">
+        <RouteSection
+          label="Opis"
+          className="lg:w-1/3 lg:pr-3 xl:w-1/2 xl:pl-3 xl:pr-0"
+        >
           {route.description || (
             <span className="flex">
               <div className="min-w-4">
@@ -52,14 +55,20 @@ async function RoutePage({ params }: { params: Params }) {
             </span>
           )}
         </RouteSection>
-        <RouteSection label="Javni vzponi">
+        <RouteSection
+          label="Javni vzponi"
+          className="md:w-1/2 md:pr-3 lg:w-1/3 lg:pl-3 xl:w-1/2"
+        >
           <RouteAscents
             routeId={route.id}
             activityRoutes={route.activityRoutes.items}
             pageCount={route.activityRoutes.meta.pageCount}
           />
         </RouteSection>
-        <RouteSection label="Moji vzponi">
+        <RouteSection
+          label="Moji vzponi"
+          className="md:w-1/2 md:pl-3 lg:w-1/3 xl:w-1/2"
+        >
           {user ? (
             <RouteMyAscents
               routeId={route.id}
@@ -71,13 +80,13 @@ async function RoutePage({ params }: { params: Params }) {
             "Za ogled svojih vzponov se prijavi."
           )}
         </RouteSection>
-        <RouteSection label="Težavnost">
+        <RouteSection label="Težavnost" className="lg:w-1/2 lg:pr-3">
           <DifficultyVotes
             route={route}
             difficultyVotes={route.difficultyVotes}
           />
         </RouteSection>
-        <RouteSection label="Glasovi o lepoti">
+        <RouteSection label="Glasovi o lepoti" className="lg:w-1/2 lg:pl-3">
           <StarRatingDistribution
             route={route}
             starRatingVotes={route.starRatingVotes}
