@@ -22,7 +22,7 @@ function RouteInfo({ route }: TRouteInfoProps) {
         {route.length && (
           <RouteInfoRow label="Dolžina">{route.length}m</RouteInfoRow>
         )}
-        {route.starRating && (
+        {route.starRating != null && (
           <RouteInfoRow label="Lepota">
             <RouteStarRating route={route} size={IconSize.small} showText />
           </RouteInfoRow>

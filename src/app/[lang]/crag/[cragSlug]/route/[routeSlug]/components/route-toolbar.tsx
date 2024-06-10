@@ -47,14 +47,14 @@ function RouteToolbar({ route }: TRouteToolbarProps) {
             >
               <span className="flex">
                 <IconLeft />
-                <span className="max-w-16 xs:max-w-32 sm:max-w-52	 mr-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                <span className="max-w-16 xs:max-w-32 sm:max-w-52	 ml-2 overflow-hidden text-ellipsis whitespace-nowrap">
                   {previousRoute.name}
                 </span>
               </span>
             </Button>
           )}
           {previousRoute && nextRoute && (
-            <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+            <div className="ml-4 h-6 border-l border-neutral-300 pr-4"></div>
           )}
           {nextRoute && (
             <Button

@@ -11,6 +11,7 @@ import Link from "@/components/ui/link";
 import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
+import StarRatingDistribution from "@/components/star-rating-distribution";
 
 type Params = {
   cragSlug: string;
@@ -74,6 +75,22 @@ async function RoutePage({ params }: { params: Params }) {
             route={route}
             difficultyVotes={route.difficultyVotes}
           />
+        </RouteSection>
+        <RouteSection label="Glasovi o lepoti">
+          <StarRatingDistribution
+            route={route}
+            starRatingVotes={route.starRatingVotes}
+          />
+        </RouteSection>
+        <RouteSection label="Galerija">
+          <span className="flex">
+            <div className="min-w-4">
+              <IconMissing />
+            </div>
+            <span className="ml-2">
+              Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
+            </span>
+          </span>
         </RouteSection>
       </div>
     </>
@@ -153,6 +170,15 @@ gql`
         updated
         isBase
         includedInCalculation
+      }
+      starRatingVotes {
+        id
+        stars
+        created
+        user {
+          id
+          fullName
+        }
       }
       properties {
         stringValue
