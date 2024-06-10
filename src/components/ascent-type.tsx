@@ -14,6 +14,7 @@ function AscentType({ ascentType }: TAscentTypeProps) {
     redpoint: "z rdečo piko",
     repeat: "ponovitev",
     allfree: "vse prosto",
+    aid: "tehnično plezanje",
     attempt: "neuspel poskus",
   };
 
@@ -25,7 +26,8 @@ function AscentType({ ascentType }: TAscentTypeProps) {
       {isTopRope && <IconToprope size={IconSize.regular} />}
       <AscentIcon ascent={baseAscentType} size={IconSize.regular} />
       <span className="hidden @md:inline">
-        {text[baseAscentType]} {isTopRope && " z varovanjem od zgoraj"}
+        {text[baseAscentType]}
+        {isTopRope && " z varovanjem od zgoraj"}
       </span>
     </div>
   );

@@ -2,21 +2,22 @@
 
 import { gql } from "urql/core";
 import {
-  ActivityRoute,
   PaginatedActivityRoutes,
-  RouteAscentsDocument,
+  RouteMyAscentsDocument,
 } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 
-async function routeAscentsAction(
+async function routeMyAscentsAction(
   routeId: string,
+  userId: string,
   pageNumber: number,
   allTypes: boolean = false
 ): Promise<PaginatedActivityRoutes> {
-  const result = await urqlServer().query(RouteAscentsDocument, {
+  const result = await urqlServer().query(RouteMyAscentsDocument, {
     routeId,
     pageNumber,
     pageSize: 10,
+    userId,
     ascentTypes: allTypes ? null : ["onsight", "flash", "redpoint"],
   });
 
@@ -24,37 +25,34 @@ async function routeAscentsAction(
     return Promise.reject(result.error);
   }
 
-  return result.data.route.activityRoutes;
+  return result.data.route.myAscents;
 }
 
-export default routeAscentsAction;
+export default routeMyAscentsAction;
 
 gql`
-  query RouteAscents(
+  query RouteMyAscents(
     $routeId: String!
+    $userId: String!
     $ascentTypes: [String!]
     $pageSize: Int
     $pageNumber: Int
   ) {
     route(id: $routeId) {
       id
-      activityRoutes(
+      myAscents: activityRoutes(
         input: {
+          userId: $userId
           pageSize: $pageSize
           pageNumber: $pageNumber
           orderBy: { field: "date", direction: "DESC" }
           ascentType: $ascentTypes
-          publish: ["public", "club"]
         }
       ) {
         items {
           ascentType
           id
           date
-          user {
-            fullName
-            id
-          }
         }
         meta {
           pageCount

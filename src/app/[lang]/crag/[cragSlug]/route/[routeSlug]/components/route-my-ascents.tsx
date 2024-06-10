@@ -3,30 +3,31 @@ import { ActivityRoute } from "@/graphql/generated";
 import displayDate from "@/utils/display-date";
 import Link from "@/components/ui/link";
 import AscentType from "@/components/ascent-type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import routeAscentsAction from "./server-actions/route-ascents-action";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
+import routeMyAscentsAction from "./server-actions/route-my-ascents-action";
 
 type TRouteAscentsProps = {
   routeId: string;
+  userId: string;
   activityRoutes: ActivityRoute[];
   pageCount: number;
-  myAscents?: boolean;
 };
 
-function RouteAscents({
+function RouteMyAscents({
   routeId,
   activityRoutes,
   pageCount: initialPageCount,
-  myAscents = false,
+  userId,
 }: TRouteAscentsProps) {
   const [ascents, setAscents] = useState<ActivityRoute[]>([...activityRoutes]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [allAscents, setAllAscents] = useState(false);
+  const [allAscents, setAllAscents] = useState(true);
   const [pageCount, setPageCount] = useState(initialPageCount);
 
   function loadMore() {
-    routeAscentsAction(routeId, pageNumber + 1, allAscents).then(
+    routeMyAscentsAction(routeId, userId, pageNumber + 1, allAscents).then(
       ({ items }) => {
         setAscents([...ascents, ...items]);
       }
@@ -35,10 +36,12 @@ function RouteAscents({
   }
 
   function changeType(value: string) {
-    routeAscentsAction(routeId, 1, value === "all").then(({ items, meta }) => {
-      setAscents([...items]);
-      setPageCount(meta.pageCount);
-    });
+    routeMyAscentsAction(routeId, userId, 1, value === "all").then(
+      ({ items, meta }) => {
+        setAscents([...items]);
+        setPageCount(meta.pageCount);
+      }
+    );
     setAllAscents(value === "all");
     setPageNumber(1);
   }
@@ -46,24 +49,22 @@ function RouteAscents({
   return (
     <div className="@container">
       <div className="pb-1 ">
-        <RadioGroup defaultValue="successful" inline onChange={changeType}>
+        <RadioGroup defaultValue="all" inline onChange={changeType}>
           <Radio value="successful">samo uspešni</Radio>
           <Radio value="all">vsi</Radio>
         </RadioGroup>
       </div>
-      {ascents.length === 0 && "Smer nima zabeleženih javnih vzponov."}
+      {ascents.length === 0 &&
+        `Za to smer še nimaš zabeleženih ${
+          allAscents ? "" : "uspešnih"
+        } vzponov.`}
       <table>
         <tbody>
-          {ascents.map(({ id, date, user, ascentType }) => (
+          {ascents.map(({ id, date, ascentType }) => (
             <tr key={id}>
               <td className="text-nowrap pb-1 pr-4 align-top">
                 {displayDate(date)}
               </td>
-              {!myAscents && (
-                <td className="text-nowrap pb-1 pr-4 align-top">
-                  {user.fullName}
-                </td>
-              )}
               <td className="pb-1">
                 <AscentType ascentType={ascentType} />
               </td>
@@ -82,4 +83,4 @@ function RouteAscents({
   );
 }
 
-export default RouteAscents;
+export default RouteMyAscents;

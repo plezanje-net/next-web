@@ -10,6 +10,7 @@ import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
+import RouteMyAscents from "./components/route-my-ascents";
 
 type Params = {
   cragSlug: string;
@@ -56,15 +57,18 @@ async function RoutePage({ params }: { params: Params }) {
             pageCount={route.activityRoutes.meta.pageCount}
           />
         </RouteSection>
-        {user && (
-          <RouteSection label="Moji vzponi">
-            {/* <RouteAscents
+        <RouteSection label="Moji vzponi">
+          {user ? (
+            <RouteMyAscents
               routeId={route.id}
+              userId={user.id}
               activityRoutes={route.myAscents.items}
-              myAscents
-            /> */}
-          </RouteSection>
-        )}
+              pageCount={route.myAscents.meta.pageCount}
+            ></RouteMyAscents>
+          ) : (
+            "Za ogled svojih vzponov se prijavi."
+          )}
+        </RouteSection>
         <RouteSection label="Težavnost">
           <DifficultyVotes
             route={route}
@@ -111,12 +115,16 @@ gql`
             id
           }
         }
+        meta {
+          pageCount
+        }
       }
       activityRoutes(
         input: {
           pageSize: $pageSize
           orderBy: { field: "date", direction: "DESC" }
           ascentType: ["onsight", "flash", "redpoint"]
+          publish: ["public", "club"]
         }
       ) {
         items {
