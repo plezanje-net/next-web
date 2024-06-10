@@ -12,6 +12,7 @@ import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
 import StarRatingDistribution from "@/components/star-rating-distribution";
+import Comments from "@/components/comments/comments";
 
 type Params = {
   cragSlug: string;
@@ -91,6 +92,9 @@ async function RoutePage({ params }: { params: Params }) {
               Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
             </span>
           </span>
+        </RouteSection>
+        <RouteSection label="Komentarji">
+          <Comments comments={route.comments} route={route} />
         </RouteSection>
       </div>
     </>
@@ -175,6 +179,17 @@ gql`
         id
         stars
         created
+        user {
+          id
+          fullName
+        }
+      }
+      comments {
+        id
+        content
+        type
+        created
+        updated
         user {
           id
           fullName
