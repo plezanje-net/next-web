@@ -1,9 +1,10 @@
-type TSuggestionChip = {
+type TSuggestionChipProps = {
   active: boolean;
   onClick: () => void;
   children: string;
 };
-function SuggestionChip({ active, onClick, children }: TSuggestionChip) {
+
+function SuggestionChip({ active, onClick, children }: TSuggestionChipProps) {
   return (
     <button
       onClick={onClick}
