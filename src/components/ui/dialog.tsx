@@ -14,15 +14,21 @@ export enum DialogSize {
   hug = "w-fit max-w-[100%]",
 }
 
+export enum DialogTitleSize {
+  regular = "h4",
+  large = "h3",
+}
+
 interface DialogProps {
   children: ReactElement;
   title: string;
   openTrigger: ReactElement;
-  confirm?: { label: string; callback?: () => void };
+  confirm?: { label: string; callback?: () => void; disabled?: boolean };
   cancel?: { label: string; callback?: () => void };
   dialogSize?: DialogSize;
   closeWithEscOrPressOutside?: boolean;
   closeCallback?: () => void;
+  titleSize?: DialogTitleSize;
 }
 
 function Dialog({
@@ -34,6 +40,7 @@ function Dialog({
   dialogSize = DialogSize.small,
   closeWithEscOrPressOutside = true,
   closeCallback,
+  titleSize = DialogTitleSize.regular,
 }: DialogProps) {
   let [isOpen, setIsOpen] = useState(false);
 
@@ -54,18 +61,12 @@ function Dialog({
     }
   };
 
-  const initFocusRef = useRef(null);
-
   return (
     <>
       {cloneElement(openTrigger, {
         onClick: () => setIsOpen(true),
       })}
-      <DialogHUI
-        open={isOpen}
-        onClose={handleClose}
-        initialFocus={initFocusRef}
-      >
+      <DialogHUI open={isOpen} onClose={handleClose}>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div
           className="fixed inset-0 bg-neutral-900 bg-opacity-25"
@@ -75,23 +76,24 @@ function Dialog({
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 overflow-y-auto p-10">
           <DialogPanel
-            ref={initFocusRef}
-            className={`mx-auto rounded-lg bg-white px-8 py-8 shadow-lg ${dialogSize}`}
+            className={`mx-auto rounded-lg bg-white shadow-lg px-4 xs:px-8 py-8 ${dialogSize}`}
           >
-            <DialogTitle as="h4">{title}</DialogTitle>
-            {isOpen && (
-              <Description className="mt-8" as="div">
-                {children}
-              </Description>
-            )}
-            <div className="mt-10 flex flex-wrap justify-end gap-4">
+            <DialogTitle as={titleSize}>{title}</DialogTitle>
+
+            <Description className="mt-8" as="div">
+              {children}
+            </Description>
+
+            <div className="mt-8 flex flex-wrap justify-end gap-4">
               {cancel && (
                 <Button variant="secondary" onClick={handleCancel}>
                   {cancel.label}
                 </Button>
               )}
               {confirm && (
-                <Button onClick={handleConfirm}>{confirm.label}</Button>
+                <Button onClick={handleConfirm} disabled={confirm.disabled}>
+                  {confirm.label}
+                </Button>
               )}
             </div>
           </DialogPanel>
