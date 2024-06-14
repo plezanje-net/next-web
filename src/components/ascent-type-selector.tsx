@@ -8,21 +8,17 @@ import IconAttempt from "./ui/icons/attempt";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Checkbox from "./ui/checkbox";
 import IconToprope from "./ui/icons/toprope";
+import { useState } from "react";
 
 type TAscentTypeSelectorProps = {
-  ascentTypeValue: AscentType | null;
-  onAscentTypeChange: (at: AscentType | null) => void;
-  topropeValue: boolean;
-  onTopropeChange: (tr: boolean) => void;
+  value: AscentType | null;
+  onChange: (at: AscentType) => void;
 };
 
-function AscentTypeSelector({
-  ascentTypeValue,
-  onAscentTypeChange,
-  topropeValue,
-  onTopropeChange,
-}: TAscentTypeSelectorProps) {
-  const ascentTypeOptions = topropeValue
+function AscentTypeSelector({ value, onChange }: TAscentTypeSelectorProps) {
+  const [toprope, setToprope] = useState(false);
+
+  const ascentTypeOptions = toprope
     ? [
         {
           value: AscentType.TOnsight,
@@ -105,48 +101,48 @@ function AscentTypeSelector({
 
   const handleTopropeChange = (tr: boolean) => {
     if (tr) {
-      switch (ascentTypeValue) {
+      switch (value) {
         case AscentType.Onsight:
-          onAscentTypeChange(AscentType.TOnsight);
+          onChange(AscentType.TOnsight);
           break;
         case AscentType.Flash:
-          onAscentTypeChange(AscentType.TFlash);
+          onChange(AscentType.TFlash);
           break;
         case AscentType.Redpoint:
-          onAscentTypeChange(AscentType.TRedpoint);
+          onChange(AscentType.TRedpoint);
           break;
         case AscentType.Allfree:
-          onAscentTypeChange(AscentType.TAllfree);
+          onChange(AscentType.TAllfree);
           break;
         case AscentType.Attempt:
-          onAscentTypeChange(AscentType.TAttempt);
+          onChange(AscentType.TAttempt);
       }
     } else {
-      switch (ascentTypeValue) {
+      switch (value) {
         case AscentType.TOnsight:
-          onAscentTypeChange(AscentType.Onsight);
+          onChange(AscentType.Onsight);
           break;
         case AscentType.TFlash:
-          onAscentTypeChange(AscentType.Flash);
+          onChange(AscentType.Flash);
           break;
         case AscentType.TRedpoint:
-          onAscentTypeChange(AscentType.Redpoint);
+          onChange(AscentType.Redpoint);
           break;
         case AscentType.TAllfree:
-          onAscentTypeChange(AscentType.Allfree);
+          onChange(AscentType.Allfree);
           break;
         case AscentType.TAttempt:
-          onAscentTypeChange(AscentType.Attempt);
+          onChange(AscentType.Attempt);
       }
     }
-    onTopropeChange(tr);
+    setToprope(tr);
   };
 
   return (
     <div>
       <RadioGroup
-        value={ascentTypeValue}
-        onChange={onAscentTypeChange}
+        value={value}
+        onChange={onChange}
         className="flex flex-wrap justify-center gap-2"
       >
         {ascentTypeOptions.map((option) => (
@@ -164,7 +160,7 @@ function AscentTypeSelector({
       <div className="mt-2">
         <Checkbox
           label="Z varovanjem od zgoraj"
-          checked={topropeValue}
+          checked={toprope}
           onChange={handleTopropeChange}
         />
       </div>

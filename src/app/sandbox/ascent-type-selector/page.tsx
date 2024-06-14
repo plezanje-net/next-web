@@ -6,7 +6,6 @@ import { useState } from "react";
 
 function AscentTypeSelectorPage() {
   const [ascentType, setAscentType] = useState<AscentType | null>(null);
-  const [toprope, setToprope] = useState(false);
 
   return (
     <div className="m-8">
@@ -15,12 +14,7 @@ function AscentTypeSelectorPage() {
       <div className="mt-14">
         <h5>An ascent type selector</h5>
         <div className="mt-4">
-          <AscentTypeSelector
-            ascentTypeValue={ascentType}
-            onAscentTypeChange={setAscentType}
-            topropeValue={toprope}
-            onTopropeChange={setToprope}
-          />
+          <AscentTypeSelector value={ascentType} onChange={setAscentType} />
         </div>
       </div>
     </div>
