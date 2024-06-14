@@ -46,7 +46,7 @@ export type ActivityRoute = {
   orderScore: Scalars['Float'];
   partner?: Maybe<Scalars['String']>;
   pitch?: Maybe<Pitch>;
-  publish: Scalars['String'];
+  publish: PublishType;
   rankingScore: Scalars['Float'];
   route: Route;
   routeId: Scalars['String'];
@@ -878,6 +878,13 @@ export type PropertyType = {
   name: Scalars['String'];
   valueType: Scalars['String'];
 };
+
+export enum PublishType {
+  Club = 'CLUB',
+  Log = 'LOG',
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
 
 export type Query = {
   __typename?: 'Query';
