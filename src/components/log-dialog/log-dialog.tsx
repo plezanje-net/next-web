@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { TDate } from "@/components/ui/date-picker";
 import Dialog, { DialogSize, DialogTitleSize } from "@/components/ui/dialog";
 import { useState } from "react";
 import LogDate from "./log-date";
@@ -14,16 +13,11 @@ type TLogDialogProps = {
 };
 
 function LogDialog({ openTrigger }: TLogDialogProps) {
-  const [logDate, setLogDate] = useState<TDate>({
-    day: "dd",
-    month: "mm",
-    year: "llll",
-  });
-
   const [partners, setPartners] = useState("");
   const [notes, setNotes] = useState("");
 
   const logRoutesContext = useLogRoutesContext();
+  const { logDate, setLogDate } = logRoutesContext;
 
   const handleSave = async () => {
     const {

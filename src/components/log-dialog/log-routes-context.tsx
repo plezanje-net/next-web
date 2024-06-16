@@ -8,6 +8,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { TDate } from "../ui/date-picker";
 
 type TLogRoute = {
   id: string;
@@ -24,15 +25,9 @@ type TLogRoute = {
       starRating: number;
       date: string;
     };
-    // lastTick?: {
-    //   ascentType: AscentType;
-    //   date: string;
-    // };
-    // lastTouch?: {
-    //   ascentType: AscentType;
-    //   date: string;
-    // };
-    ascents: { ascentType: AscentType; date: string }[];
+    lastTryDate?: string;
+    lastTickDate?: string;
+    lastTrTickDate?: string;
   };
 };
 
@@ -54,6 +49,8 @@ type TAscentTypesMap = Record<string, AscentType | null>;
 
 type TLogRoutesContext = {
   crag: { id: string; name: string };
+  logDate: TDate;
+  setLogDate: Dispatch<SetStateAction<TDate>>;
   logRoutes: TLogRoute[];
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
   ascentTypesMap: TAscentTypesMap;
@@ -72,6 +69,12 @@ const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
 );
 
 function LogRoutesProvider({ children }: { children: ReactNode }) {
+  const [logDate, setLogDate] = useState<TDate>({
+    day: "dd",
+    month: "mm",
+    year: "llll",
+  });
+
   const [logRoutes, setLogRoutes] = useState(routes);
 
   const [ascentTypesMap, setAscentTypesMap] = useState<TAscentTypesMap>({}); // route.key:ascentType
@@ -119,6 +122,7 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
   for (let i = 0; i < logRoutes.length; i++) {
     const currentRoute = logRoutes[i];
     const currentRouteImpossibleAscentTypes = calculateImpossibleAscentTypes(
+      logDate,
       currentRoute,
       i,
       logRoutes,
@@ -141,6 +145,8 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
     <LogRoutesContext.Provider
       value={{
         crag,
+        logDate,
+        setLogDate,
         logRoutes,
         setLogRoutes,
         ascentTypesMap,
@@ -195,10 +201,8 @@ const routes: TLogRoute[] = [
         starRating: 1,
         date: "12.9.2023",
       },
-      ascents: [
-        { ascentType: AscentType.Allfree, date: "2020-01-02" },
-        { ascentType: AscentType.Flash, date: "2020-01-04" },
-      ],
+      lastTryDate: "2024-06-02",
+      lastTickDate: "2024-06-04",
     },
   },
   {
@@ -208,7 +212,8 @@ const routes: TLogRoute[] = [
     difficulty: 1700,
     defaultGradingSystemId: "french",
     usersHistory: {
-      ascents: [{ ascentType: AscentType.Redpoint, date: "2020-01-03" }],
+      lastTryDate: "2024-06-04",
+      lastTrTickDate: "2024-06-04",
     },
   },
   {
@@ -217,104 +222,63 @@ const routes: TLogRoute[] = [
     name: "Krvavica",
     difficulty: 1350,
     defaultGradingSystemId: "french",
-    usersHistory: { ascents: [] },
+    usersHistory: {},
   },
 ];
 
 // Helpers
 
-const hasBeenTriedBefore = (
-  date: string,
-  ascents: { ascentType: AscentType; date: string }[]
-) => {
-  // assuming that ascents are in order from oldest to newest !
-
-  if (ascents.length == 0) return false; // no ascents, no tries
-
-  // if there is at least one ascent that has a date before the passed date, a route has certanly been tried
-
-  const first = ascents[0];
-  if (dayjs(first.date).isBefore(dayjs(date))) return true;
-
-  return false;
-
-  // TODO: what about duplicated routes??
-};
-
-const hasBeenTickedBefore = (
-  date: string,
-  ascents: { ascentType: AscentType; date: string }[]
-) => {
-  const tickAscents = ascents.filter((a) =>
-    tickAscentTypes.includes(a.ascentType)
-  );
-
-  if (tickAscents.length == 0) return false;
-
-  const firstTick = ascents[0];
-  if (dayjs(firstTick.date).isBefore(dayjs(date))) return true;
-
-  return false;
-};
-
-const hasBeenTrTickedBefore = (
-  date: string,
-  ascents: { ascentType: AscentType; date: string }[]
-) => {
-  const trTickAscents = ascents.filter((a) =>
-    trTickAscentTypes.includes(a.ascentType)
-  );
-
-  if (trTickAscents.length == 0) return false;
-
-  const firstTrTick = ascents[0];
-  if (dayjs(firstTrTick.date).isBefore(dayjs(date))) return true;
-
-  return false;
-};
-
-// TODO: for above tests, we probably only realy need 3 dates: firstTick, firstTrTick, firstTry
-
-// for a single route, get a set of ascent types that are not possible, based on users previous ascents
-// TODO: pass in date
+// For a single route, get a set of ascent types that are not possible, based on users previous ascents
 const calculateImpossibleAscentTypes = (
+  logDate: TDate,
   route: TLogRoute,
   routeIndex: number,
   allLogRoutes: TLogRoute[],
   ascentTypesMap: TAscentTypesMap
 ) => {
-  // have to assume that a date is set. If it is not, then everything is possible since we do not know where the ascent should be inserted
-  // TODO: except multiple routes at once... there, there are still some limitations
-
-  const date = "2020-01-05";
-
   // Start with all possible ascentTypes
   const impossibleAscentTypesForRoute = new Set<AscentType>();
 
-  // Initially remove repeat, because repeat needs at least one tick ascent before it
-  impossibleAscentTypesForRoute.add(AscentType.Repeat);
-  impossibleAscentTypesForRoute.add(AscentType.TRepeat);
+  // If a date is not set, then everything is possible since we do not know where the ascent should be inserted
+  if (logDate.day != "dd" && logDate.month != "mm" && logDate.year != "llll") {
+    // Initially remove repeat, because repeat needs at least one tick ascent before it
+    impossibleAscentTypesForRoute.add(AscentType.Repeat);
+    impossibleAscentTypesForRoute.add(AscentType.TRepeat);
 
-  if (hasBeenTriedBefore(date, route.usersHistory.ascents)) {
-    // If the user has tried this route before, remove onsight and flash
-    impossibleAscentTypesForRoute.add(AscentType.Onsight);
-    impossibleAscentTypesForRoute.add(AscentType.TOnsight);
-    impossibleAscentTypesForRoute.add(AscentType.Flash);
-    impossibleAscentTypesForRoute.add(AscentType.TFlash);
-  }
+    const date = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`); // e.g.: "2020-01-05";
 
-  if (hasBeenTickedBefore(date, route.usersHistory.ascents)) {
-    // If the user has ticked the route, remove redpoint and add repeat
-    impossibleAscentTypesForRoute.add(AscentType.Redpoint);
-    impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
-    impossibleAscentTypesForRoute.delete(AscentType.Repeat);
-    impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
-  }
+    if (
+      route.usersHistory.lastTryDate &&
+      dayjs(route.usersHistory.lastTryDate).isBefore(date)
+    ) {
+      // If the user has tried this route before, remove onsight and flash
+      impossibleAscentTypesForRoute.add(AscentType.Onsight);
+      impossibleAscentTypesForRoute.add(AscentType.TOnsight);
+      impossibleAscentTypesForRoute.add(AscentType.Flash);
+      impossibleAscentTypesForRoute.add(AscentType.TFlash);
+    }
 
-  if (hasBeenTrTickedBefore(date, route.usersHistory.ascents)) {
-    // If the user has ticked on toprope the route, remove toprope redpoint and add toprope repeat
-    impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
-    impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+    // if (hasBeenTickedBefore(date, route.usersHistory.ascents)) {
+    if (
+      route.usersHistory.lastTickDate &&
+      dayjs(route.usersHistory.lastTickDate).isBefore(date)
+    ) {
+      // If the user has ticked the route, remove redpoint and add repeat
+      impossibleAscentTypesForRoute.add(AscentType.Redpoint);
+      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
+      impossibleAscentTypesForRoute.delete(AscentType.Repeat);
+      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+    }
+
+    // if (hasBeenTrTickedBefore(date, route.usersHistory.ascents)) {
+    if (
+      route.usersHistory.lastTrTickDate &&
+      dayjs(route.usersHistory.lastTrTickDate).isBefore(date)
+    ) {
+      // If the user has ticked on toprope the route, remove toprope redpoint and add toprope repeat
+      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
+      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+    }
   }
 
   // Finally go through all instances of the same route, preceeding this route (if any) and consider them as already logged ascents before the current one

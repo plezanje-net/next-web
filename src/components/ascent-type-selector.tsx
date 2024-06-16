@@ -16,6 +16,8 @@ type TAscentTypeSelectorProps = {
   disabledOptions?: Set<AscentType>;
 };
 
+// TODO: add repeat and aid
+
 function AscentTypeSelector({
   value,
   onChange,
