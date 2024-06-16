@@ -11,7 +11,11 @@ import IconCollapse from "../ui/icons/collapse";
 import IconExpand from "../ui/icons/expand";
 import { difficultyToGrade } from "@/utils/grade-helpers";
 import StarRating from "./star-rating";
-import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
+import {
+  TLogRoute,
+  tickAscentTypes,
+  useLogRoutesContext,
+} from "./log-routes-context";
 import { PublishType } from "@/graphql/generated";
 
 type TLogRouteProps = {
@@ -38,27 +42,30 @@ function LogRoute({
     route.defaultGradingSystemId
   );
 
-  const lastVoteGrade = route.usersLastDifficultyVote
+  const lastVoteGrade = route.usersHistory?.lastDifficultyVote
     ? difficultyToGrade(
-        route.usersLastDifficultyVote.difficulty,
+        route.usersHistory.lastDifficultyVote.difficulty,
         route.defaultGradingSystemId
       )
     : null;
 
   const {
-    ascentTypes,
-    setAscentType,
-    difficultyVotes,
-    setDifficultyVote,
-    starRatingVotes,
-    setStarRatingVote,
-    publishTypes,
-    setPublishType,
+    ascentTypesMap,
+    setRouteAscentType,
+    difficultyVotesMap,
+    setRouteDifficultyVote,
+    starRatingVotesMap,
+    setRouteStarRatingVote,
+    publishTypesMap,
+    setRoutePublishType,
+    impossibleAscentTypesMap,
   } = useLogRoutesContext();
-  const ascentType = ascentTypes[route.key] || null;
-  const difficultyVote = difficultyVotes[route.key] || null;
-  const starRatingVote = starRatingVotes[route.key] ?? null;
-  const publishType = publishTypes[route.key] || null;
+  const ascentType = ascentTypesMap[route.key] || null;
+  const difficultyVote = difficultyVotesMap[route.key] || null;
+  const starRatingVote = starRatingVotesMap[route.key] ?? null;
+  const publishType = publishTypesMap[route.key] || null;
+  const impossibleAscentTypesForRoute =
+    impossibleAscentTypesMap[route.key] || null;
 
   return (
     <LogAccordion
@@ -71,7 +78,8 @@ function LogRoute({
         <div className="mt-2">
           <AscentTypeSelector
             value={ascentType}
-            onChange={(at) => setAscentType(route.key, at)}
+            onChange={(at) => setRouteAscentType(route.key, at)}
+            disabledOptions={impossibleAscentTypesForRoute}
           />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
@@ -81,13 +89,14 @@ function LogRoute({
             <GradeSelector
               difficulty={difficultyVote}
               setDifficulty={(dv) => {
-                setDifficultyVote(route.key, dv);
+                setRouteDifficultyVote(route.key, dv);
               }}
               gradingSystemId="french"
+              disabled={!ascentType || !tickAscentTypes.includes(ascentType)}
             />
           </div>
           {lastVoteGrade && (
-            <div className="text-sm mt-1">{`Tvoj glas z dne ${route.usersLastDifficultyVote?.date}: ${lastVoteGrade.name}`}</div>
+            <div className="text-sm mt-1">{`Tvoj glas z dne ${route.usersHistory.lastDifficultyVote?.date}: ${lastVoteGrade.name}`}</div>
           )}
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
@@ -96,7 +105,7 @@ function LogRoute({
             label="Lepota smeri"
             value={`${starRatingVote}`}
             onChange={(srv) => {
-              setStarRatingVote(route.key, +srv);
+              setRouteStarRatingVote(route.key, +srv);
             }}
           >
             <Radio value={"2"}>
@@ -109,12 +118,13 @@ function LogRoute({
               <StarRating rating={0} size="regular" />
             </Radio>
           </RadioGroup>
-          {route.usersLastStarRatingVote && (
+          {route.usersHistory?.lastStarRatingVote && (
             <div className="text-sm mt-1 inline-flex">
-              Tvoj glas z dne {route.usersLastStarRatingVote.date}:&nbsp;
+              Tvoj glas z dne {route.usersHistory.lastStarRatingVote.date}
+              :&nbsp;
               <StarRating
                 size="small"
-                rating={route.usersLastStarRatingVote.starRating}
+                rating={route.usersHistory.lastStarRatingVote.starRating}
               />
             </div>
           )}
@@ -125,7 +135,7 @@ function LogRoute({
             label="Vidnost"
             value={publishType}
             onChange={(pt) => {
-              setPublishType(route.key, pt as PublishType);
+              setRoutePublishType(route.key, pt as PublishType);
             }}
           >
             <Radio value={PublishType.Public}>javno</Radio>

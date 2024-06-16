@@ -7,6 +7,7 @@ import TextField from "../ui/text-field";
 import TextArea from "../ui/text-area";
 import LogRoutes from "./log-routes";
 import { useLogRoutesContext } from "./log-routes-context";
+import createActivityAction from "./server-actions/create-activity-action";
 
 type TLogDialogProps = {
   openTrigger: ReactElement;
@@ -24,45 +25,54 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
 
   const logRoutesContext = useLogRoutesContext();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const {
       crag,
       logRoutes,
-      ascentTypes,
-      starRatingVotes,
-      publishTypes,
-      difficultyVotes,
+      ascentTypesMap,
+      starRatingVotesMap,
+      publishTypesMap,
+      difficultyVotesMap,
     } = logRoutesContext;
 
     const activity = {
       date: `${logDate.year}-${logDate.month}-${logDate.day}`,
-      name: crag.name,
-      type: "crag",
-      notes: notes || null,
       partners: partners || null,
+      notes: notes || null,
+      type: "crag",
       cragId: crag.id,
+      name: crag.name,
     };
 
-    const routes = logRoutes.map((route, index) => ({
-      date: `${logDate.year}-${logDate.month}-${logDate.day}`,
-      partner: partners || null,
-      notes: "", // TODO: add notes to each route
-      routeId: route.id,
-      ascentType: ascentTypes[route.key],
-      votedStarRating: starRatingVotes[route.key],
-      publish: publishTypes[route.key],
-      votedDifficulty: difficultyVotes[route.key],
-      position: index, // position of the route within the same activity of ones log
-    }));
+    const routes = logRoutes.map((route, index) => {
+      console.log(ascentTypesMap[route.key]);
+      console.log(publishTypesMap[route.key]);
+      return {
+        date: `${logDate.year}-${logDate.month}-${logDate.day}`,
+        partner: partners || null,
+        notes: null, // TODO: add notes field to each route
+        routeId: route.id,
+        ascentType: ascentTypesMap[route.key]!.toLowerCase(),
+        votedDifficulty: difficultyVotesMap[route.key] || null,
+        votedStarRating: starRatingVotesMap[route.key] || null,
+        publish: publishTypesMap[route.key].toLowerCase(),
+        position: index, // position of the route within the same activity of ones log
+      };
+    });
 
     console.log("Save: ", activity, routes);
+    await createActivityAction(activity, routes);
+
+    // reset state in context... and also in localstorage??
+
+    // TODO: refresh??
   };
 
   const formValid = () => {
     // A routes log 'form' is valid if all routes have at least ascent types selected and date is selected
-    const { logRoutes, ascentTypes } = logRoutesContext;
+    const { logRoutes, ascentTypesMap } = logRoutesContext;
     return (
-      logRoutes.every((route) => !!ascentTypes[route.key]) &&
+      logRoutes.every((route) => !!ascentTypesMap[route.key]) &&
       logDate.day != "dd" &&
       logDate.month != "mm" &&
       logDate.year != "llll"

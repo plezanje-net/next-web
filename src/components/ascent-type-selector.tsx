@@ -13,9 +13,14 @@ import { useState } from "react";
 type TAscentTypeSelectorProps = {
   value: AscentType | null;
   onChange: (at: AscentType) => void;
+  disabledOptions?: Set<AscentType>;
 };
 
-function AscentTypeSelector({ value, onChange }: TAscentTypeSelectorProps) {
+function AscentTypeSelector({
+  value,
+  onChange,
+  disabledOptions,
+}: TAscentTypeSelectorProps) {
   const [toprope, setToprope] = useState(false);
 
   const ascentTypeOptions = toprope
@@ -145,16 +150,20 @@ function AscentTypeSelector({ value, onChange }: TAscentTypeSelectorProps) {
         onChange={onChange}
         className="flex flex-wrap justify-center gap-2"
       >
-        {ascentTypeOptions.map((option) => (
-          <Radio
-            key={option.value}
-            className="flex cursor-pointer flex-col items-center rounded-lg border border-white px-5 py-3 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 data-[checked]:border-neutral-400 data-[checked]:text-blue-500"
-            value={option.value}
-          >
-            {option.icon}
-            {option.label}
-          </Radio>
-        ))}
+        {ascentTypeOptions.map((option) => {
+          const disabled = disabledOptions && disabledOptions.has(option.value);
+          return (
+            <Radio
+              key={option.value}
+              className={`flex flex-col items-center rounded-lg border border-white px-5 py-3 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 data-[checked]:border-neutral-400 data-[checked]:text-blue-500 ${disabled ? "text-neutral-300" : "cursor-pointer hover:bg-neutral-100"}`}
+              value={option.value}
+              disabled={disabled}
+            >
+              {option.icon}
+              {option.label}
+            </Radio>
+          );
+        })}
       </RadioGroup>
 
       <div className="mt-2">

@@ -1,8 +1,10 @@
+import { PublishType } from "@/graphql/generated";
 import LogRoute from "./log-route";
 import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
 
 function LogRoutes() {
-  const { logRoutes, setLogRoutes } = useLogRoutesContext();
+  const { logRoutes, setLogRoutes, setRoutePublishType } =
+    useLogRoutesContext();
 
   const handleRepositionRoute = (routeIndex: number, direction: number) => {
     if (
@@ -31,6 +33,7 @@ function LogRoutes() {
     routeClone.key = generateUniqueKey(routeClone.id, logRoutes);
     tempRoutes.splice(routeIndex + 1, 0, routeClone);
     setLogRoutes(tempRoutes);
+    setRoutePublishType(routeClone.key, PublishType.Public);
   };
 
   const generateUniqueKey = (id: string, logRoutes: TLogRoute[]) => {

@@ -8,12 +8,14 @@ type TGradeSelectorProps = {
   difficulty: number | null;
   setDifficulty: (v: number | null) => void;
   gradingSystemId: "french" | "yds"; // TODO: ... add others... ? adjust when gradingSystem object generation is merged
+  disabled?: boolean;
 };
 
 function GradeSelector({
   difficulty,
   setDifficulty,
   gradingSystemId,
+  disabled = false,
 }: TGradeSelectorProps) {
   // TODO: we need half grades as well. we need to either update db table, or temporarily add them manualy somehow
   const grades =
@@ -46,7 +48,9 @@ function GradeSelector({
     <div className="inline-flex items-center gap-2">
       <Button
         variant="quaternary"
-        disabled={!difficulty || firstGrade.difficulty == difficulty}
+        disabled={
+          !difficulty || firstGrade.difficulty == difficulty || disabled
+        }
         onClick={handleMinusClick}
       >
         <IconMinus />
@@ -55,6 +59,7 @@ function GradeSelector({
         <Select
           value={difficulty ? `${difficulty}` : ""}
           onChange={(d: string) => setDifficulty(+d)}
+          disabled={disabled}
         >
           {grades.map((grade) => (
             <Option key={grade.id} value={`${grade.difficulty}`}>
@@ -65,7 +70,7 @@ function GradeSelector({
       </div>
       <Button
         variant="quaternary"
-        disabled={!difficulty || lastGrade.difficulty == difficulty}
+        disabled={!difficulty || lastGrade.difficulty == difficulty || disabled}
         onClick={handlePlusClick}
       >
         <IconPlus />
