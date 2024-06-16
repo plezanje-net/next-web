@@ -9,19 +9,21 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import Checkbox from "./ui/checkbox";
 import IconToprope from "./ui/icons/toprope";
 import { useState } from "react";
+import IconAid from "./ui/icons/aid";
+import IconRepeat from "./ui/icons/repeat";
 
 type TAscentTypeSelectorProps = {
   value: AscentType | null;
   onChange: (at: AscentType) => void;
   disabledOptions?: Set<AscentType>;
+  hiddenOptions?: Set<AscentType>;
 };
-
-// TODO: add repeat and aid
 
 function AscentTypeSelector({
   value,
   onChange,
   disabledOptions,
+  hiddenOptions,
 }: TAscentTypeSelectorProps) {
   const [toprope, setToprope] = useState(false);
 
@@ -58,11 +60,31 @@ function AscentTypeSelector({
           ),
         },
         {
+          value: AscentType.TRepeat,
+          label: "ponovitev",
+          icon: (
+            <div className="flex">
+              <IconRepeat size={IconSize.regular} />
+              <IconToprope size={IconSize.regular} />
+            </div>
+          ),
+        },
+        {
           value: AscentType.TAllfree,
           label: "vse prosto",
           icon: (
             <div className="flex">
               <IconAllFree size={IconSize.regular} />
+              <IconToprope size={IconSize.regular} />
+            </div>
+          ),
+        },
+        {
+          value: AscentType.TAid,
+          label: "tehnično",
+          icon: (
+            <div className="flex">
+              <IconAid size={IconSize.regular} />
               <IconToprope size={IconSize.regular} />
             </div>
           ),
@@ -95,9 +117,19 @@ function AscentTypeSelector({
           icon: <IconRedPoint size={IconSize.regular} />,
         },
         {
+          value: AscentType.Repeat,
+          label: "ponovitev",
+          icon: <IconRepeat size={IconSize.regular} />,
+        },
+        {
           value: AscentType.Allfree,
           label: "vse prosto",
           icon: <IconAllFree size={IconSize.regular} />,
+        },
+        {
+          value: AscentType.Aid,
+          label: "tehnično",
+          icon: <IconAid size={IconSize.regular} />,
         },
         {
           value: AscentType.Attempt,
@@ -118,8 +150,14 @@ function AscentTypeSelector({
         case AscentType.Redpoint:
           onChange(AscentType.TRedpoint);
           break;
+        case AscentType.Repeat:
+          onChange(AscentType.TRepeat);
+          break;
         case AscentType.Allfree:
           onChange(AscentType.TAllfree);
+          break;
+        case AscentType.Aid:
+          onChange(AscentType.TAid);
           break;
         case AscentType.Attempt:
           onChange(AscentType.TAttempt);
@@ -135,8 +173,14 @@ function AscentTypeSelector({
         case AscentType.TRedpoint:
           onChange(AscentType.Redpoint);
           break;
+        case AscentType.TRepeat:
+          onChange(AscentType.Repeat);
+          break;
         case AscentType.TAllfree:
           onChange(AscentType.Allfree);
+          break;
+        case AscentType.TAid:
+          onChange(AscentType.Aid);
           break;
         case AscentType.TAttempt:
           onChange(AscentType.Attempt);
@@ -152,20 +196,25 @@ function AscentTypeSelector({
         onChange={onChange}
         className="flex flex-wrap justify-center gap-2"
       >
-        {ascentTypeOptions.map((option) => {
-          const disabled = disabledOptions && disabledOptions.has(option.value);
-          return (
-            <Radio
-              key={option.value}
-              className={`flex flex-col items-center rounded-lg border border-white px-5 py-3 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 data-[checked]:border-neutral-400 data-[checked]:text-blue-500 ${disabled ? "text-neutral-300" : "cursor-pointer hover:bg-neutral-100"}`}
-              value={option.value}
-              disabled={disabled}
-            >
-              {option.icon}
-              {option.label}
-            </Radio>
-          );
-        })}
+        {ascentTypeOptions
+          .filter(
+            (option) => !(hiddenOptions && hiddenOptions.has(option.value))
+          )
+          .map((option) => {
+            const disabled =
+              disabledOptions && disabledOptions.has(option.value);
+            return (
+              <Radio
+                key={option.value}
+                className={`flex flex-col items-center rounded-lg border border-white px-5 py-3 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 data-[checked]:border-neutral-400 data-[checked]:text-blue-500 ${disabled ? "text-neutral-300" : "cursor-pointer hover:bg-neutral-100"}`}
+                value={option.value}
+                disabled={disabled}
+              >
+                {option.icon}
+                {option.label}
+              </Radio>
+            );
+          })}
       </RadioGroup>
 
       <div className="mt-2">

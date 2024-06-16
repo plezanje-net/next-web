@@ -59,13 +59,14 @@ function LogRoute({
     publishTypesMap,
     setRoutePublishType,
     impossibleAscentTypesMap,
+    hiddenAscentTypesMap,
   } = useLogRoutesContext();
   const ascentType = ascentTypesMap[route.key] || null;
   const difficultyVote = difficultyVotesMap[route.key] || null;
   const starRatingVote = starRatingVotesMap[route.key] ?? null;
   const publishType = publishTypesMap[route.key] || null;
-  const impossibleAscentTypesForRoute =
-    impossibleAscentTypesMap[route.key] || null;
+  const impossibleAscentTypesForRoute = impossibleAscentTypesMap[route.key];
+  const hiddenAscentTypesForRoute = hiddenAscentTypesMap[route.key];
 
   return (
     <LogAccordion
@@ -80,6 +81,7 @@ function LogRoute({
             value={ascentType}
             onChange={(at) => setRouteAscentType(route.key, at)}
             disabledOptions={impossibleAscentTypesForRoute}
+            hiddenOptions={hiddenAscentTypesForRoute}
           />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>

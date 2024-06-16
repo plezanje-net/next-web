@@ -62,6 +62,7 @@ type TLogRoutesContext = {
   publishTypesMap: Record<string, PublishType>;
   setRoutePublishType: (key: string, pt: PublishType) => void;
   impossibleAscentTypesMap: Record<string, Set<AscentType>>;
+  hiddenAscentTypesMap: Record<string, Set<AscentType>>;
 };
 
 const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
@@ -117,6 +118,7 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
   };
 
   const impossibleAscentTypesMap: Record<string, Set<AscentType>> = {};
+  const hiddenAscentTypesMap: Record<string, Set<AscentType>> = {};
 
   // Validate ascent types for all routes being logged
   for (let i = 0; i < logRoutes.length; i++) {
@@ -139,6 +141,19 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
     ) {
       setRouteAscentType(currentRoute.key, null);
     }
+
+    // either redpoint or repeat is to be shown, hide the other
+    hiddenAscentTypesMap[currentRoute.key] = new Set();
+    if (currentRouteImpossibleAscentTypes.has(AscentType.Redpoint)) {
+      hiddenAscentTypesMap[currentRoute.key].add(AscentType.Redpoint);
+    } else {
+      hiddenAscentTypesMap[currentRoute.key].add(AscentType.Repeat);
+    }
+    if (currentRouteImpossibleAscentTypes.has(AscentType.TRedpoint)) {
+      hiddenAscentTypesMap[currentRoute.key].add(AscentType.TRedpoint);
+    } else {
+      hiddenAscentTypesMap[currentRoute.key].add(AscentType.TRepeat);
+    }
   }
 
   return (
@@ -158,6 +173,7 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
         publishTypesMap,
         setRoutePublishType,
         impossibleAscentTypesMap,
+        hiddenAscentTypesMap,
       }}
     >
       {children}
