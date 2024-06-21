@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { User } from "@/graphql/generated";
 
 interface Props {
-  cragId: string;
+  cragId?: string;
+  routeId?: string;
   currentUser: User | null | undefined;
 }
 
@@ -18,7 +19,7 @@ enum CommentType {
   WARNING = "warning",
 }
 
-function AddCommentForm({ cragId, currentUser }: Props) {
+function AddCommentForm({ cragId, routeId, currentUser }: Props) {
   const router = useRouter();
 
   const [commentType, setCommentType] = useState<CommentType>(
@@ -52,6 +53,7 @@ function AddCommentForm({ cragId, currentUser }: Props) {
     <div>
       <form action={handleFormAction}>
         <input type="hidden" name="cragId" value={cragId} />
+        <input type="hidden" name="routeId" value={routeId} />
 
         <TextArea
           name="commentContent"

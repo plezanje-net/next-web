@@ -102,7 +102,7 @@ function DifficultyVotes({ route, difficultyVotes }: Props) {
                   <td className="pr-4">
                     {vote.isBase ? "(bazna ocena)" : vote.user?.fullName}
                   </td>
-                  <td className="text-right">{displayDate(vote.created)}</td>
+                  <td>{displayDate(vote.created)}</td>
                 </tr>
               ))}
             </tbody>
