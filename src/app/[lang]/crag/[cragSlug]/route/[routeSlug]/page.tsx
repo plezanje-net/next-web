@@ -13,6 +13,8 @@ import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
 import StarRatingDistribution from "@/components/star-rating-distribution";
 import Comments from "@/components/comments/comments";
+import RouteImage from "./components/route-image";
+import ImageList from "@/components/image-list/image-list";
 
 type Params = {
   cragSlug: string;
@@ -32,17 +34,34 @@ async function RoutePage({ params }: { params: Params }) {
     pageSize: 10,
   });
 
+  const mainImage = route.images[0];
+  // TODO: Move this to a shared location
+  const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
+
   return (
     <>
       <RouteHeader route={route} />
       <RouteToolbar route={route} />
       <div className="mx-auto flex flex-wrap px-4 2xl:container xs:px-8">
-        <RouteSection label="Osnovni podatki" className="xl:w-1/2 xl:pr-3">
+        <RouteSection
+          label="Osnovni podatki"
+          className={`${
+            mainImage ? "md:w-2/3 md:pr-3 lg:w-1/2 xl:w-1/3" : "xl:w-1/2"
+          }   xl:pr-3`}
+        >
           <RouteInfo route={route} />
         </RouteSection>
+        {mainImage && (
+          <RouteImage
+            image={mainImage}
+            className="mt-7 hidden pl-3 md:block md:w-1/3 lg:w-1/2 xl:hidden"
+          />
+        )}
         <RouteSection
           label="Opis"
-          className="lg:w-1/3 lg:pr-3 xl:w-1/2 xl:pl-3 xl:pr-0"
+          className={`${
+            mainImage ? "sm:w-1/2 sm:pr-3" : ""
+          } md:w-full md:pr-0 lg:w-1/3 lg:pr-3 xl:w-1/3 xl:pl-3`}
         >
           {route.description || (
             <span className="flex">
@@ -55,6 +74,13 @@ async function RoutePage({ params }: { params: Params }) {
             </span>
           )}
         </RouteSection>
+
+        {mainImage && (
+          <RouteImage
+            image={mainImage}
+            className="mt-7 sm:w-1/2 sm:pl-3 md:hidden xl:block xl:w-1/3"
+          />
+        )}
         <RouteSection
           label="Javni vzponi"
           className="md:w-1/2 md:pr-3 lg:w-1/3 lg:pl-3 xl:w-1/2"
@@ -93,14 +119,18 @@ async function RoutePage({ params }: { params: Params }) {
           />
         </RouteSection>
         <RouteSection label="Galerija">
-          <span className="flex">
-            <div className="min-w-4">
-              <IconMissing />
-            </div>
-            <span className="ml-2">
-              Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
+          {route.images.length == 0 ? (
+            <span className="flex">
+              <div className="min-w-4">
+                <IconMissing />
+              </div>
+              <span className="ml-2">
+                Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
+              </span>
             </span>
-          </span>
+          ) : (
+            <ImageList images={route.images} baseUrl={imagesBaseUrl} />
+          )}
         </RouteSection>
         <RouteSection label="Komentarji">
           <Comments comments={route.comments} route={route} />
@@ -191,6 +221,18 @@ gql`
         user {
           id
           fullName
+        }
+      }
+      images {
+        id
+        title
+        path
+        extension
+        aspectRatio
+        maxIntrinsicWidth
+        author
+        user {
+          id
         }
       }
       comments {
