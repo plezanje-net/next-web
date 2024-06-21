@@ -3,7 +3,7 @@ import LogRoute from "./log-route";
 import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
 
 function LogRoutes() {
-  const { logRoutes, setLogRoutes, setRoutePublishType } =
+  const { setRoutePublishType, logRoutes, setLogRoutes } =
     useLogRoutesContext();
 
   const handleRepositionRoute = (routeIndex: number, direction: number) => {

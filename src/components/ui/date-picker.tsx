@@ -5,6 +5,7 @@ import {
   useState,
   KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
+  MouseEvent as ReactMouseEvent,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -114,7 +115,9 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
 
   const today = dayjs();
 
-  const handleCalendarButtonClick = () => {
+  const handleCalendarButtonClick = (e: ReactMouseEvent) => {
+    e.stopPropagation();
+
     if (calendarPaneOpened) {
       setCalendarPaneOpened(false);
     } else {
@@ -467,12 +470,27 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
     });
   }, [value]);
 
+  const handleInputFieldClick = () => {
+    if (value.day == "dd") {
+      dayInputRef.current?.focus();
+      return;
+    }
+
+    if (value.month == "mm") {
+      monthInputRef.current?.focus();
+      return;
+    }
+
+    yearInputRef.current?.focus();
+  };
+
   return (
     <Field>
       {label && <Label>{label}</Label>}
       {/* day, month, year 'manual' inputs */}
       <div
         className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""}`}
+        onClick={handleInputFieldClick}
       >
         <div>
           <input
@@ -488,6 +506,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
           .
           <input
@@ -505,6 +524,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
           .
           <input
@@ -522,6 +542,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
         </div>
 

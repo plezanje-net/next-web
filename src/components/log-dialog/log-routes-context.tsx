@@ -1,20 +1,24 @@
-import { AscentType, PublishType } from "@/graphql/generated";
+import { AscentType, Crag, PublishType } from "@/graphql/generated";
 import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import {
   Dispatch,
   ReactNode,
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { TDate } from "../ui/date-picker";
+import tickAscentTypes from "@/utils/constants/tick-ascent-types";
+import trTickAscentTypes from "@/utils/constants/tr-tick-ascent-types";
 
 type TLogRoute = {
   id: string;
   key: string;
   name: string;
-  difficulty: number;
+  difficulty: number | null;
   defaultGradingSystemId: "french" | "uiaa" | "yds"; // TODO:... get type from api ?
   usersHistory: {
     lastDifficultyVote?: {
@@ -25,25 +29,11 @@ type TLogRoute = {
       starRating: number;
       date: string;
     };
-    lastTryDate?: string;
-    lastTickDate?: string;
-    lastTrTickDate?: string;
+    lastTryDate?: string | null;
+    lastTickDate?: string | null;
+    lastTrTickDate?: string | null;
   };
 };
-
-const tickAscentTypes = [
-  AscentType.Onsight,
-  AscentType.Flash,
-  AscentType.Redpoint,
-  AscentType.Repeat,
-];
-
-const trTickAscentTypes = [
-  AscentType.TOnsight,
-  AscentType.TFlash,
-  AscentType.TRedpoint,
-  AscentType.TRepeat,
-];
 
 type TAscentTypesMap = Record<string, AscentType | null>;
 
@@ -51,8 +41,6 @@ type TLogRoutesContext = {
   crag: { id: string; name: string };
   logDate: TDate;
   setLogDate: Dispatch<SetStateAction<TDate>>;
-  logRoutes: TLogRoute[];
-  setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
   ascentTypesMap: TAscentTypesMap;
   setRouteAscentType: (key: string, at: AscentType | null) => void;
   difficultyVotesMap: Record<string, number>;
@@ -63,20 +51,33 @@ type TLogRoutesContext = {
   setRoutePublishType: (key: string, pt: PublishType) => void;
   impossibleAscentTypesMap: Record<string, Set<AscentType>>;
   hiddenAscentTypesMap: Record<string, Set<AscentType>>;
+  logRoutes: TLogRoute[];
+  setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
+  resetAll: () => void;
 };
 
 const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
   undefined
 );
 
-function LogRoutesProvider({ children }: { children: ReactNode }) {
+type TLogRoutesProviderProps = {
+  logRoutes: TLogRoute[];
+  setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
+  crag: Crag;
+  children: ReactNode;
+};
+
+function LogRoutesProvider({
+  logRoutes,
+  setLogRoutes,
+  crag,
+  children,
+}: TLogRoutesProviderProps) {
   const [logDate, setLogDate] = useState<TDate>({
     day: "dd",
     month: "mm",
     year: "llll",
   });
-
-  const [logRoutes, setLogRoutes] = useState(routes);
 
   const [ascentTypesMap, setAscentTypesMap] = useState<TAscentTypesMap>({}); // route.key:ascentType
   const setRouteAscentType = (
@@ -107,12 +108,24 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
     setStarRatingVotesMap((srvs) => ({ ...srvs, [key]: newStarRatingVote }));
   };
 
-  const [publishTypesMap, setPublishTypesMap] = useState(
-    logRoutes.reduce((acc: Record<string, PublishType>, curr) => {
-      acc[curr.key] = PublishType.Public;
-      return acc;
-    }, {})
-  ); // route.key:publishType, with default to public
+  const [publishTypesMap, setPublishTypesMap] = useState<
+    Record<string, PublishType>
+  >({}); // route.key:publishType, with default to public
+
+  // Set default publishType for routes that don't have it set yet
+  useEffect(() => {
+    setPublishTypesMap(
+      logRoutes.reduce((ptMap: Record<string, PublishType>, route) => {
+        if (!publishTypesMap[route.key]) {
+          ptMap[route.key] = PublishType.Public;
+        } else {
+          ptMap[route.key] = publishTypesMap[route.key];
+        }
+        return ptMap;
+      }, {})
+    );
+  }, [logRoutes]);
+
   const setRoutePublishType = (key: string, newPublishType: PublishType) => {
     setPublishTypesMap((pts) => ({ ...pts, [key]: newPublishType }));
   };
@@ -156,14 +169,21 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const resetAll = () => {
+    setLogDate({ day: "dd", month: "mm", year: "llll" });
+    setAscentTypesMap({});
+    setDifficultyVotesMap({});
+    setStarRatingVotesMap({});
+    setPublishTypesMap({});
+    setLogRoutes([]);
+  };
+
   return (
     <LogRoutesContext.Provider
       value={{
         crag,
         logDate,
         setLogDate,
-        logRoutes,
-        setLogRoutes,
         ascentTypesMap,
         setRouteAscentType,
         difficultyVotesMap,
@@ -174,6 +194,9 @@ function LogRoutesProvider({ children }: { children: ReactNode }) {
         setRoutePublishType,
         impossibleAscentTypesMap,
         hiddenAscentTypesMap,
+        logRoutes,
+        setLogRoutes,
+        resetAll,
       }}
     >
       {children}
@@ -194,54 +217,6 @@ function useLogRoutesContext() {
 export { LogRoutesProvider, useLogRoutesContext, tickAscentTypes };
 export type { TLogRoute };
 
-//TODO: Temp dummy. Do we expect to get this from localstorage?
-
-const crag = {
-  id: "c08c95e7-03a1-4a7a-b082-bb4aa941c7e6",
-  name: "Mišja peč",
-};
-
-const routes: TLogRoute[] = [
-  {
-    id: "e6764a1d-1766-41a3-b7b7-4dd27f1eba27",
-    key: "e6764a1d-1766-41a3-b7b7-4dd27f1eba27",
-    name: "Hrenovka",
-    difficulty: 1136,
-    defaultGradingSystemId: "french",
-    usersHistory: {
-      lastDifficultyVote: {
-        difficulty: 1100,
-        date: "1.1.2023",
-      },
-      lastStarRatingVote: {
-        starRating: 1,
-        date: "12.9.2023",
-      },
-      lastTryDate: "2024-06-02",
-      lastTickDate: "2024-06-04",
-    },
-  },
-  {
-    id: "c56dff8b-c3cb-497c-8ecc-301c00c260f5",
-    key: "c56dff8b-c3cb-497c-8ecc-301c00c260f5",
-    name: "Klobasa",
-    difficulty: 1700,
-    defaultGradingSystemId: "french",
-    usersHistory: {
-      lastTryDate: "2024-06-04",
-      lastTrTickDate: "2024-06-04",
-    },
-  },
-  {
-    id: "1f3d1ef5-0328-4630-8392-00a05058eda1",
-    key: "1f3d1ef5-0328-4630-8392-00a05058eda1",
-    name: "Krvavica",
-    difficulty: 1350,
-    defaultGradingSystemId: "french",
-    usersHistory: {},
-  },
-];
-
 // Helpers
 
 // For a single route, get a set of ascent types that are not possible, based on users previous ascents
@@ -261,11 +236,12 @@ const calculateImpossibleAscentTypes = (
     impossibleAscentTypesForRoute.add(AscentType.Repeat);
     impossibleAscentTypesForRoute.add(AscentType.TRepeat);
 
+    dayjs.extend(isSameOrBefore);
     const date = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`); // e.g.: "2020-01-05";
 
     if (
       route.usersHistory.lastTryDate &&
-      dayjs(route.usersHistory.lastTryDate).isBefore(date)
+      dayjs(route.usersHistory.lastTryDate).isSameOrBefore(date)
     ) {
       // If the user has tried this route before, remove onsight and flash
       impossibleAscentTypesForRoute.add(AscentType.Onsight);
@@ -277,7 +253,7 @@ const calculateImpossibleAscentTypes = (
     // if (hasBeenTickedBefore(date, route.usersHistory.ascents)) {
     if (
       route.usersHistory.lastTickDate &&
-      dayjs(route.usersHistory.lastTickDate).isBefore(date)
+      dayjs(route.usersHistory.lastTickDate).isSameOrBefore(date)
     ) {
       // If the user has ticked the route, remove redpoint and add repeat
       impossibleAscentTypesForRoute.add(AscentType.Redpoint);
@@ -289,7 +265,7 @@ const calculateImpossibleAscentTypes = (
     // if (hasBeenTrTickedBefore(date, route.usersHistory.ascents)) {
     if (
       route.usersHistory.lastTrTickDate &&
-      dayjs(route.usersHistory.lastTrTickDate).isBefore(date)
+      dayjs(route.usersHistory.lastTrTickDate).isSameOrBefore(date)
     ) {
       // If the user has ticked on toprope the route, remove toprope redpoint and add toprope repeat
       impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
@@ -329,5 +305,6 @@ const calculateImpossibleAscentTypes = (
       impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
     }
   }
+
   return impossibleAscentTypesForRoute;
 };

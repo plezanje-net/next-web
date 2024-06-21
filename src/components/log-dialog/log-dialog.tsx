@@ -22,11 +22,12 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
   const handleSave = async () => {
     const {
       crag,
-      logRoutes,
       ascentTypesMap,
       starRatingVotesMap,
       publishTypesMap,
       difficultyVotesMap,
+      logRoutes,
+      resetAll,
     } = logRoutesContext;
 
     const activity = {
@@ -38,26 +39,32 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
       name: crag.name,
     };
 
-    const routes = logRoutes.map((route, index) => {
-      console.log(ascentTypesMap[route.key]);
-      console.log(publishTypesMap[route.key]);
-      return {
+    const routes = [];
+    for (let i = 0; i < logRoutes.length; i++) {
+      const route = logRoutes[i];
+
+      const ascentType = ascentTypesMap[route.key];
+      const publishType = publishTypesMap[route.key];
+      if (!ascentType || !publishType) {
+        throw Error("Log form invalid.");
+      }
+
+      routes.push({
         date: `${logDate.year}-${logDate.month}-${logDate.day}`,
         partner: partners || null,
         notes: null, // TODO: add notes field to each route
         routeId: route.id,
-        ascentType: ascentTypesMap[route.key]!.toLowerCase(),
+        ascentType: ascentType.toLowerCase(),
         votedDifficulty: difficultyVotesMap[route.key] || null,
         votedStarRating: starRatingVotesMap[route.key] || null,
-        publish: publishTypesMap[route.key].toLowerCase(),
-        position: index, // position of the route within the same activity of ones log
-      };
-    });
+        publish: publishType.toLowerCase(),
+        position: i, // position of the route within the same activity of ones log
+      });
+    }
 
-    console.log("Save: ", activity, routes);
     await createActivityAction(activity, routes);
 
-    // reset state in context... and also in localstorage??
+    resetAll();
 
     // TODO: refresh??
   };
@@ -65,6 +72,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
   const formValid = () => {
     // A routes log 'form' is valid if all routes have at least ascent types selected and date is selected
     const { logRoutes, ascentTypesMap } = logRoutesContext;
+
     return (
       logRoutes.every((route) => !!ascentTypesMap[route.key]) &&
       logDate.day != "dd" &&
@@ -84,7 +92,9 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         callback: handleSave,
         disabled: !formValid(),
       }}
-      cancel={{ label: "Prekliči" }}
+      cancel={{
+        label: "Prekliči",
+      }}
     >
       <>
         <div className="flex gap-4 flex-col xs:flex-row">

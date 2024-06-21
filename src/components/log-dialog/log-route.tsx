@@ -144,6 +144,15 @@ function LogRoute({
             <Radio value={PublishType.Club}>samo za prijatelje</Radio>
             <Radio value={PublishType.Private}>samo zame</Radio>
           </RadioGroup>
+          {publishType != PublishType.Public && (
+            <div className="text-sm mt-1 flex">
+              <div className="flex-grow w-0">
+                Tvoja predloga o težavnosti in lepoti smeri bosta v vsakem
+                primeru javno objavljena (če ju podaš) ne glede na izbrano
+                vidnost zabeleženega vzpona.
+              </div>
+            </div>
+          )}
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
         {/* Actions */}
