@@ -1,4 +1,10 @@
-import { cloneElement, ReactElement, useRef, useState } from "react";
+import {
+  cloneElement,
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useState,
+} from "react";
 import {
   Description,
   Dialog as DialogHUI,
@@ -22,13 +28,20 @@ export enum DialogTitleSize {
 interface DialogProps {
   children: ReactElement;
   title: string;
-  openTrigger: ReactElement;
-  confirm?: { label: string; callback?: () => void; disabled?: boolean };
+  openTrigger?: ReactElement;
+  confirm?: {
+    label: string;
+    callback?: () => void;
+    disabled?: boolean;
+    dontCloseOnConfirm?: boolean;
+  };
   cancel?: { label: string; callback?: () => void };
   dialogSize?: DialogSize;
   closeWithEscOrPressOutside?: boolean;
   closeCallback?: () => void;
   titleSize?: DialogTitleSize;
+  isOpen?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 function Dialog({
@@ -41,32 +54,49 @@ function Dialog({
   closeWithEscOrPressOutside = true,
   closeCallback,
   titleSize = DialogTitleSize.regular,
+  isOpen,
+  setIsOpen,
 }: DialogProps) {
-  let [isOpen, setIsOpen] = useState(false);
+  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
+  const isControlledIsOpen = isOpen !== undefined;
+  const isOpenValue = isControlledIsOpen ? isOpen : uncontrolledIsOpen;
+
+  const handleSetIsOpen = (v: boolean) => {
+    if (!isControlledIsOpen) {
+      setUncontrolledIsOpen(v);
+    }
+
+    if (setIsOpen) {
+      setIsOpen(v);
+    }
+  };
 
   const handleConfirm = () => {
-    setIsOpen(false);
+    if (!confirm?.dontCloseOnConfirm) {
+      handleSetIsOpen(false);
+    }
     confirm?.callback && confirm.callback();
   };
 
   const handleCancel = () => {
-    setIsOpen(false);
+    handleSetIsOpen(false);
     cancel?.callback && cancel.callback();
   };
 
   const handleClose = () => {
     if (closeWithEscOrPressOutside) {
-      setIsOpen(false);
+      handleSetIsOpen(false);
       closeCallback && closeCallback();
     }
   };
 
   return (
     <>
-      {cloneElement(openTrigger, {
-        onClick: () => setIsOpen(true),
-      })}
-      <DialogHUI open={isOpen} onClose={handleClose}>
+      {openTrigger &&
+        cloneElement(openTrigger, {
+          onClick: () => handleSetIsOpen(true),
+        })}
+      <DialogHUI open={isOpenValue} onClose={handleClose}>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div
           className="fixed inset-0 bg-neutral-900 bg-opacity-25"
@@ -74,9 +104,9 @@ function Dialog({
         />
 
         {/* Full-screen container to center the panel */}
-        <div className="fixed inset-0 overflow-y-auto p-10">
+        <div className="fixed inset-0 overflow-y-auto p-8 xs:p-10">
           <DialogPanel
-            className={`mx-auto rounded-lg bg-white shadow-lg px-4 xs:px-8 py-8 ${dialogSize}`}
+            className={`mx-auto rounded-lg bg-white shadow-lg px-8 py-8 ${dialogSize}`}
           >
             <DialogTitle as={titleSize}>{title}</DialogTitle>
 
