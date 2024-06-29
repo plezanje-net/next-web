@@ -89,6 +89,19 @@ const pluralizeNoun = (
         default:
           return `${count} smeri/problemov`;
       }
+
+    case "izbrana smer":
+      switch (count % 100) {
+        case 1:
+          return `${count} izbrana smer`;
+        case 2:
+          return `${count} izbrani smeri`;
+        case 3:
+        case 4:
+          return `${count} izbrane smeri`;
+        default:
+          return `${count} izbranih smeri`;
+      }
   }
 };
 

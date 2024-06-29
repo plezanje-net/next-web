@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
-import { RadioGroup as RadioGroupHUI } from "@headlessui/react";
+import {
+  Description,
+  Label,
+  RadioGroup as RadioGroupHUI,
+  Radio as RadioHUI,
+} from "@headlessui/react";
 
 interface RadioProps {
   value: string;
@@ -9,17 +14,17 @@ interface RadioProps {
 
 function Radio({ value, disabled, children }: RadioProps) {
   return (
-    <RadioGroupHUI.Option
+    <RadioHUI
       value={value}
       as="label"
       className="group inline-flex items-center outline-none"
       disabled={disabled}
     >
-      {({ active, checked, disabled }) => (
+      {({ focus, checked, disabled }) => (
         <>
           <div
             aria-hidden="true"
-            className={`rounded-lg ${active ? "ring ring-blue-100" : ""}`}
+            className={`rounded-lg ${focus ? "ring ring-blue-100" : ""}`}
           >
             {/* radio circle (outer) */}
             <div
@@ -60,7 +65,7 @@ function Radio({ value, disabled, children }: RadioProps) {
           </span>
         </>
       )}
-    </RadioGroupHUI.Option>
+    </RadioHUI>
   );
 }
 
@@ -97,7 +102,7 @@ function RadioGroup({
       onChange={onChange}
       disabled={disabled}
     >
-      <RadioGroupHUI.Label>{label}</RadioGroupHUI.Label>
+      <Label>{label}</Label>
 
       <div
         className={`flex items-start
@@ -108,9 +113,7 @@ function RadioGroup({
       </div>
 
       {description && (
-        <RadioGroupHUI.Description className="mt-1 text-sm">
-          {description}
-        </RadioGroupHUI.Description>
+        <Description className="mt-1 text-sm">{description}</Description>
       )}
 
       {error && <div className="mt-1 text-sm text-red-500">{error}</div>}

@@ -12,10 +12,10 @@
     "gengradsys": "node ./src/scripts/generate-grading-systems.mjs"
   },
   "dependencies": {
+    "@headlessui/react": "^2.0.3",
+    "@headlessui/tailwindcss": "^0.2.0",
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/modifiers": "^7.0.0",
-    "@headlessui/react": "^1.7.15",
-    "@headlessui/tailwindcss": "^0.1.2",
     "@react-stately/slider": "^3.2.4",
     "@react-stately/toggle": "^3.4.3",
     "@tailwindcss/container-queries": "^0.1.1",
@@ -23,7 +23,7 @@
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
     "@urql/next": "^1.0.0-beta.2",
-    "dayjs": "^1.11.6",
+    "dayjs": "^1.11.11",
     "eslint": "^8.42.0",
     "eslint-config-next": "^14.0.3",
     "focus-trap-react": "^10.2.3",
@@ -47,12 +47,12 @@
     "@graphql-codegen/typescript-operations": "^2.5.7",
     "@graphql-eslint/eslint-plugin": "^3.13.1",
     "@next/bundle-analyzer": "^13.4.4",
-    "@types/leaflet": "^1.9.3",
+    "@types/leaflet": "^1.9.12",
     "@types/react-leaflet": "^3.0.0",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.4.19",
     "cross-env": "^7.0.3",
-    "postcss": "^8.4.19",
-    "prettier-plugin-tailwindcss": "^0.1.13",
+    "postcss": "^8.4.38",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.2.4"
   }
 }

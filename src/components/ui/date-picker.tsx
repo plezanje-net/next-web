@@ -3,9 +3,9 @@ import {
   useEffect,
   useRef,
   useState,
-  KeyboardEvent as RKeyboardEvent,
-  useCallback,
+  KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
+  MouseEvent as ReactMouseEvent,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -15,7 +15,14 @@ import dayjs from "dayjs";
 import IconExpand from "./icons/expand";
 import IconCheck from "./icons/check";
 import FocusTrap from "focus-trap-react";
-import { Listbox } from "@headlessui/react";
+import {
+  Field,
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 
 type TDate = {
   day: number | "dd";
@@ -56,7 +63,7 @@ const monthNamesFull = [
 // Some local helpers //
 
 /**
- * given a current year it generates an array of 21 years wher given year is as close to the middle as possible (min year is 1 and max is 9999).
+ * Given a current year it generates an array of 21 years wher given year is as close to the middle as possible (min year is 1 and max is 9999).
  */
 const getYearsRange = (year: number) => {
   let shift = year - 10;
@@ -71,7 +78,7 @@ const getYearsRange = (year: number) => {
 };
 
 /**
- * Given a month and a year returns number of days in the month. Assumes max possible nr. of days where month and/or year is not known
+ * Given a month and a year returns number of days in the month. Assumes max possible nr. of days in case month and/or year is not known
  */
 const getDayMax = (month: number | "mm", year: number | "llll") => {
   let date;
@@ -90,9 +97,10 @@ const getDayMax = (month: number | "mm", year: number | "llll") => {
 type TDatePickerProps = {
   value: TDate;
   onChange: (value: TDate) => void;
+  label?: string;
 };
 
-function DatePicker({ value, onChange }: TDatePickerProps) {
+function DatePicker({ value, onChange, label }: TDatePickerProps) {
   const [calendarPaneOpened, setCalendarPaneOpened] = useState(false);
 
   const calendarPaneRef = useRef<HTMLDivElement>(null);
@@ -107,21 +115,19 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
 
   const today = dayjs();
 
-  const handleCalendarButtonClick = () => {
+  const handleCalendarButtonClick = (e: ReactMouseEvent) => {
+    e.stopPropagation();
+
     if (calendarPaneOpened) {
-      closeCalendarPane();
+      setCalendarPaneOpened(false);
     } else {
+      setShownMonthAndYear({
+        month: value.month == "mm" ? today.month() + 1 : value.month,
+        year: value.year == "llll" ? today.year() : value.year,
+      });
       setCalendarPaneOpened(true);
     }
   };
-
-  const closeCalendarPane = useCallback(() => {
-    setCalendarPaneOpened(false);
-    setShownMonthAndYear({
-      month: value.month == "mm" ? today.month() + 1 : value.month,
-      year: value.year == "llll" ? today.year() : value.year,
-    });
-  }, [value, today]);
 
   // close calendar pane if clicked outside
   useEffect(() => {
@@ -154,7 +160,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
         calendarPaneRef.current &&
         !calendarPaneRef.current.contains(e.target as Node)
       ) {
-        closeCalendarPane();
+        setCalendarPaneOpened(false);
       }
     };
     document.addEventListener("mousedown", clickOutsideListener);
@@ -162,13 +168,13 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     return () => {
       document.removeEventListener("mousedown", clickOutsideListener);
     };
-  }, [closeCalendarPane]);
+  }, []);
 
   // close calendar pane if esc pressed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (calendarPaneOpened && e.key === "Escape") {
-        closeCalendarPane();
+        setCalendarPaneOpened(false);
       }
     };
 
@@ -176,7 +182,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [calendarPaneOpened, closeCalendarPane]);
+  }, [calendarPaneOpened]);
 
   const handleDayClick = (date: TDate) => {
     onChange(date);
@@ -224,7 +230,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     });
   };
 
-  const handleDayKeyDown = (e: RKeyboardEvent) => {
+  const handleDayKeyDown = (e: ReactKeyboardEvent) => {
     let newDay = value.day;
     const dayMax = getDayMax(value.month, value.year);
 
@@ -290,7 +296,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     }
   };
 
-  const handleMonthKeyDown = (e: RKeyboardEvent) => {
+  const handleMonthKeyDown = (e: ReactKeyboardEvent) => {
     let newMonth = value.month;
 
     switch (e.key) {
@@ -373,7 +379,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     }
   };
 
-  const handleYearKeyDown = (e: RKeyboardEvent) => {
+  const handleYearKeyDown = (e: ReactKeyboardEvent) => {
     let newYear = value.year;
 
     switch (e.key) {
@@ -464,11 +470,27 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
     });
   }, [value]);
 
+  const handleInputFieldClick = () => {
+    if (value.day == "dd") {
+      dayInputRef.current?.focus();
+      return;
+    }
+
+    if (value.month == "mm") {
+      monthInputRef.current?.focus();
+      return;
+    }
+
+    yearInputRef.current?.focus();
+  };
+
   return (
-    <div>
+    <Field>
+      {label && <Label>{label}</Label>}
       {/* day, month, year 'manual' inputs */}
       <div
-        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 `}
+        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""}`}
+        onClick={handleInputFieldClick}
       >
         <div>
           <input
@@ -484,6 +506,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
           .
           <input
@@ -501,6 +524,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
           .
           <input
@@ -518,6 +542,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
             onFocus={(e) => {
               e.target.selectionEnd = 0;
             }}
+            onClick={(e) => e.stopPropagation()}
           />
         </div>
 
@@ -624,7 +649,7 @@ function DatePicker({ value, onChange }: TDatePickerProps) {
           </div>
         </FocusTrap>
       )}
-    </div>
+    </Field>
   );
 }
 
@@ -639,7 +664,7 @@ function Year({ value, onChange, month }: TYearProps) {
     <Listbox value={value} onChange={onChange}>
       {({ open }) => (
         <>
-          <Listbox.Button as={Fragment}>
+          <ListboxButton as={Fragment}>
             {open ? (
               <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white pl-12 pr-4">
                 <div className="text-neutral-400">
@@ -656,9 +681,9 @@ function Year({ value, onChange, month }: TYearProps) {
                 <span className="px-1">{value}</span>
               </Button>
             )}
-          </Listbox.Button>
+          </ListboxButton>
 
-          <Listbox.Options className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
             <div className="max-h-80 overflow-auto ">
               {getYearsRange(value).map((year, index) => (
                 <MontOrYearOption key={index} value={year}>
@@ -666,7 +691,7 @@ function Year({ value, onChange, month }: TYearProps) {
                 </MontOrYearOption>
               ))}
             </div>
-          </Listbox.Options>
+          </ListboxOptions>
         </>
       )}
     </Listbox>
@@ -684,7 +709,7 @@ function Month({ value, onChange, year }: TMonthProps) {
     <Listbox value={value} onChange={onChange}>
       {({ open }) => (
         <>
-          <Listbox.Button as={Fragment}>
+          <ListboxButton as={Fragment}>
             {open ? (
               <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white px-12">
                 <div className="flex gap-2">
@@ -698,9 +723,9 @@ function Month({ value, onChange, year }: TMonthProps) {
                 <span className="px-1">{monthNamesShort[value - 1]}</span>
               </Button>
             )}
-          </Listbox.Button>
+          </ListboxButton>
 
-          <Listbox.Options className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
             <div className="max-h-80 overflow-auto">
               {monthNamesFull.map((monthName, index) => (
                 <MontOrYearOption key={index} value={index + 1}>
@@ -708,7 +733,7 @@ function Month({ value, onChange, year }: TMonthProps) {
                 </MontOrYearOption>
               ))}
             </div>
-          </Listbox.Options>
+          </ListboxOptions>
         </>
       )}
     </Listbox>
@@ -727,7 +752,7 @@ function MontOrYearOption({
   disabled,
 }: MontOrYearOptionProps) {
   return (
-    <Listbox.Option
+    <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
@@ -739,7 +764,7 @@ function MontOrYearOption({
       <div className="invisible text-neutral-900 ui-selected:visible">
         <IconCheck />
       </div>
-    </Listbox.Option>
+    </ListboxOption>
   );
 }
 
@@ -779,10 +804,10 @@ function MonthDays({
       selectedDate.day == d
         ? "selected"
         : today.year() == year &&
-          today.month() + 1 == month &&
-          today.date() == d
-        ? "today"
-        : "default";
+            today.month() + 1 == month &&
+            today.date() == d
+          ? "today"
+          : "default";
 
     // add day to week
     days[week].push({ date: d, state: dayState });
