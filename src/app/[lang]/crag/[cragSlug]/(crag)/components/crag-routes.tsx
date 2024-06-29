@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ActivityRoute,
   Crag,
@@ -19,6 +20,7 @@ import {
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { TLogRoute } from "@/components/log-dialog/log-routes-context";
 import LogRoutesPopover from "./log-routes-popover";
+import dayjs from "dayjs";
 
 interface Props {
   crag: Crag;
@@ -296,16 +298,18 @@ function CragRoutes({ crag, mySummary }: Props) {
             difficulty: r.difficulty || null,
             defaultGradingSystemId: "french" as "french" | "uiaa" | "yds", // TODO: type
             usersHistory: {
-              //     // TODO:
-              //     // lastDifficultyVote: {
-              //     //   difficulty: 1;
-              //     //   date:'';
-              //     // },
-              //     // TODO
-              //     // lastStarRatingVote: {
-              //     //   starRating: 1;
-              //     //   date: '';
-              //     // },
+              ...(r.difficultyVotes.length > 0 && {
+                lastDifficultyVote: {
+                  difficulty: r.difficultyVotes[0].difficulty,
+                  date: dayjs(r.difficultyVotes[0].updated).format("D.M.YYYY"),
+                },
+              }),
+              ...(r.starRatingVotes.length > 0 && {
+                lastStarRatingVote: {
+                  starRating: r.starRatingVotes[0].stars,
+                  date: dayjs(r.starRatingVotes[0].updated).format("D.M.YYYY"),
+                },
+              }),
               firstTryDate: r.firstTry?.items[0]?.date || null,
               firstTickDate: r.firstTick?.items[0]?.date || null,
               firstTrTickDate: r.firstTrTick?.items[0]?.date || null,

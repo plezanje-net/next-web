@@ -61,6 +61,14 @@ async function getCragBySlug(crag: string): Promise<Crag> {
       }
     : null;
 
+  const difficultyVotesInput = !!loggedInUser
+    ? { userId: loggedInUser.id }
+    : null;
+
+  const starRatingVotesInput = !!loggedInUser
+    ? { userId: loggedInUser.id }
+    : null;
+
   const {
     data: { cragBySlug },
   } = await urqlServer().query(CragSectorsDocument, {
@@ -68,6 +76,8 @@ async function getCragBySlug(crag: string): Promise<Crag> {
     firstTryArInput,
     firstTickArInput,
     firstTrTickArInput,
+    difficultyVotesInput,
+    starRatingVotesInput,
     loggedIn: !!loggedInUser,
   });
 
@@ -109,6 +119,8 @@ gql`
     $firstTickArInput: FindActivityRoutesInput
     $firstTryArInput: FindActivityRoutesInput
     $firstTrTickArInput: FindActivityRoutesInput
+    $difficultyVotesInput: FindDifficultyVotesInput
+    $starRatingVotesInput: FindStarRatingVotesInput
     $loggedIn: Boolean!
   ) {
     cragBySlug(slug: $crag) {
@@ -178,6 +190,18 @@ gql`
               id
               date
             }
+          }
+
+          difficultyVotes(input: $difficultyVotesInput)
+            @include(if: $loggedIn) {
+            difficulty
+            updated
+          }
+
+          starRatingVotes(input: $starRatingVotesInput)
+            @include(if: $loggedIn) {
+            stars
+            updated
           }
         }
       }
