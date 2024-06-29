@@ -3,16 +3,16 @@
 import { gql } from "urql/core";
 import urqlServer from "@/graphql/urql-server";
 import {
-  CreateActivityDocument,
   CreateActivityInput,
   CreateActivityRouteInput,
+  DryRunCreateActivityDocument,
 } from "@/graphql/generated";
 
-async function createActivityAction(
+async function dryRunCreateActivityAction(
   activity: CreateActivityInput,
   routes: CreateActivityRouteInput[]
 ) {
-  const result = await urqlServer().mutation(CreateActivityDocument, {
+  const result = await urqlServer().query(DryRunCreateActivityDocument, {
     input: activity,
     routes: routes,
   });
@@ -22,18 +22,30 @@ async function createActivityAction(
     throw new Error("Pri shranjevanju vzponov je prišlo do napake.");
   }
 
-  return true;
+  return result.data;
 }
 
-export default createActivityAction;
+export default dryRunCreateActivityAction;
 
 gql`
-  mutation CreateActivity(
+  query DryRunCreateActivity(
     $input: CreateActivityInput!
     $routes: [CreateActivityRouteInput!]!
   ) {
-    createActivity(input: $input, routes: $routes) {
-      id
+    dryRunCreateActivity(input: $input, routes: $routes) {
+      before {
+        date
+        ascentType
+        routeId
+        route {
+          name
+        }
+      }
+      after {
+        date
+        ascentType
+        routeId
+      }
     }
   }
 `;

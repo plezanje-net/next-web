@@ -20,43 +20,57 @@ type Props = {
 };
 
 async function getCragBySlug(crag: string): Promise<Crag> {
-  const lastTryArInput = {
-    pageSize: 1,
-    pageNumber: 1,
-    orderBy: {
-      field: "date",
-      direction: "DESC",
-    },
-  };
+  const { user: loggedInUser } = await authStatus();
+  console.log(loggedInUser);
 
-  const lastTickArInput = {
-    ascentType: tickAscentTypes.map((at) => at.toLowerCase()),
-    pageSize: 1,
-    pageNumber: 1,
-    orderBy: {
-      field: "date",
-      direction: "DESC",
-    },
-  };
+  const firstTryArInput = !!loggedInUser
+    ? {
+        pageSize: 1,
+        pageNumber: 1,
+        orderBy: {
+          field: "date",
+          direction: "ASC",
+        },
+        userId: loggedInUser.id,
+      }
+    : null;
 
-  const lastTrTickArInput = {
-    ascentType: trTickAscentTypes.map((at) => at.toLowerCase()),
-    pageSize: 1,
-    pageNumber: 1,
-    orderBy: {
-      field: "date",
-      direction: "DESC",
-    },
-  };
+  const firstTickArInput = !!loggedInUser
+    ? {
+        ascentType: tickAscentTypes.map((at) => at.toLowerCase()),
+        pageSize: 1,
+        pageNumber: 1,
+        orderBy: {
+          field: "date",
+          direction: "ASC",
+        },
+        userId: loggedInUser.id,
+      }
+    : null;
+
+  const firstTrTickArInput = !!loggedInUser
+    ? {
+        ascentType: trTickAscentTypes.map((at) => at.toLowerCase()),
+        pageSize: 1,
+        pageNumber: 1,
+        orderBy: {
+          field: "date",
+          direction: "ASC",
+        },
+        userId: loggedInUser.id,
+      }
+    : null;
 
   const {
     data: { cragBySlug },
   } = await urqlServer().query(CragSectorsDocument, {
     crag,
-    lastTryArInput,
-    lastTickArInput,
-    lastTrTickArInput,
+    firstTryArInput,
+    firstTickArInput,
+    firstTrTickArInput,
+    loggedIn: !!loggedInUser,
   });
+
   return cragBySlug;
 }
 
@@ -92,9 +106,10 @@ async function CragPage({ params: { cragSlug } }: Props) {
 gql`
   query CragSectors(
     $crag: String!
-    $lastTryArInput: FindActivityRoutesInput
-    $lastTickArInput: FindActivityRoutesInput
-    $lastTrTickArInput: FindActivityRoutesInput
+    $firstTickArInput: FindActivityRoutesInput
+    $firstTryArInput: FindActivityRoutesInput
+    $firstTrTickArInput: FindActivityRoutesInput
+    $loggedIn: Boolean!
   ) {
     cragBySlug(slug: $crag) {
       id
@@ -141,34 +156,27 @@ gql`
             name
           }
 
-          lastTry: activityRoutes(input: $lastTryArInput) {
+          firstTry: activityRoutes(input: $firstTryArInput)
+            @include(if: $loggedIn) {
             items {
               id
-              ascentType
               date
-            }
-            meta {
-              itemCount
             }
           }
-          lastTick: activityRoutes(input: $lastTickArInput) {
+
+          firstTick: activityRoutes(input: $firstTickArInput)
+            @include(if: $loggedIn) {
             items {
               id
-              ascentType
               date
-            }
-            meta {
-              itemCount
             }
           }
-          lastTrTick: activityRoutes(input: $lastTrTickArInput) {
+
+          firstTrTick: activityRoutes(input: $firstTrTickArInput)
+            @include(if: $loggedIn) {
             items {
               id
-              ascentType
               date
-            }
-            meta {
-              itemCount
             }
           }
         }

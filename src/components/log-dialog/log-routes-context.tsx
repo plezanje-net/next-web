@@ -25,13 +25,15 @@ type TLogRoute = {
       difficulty: number;
       date: string;
     };
+
     lastStarRatingVote?: {
       starRating: number;
       date: string;
     };
-    lastTryDate?: string | null;
-    lastTickDate?: string | null;
-    lastTrTickDate?: string | null;
+
+    firstTickDate?: string | null;
+    firstTryDate?: string | null;
+    firstTrTickDate?: string | null;
   };
 };
 
@@ -114,12 +116,12 @@ function LogRoutesProvider({
 
   // Set default publishType for routes that don't have it set yet
   useEffect(() => {
-    setPublishTypesMap(
+    setPublishTypesMap((prevPTMap) =>
       logRoutes.reduce((ptMap: Record<string, PublishType>, route) => {
-        if (!publishTypesMap[route.key]) {
+        if (!prevPTMap[route.key]) {
           ptMap[route.key] = PublishType.Public;
         } else {
-          ptMap[route.key] = publishTypesMap[route.key];
+          ptMap[route.key] = prevPTMap[route.key];
         }
         return ptMap;
       }, {})
@@ -237,11 +239,11 @@ const calculateImpossibleAscentTypes = (
     impossibleAscentTypesForRoute.add(AscentType.TRepeat);
 
     dayjs.extend(isSameOrBefore);
-    const date = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`); // e.g.: "2020-01-05";
+    const logDateJs = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`);
 
     if (
-      route.usersHistory.lastTryDate &&
-      dayjs(route.usersHistory.lastTryDate).isSameOrBefore(date)
+      route.usersHistory.firstTryDate &&
+      dayjs(route.usersHistory.firstTryDate).isSameOrBefore(logDateJs)
     ) {
       // If the user has tried this route before, remove onsight and flash
       impossibleAscentTypesForRoute.add(AscentType.Onsight);
@@ -250,30 +252,28 @@ const calculateImpossibleAscentTypes = (
       impossibleAscentTypesForRoute.add(AscentType.TFlash);
     }
 
-    // if (hasBeenTickedBefore(date, route.usersHistory.ascents)) {
     if (
-      route.usersHistory.lastTickDate &&
-      dayjs(route.usersHistory.lastTickDate).isSameOrBefore(date)
+      route.usersHistory.firstTickDate &&
+      dayjs(route.usersHistory.firstTickDate).isSameOrBefore(logDateJs)
     ) {
-      // If the user has ticked the route, remove redpoint and add repeat
+      // If the user has ticked the route before, remove redpoint and add repeat
       impossibleAscentTypesForRoute.add(AscentType.Redpoint);
       impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
       impossibleAscentTypesForRoute.delete(AscentType.Repeat);
       impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
     }
 
-    // if (hasBeenTrTickedBefore(date, route.usersHistory.ascents)) {
     if (
-      route.usersHistory.lastTrTickDate &&
-      dayjs(route.usersHistory.lastTrTickDate).isSameOrBefore(date)
+      route.usersHistory.firstTrTickDate &&
+      dayjs(route.usersHistory.firstTrTickDate).isSameOrBefore(logDateJs)
     ) {
-      // If the user has ticked on toprope the route, remove toprope redpoint and add toprope repeat
+      // If the user has toprope ticked the route before, remove toprope redpoint and add toprope repeat
       impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
       impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
     }
   }
 
-  // Finally go through all instances of the same route, preceeding this route (if any) and consider them as already logged ascents before the current one
+  // Finally go through all instances of the same route preceeding this route (if any) and consider them as already logged ascents before the current one
   for (let i = 0; i < routeIndex; i++) {
     const prevRoute = allLogRoutes[i];
     if (prevRoute.id != route.id) {

@@ -278,9 +278,9 @@ function CragRoutes({ crag, mySummary }: Props) {
   const setCheckedRoute = (routeId: string, checked: boolean) => {
     const allRoutes: Array<
       Route & {
-        lastTry?: Maybe<PaginatedActivityRoutes>;
-        lastTick?: Maybe<PaginatedActivityRoutes>;
-        lastTrTick?: Maybe<PaginatedActivityRoutes>;
+        firstTry?: Maybe<PaginatedActivityRoutes>;
+        firstTick?: Maybe<PaginatedActivityRoutes>;
+        firstTrTick?: Maybe<PaginatedActivityRoutes>;
       }
     > = crag.sectors.flatMap((sector) => sector.routes);
 
@@ -290,10 +290,11 @@ function CragRoutes({ crag, mySummary }: Props) {
         ...allRoutes
           .filter((r) => r.id == routeId)
           .map((r) => ({
-            ...r,
+            id: r.id,
             key: r.id,
-            defaultGradingSystemId: "french" as "french" | "uiaa" | "yds", // TODO: type
+            name: r.name,
             difficulty: r.difficulty || null,
+            defaultGradingSystemId: "french" as "french" | "uiaa" | "yds", // TODO: type
             usersHistory: {
               //     // TODO:
               //     // lastDifficultyVote: {
@@ -305,9 +306,9 @@ function CragRoutes({ crag, mySummary }: Props) {
               //     //   starRating: 1;
               //     //   date: '';
               //     // },
-              lastTryDate: r.lastTry?.items[0]?.date || null,
-              lastTickDate: r.lastTick?.items[0]?.date || null,
-              lastTrTickDate: r.lastTrTick?.items[0]?.date || null,
+              firstTryDate: r.firstTry?.items[0]?.date || null,
+              firstTickDate: r.firstTick?.items[0]?.date || null,
+              firstTrTickDate: r.firstTrTick?.items[0]?.date || null,
             },
           })),
       ]);

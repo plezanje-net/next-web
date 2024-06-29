@@ -49,8 +49,8 @@ const routes: TLogRoute[] = [
         starRating: 1,
         date: "12.9.2023",
       },
-      lastTryDate: "2024-06-02",
-      lastTickDate: "2024-06-04",
+      firstTryDate: "2024-06-02",
+      firstTickDate: "2024-06-04",
     },
   },
   {
@@ -60,8 +60,8 @@ const routes: TLogRoute[] = [
     difficulty: 1700,
     defaultGradingSystemId: "french",
     usersHistory: {
-      lastTryDate: "2024-06-04",
-      lastTrTickDate: "2024-06-04",
+      firstTryDate: "2024-06-04",
+      firstTrTickDate: "2024-06-04",
     },
   },
   {
