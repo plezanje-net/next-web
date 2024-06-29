@@ -3,8 +3,18 @@ import LogRoute from "./log-route";
 import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
 
 function LogRoutes() {
-  const { setRoutePublishType, logRoutes, setLogRoutes } =
-    useLogRoutesContext();
+  const {
+    ascentTypesMap,
+    setRouteAscentType,
+    difficultyVotesMap,
+    setRouteDifficultyVote,
+    starRatingVotesMap,
+    setRouteStarRatingVote,
+    publishTypesMap,
+    setRoutePublishType,
+    logRoutes,
+    setLogRoutes,
+  } = useLogRoutesContext();
 
   const handleRepositionRoute = (routeIndex: number, direction: number) => {
     if (
@@ -33,7 +43,24 @@ function LogRoutes() {
     routeClone.key = generateUniqueKey(routeClone.id, logRoutes);
     tempRoutes.splice(routeIndex + 1, 0, routeClone);
     setLogRoutes(tempRoutes);
-    setRoutePublishType(routeClone.key, PublishType.Public);
+
+    // set all log params of clone to match original
+    setRouteAscentType(
+      routeClone.key,
+      ascentTypesMap[logRoutes[routeIndex].key]
+    );
+    setRouteDifficultyVote(
+      routeClone.key,
+      difficultyVotesMap[logRoutes[routeIndex].key]
+    );
+    setRouteStarRatingVote(
+      routeClone.key,
+      starRatingVotesMap[logRoutes[routeIndex].key]
+    );
+    setRoutePublishType(
+      routeClone.key,
+      publishTypesMap[logRoutes[routeIndex].key]
+    );
   };
 
   const generateUniqueKey = (id: string, logRoutes: TLogRoute[]) => {
