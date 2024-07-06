@@ -1,20 +1,8 @@
-import { PublishType } from "@/graphql/generated";
 import LogRoute from "./log-route";
 import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
 
 function LogRoutes() {
-  const {
-    ascentTypesMap,
-    setRouteAscentType,
-    difficultyVotesMap,
-    setRouteDifficultyVote,
-    starRatingVotesMap,
-    setRouteStarRatingVote,
-    publishTypesMap,
-    setRoutePublishType,
-    logRoutes,
-    setLogRoutes,
-  } = useLogRoutesContext();
+  const { logRoutes, setLogRoutes } = useLogRoutesContext();
 
   const handleRepositionRoute = (routeIndex: number, direction: number) => {
     if (
@@ -24,43 +12,37 @@ function LogRoutes() {
       return;
     }
 
-    const tempRoutes = [...logRoutes];
-    tempRoutes[routeIndex] = logRoutes[routeIndex + direction];
-    tempRoutes[routeIndex + direction] = logRoutes[routeIndex];
-    setLogRoutes(tempRoutes);
+    setLogRoutes((lrs) => {
+      const newLogRoutes = [...lrs];
+      newLogRoutes[routeIndex] = lrs[routeIndex + direction];
+      newLogRoutes[routeIndex + direction] = lrs[routeIndex];
+      return newLogRoutes;
+    });
   };
 
   const handleDeleteRoute = (routeIndex: number) => {
-    // setLogRoutes(logRoutes.toSpliced(routeIndex, 1)); // es2023
-    const tempRoutes = [...logRoutes];
-    tempRoutes.splice(routeIndex, 1);
-    setLogRoutes(tempRoutes);
+    setLogRoutes((lrs) => {
+      const newLogRoutes = [...lrs];
+      newLogRoutes.splice(routeIndex, 1);
+      return newLogRoutes;
+    });
   };
 
   const handleDuplicateRoute = (routeIndex: number) => {
-    const tempRoutes = [...logRoutes];
-    const routeClone = { ...logRoutes[routeIndex] };
-    routeClone.key = generateUniqueKey(routeClone.id, logRoutes);
-    tempRoutes.splice(routeIndex + 1, 0, routeClone);
-    setLogRoutes(tempRoutes);
+    setLogRoutes((lrs) => {
+      const newLogRoutes = [...lrs];
+      const routeClone = {
+        ...lrs[routeIndex],
+        logFormData: {
+          ...lrs[routeIndex].logFormData,
+        },
+      };
 
-    // set all log params of clone to match original
-    setRouteAscentType(
-      routeClone.key,
-      ascentTypesMap[logRoutes[routeIndex].key]
-    );
-    setRouteDifficultyVote(
-      routeClone.key,
-      difficultyVotesMap[logRoutes[routeIndex].key]
-    );
-    setRouteStarRatingVote(
-      routeClone.key,
-      starRatingVotesMap[logRoutes[routeIndex].key]
-    );
-    setRoutePublishType(
-      routeClone.key,
-      publishTypesMap[logRoutes[routeIndex].key]
-    );
+      routeClone.key = generateUniqueKey(routeClone.id, lrs);
+      newLogRoutes.splice(routeIndex + 1, 0, routeClone);
+
+      return newLogRoutes;
+    });
   };
 
   const generateUniqueKey = (id: string, logRoutes: TLogRoute[]) => {

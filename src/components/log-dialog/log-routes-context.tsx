@@ -6,6 +6,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -35,26 +36,26 @@ type TLogRoute = {
     firstTryDate?: string | null;
     firstTrTickDate?: string | null;
   };
+  logFormData: {
+    ascentType?: AscentType | null;
+    difficultyVote?: number | null;
+    starRatingVote?: number | null;
+    publishType: PublishType;
+    impossibleAscentTypes: Set<AscentType>;
+    hiddenAscentTypes: Set<AscentType>;
+  };
 };
-
-type TAscentTypesMap = Record<string, AscentType | null>;
 
 type TLogRoutesContext = {
   crag: { id: string; name: string };
   logDate: TDate;
   setLogDate: Dispatch<SetStateAction<TDate>>;
-  ascentTypesMap: TAscentTypesMap;
-  setRouteAscentType: (key: string, at: AscentType | null) => void;
-  difficultyVotesMap: Record<string, number>;
-  setRouteDifficultyVote: (key: string, dv: number | null) => void;
-  starRatingVotesMap: Record<string, number>;
-  setRouteStarRatingVote: (key: string, srv: number | null) => void;
-  publishTypesMap: Record<string, PublishType>;
-  setRoutePublishType: (key: string, pt: PublishType) => void;
-  impossibleAscentTypesMap: Record<string, Set<AscentType>>;
-  hiddenAscentTypesMap: Record<string, Set<AscentType>>;
   logRoutes: TLogRoute[];
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
+  setRouteAscentType: (id: string, key: string, at: AscentType | null) => void;
+  setRouteDifficultyVote: (id: string, key: string, dv: number | null) => void;
+  setRouteStarRatingVote: (id: string, srv: number | null) => void;
+  setRoutePublishType: (key: string, pt: PublishType) => void;
   resetAll: () => void;
 };
 
@@ -81,102 +82,196 @@ function LogRoutesProvider({
     year: "llll",
   });
 
-  const [ascentTypesMap, setAscentTypesMap] = useState<TAscentTypesMap>({}); // route.key:ascentType
-  const setRouteAscentType = (
-    key: string,
-    newAscentType: AscentType | null
-  ) => {
-    setAscentTypesMap((ats) => ({ ...ats, [key]: newAscentType }));
+  const setRouteDifficultyVote = useCallback(
+    (id: string, key: string, newDifficultyVote: number | null) => {
+      setLogRoutes((logRoutes) => {
+        // all clones should be synced (where ascent types allow it)
+        const newLogRoutes = [...logRoutes];
 
-    // if ascent type has been changed, we might also need to reset the difficulty vote
-    if (!newAscentType || !tickAscentTypes.includes(newAscentType)) {
-      setRouteDifficultyVote(key, null);
-    }
-  };
+        for (let i = 0; i < logRoutes.length; i++) {
+          if (logRoutes[i].id != id) {
+            continue; // not this route or it's clone...
+          }
 
-  const [difficultyVotesMap, setDifficultyVotesMap] = useState({}); // route.key:diffVote
-  const setRouteDifficultyVote = (
-    key: string,
-    newDifficultyVote: number | null
-  ) => {
-    setDifficultyVotesMap((dvs) => ({ ...dvs, [key]: newDifficultyVote }));
-  };
+          const routeToUpdate = logRoutes[i];
 
-  const [starRatingVotesMap, setStarRatingVotesMap] = useState({}); // route.key:starRatingVote
+          if (routeToUpdate.key != key) {
+            // it is a clone of this route
+
+            const at = routeToUpdate.logFormData?.ascentType || null;
+            if (at == null || !tickAscentTypes.includes(at)) {
+              continue; // skip clones that are not ticks
+            }
+
+            if (newDifficultyVote == null) {
+              continue; // skip clones if unsetting a dv
+            }
+          }
+
+          routeToUpdate.logFormData = {
+            ...routeToUpdate.logFormData,
+            difficultyVote: newDifficultyVote,
+          };
+          newLogRoutes[i] = routeToUpdate;
+        }
+
+        return newLogRoutes;
+      });
+    },
+    [setLogRoutes]
+  );
+
+  const setRouteAscentType = useCallback(
+    (id: string, key: string, newAscentType: AscentType | null) => {
+      setLogRoutes((logRoutes) => {
+        const routeToUpdateIdx = logRoutes.findIndex((r) => r.key == key);
+        const newLogRoutes = [...logRoutes];
+        newLogRoutes[routeToUpdateIdx].logFormData.ascentType = newAscentType;
+        return newLogRoutes;
+      });
+
+      // if ascent type has been changed to a nontick reset the difficulty vote
+      if (!newAscentType || !tickAscentTypes.includes(newAscentType)) {
+        setRouteDifficultyVote(id, key, null);
+      }
+    },
+    [setLogRoutes, setRouteDifficultyVote]
+  );
+
   const setRouteStarRatingVote = (
-    key: string,
+    id: string,
     newStarRatingVote: number | null
   ) => {
-    setStarRatingVotesMap((srvs) => ({ ...srvs, [key]: newStarRatingVote }));
-  };
+    setLogRoutes((logRoutes) => {
+      const newLogRoutes = [...logRoutes];
 
-  const [publishTypesMap, setPublishTypesMap] = useState<
-    Record<string, PublishType>
-  >({}); // route.key:publishType, with default to public
-
-  // Set default publishType for routes that don't have it set yet
-  useEffect(() => {
-    setPublishTypesMap((prevPTMap) =>
-      logRoutes.reduce((ptMap: Record<string, PublishType>, route) => {
-        if (!prevPTMap[route.key]) {
-          ptMap[route.key] = PublishType.Public;
-        } else {
-          ptMap[route.key] = prevPTMap[route.key];
+      for (let i = 0; i < logRoutes.length; i++) {
+        if (logRoutes[i].id != id) {
+          continue; // not this route or it's clone...
         }
-        return ptMap;
-      }, {})
-    );
-  }, [logRoutes]);
+
+        const routeToUpdate = logRoutes[i];
+
+        routeToUpdate.logFormData = {
+          ...routeToUpdate.logFormData,
+          starRatingVote: newStarRatingVote,
+        };
+        newLogRoutes[i] = routeToUpdate;
+      }
+
+      return newLogRoutes;
+    });
+  };
 
   const setRoutePublishType = (key: string, newPublishType: PublishType) => {
-    setPublishTypesMap((pts) => ({ ...pts, [key]: newPublishType }));
+    setLogRoutes((logRoutes) => {
+      const routeToUpdateIdx = logRoutes.findIndex((r) => r.key == key);
+      const newLogRoutes = [...logRoutes];
+      newLogRoutes[routeToUpdateIdx].logFormData.publishType = newPublishType;
+      return newLogRoutes;
+    });
   };
 
-  const impossibleAscentTypesMap: Record<string, Set<AscentType>> = {};
-  const hiddenAscentTypesMap: Record<string, Set<AscentType>> = {};
+  const setRouteImpossibleAscentTypes = useCallback(
+    (i: number, newImpossibleAscentTypes: Set<AscentType>) => {
+      setLogRoutes((lrs) => {
+        const newRoutes = [...lrs];
+        const routeToUpdate = lrs[i];
+        newRoutes[i] = {
+          ...routeToUpdate,
+          logFormData: {
+            ...routeToUpdate.logFormData,
+            impossibleAscentTypes: newImpossibleAscentTypes,
+          },
+        };
+        return newRoutes;
+      });
+    },
+    [setLogRoutes]
+  );
 
-  // Validate ascent types for all routes being logged
-  for (let i = 0; i < logRoutes.length; i++) {
-    const currentRoute = logRoutes[i];
-    const currentRouteImpossibleAscentTypes = calculateImpossibleAscentTypes(
-      logDate,
-      currentRoute,
-      i,
-      logRoutes,
-      ascentTypesMap
-    );
-    impossibleAscentTypesMap[currentRoute.key] =
-      currentRouteImpossibleAscentTypes;
+  const setRouteHiddenAscentTypes = useCallback(
+    (i: number, newHiddenAscentTypes: Set<AscentType>) => {
+      setLogRoutes((lrs) => {
+        const newRoutes = [...lrs];
+        const routeToUpdate = lrs[i];
+        newRoutes[i] = {
+          ...routeToUpdate,
+          logFormData: {
+            ...routeToUpdate.logFormData,
+            hiddenAscentTypes: newHiddenAscentTypes,
+          },
+        };
 
-    // if the current route's ascent type is impossible, unset it
-    const currentRotueAscentType = ascentTypesMap[currentRoute.key];
-    if (
-      currentRotueAscentType &&
-      currentRouteImpossibleAscentTypes.has(currentRotueAscentType)
-    ) {
-      setRouteAscentType(currentRoute.key, null);
-    }
+        return newRoutes;
+      });
+    },
+    [setLogRoutes]
+  );
 
-    // either redpoint or repeat is to be shown, hide the other
-    hiddenAscentTypesMap[currentRoute.key] = new Set();
-    if (currentRouteImpossibleAscentTypes.has(AscentType.Redpoint)) {
-      hiddenAscentTypesMap[currentRoute.key].add(AscentType.Redpoint);
-    } else {
-      hiddenAscentTypesMap[currentRoute.key].add(AscentType.Repeat);
+  useEffect(() => {
+    // Validate ascent types for all routes being logged
+    for (let i = 0; i < logRoutes.length; i++) {
+      const currentRoute = logRoutes[i];
+      const currentRouteImpossibleAscentTypes = calculateImpossibleAscentTypes(
+        logDate,
+        logRoutes,
+        i
+      );
+
+      // update only if they changed
+      if (
+        !isEqualSets(
+          currentRouteImpossibleAscentTypes,
+          currentRoute.logFormData.impossibleAscentTypes
+        )
+      ) {
+        setRouteImpossibleAscentTypes(i, currentRouteImpossibleAscentTypes);
+      }
+
+      // if the current route's ascent type is impossible, unset it
+      // const currentRotueAscentType = ascentTypesMap[currentRoute.key];
+      const currentRotueAscentType = currentRoute.logFormData.ascentType;
+      if (
+        currentRotueAscentType &&
+        currentRouteImpossibleAscentTypes.has(currentRotueAscentType)
+      ) {
+        setRouteAscentType(currentRoute.id, currentRoute.key, null);
+      }
+
+      // either redpoint or repeat is to be shown, hide the other
+      const currentRouteHiddenAscentTypes = new Set<AscentType>();
+      if (currentRouteImpossibleAscentTypes.has(AscentType.Redpoint)) {
+        currentRouteHiddenAscentTypes.add(AscentType.Redpoint);
+      } else {
+        currentRouteHiddenAscentTypes.add(AscentType.Repeat);
+      }
+      if (currentRouteImpossibleAscentTypes.has(AscentType.TRedpoint)) {
+        currentRouteHiddenAscentTypes.add(AscentType.TRedpoint);
+      } else {
+        currentRouteHiddenAscentTypes.add(AscentType.TRepeat);
+      }
+
+      // update only if they changed
+      if (
+        !isEqualSets(
+          currentRouteHiddenAscentTypes,
+          currentRoute.logFormData.hiddenAscentTypes
+        )
+      ) {
+        setRouteHiddenAscentTypes(i, currentRouteHiddenAscentTypes);
+      }
     }
-    if (currentRouteImpossibleAscentTypes.has(AscentType.TRedpoint)) {
-      hiddenAscentTypesMap[currentRoute.key].add(AscentType.TRedpoint);
-    } else {
-      hiddenAscentTypesMap[currentRoute.key].add(AscentType.TRepeat);
-    }
-  }
+  }, [
+    logDate,
+    setRouteAscentType,
+    setRouteImpossibleAscentTypes,
+    setRouteHiddenAscentTypes,
+    logRoutes,
+  ]);
 
   const resetAll = () => {
     setLogDate({ day: "dd", month: "mm", year: "llll" });
-    setAscentTypesMap({});
-    setDifficultyVotesMap({});
-    setStarRatingVotesMap({});
-    setPublishTypesMap({});
     setLogRoutes([]);
   };
 
@@ -186,18 +281,12 @@ function LogRoutesProvider({
         crag,
         logDate,
         setLogDate,
-        ascentTypesMap,
-        setRouteAscentType,
-        difficultyVotesMap,
-        setRouteDifficultyVote,
-        starRatingVotesMap,
-        setRouteStarRatingVote,
-        publishTypesMap,
-        setRoutePublishType,
-        impossibleAscentTypesMap,
-        hiddenAscentTypesMap,
         logRoutes,
         setLogRoutes,
+        setRouteAscentType,
+        setRouteDifficultyVote,
+        setRouteStarRatingVote,
+        setRoutePublishType,
         resetAll,
       }}
     >
@@ -224,19 +313,20 @@ export type { TLogRoute };
 // For a single route, get a set of ascent types that are not possible, based on users previous ascents
 const calculateImpossibleAscentTypes = (
   logDate: TDate,
-  route: TLogRoute,
-  routeIndex: number,
   allLogRoutes: TLogRoute[],
-  ascentTypesMap: TAscentTypesMap
+  routeIndex: number
+  // ascentTypesMap: TAscentTypesMap
 ) => {
+  const route = allLogRoutes[routeIndex];
+
   // Start with all possible ascentTypes
-  const impossibleAscentTypesForRoute = new Set<AscentType>();
+  const impossibleAscentTypes = new Set<AscentType>();
 
   // If a date is not set, then everything is possible since we do not know where the ascent should be inserted
   if (logDate.day != "dd" && logDate.month != "mm" && logDate.year != "llll") {
     // Initially remove repeat, because repeat needs at least one tick ascent before it
-    impossibleAscentTypesForRoute.add(AscentType.Repeat);
-    impossibleAscentTypesForRoute.add(AscentType.TRepeat);
+    impossibleAscentTypes.add(AscentType.Repeat);
+    impossibleAscentTypes.add(AscentType.TRepeat);
 
     dayjs.extend(isSameOrBefore);
     const logDateJs = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`);
@@ -246,10 +336,10 @@ const calculateImpossibleAscentTypes = (
       dayjs(route.usersHistory.firstTryDate).isSameOrBefore(logDateJs)
     ) {
       // If the user has tried this route before, remove onsight and flash
-      impossibleAscentTypesForRoute.add(AscentType.Onsight);
-      impossibleAscentTypesForRoute.add(AscentType.TOnsight);
-      impossibleAscentTypesForRoute.add(AscentType.Flash);
-      impossibleAscentTypesForRoute.add(AscentType.TFlash);
+      impossibleAscentTypes.add(AscentType.Onsight);
+      impossibleAscentTypes.add(AscentType.TOnsight);
+      impossibleAscentTypes.add(AscentType.Flash);
+      impossibleAscentTypes.add(AscentType.TFlash);
     }
 
     if (
@@ -257,10 +347,10 @@ const calculateImpossibleAscentTypes = (
       dayjs(route.usersHistory.firstTickDate).isSameOrBefore(logDateJs)
     ) {
       // If the user has ticked the route before, remove redpoint and add repeat
-      impossibleAscentTypesForRoute.add(AscentType.Redpoint);
-      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
-      impossibleAscentTypesForRoute.delete(AscentType.Repeat);
-      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+      impossibleAscentTypes.add(AscentType.Redpoint);
+      impossibleAscentTypes.add(AscentType.TRedpoint);
+      impossibleAscentTypes.delete(AscentType.Repeat);
+      impossibleAscentTypes.delete(AscentType.TRepeat);
     }
 
     if (
@@ -268,8 +358,8 @@ const calculateImpossibleAscentTypes = (
       dayjs(route.usersHistory.firstTrTickDate).isSameOrBefore(logDateJs)
     ) {
       // If the user has toprope ticked the route before, remove toprope redpoint and add toprope repeat
-      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
-      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+      impossibleAscentTypes.add(AscentType.TRedpoint);
+      impossibleAscentTypes.delete(AscentType.TRepeat);
     }
   }
 
@@ -280,20 +370,21 @@ const calculateImpossibleAscentTypes = (
       continue;
     }
 
-    const prevRouteAscentType = ascentTypesMap[prevRoute.key];
+    // const prevRouteAscentType = ascentTypesMap[prevRoute.key];
+    const prevRouteAscentType = prevRoute.logFormData.ascentType;
 
     // Remove onsight and flash right away, because any log preceeding this one is a try
-    impossibleAscentTypesForRoute.add(AscentType.Onsight);
-    impossibleAscentTypesForRoute.add(AscentType.TOnsight);
-    impossibleAscentTypesForRoute.add(AscentType.Flash);
-    impossibleAscentTypesForRoute.add(AscentType.TFlash);
+    impossibleAscentTypes.add(AscentType.Onsight);
+    impossibleAscentTypes.add(AscentType.TOnsight);
+    impossibleAscentTypes.add(AscentType.Flash);
+    impossibleAscentTypes.add(AscentType.TFlash);
 
     // Add repeat and remove redpoint if there is a tick log preceeding this one
     if (prevRouteAscentType && tickAscentTypes.includes(prevRouteAscentType)) {
-      impossibleAscentTypesForRoute.delete(AscentType.Repeat);
-      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
-      impossibleAscentTypesForRoute.add(AscentType.Redpoint);
-      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
+      impossibleAscentTypes.delete(AscentType.Repeat);
+      impossibleAscentTypes.delete(AscentType.TRepeat);
+      impossibleAscentTypes.add(AscentType.Redpoint);
+      impossibleAscentTypes.add(AscentType.TRedpoint);
     }
 
     // If there is a toprope tick log preceeding this one then toprope redpoint is not possible anymore, and toprope repeat becomes possible
@@ -301,10 +392,18 @@ const calculateImpossibleAscentTypes = (
       prevRouteAscentType &&
       trTickAscentTypes.includes(prevRouteAscentType)
     ) {
-      impossibleAscentTypesForRoute.add(AscentType.TRedpoint);
-      impossibleAscentTypesForRoute.delete(AscentType.TRepeat);
+      impossibleAscentTypes.add(AscentType.TRedpoint);
+      impossibleAscentTypes.delete(AscentType.TRepeat);
     }
   }
 
-  return impossibleAscentTypesForRoute;
+  return impossibleAscentTypes;
 };
+
+// Compare two sets
+function isEqualSets(a: Set<any>, b: Set<any>) {
+  if (a === b) return true;
+  if (a.size !== b.size) return false;
+  for (const value of Array.from(a)) if (!b.has(value)) return false;
+  return true;
+}

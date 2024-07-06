@@ -50,23 +50,18 @@ function LogRoute({
     : null;
 
   const {
-    ascentTypesMap,
     setRouteAscentType,
-    difficultyVotesMap,
     setRouteDifficultyVote,
-    starRatingVotesMap,
     setRouteStarRatingVote,
-    publishTypesMap,
     setRoutePublishType,
-    impossibleAscentTypesMap,
-    hiddenAscentTypesMap,
   } = useLogRoutesContext();
-  const ascentType = ascentTypesMap[route.key] || null;
-  const difficultyVote = difficultyVotesMap[route.key] || null;
-  const starRatingVote = starRatingVotesMap[route.key] ?? null;
-  const publishType = publishTypesMap[route.key] || null;
-  const impossibleAscentTypesForRoute = impossibleAscentTypesMap[route.key];
-  const hiddenAscentTypesForRoute = hiddenAscentTypesMap[route.key];
+
+  const ascentType = route.logFormData.ascentType || null;
+  const difficultyVote = route.logFormData.difficultyVote || null;
+  const starRatingVote = route.logFormData.starRatingVote ?? null;
+  const publishType = route.logFormData.publishType;
+  const impossibleAscentTypes = route.logFormData.impossibleAscentTypes;
+  const hiddenAscentTypes = route.logFormData.hiddenAscentTypes;
 
   return (
     <LogAccordion
@@ -79,9 +74,9 @@ function LogRoute({
         <div className="mt-2">
           <AscentTypeSelector
             value={ascentType}
-            onChange={(at) => setRouteAscentType(route.key, at)}
-            disabledOptions={impossibleAscentTypesForRoute}
-            hiddenOptions={hiddenAscentTypesForRoute}
+            onChange={(at) => setRouteAscentType(route.id, route.key, at)}
+            disabledOptions={impossibleAscentTypes}
+            hiddenOptions={hiddenAscentTypes}
           />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
@@ -91,7 +86,7 @@ function LogRoute({
             <GradeSelector
               difficulty={difficultyVote}
               setDifficulty={(dv) => {
-                setRouteDifficultyVote(route.key, dv);
+                setRouteDifficultyVote(route.id, route.key, dv);
               }}
               gradingSystemId="french"
               disabled={!ascentType || !tickAscentTypes.includes(ascentType)}
@@ -107,7 +102,7 @@ function LogRoute({
             label="Lepota smeri"
             value={`${starRatingVote}`}
             onChange={(srv) => {
-              setRouteStarRatingVote(route.key, +srv);
+              setRouteStarRatingVote(route.id, +srv);
             }}
           >
             <Radio value={"2"}>
@@ -144,7 +139,8 @@ function LogRoute({
             <Radio value={PublishType.Club}>samo za prijatelje</Radio>
             <Radio value={PublishType.Private}>samo zame</Radio>
           </RadioGroup>
-          {publishType != PublishType.Public && (
+
+          {publishType !== PublishType.Public && (
             <div className="text-sm mt-1 flex">
               <div className="flex-grow w-0">
                 Tvoja predloga o težavnosti in lepoti smeri bosta v vsakem

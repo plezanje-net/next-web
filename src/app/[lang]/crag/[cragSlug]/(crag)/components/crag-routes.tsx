@@ -2,9 +2,11 @@
 
 import {
   ActivityRoute,
+  AscentType,
   Crag,
   Maybe,
   PaginatedActivityRoutes,
+  PublishType,
   Route,
   Sector,
 } from "@/graphql/generated";
@@ -313,6 +315,11 @@ function CragRoutes({ crag, mySummary }: Props) {
               firstTryDate: r.firstTry?.items[0]?.date || null,
               firstTickDate: r.firstTick?.items[0]?.date || null,
               firstTrTickDate: r.firstTrTick?.items[0]?.date || null,
+            },
+            logFormData: {
+              publishType: PublishType.Public,
+              impossibleAscentTypes: new Set<AscentType>(),
+              hiddenAscentTypes: new Set<AscentType>(),
             },
           })),
       ]);

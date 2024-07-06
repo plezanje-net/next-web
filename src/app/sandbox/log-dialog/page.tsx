@@ -7,7 +7,7 @@ import {
 import LogDialog from "@/components/log-dialog/log-dialog";
 import Button from "@/components/ui/button";
 import { useState } from "react";
-import { Crag } from "@/graphql/generated";
+import { AscentType, Crag, PublishType } from "@/graphql/generated";
 
 function LogDialogPage() {
   const [logRoutes, setLogRoutes] = useState(routes);
@@ -52,6 +52,11 @@ const routes: TLogRoute[] = [
       firstTryDate: "2024-06-02",
       firstTickDate: "2024-06-04",
     },
+    logFormData: {
+      publishType: PublishType.Public,
+      impossibleAscentTypes: new Set<AscentType>(),
+      hiddenAscentTypes: new Set<AscentType>(),
+    },
   },
   {
     id: "c56dff8b-c3cb-497c-8ecc-301c00c260f5",
@@ -63,6 +68,11 @@ const routes: TLogRoute[] = [
       firstTryDate: "2024-06-04",
       firstTrTickDate: "2024-06-04",
     },
+    logFormData: {
+      publishType: PublishType.Public,
+      impossibleAscentTypes: new Set<AscentType>(),
+      hiddenAscentTypes: new Set<AscentType>(),
+    },
   },
   {
     id: "1f3d1ef5-0328-4630-8392-00a05058eda1",
@@ -71,5 +81,10 @@ const routes: TLogRoute[] = [
     difficulty: 1350,
     defaultGradingSystemId: "french",
     usersHistory: {},
+    logFormData: {
+      publishType: PublishType.Public,
+      impossibleAscentTypes: new Set<AscentType>(),
+      hiddenAscentTypes: new Set<AscentType>(),
+    },
   },
 ];

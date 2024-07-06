@@ -27,24 +27,22 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
   const [partners, setPartners] = useState("");
   const [notes, setNotes] = useState("");
 
-  const {
-    logDate,
-    setLogDate,
-    ascentTypesMap,
-    crag,
-    starRatingVotesMap,
-    publishTypesMap,
-    difficultyVotesMap,
-    logRoutes,
-    resetAll,
-  } = useLogRoutesContext();
+  const { logDate, setLogDate, crag, logRoutes, resetAll } =
+    useLogRoutesContext();
 
   const router = useRouter();
 
   const formValid = () => {
-    // A routes log 'form' is valid if all routes have at least ascent types selected and date is selected
+    /* A routes log 'form' is valid if:
+          - log date is set,
+          - all routes have ascent type set,
+          - all routes have publish type set
+    */
     return (
-      logRoutes.every((route) => !!ascentTypesMap[route.key]) &&
+      logRoutes.every(
+        (route) =>
+          !!route.logFormData.ascentType && !!route.logFormData.publishType
+      ) &&
       logDate.day != "dd" &&
       logDate.month != "mm" &&
       logDate.year != "llll"
@@ -65,8 +63,8 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
     for (let i = 0; i < logRoutes.length; i++) {
       const route = logRoutes[i];
 
-      const ascentType = ascentTypesMap[route.key];
-      const publishType = publishTypesMap[route.key];
+      const ascentType = route.logFormData.ascentType;
+      const publishType = route.logFormData.publishType;
       if (!ascentType || !publishType) {
         throw Error("Log form invalid.");
       }
@@ -77,8 +75,8 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         notes: null, // TODO: add notes field to each route
         routeId: route.id,
         ascentType: ascentType.toLowerCase(),
-        votedDifficulty: difficultyVotesMap[route.key] || null,
-        votedStarRating: starRatingVotesMap[route.key] || null,
+        votedDifficulty: route.logFormData.difficultyVote,
+        votedStarRating: route.logFormData.starRatingVote,
         publish: publishType.toLowerCase(),
         position: i, // position of the route within the same activity of ones log
       });
