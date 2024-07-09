@@ -98,9 +98,15 @@ type TDatePickerProps = {
   value: TDate;
   onChange: (value: TDate) => void;
   label?: string;
+  disabled?: boolean;
 };
 
-function DatePicker({ value, onChange, label }: TDatePickerProps) {
+function DatePicker({
+  value,
+  onChange,
+  label,
+  disabled = false,
+}: TDatePickerProps) {
   const [calendarPaneOpened, setCalendarPaneOpened] = useState(false);
 
   const calendarPaneRef = useRef<HTMLDivElement>(null);
@@ -489,7 +495,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
       {label && <Label>{label}</Label>}
       {/* day, month, year 'manual' inputs */}
       <div
-        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border border-neutral-400 py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""}`}
+        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""} ${disabled ? "border-neutral-300 bg-neutral-100" : "border-neutral-400 bg-white"}`}
         onClick={handleInputFieldClick}
       >
         <div>
@@ -497,8 +503,10 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
             ref={dayInputRef}
             type="text"
             onKeyDown={handleDayKeyDown}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 ${
-              value.day == "dd" ? "text-neutral-400 focus:text-neutral-900" : ""
+            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+              value.day == "dd" || disabled
+                ? "text-neutral-400 focus:text-neutral-900"
+                : ""
             }`}
             style={{ width: `${dayInputWidth}px` }}
             value={value.day}
@@ -507,14 +515,15 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
               e.target.selectionEnd = 0;
             }}
             onClick={(e) => e.stopPropagation()}
+            disabled={disabled}
           />
-          .
+          <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
           <input
             ref={monthInputRef}
             type="text"
             onKeyDown={handleMonthKeyDown}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 ${
-              value.month == "mm"
+            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+              value.month == "mm" || disabled
                 ? "text-neutral-400 focus:text-neutral-900"
                 : ""
             }`}
@@ -525,14 +534,15 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
               e.target.selectionEnd = 0;
             }}
             onClick={(e) => e.stopPropagation()}
+            disabled={disabled}
           />
-          .
+          <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
           <input
             ref={yearInputRef}
             type="text"
-            onKeyDown={handleYearKeyDown}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 ${
-              value.year == "llll"
+            onKeyDown={!disabled ? handleYearKeyDown : () => {}}
+            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+              value.year == "llll" || disabled
                 ? "text-neutral-400 focus:text-neutral-900"
                 : ""
             }`}
@@ -543,6 +553,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
               e.target.selectionEnd = 0;
             }}
             onClick={(e) => e.stopPropagation()}
+            disabled={disabled}
           />
         </div>
 
@@ -550,6 +561,7 @@ function DatePicker({ value, onChange, label }: TDatePickerProps) {
           variant="quaternary"
           onClick={handleCalendarButtonClick}
           ref={calendarButtonRef}
+          disabled={disabled}
         >
           <IconCalendar />
         </Button>
