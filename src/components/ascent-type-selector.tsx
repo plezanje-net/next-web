@@ -8,7 +8,7 @@ import IconAttempt from "./ui/icons/attempt";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Checkbox from "./ui/checkbox";
 import IconToprope from "./ui/icons/toprope";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import IconAid from "./ui/icons/aid";
 import IconRepeat from "./ui/icons/repeat";
 
@@ -17,6 +17,7 @@ type TAscentTypeSelectorProps = {
   onChange: (at: AscentType) => void;
   disabledOptions?: Set<AscentType>;
   hiddenOptions?: Set<AscentType>;
+  disabled?: boolean;
 };
 
 function AscentTypeSelector({
@@ -24,6 +25,7 @@ function AscentTypeSelector({
   onChange,
   disabledOptions,
   hiddenOptions,
+  disabled = false,
 }: TAscentTypeSelectorProps) {
   const [toprope, setToprope] = useState(false);
 
@@ -195,23 +197,39 @@ function AscentTypeSelector({
         value={value}
         onChange={onChange}
         className="flex flex-wrap justify-center gap-2"
+        disabled={disabled}
       >
         {ascentTypeOptions
           .filter(
             (option) => !(hiddenOptions && hiddenOptions.has(option.value))
           )
           .map((option) => {
-            const disabled =
-              disabledOptions && disabledOptions.has(option.value);
+            const disabledOption =
+              (disabledOptions && disabledOptions.has(option.value)) ||
+              disabled;
             return (
               <Radio
+                as={Fragment}
                 key={option.value}
-                className={`flex flex-col items-center rounded-lg border border-white px-5 py-3 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 data-[checked]:border-neutral-400 data-[checked]:text-blue-500 ${disabled ? "text-neutral-300" : "cursor-pointer hover:bg-neutral-100"}`}
                 value={option.value}
-                disabled={disabled}
+                disabled={disabledOption}
               >
-                {option.icon}
-                {option.label}
+                {({ checked }) => (
+                  <span
+                    className={`flex flex-col items-center rounded-lg border px-5 py-3 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
+                      checked
+                        ? disabledOption
+                          ? "bg-neutral-100 text-neutral-400 border-neutral-200"
+                          : "text-blue-500 border-neutral-400 cursor-pointer"
+                        : disabledOption
+                          ? "text-neutral-400 border-white"
+                          : "border-white cursor-pointer"
+                    }`}
+                  >
+                    {option.icon}
+                    {option.label}
+                  </span>
+                )}
               </Radio>
             );
           })}
@@ -222,6 +240,7 @@ function AscentTypeSelector({
           label="Z varovanjem od zgoraj"
           checked={toprope}
           onChange={handleTopropeChange}
+          disabled={disabled}
         />
       </div>
     </div>

@@ -35,7 +35,7 @@ interface DialogProps {
     disabled?: boolean;
     dontCloseOnConfirm?: boolean;
   };
-  cancel?: { label: string; callback?: () => void };
+  cancel?: { label: string; callback?: () => void; disabled?: boolean };
   dialogSize?: DialogSize;
   closeWithEscOrPressOutside?: boolean;
   closeCallback?: () => void;
@@ -116,7 +116,11 @@ function Dialog({
 
             <div className="mt-8 flex flex-wrap justify-end gap-4">
               {cancel && (
-                <Button variant="secondary" onClick={handleCancel}>
+                <Button
+                  variant="secondary"
+                  onClick={handleCancel}
+                  disabled={cancel.disabled}
+                >
                   {cancel.label}
                 </Button>
               )}

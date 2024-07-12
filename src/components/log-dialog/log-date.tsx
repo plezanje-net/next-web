@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 type TLogDateProps = {
   value: TDate;
   setValue: (d: TDate) => void;
+  disabled?: boolean;
 };
 
-function LogDate({ value, setValue }: TLogDateProps) {
+function LogDate({ value, setValue, disabled = false }: TLogDateProps) {
   const compareDates = (d1: TDate, d2: TDate) => {
     return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
   };
@@ -46,7 +47,7 @@ function LogDate({ value, setValue }: TLogDateProps) {
   const handleYesterdayChipClick = () => {
     setValue(yesterday);
   };
-  
+
   const handleAsLastLogChipClick = () => {
     if (lastLogDate) {
       setValue(lastLogDate);
@@ -55,11 +56,17 @@ function LogDate({ value, setValue }: TLogDateProps) {
 
   return (
     <div>
-      <DatePicker value={value} onChange={handleDateChange} label="Datum" />
+      <DatePicker
+        value={value}
+        onChange={handleDateChange}
+        label="Datum"
+        disabled={disabled}
+      />
       <div className="mt-2 flex gap-2 flex-wrap">
         <SuggestionChip
           active={compareDates(value, today)}
           onClick={handleTodayChipClick}
+          disabled={disabled}
         >
           danes
         </SuggestionChip>
@@ -67,6 +74,7 @@ function LogDate({ value, setValue }: TLogDateProps) {
         <SuggestionChip
           active={compareDates(value, yesterday)}
           onClick={handleYesterdayChipClick}
+          disabled={disabled}
         >
           včeraj
         </SuggestionChip>
@@ -75,6 +83,7 @@ function LogDate({ value, setValue }: TLogDateProps) {
           <SuggestionChip
             active={compareDates(value, lastLogDate)}
             onClick={handleAsLastLogChipClick}
+            disabled={disabled}
           >
             kot zadnji vnos
           </SuggestionChip>
