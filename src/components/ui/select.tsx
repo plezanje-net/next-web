@@ -5,7 +5,13 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import React, { Children, Fragment, ReactElement } from "react";
+import React, {
+  Children,
+  Fragment,
+  ReactElement,
+  useEffect,
+  useRef,
+} from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
@@ -33,7 +39,7 @@ function Option({ value, children, disabled }: OptionProps) {
   );
 }
 
-interface SelectProps {
+type SelectProps = {
   value: string | string[];
   onChange: ((value: string) => void) | ((value: string[]) => void);
   children: ReactElement<OptionProps>[]; // all of the select's options
@@ -42,7 +48,8 @@ interface SelectProps {
   multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
-}
+  initialScrollToValue?: string;
+};
 
 function Select({
   value,
@@ -53,17 +60,23 @@ function Select({
   multi,
   customTrigger,
   disabled,
+  initialScrollToValue,
 }: SelectProps) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
-  let valueToLabel: {
+  let childrenValuesToLabels: {
     [key: string]: {
       label: string | ReactElement;
     };
   } = {};
-  Children.map(children, (child) => {
-    valueToLabel[child.props.value] = {
+
+  let childrenValuesToIndexes: Record<string, number> = {};
+
+  Children.map(children, (child, i) => {
+    childrenValuesToLabels[child.props.value] = {
       label: child.props.children,
     };
+
+    childrenValuesToIndexes[child.props.value] = i;
   });
 
   const constructSelectedLabel = (selected: string | string[]) => {
@@ -72,13 +85,13 @@ function Select({
       return (selected as string[]).map((value: string, index) => {
         return (
           <Fragment key={value}>
-            {valueToLabel[value].label}
+            {childrenValuesToLabels[value].label}
             {index < selected.length - 1 && <>, </>}
           </Fragment>
         );
       });
     } else {
-      return valueToLabel[selected as string].label;
+      return childrenValuesToLabels[selected as string].label;
     }
   };
 
@@ -91,6 +104,56 @@ function Select({
       className="relative bg-white"
       disabled={disabled}
     >
+      {({ open }) => (
+        <InnerListBox
+          label={label}
+          customTrigger={customTrigger}
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          constructSelectedLabel={constructSelectedLabel}
+          open={open}
+          childrenValuesToIndexes={childrenValuesToIndexes}
+          initialScrollToValue={initialScrollToValue}
+        >
+          {children}
+        </InnerListBox>
+      )}
+    </Listbox>
+  );
+}
+
+type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
+  constructSelectedLabel: (
+    selected: string | string[]
+  ) => string | ReactElement | ReactElement[];
+  open: boolean;
+  childrenValuesToIndexes: Record<string, number>;
+};
+
+function InnerListBox({
+  label,
+  customTrigger,
+  disabled,
+  value,
+  placeholder,
+  constructSelectedLabel,
+  open,
+  childrenValuesToIndexes,
+  initialScrollToValue,
+  children,
+}: InnerListBoxProps) {
+  const listboxOptionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (listboxOptionsRef.current && initialScrollToValue && !value) {
+      const i = childrenValuesToIndexes[initialScrollToValue];
+      listboxOptionsRef.current.scrollTop = (i - 3) * 40; // a child will always be 40px high (with current design :))
+    }
+  }, [open, childrenValuesToIndexes, initialScrollToValue, value]);
+
+  return (
+    <>
       {label && <Label>{label}</Label>}
       {customTrigger ? (
         <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
@@ -128,10 +191,12 @@ function Select({
         }`}
       >
         <ListboxOptions className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-          <div className="max-h-80 overflow-auto">{children}</div>
+          <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
+            {children}
+          </div>
         </ListboxOptions>
       </div>
-    </Listbox>
+    </>
   );
 }
 

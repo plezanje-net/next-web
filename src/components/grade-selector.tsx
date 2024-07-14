@@ -9,6 +9,7 @@ type TGradeSelectorProps = {
   setDifficulty: (v: number | null) => void;
   gradingSystemId: "french" | "yds"; // TODO: ... add others... ? adjust when gradingSystem object generation is merged
   disabled?: boolean;
+  initialScrollTo?: number | null;
 };
 
 function GradeSelector({
@@ -16,6 +17,7 @@ function GradeSelector({
   setDifficulty,
   gradingSystemId,
   disabled = false,
+  initialScrollTo = null,
 }: TGradeSelectorProps) {
   // TODO: we need half grades as well. we need to either update db table, or temporarily add them manualy somehow
   const grades =
@@ -60,6 +62,9 @@ function GradeSelector({
           value={difficulty ? `${difficulty}` : ""}
           onChange={(d: string) => setDifficulty(+d)}
           disabled={disabled}
+          initialScrollToValue={
+            initialScrollTo ? `${initialScrollTo}` : undefined
+          }
         >
           {grades.map((grade) => (
             <Option key={grade.id} value={`${grade.difficulty}`}>

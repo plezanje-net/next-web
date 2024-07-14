@@ -94,6 +94,7 @@ function LogRoute({
               disabled={
                 !ascentType || !tickAscentTypes.includes(ascentType) || loading
               }
+              initialScrollTo={routeGrade?.difficulty}
             />
           </div>
           {lastVoteGrade && (
