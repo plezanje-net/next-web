@@ -54,6 +54,7 @@ function LogRoute({
     setRouteDifficultyVote,
     setRouteStarRatingVote,
     setRoutePublishType,
+    loading,
   } = useLogRoutesContext();
 
   const ascentType = route.logFormData.ascentType || null;
@@ -77,6 +78,7 @@ function LogRoute({
             onChange={(at) => setRouteAscentType(route.id, route.key, at)}
             disabledOptions={impossibleAscentTypes}
             hiddenOptions={hiddenAscentTypes}
+            disabled={loading}
           />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
@@ -89,7 +91,9 @@ function LogRoute({
                 setRouteDifficultyVote(route.id, route.key, dv);
               }}
               gradingSystemId="french"
-              disabled={!ascentType || !tickAscentTypes.includes(ascentType)}
+              disabled={
+                !ascentType || !tickAscentTypes.includes(ascentType) || loading
+              }
             />
           </div>
           {lastVoteGrade && (
@@ -104,6 +108,7 @@ function LogRoute({
             onChange={(srv) => {
               setRouteStarRatingVote(route.id, +srv);
             }}
+            disabled={loading}
           >
             <Radio value={"2"}>
               <StarRating rating={2} size="regular" />
@@ -134,6 +139,7 @@ function LogRoute({
             onChange={(pt) => {
               setRoutePublishType(route.key, pt as PublishType);
             }}
+            disabled={loading}
           >
             <Radio value={PublishType.Public}>javno</Radio>
             <Radio value={PublishType.Club}>samo za prijatelje</Radio>
@@ -154,23 +160,35 @@ function LogRoute({
         {/* Actions */}
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <Button variant="quaternary" disabled={first} onClick={onUpClick}>
+            <Button
+              variant="quaternary"
+              disabled={first || loading}
+              onClick={onUpClick}
+            >
               <IconUp />
             </Button>
             <div className="my-1 pl-4 ml-4 border-l border-neutral-200"></div>
-            <Button variant="quaternary" disabled={last} onClick={onDownClick}>
+            <Button
+              variant="quaternary"
+              disabled={last || loading}
+              onClick={onDownClick}
+            >
               <IconDown />
             </Button>
           </div>
           <div>
             <div className="flex gap-2">
-              <Button variant="quaternary" onClick={onDuplicateClick}>
+              <Button
+                variant="quaternary"
+                onClick={onDuplicateClick}
+                disabled={loading}
+              >
                 <IconDuplicate />
               </Button>
               <div className="my-1 pl-4 ml-4 border-l border-neutral-200"></div>
               <Button
                 variant="quaternary"
-                disabled={first && last}
+                disabled={(first && last) || loading}
                 onClick={onDeleteClick}
               >
                 <IconDelete />

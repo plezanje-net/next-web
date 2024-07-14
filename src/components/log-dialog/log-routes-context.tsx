@@ -57,6 +57,8 @@ type TLogRoutesContext = {
   setRouteStarRatingVote: (id: string, srv: number | null) => void;
   setRoutePublishType: (key: string, pt: PublishType) => void;
   resetAll: () => void;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
@@ -81,6 +83,8 @@ function LogRoutesProvider({
     month: "mm",
     year: "llll",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const setRouteDifficultyVote = useCallback(
     (id: string, key: string, newDifficultyVote: number | null) => {
@@ -288,6 +292,8 @@ function LogRoutesProvider({
         setRouteStarRatingVote,
         setRoutePublishType,
         resetAll,
+        loading,
+        setLoading,
       }}
     >
       {children}

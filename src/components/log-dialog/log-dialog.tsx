@@ -27,8 +27,15 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
   const [partners, setPartners] = useState("");
   const [notes, setNotes] = useState("");
 
-  const { logDate, setLogDate, crag, logRoutes, resetAll } =
-    useLogRoutesContext();
+  const {
+    logDate,
+    setLogDate,
+    crag,
+    logRoutes,
+    resetAll,
+    loading,
+    setLoading,
+  } = useLogRoutesContext();
 
   const router = useRouter();
 
@@ -111,22 +118,28 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
            -> log wil change: type of first trTick will become trRepeat
     */
 
-    // TODO: loading/disabled state of dialog while we wait
+    setLoading(true);
     const dryRun = await dryRunCreateActivityAction(activity, routes);
     if (dryRun.dryRunCreateActivity.length > 0) {
       // some changes in user's existing log will be triggered if these log routes are logged. user needs to confirm theese changes
 
+      setLoading(false);
       setConfirmDialogData(dryRun.dryRunCreateActivity);
       setLogDialogIsOpen(false);
       setConfirmDialogIsOpen(true);
     } else {
       await saveActivity(activity, routes);
+      setLogDialogIsOpen(false);
+      setLoading(false);
     }
   };
 
   const handleConfirmConfirm = async () => {
+    setLoading(true);
     const { activity, routes } = prepareCreateActivityData();
     await saveActivity(activity, routes);
+    setConfirmDialogIsOpen(false);
+    setLoading(false);
   };
 
   const saveActivity = async (
@@ -152,11 +165,13 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         confirm={{
           label: "Shrani",
           callback: handleConfirmLog,
-          disabled: !formValid(),
+          disabled: !formValid() || loading,
+          loading: loading,
           dontCloseOnConfirm: true,
         }}
         cancel={{
           label: "Prekliči",
+          disabled: loading,
         }}
         isOpen={logDialogIsOpen}
         setIsOpen={setLogDialogIsOpen}
@@ -164,7 +179,11 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         <>
           <div className="flex gap-4 flex-col xs:flex-row">
             <div className="flex-1">
-              <LogDate value={logDate} setValue={setLogDate} />
+              <LogDate
+                value={logDate}
+                setValue={setLogDate}
+                disabled={loading}
+              />
             </div>
 
             <div className="flex-1">
@@ -173,6 +192,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
                 onChange={setPartners}
                 label="Soplezalci"
                 placeholder="Vnesi soplezalce"
+                isDisabled={loading}
               />
             </div>
           </div>
@@ -184,6 +204,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
               label="Opombe"
               placeholder="Vnesi opombe"
               description="Opombe bodo vidne samo tebi."
+              isDisabled={loading}
             />
           </div>
 
@@ -201,6 +222,9 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         confirm={{
           label: "Potrdi",
           callback: handleConfirmConfirm,
+          dontCloseOnConfirm: true,
+          disabled: loading,
+          loading: loading,
         }}
         cancel={{
           label: "Prekliči",

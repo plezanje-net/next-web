@@ -33,6 +33,7 @@ interface DialogProps {
     label: string;
     callback?: () => void;
     disabled?: boolean;
+    loading?: boolean;
     dontCloseOnConfirm?: boolean;
   };
   cancel?: { label: string; callback?: () => void; disabled?: boolean };
@@ -125,7 +126,11 @@ function Dialog({
                 </Button>
               )}
               {confirm && (
-                <Button onClick={handleConfirm} disabled={confirm.disabled}>
+                <Button
+                  onClick={handleConfirm}
+                  disabled={confirm.disabled}
+                  loading={confirm.loading}
+                >
                   {confirm.label}
                 </Button>
               )}
