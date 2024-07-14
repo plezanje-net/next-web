@@ -84,6 +84,25 @@ module.exports = {
       margin: {
         18: "4.5rem", // 72px
       },
+      keyframes: {
+        dash: {
+          "0%": {
+            "stroke-dasharray": "0, 80",
+            "stroke-dashoffset": "0",
+          },
+          "50%": {
+            "stroke-dasharray": "36, 80",
+            "stroke-dashoffset": "-14px",
+          },
+          "100%": {
+            "stroke-dasharray": "36, 80",
+            "stroke-dashoffset": "-50px",
+          },
+        },
+      },
+      animation: {
+        dash: "dash 1.5s ease-in-out infinite",
+      },
     },
   },
   plugins: [
