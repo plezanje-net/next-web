@@ -25,6 +25,7 @@ function LogRoutesPopover({
   const ref = useRef<HTMLDivElement>(null);
   const dummyVisible = useIsVisible(ref);
   const liftPopover = !dummyVisible;
+  const nrUniqueRoutes = new Set(checkedRoutes.map((r) => r.id)).size;
 
   return (
     <>
@@ -34,7 +35,7 @@ function LogRoutesPopover({
             className={`bg-white flex gap-8 flex-col md:flex-row justify-between items-center p-8 ${liftPopover ? "rounded-lg shadow-lg border-neutral-100 border" : ""}`}
           >
             <div className="self-start md:self-auto">
-              {pluralizeNoun("izbrana smer", checkedRoutes.length)}
+              {pluralizeNoun("izbrana smer", nrUniqueRoutes)}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 items-end">
               <Button variant="secondary" onClick={uncheckAllRoutes}>
