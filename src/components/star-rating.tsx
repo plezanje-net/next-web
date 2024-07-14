@@ -1,6 +1,6 @@
-import { IconSize } from "../ui/icons/icon-size";
-import IconStarEmpty from "../ui/icons/star-empty";
-import IconStarFull from "../ui/icons/star-full";
+import { IconSize } from "./ui/icons/icon-size";
+import IconStarEmpty from "./ui/icons/star-empty";
+import IconStarFull from "./ui/icons/star-full";
 
 type TStarRatingProps = {
   rating: number;
