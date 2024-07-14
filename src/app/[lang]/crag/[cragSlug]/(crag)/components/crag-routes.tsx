@@ -344,7 +344,7 @@ function CragRoutes({ crag, mySummary }: Props) {
     >
       <CragRoutesActions />
       <div
-        className={`mx-auto 2xl:container ${
+        className={`mx-auto 2xl:container text-center ${
           cragRoutesState.noSectors ? "px-4" : ""
         } xs:px-8`}
       >
@@ -384,13 +384,13 @@ function CragRoutes({ crag, mySummary }: Props) {
             ))
           )}
         </div>
-      </div>
 
-      <LogRoutesPopover
-        checkedRoutes={checkedRoutes}
-        setCheckedRoutes={setCheckedRoutes}
-        crag={crag}
-      />
+        <LogRoutesPopover
+          checkedRoutes={checkedRoutes}
+          setCheckedRoutes={setCheckedRoutes}
+          crag={crag}
+        />
+      </div>
     </CragRoutesContext.Provider>
   );
 }
