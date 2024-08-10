@@ -109,9 +109,7 @@ function LogRoute({
           <RadioGroup
             label="Lepota smeri"
             value={`${starRatingVote}`}
-            onChange={(srv) => {
-              setRouteStarRatingVote(route.id, +srv);
-            }}
+            onChange={(srv) => setRouteStarRatingVote(route.id, +srv)}
             disabled={loading}
           >
             <Radio value={"2"}>
@@ -123,6 +121,7 @@ function LogRoute({
             <Radio value={"0"}>
               <StarRating rating={0} size="regular" />
             </Radio>
+            <Radio value={"-1"}>ne predagaj lepote</Radio>
           </RadioGroup>
           {route.usersHistory?.lastStarRatingVote && (
             <div className="text-sm mt-1 inline-flex">

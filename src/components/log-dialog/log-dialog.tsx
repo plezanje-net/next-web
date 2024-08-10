@@ -83,7 +83,10 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         routeId: route.id,
         ascentType: ascentType.toLowerCase(),
         votedDifficulty: route.logFormData.difficultyVote,
-        votedStarRating: route.logFormData.starRatingVote,
+        votedStarRating:
+          route.logFormData.starRatingVote == -1
+            ? null
+            : route.logFormData.starRatingVote,
         publish: publishType.toLowerCase(),
         position: i, // position of the route within the same activity of ones log
       });
