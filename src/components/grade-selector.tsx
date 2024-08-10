@@ -60,17 +60,24 @@ function GradeSelector({
       <div className="w-31">
         <Select
           value={difficulty ? `${difficulty}` : ""}
-          onChange={(d: string) => setDifficulty(+d)}
+          onChange={(d: string) => {
+            d == "-1" ? setDifficulty(null) : setDifficulty(+d);
+          }}
           disabled={disabled}
           initialScrollToValue={
             initialScrollTo ? `${initialScrollTo}` : undefined
           }
         >
-          {grades.map((grade) => (
-            <Option key={grade.id} value={`${grade.difficulty}`}>
-              {grade.name}
-            </Option>
-          ))}
+          {[
+            <Option key={"no-diff-vote"} value={"-1"}>
+              ---
+            </Option>,
+            ...grades.map((grade) => (
+              <Option key={grade.id} value={`${grade.difficulty}`}>
+                {grade.name}
+              </Option>
+            )),
+          ]}
         </Select>
       </div>
       <Button
