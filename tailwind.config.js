@@ -66,7 +66,7 @@ module.exports = {
       width: {
         13: "3.25rem", // 52px
         30: "7.5rem", // 120px
-        31: "7.75rem", // 124px
+        42: "10.5rem", // 168px
       },
       minWidth: {
         0.5: "0.125rem", // 2px

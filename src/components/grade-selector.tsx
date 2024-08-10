@@ -7,7 +7,7 @@ import IconMinus from "./ui/icons/minus";
 type TGradeSelectorProps = {
   difficulty: number | null;
   setDifficulty: (v: number | null) => void;
-  gradingSystemId: "french" | "yds"; // TODO: ... add others... ? adjust when gradingSystem object generation is merged
+  gradingSystemId: "french" | "yds" | "uiaa"; // TODO: ... add others... ? adjust when gradingSystem object generation is merged
   disabled?: boolean;
   initialScrollTo?: number | null;
 };
@@ -19,10 +19,7 @@ function GradeSelector({
   disabled = false,
   initialScrollTo = null,
 }: TGradeSelectorProps) {
-  // TODO: we need half grades as well. we need to either update db table, or temporarily add them manualy somehow
-  const grades =
-    gradingSystems.find((gs) => gs.id === gradingSystemId)?.grades || [];
-
+  const grades = getGrades(gradingSystemId, true);
   const firstGrade = grades[0];
   const lastGrade = grades[grades.length - 1];
 
@@ -57,7 +54,7 @@ function GradeSelector({
       >
         <IconMinus />
       </Button>
-      <div className="w-31">
+      <div className="w-42">
         <Select
           value={difficulty ? `${difficulty}` : ""}
           onChange={(d: string) => {
@@ -73,7 +70,7 @@ function GradeSelector({
               ---
             </Option>,
             ...grades.map((grade) => (
-              <Option key={grade.id} value={`${grade.difficulty}`}>
+              <Option key={grade.difficulty} value={`${grade.difficulty}`}>
                 {grade.name}
               </Option>
             )),
@@ -92,3 +89,60 @@ function GradeSelector({
 }
 
 export default GradeSelector;
+
+// Helpers
+
+const getGrades = (gradingSystemId: string, halfGrades: boolean = false) => {
+  const fullGrades =
+    gradingSystems.find((gs) => gs.id === gradingSystemId)?.grades || [];
+
+  let grades = [];
+
+  if (halfGrades) {
+    grades.push({
+      difficulty: fullGrades[0].difficulty,
+      name: fullGrades[0].name,
+    });
+    for (let i = 1; i < fullGrades.length; i++) {
+      const prevGrade = fullGrades[i - 1];
+      const currGrade = fullGrades[i];
+
+      let halfGradeName;
+      if (gradingSystemId == "french") {
+        let prevGradeNum, currGradeNum, currGradeLetterAndPlus;
+        const prevGradeMatch = prevGrade.name.match(/^(\d+)(.*)$/);
+        const currGradeMatch = currGrade.name.match(/^(\d+)(.*)$/);
+
+        if (prevGradeMatch) {
+          prevGradeNum = prevGradeMatch[1]; // The number part
+        }
+
+        if (currGradeMatch) {
+          currGradeNum = currGradeMatch[1]; // The number part
+          currGradeLetterAndPlus = currGradeMatch[2]; // The rest of the string
+        }
+
+        if (prevGradeNum == currGradeNum) {
+          halfGradeName = `${prevGrade.name}/${currGradeLetterAndPlus}`;
+        } else {
+          halfGradeName = `${prevGrade.name}/${currGrade.name}`;
+        }
+      } else {
+        halfGradeName = `${prevGrade.name}/${currGrade.name}`;
+      }
+
+      grades.push({
+        difficulty: (prevGrade.difficulty + currGrade.difficulty) / 2,
+        name: halfGradeName,
+      });
+      grades.push({
+        difficulty: currGrade.difficulty,
+        name: currGrade.name,
+      });
+    }
+  } else {
+    grades = fullGrades;
+  }
+
+  return grades;
+};

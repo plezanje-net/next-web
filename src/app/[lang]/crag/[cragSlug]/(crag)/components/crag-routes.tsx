@@ -298,7 +298,10 @@ function CragRoutes({ crag, mySummary }: Props) {
             key: r.id,
             name: r.name,
             difficulty: r.difficulty || null,
-            defaultGradingSystemId: "french" as "french" | "uiaa" | "yds", // TODO: type
+            defaultGradingSystemId: r.defaultGradingSystem.id as
+              | "french"
+              | "uiaa"
+              | "yds", // TODO: type
             usersHistory: {
               ...(r.difficultyVotes.length > 0 && {
                 lastDifficultyVote: {

@@ -73,7 +73,7 @@ function LogRoute({
       first={first}
       last={last}
     >
-      <div className="px-4 py-6">
+      <div className="px-8 xs:px-4 py-6">
         Način vzpona
         <div className="mt-2">
           <AscentTypeSelector
@@ -93,7 +93,7 @@ function LogRoute({
               setDifficulty={(dv) => {
                 setRouteDifficultyVote(route.id, route.key, dv);
               }}
-              gradingSystemId="french"
+              gradingSystemId={route.defaultGradingSystemId}
               disabled={
                 !ascentType || !tickAscentTypes.includes(ascentType) || loading
               }
@@ -233,7 +233,7 @@ function LogAccordion({ label, children, first, last }: TLogAccordionProps) {
       ${last ? "xs:rounded-b-lg" : ""}`}
     >
       <button
-        className="flex w-full items-center justify-between bg-neutral-100 px-4 py-5 text-left hover:bg-neutral-200"
+        className="flex w-full items-center justify-between bg-neutral-100 px-8 xs:px-4 py-5 text-left hover:bg-neutral-200"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-lg">{label}</span>

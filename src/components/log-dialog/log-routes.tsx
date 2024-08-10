@@ -56,7 +56,7 @@ function LogRoutes() {
   };
 
   return (
-    <div className="-mx-4 xs:mx-0">
+    <div className="-mx-8 xs:mx-0">
       {logRoutes.map((logRoute, index) => (
         <div className="mt-1 first:mt-0" key={logRoute.key}>
           <LogRoute
