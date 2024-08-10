@@ -79,7 +79,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
       routes.push({
         date: `${logDate.year}-${logDate.month}-${logDate.day}`,
         partner: partners || null,
-        notes: null, // TODO: add notes field to each route
+        notes: route.logFormData.note || null,
         routeId: route.id,
         ascentType: ascentType.toLowerCase(),
         votedDifficulty: route.logFormData.difficultyVote,
@@ -202,7 +202,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
               value={notes}
               onChange={setNotes}
               label="Opombe"
-              placeholder="Vnesi opombe"
+              placeholder="Vnesi opombe k aktivnosti v plezališču."
               description="Opombe bodo vidne samo tebi."
               isDisabled={loading}
             />

@@ -43,6 +43,7 @@ type TLogRoute = {
     publishType: PublishType;
     impossibleAscentTypes: Set<AscentType>;
     hiddenAscentTypes: Set<AscentType>;
+    note: string;
   };
 };
 
@@ -56,6 +57,7 @@ type TLogRoutesContext = {
   setRouteDifficultyVote: (id: string, key: string, dv: number | null) => void;
   setRouteStarRatingVote: (id: string, srv: number | null) => void;
   setRoutePublishType: (key: string, pt: PublishType) => void;
+  setRouteNote: (key: string, n: string) => void;
   resetAll: () => void;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -213,6 +215,15 @@ function LogRoutesProvider({
     [setLogRoutes]
   );
 
+  const setRouteNote = (key: string, newNote: string) => {
+    setLogRoutes((logRoutes) => {
+      const routeToUpdateIdx = logRoutes.findIndex((r) => r.key == key);
+      const newLogRoutes = [...logRoutes];
+      newLogRoutes[routeToUpdateIdx].logFormData.note = newNote;
+      return newLogRoutes;
+    });
+  };
+
   useEffect(() => {
     // Validate ascent types for all routes being logged
     for (let i = 0; i < logRoutes.length; i++) {
@@ -291,6 +302,7 @@ function LogRoutesProvider({
         setRouteDifficultyVote,
         setRouteStarRatingVote,
         setRoutePublishType,
+        setRouteNote,
         resetAll,
         loading,
         setLoading,

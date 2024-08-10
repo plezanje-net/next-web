@@ -17,6 +17,7 @@ import {
   useLogRoutesContext,
 } from "./log-routes-context";
 import { PublishType } from "@/graphql/generated";
+import TextArea from "../ui/text-area";
 
 type TLogRouteProps = {
   first?: boolean;
@@ -54,6 +55,7 @@ function LogRoute({
     setRouteDifficultyVote,
     setRouteStarRatingVote,
     setRoutePublishType,
+    setRouteNote,
     loading,
   } = useLogRoutesContext();
 
@@ -63,6 +65,7 @@ function LogRoute({
   const publishType = route.logFormData.publishType;
   const impossibleAscentTypes = route.logFormData.impossibleAscentTypes;
   const hiddenAscentTypes = route.logFormData.hiddenAscentTypes;
+  const note = route.logFormData.note;
 
   return (
     <LogAccordion
@@ -156,6 +159,17 @@ function LogRoute({
               </div>
             </div>
           )}
+        </div>
+        <div className="pt-6 mt-6 border-t border-neutral-200"></div>
+        <div>
+          <TextArea
+            value={note}
+            onChange={(n) => setRouteNote(route.key, n)}
+            label="Opomba"
+            placeholder="Vnesi opombo k vzponu."
+            description="Opomba bo vidna samo tebi."
+            isDisabled={loading}
+          />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
         {/* Actions */}
