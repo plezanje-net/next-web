@@ -43,7 +43,7 @@ type TLogRoute = {
     publishType: PublishType;
     impossibleAscentTypes: Set<AscentType>;
     hiddenAscentTypes: Set<AscentType>;
-    note: string;
+    note?: string;
   };
 };
 
