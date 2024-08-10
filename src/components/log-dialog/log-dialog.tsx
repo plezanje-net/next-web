@@ -95,6 +95,16 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
   const handleConfirmLog = async () => {
     const { activity, routes } = prepareCreateActivityData();
 
+    // save log date to localstorage for 'quick access' on next log
+    localStorage.setItem(
+      "last-log-date",
+      JSON.stringify({
+        day: logDate.day,
+        month: logDate.month,
+        year: logDate.year,
+      })
+    );
+
     /**
      * 
      // TODO: should we implement this on FE instead of calling dryRun?
@@ -354,14 +364,3 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
 }
 
 export default LogDialog;
-
-// TODO: save to localstorage last log date when a log is confirmed
-// const lld = yesterday.subtract(4, "day");
-// localStorage.setItem(
-//   "last-log-date",
-//   JSON.stringify({
-//     day: lld.day(),
-//     month: lld.month() + 1,
-//     year: lld.year(),
-//   })
-// );
