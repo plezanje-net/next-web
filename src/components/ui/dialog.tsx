@@ -105,9 +105,9 @@ function Dialog({
         />
 
         {/* Full-screen container to center the panel */}
-        <div className="fixed inset-0 overflow-y-auto p-8 xs:p-10">
+        <div className="fixed inset-0 overflow-y-auto p-5 xs:p-10">
           <DialogPanel
-            className={`mx-auto rounded-lg bg-white shadow-lg px-8 py-8 ${dialogSize}`}
+            className={`mx-auto rounded-lg bg-white shadow-lg p-8 ${dialogSize}`}
           >
             <DialogTitle as={titleSize}>{title}</DialogTitle>
 
