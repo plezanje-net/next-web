@@ -572,7 +572,7 @@ function DatePicker({
         <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
           <div
             ref={calendarPaneRef}
-            className="absolute mt-2 w-[256px] min-[400px]:w-[296px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
+            className="absolute mt-2 w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
           >
             <div className="flex justify-between">
               {/* month shuffler */}
