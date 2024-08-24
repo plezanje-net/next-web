@@ -35,6 +35,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
     resetAll,
     loading,
     setLoading,
+    showLogSavedToast,
   } = useLogRoutesContext();
 
   const router = useRouter();
@@ -162,6 +163,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
     await createActivityAction(activity, routes);
     resetAll();
     router.refresh();
+    showLogSavedToast();
   };
 
   const [logDialogIsOpen, setLogDialogIsOpen] = useState(false);

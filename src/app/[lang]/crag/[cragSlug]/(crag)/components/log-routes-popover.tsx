@@ -1,27 +1,12 @@
-import { Dispatch, SetStateAction, useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import { CragRoutesContext } from "./crag-routes";
 import useIsVisible from "@/hooks/useIsVisible";
 import { pluralizeNoun } from "@/utils/text-helpers";
 import Button from "@/components/ui/button";
-import {
-  LogRoutesProvider,
-  TLogRoute,
-} from "@/components/log-dialog/log-routes-context";
 import LogDialog from "@/components/log-dialog/log-dialog";
-import { Crag } from "@/graphql/generated";
 
-type TLogRoutesPopoverProps = {
-  checkedRoutes: TLogRoute[];
-  setCheckedRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
-  crag: Crag;
-};
-
-function LogRoutesPopover({
-  checkedRoutes,
-  setCheckedRoutes,
-  crag,
-}: TLogRoutesPopoverProps) {
-  const { uncheckAllRoutes } = useContext(CragRoutesContext);
+function LogRoutesPopover() {
+  const { checkedRoutes, uncheckAllRoutes } = useContext(CragRoutesContext);
   const ref = useRef<HTMLDivElement>(null);
   const dummyVisible = useIsVisible(ref);
   const liftPopover = !dummyVisible;
@@ -46,19 +31,11 @@ function LogRoutesPopover({
                   Razveljavi izbor
                 </Button>
 
-                <LogRoutesProvider
-                  logRoutes={checkedRoutes}
-                  setLogRoutes={setCheckedRoutes}
-                  crag={crag}
-                >
-                  <LogDialog
-                    openTrigger={
-                      <Button variant="primary">
-                        Shrani v plezalni dnevnik
-                      </Button>
-                    }
-                  />
-                </LogRoutesProvider>
+                <LogDialog
+                  openTrigger={
+                    <Button variant="primary">Shrani v plezalni dnevnik</Button>
+                  }
+                />
               </div>
             </div>
           </div>

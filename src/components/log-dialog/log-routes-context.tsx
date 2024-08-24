@@ -61,6 +61,7 @@ type TLogRoutesContext = {
   resetAll: () => void;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  showLogSavedToast: () => void;
 };
 
 const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
@@ -71,6 +72,7 @@ type TLogRoutesProviderProps = {
   logRoutes: TLogRoute[];
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
   crag: Crag;
+  showLogSavedToast: () => void;
   children: ReactNode;
 };
 
@@ -78,6 +80,7 @@ function LogRoutesProvider({
   logRoutes,
   setLogRoutes,
   crag,
+  showLogSavedToast,
   children,
 }: TLogRoutesProviderProps) {
   const [logDate, setLogDate] = useState<TDate>({
@@ -306,6 +309,7 @@ function LogRoutesProvider({
         resetAll,
         loading,
         setLoading,
+        showLogSavedToast,
       }}
     >
       {children}

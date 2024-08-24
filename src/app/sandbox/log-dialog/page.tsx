@@ -18,6 +18,7 @@ function LogDialogPage() {
         logRoutes={logRoutes}
         setLogRoutes={setLogRoutes}
         crag={crag as Crag}
+        showLogSavedToast={() => {}}
       >
         <LogDialog openTrigger={<Button>Log routes</Button>} />
       </LogRoutesProvider>

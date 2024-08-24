@@ -12,7 +12,11 @@ function ToastPage() {
       <div className="flex flex-wrap justify-center mt-4">
         <Button onClick={() => setShowToast(true)}>Make toast</Button>
       </div>
-      <Toast show={showToast} setShow={setShowToast} message="Toast mit Schäuferla." />
+      <Toast
+        show={showToast}
+        setShow={setShowToast}
+        message="Toast mit Schäuferla."
+      />
     </>
   );
 }

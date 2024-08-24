@@ -20,9 +20,13 @@ import {
   useQueryState,
 } from "next-usequerystate";
 import useResizeObserver from "@/hooks/useResizeObserver";
-import { TLogRoute } from "@/components/log-dialog/log-routes-context";
+import {
+  LogRoutesProvider,
+  TLogRoute,
+} from "@/components/log-dialog/log-routes-context";
 import LogRoutesPopover from "./log-routes-popover";
 import dayjs from "dayjs";
+import Toast from "@/components/ui/toast";
 
 interface Props {
   crag: Crag;
@@ -335,6 +339,11 @@ function CragRoutes({ crag, mySummary }: Props) {
     setCheckedRoutes([]);
   };
 
+  const [logSavedToastShown, setLogSavedToastShown] = useState(false);
+  const showLogSavedToast = () => {
+    setLogSavedToastShown(true);
+  };
+
   return (
     <CragRoutesContext.Provider
       value={{
@@ -388,11 +397,20 @@ function CragRoutes({ crag, mySummary }: Props) {
           )}
         </div>
 
-        <LogRoutesPopover
-          checkedRoutes={checkedRoutes}
-          setCheckedRoutes={setCheckedRoutes}
+        <LogRoutesProvider
+          logRoutes={checkedRoutes}
+          setLogRoutes={setCheckedRoutes}
           crag={crag}
-        />
+          showLogSavedToast={showLogSavedToast}
+        >
+          <LogRoutesPopover />
+
+          <Toast
+            show={logSavedToastShown}
+            setShow={setLogSavedToastShown}
+            message="Vnos v plezalni dnevnik je bil shranjen."
+          />
+        </LogRoutesProvider>
       </div>
     </CragRoutesContext.Provider>
   );

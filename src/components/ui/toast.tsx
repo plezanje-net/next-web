@@ -19,9 +19,9 @@ function Toast({ show, setShow, message }: TToastProps) {
   }, [show, setShow]);
 
   return (
-    <div className="fixed bottom-8 flex w-full pointer-events-none">
+    <div className="fixed bottom-8 flex w-full pointer-events-none text-left">
       <div
-        className={`border border-neutral-100 max-w-sm mx-auto transition-all rounded-lg shadow-lg bg-white pointer-events-auto p-8 inline-flex justify-center gap-4 ${
+        className={`border border-neutral-100 max-w-md mx-auto transition-all rounded-lg shadow-lg bg-white pointer-events-auto p-8 inline-flex justify-center gap-4 ${
           show
             ? "translate-y-0 opacity-100"
             : "translate-y-[calc(100%+40px)] opacity-0"
