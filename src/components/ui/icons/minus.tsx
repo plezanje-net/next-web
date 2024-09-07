@@ -1,14 +1,15 @@
-function IconRight() {
+function IconMinus() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -960 960 960"
-      height="24"
       width="24"
+      height="24"
       className="fill-current"
     >
-      <path d="M400-240 640-480l-240-240-56 56 184 184-184 184 56 56Z" />
+      <path d="M200-440v-80h560v80H200Z" />
     </svg>
   );
 }
-export default IconRight;
+
+export default IconMinus;
