@@ -36,4 +36,5 @@ function IconAid({ size, inline = false }: TIconAidProps) {
       );
   }
 }
+
 export default IconAid;

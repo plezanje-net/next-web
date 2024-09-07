@@ -1,7 +1,7 @@
 import { IconSize } from "./icon-size";
 
 type IconRainproofProps = {
-  size: IconSize.small | IconSize.regular | IconSize.large;
+  size: IconSize.small | IconSize.large;
 };
 
 function IconRainproof({ size = IconSize.large }: IconRainproofProps) {
@@ -20,26 +20,6 @@ function IconRainproof({ size = IconSize.large }: IconRainproofProps) {
           <rect x="13.25" y="1" width="1.5" height="3" rx=".75" ry=".75" />
           <path d="M 3 12.5 a 7 7 0 0 1 14 0 h -6.25 v 4.5 a 2 2 0 0 1 -4 0 v -0.5 h 1.5 v 0.5 a 0.5 0.5 0 0 0 1 0 v -4.5 z M 15.5 12.5 a 5.5 5.5 0 0 0 -11 0 z" />
           <rect x="4" y="11" width="12" height="1.5" />
-        </svg>
-      );
-
-    case IconSize.regular:
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="24"
-          height="24"
-          className="fill-current"
-        >
-          <rect x="7" y="2" width="2" height="3.5" rx="1" ry="1" />
-          <rect x="11" y="2" width="2" height="3.5" rx="1" ry="1" />
-          <rect x="15" y="2" width="2" height="3.5" rx="1" ry="1" />
-          <path d="M 4 15 a 8 8 0 0 1 16 0 z M 18 15 a 6 6 0 0 0 -12 0 z" />
-          <rect x="5" y="13" width="14" height="2" />
-          <rect x="11" y="15" width="2" height="4.5" />
-          <path d="M 13 19.5 a 2.5 2.5 0 0 1 -5 0 h 2 a 0.5 0.5 0 0 0 1 0 z" />
-          <rect x="8" y="19" width="2" height="0.5" />
         </svg>
       );
 

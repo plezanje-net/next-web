@@ -1,4 +1,4 @@
-function IconMenu() {
+function IconMinus() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,9 +7,9 @@ function IconMenu() {
       height="24px"
       className="fill-current"
     >
-      <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+      <path d="M200-440v-80h560v80H200Z" />
     </svg>
   );
 }
 
-export default IconMenu;
+export default IconMinus;

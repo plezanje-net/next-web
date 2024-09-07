@@ -1,10 +1,4 @@
-import { IconSize } from "./icon-size";
-
-type TIconResetProps = {
-  size: IconSize.regular;
-};
-
-function IconReset({ size }: TIconResetProps) {
+function IconReset() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
