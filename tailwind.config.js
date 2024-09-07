@@ -1,3 +1,4 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -58,10 +59,14 @@ module.exports = {
       // ...
     },
     extend: {
-      screens: { xs: "512px" },
+      screens: {
+        xs: "512px",
+        ...defaultTheme.screens,
+      },
       width: {
         13: "3.25rem", // 52px
         30: "7.5rem", // 120px
+        42: "10.5rem", // 168px
       },
       minWidth: {
         0.5: "0.125rem", // 2px
@@ -78,6 +83,25 @@ module.exports = {
       },
       margin: {
         18: "4.5rem", // 72px
+      },
+      keyframes: {
+        dash: {
+          "0%": {
+            "stroke-dasharray": "0, 80",
+            "stroke-dashoffset": "0",
+          },
+          "50%": {
+            "stroke-dasharray": "36, 80",
+            "stroke-dashoffset": "-14px",
+          },
+          "100%": {
+            "stroke-dasharray": "36, 80",
+            "stroke-dashoffset": "-50px",
+          },
+        },
+      },
+      animation: {
+        dash: "dash 1.5s ease-in-out infinite",
       },
     },
   },

@@ -24,6 +24,15 @@ function ButtonPage() {
       </div>
 
       <div className="mt-14 w-80">
+        <h5>Primary button loading</h5>
+        <div className="mt-4">
+          <Button variant="primary" disabled loading>
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
         <h5>Secondary button</h5>
         <div className="mt-4">
           <Button variant="secondary">Button</Button>
@@ -34,6 +43,15 @@ function ButtonPage() {
         <h5>Secondary button disabled</h5>
         <div className="mt-4">
           <Button variant="secondary" disabled>
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>Secondary button loading</h5>
+        <div className="mt-4">
+          <Button variant="secondary" disabled loading>
             Button
           </Button>
         </div>

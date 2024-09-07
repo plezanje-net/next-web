@@ -4,16 +4,24 @@ import {
   ReactElement,
   forwardRef,
 } from "react";
+import Spinner from "./spinner";
 
 interface ButtonProps {
   children: ReactElement | string;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   disabled?: boolean;
+  loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button = forwardRef(function Button(
-  { children, variant = "primary", disabled, onClick }: ButtonProps,
+  {
+    children,
+    variant = "primary",
+    disabled = false,
+    loading = false,
+    onClick,
+  }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
   let buttonStyles =
@@ -56,7 +64,16 @@ const Button = forwardRef(function Button(
       disabled={disabled}
       onClick={onClick}
     >
-      {children}
+      {loading ? (
+        <div className="relative">
+          <div className="text-transparent">{children}</div>
+          <div className="absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4">
+            <Spinner />
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 });

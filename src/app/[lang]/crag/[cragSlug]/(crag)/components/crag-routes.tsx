@@ -1,5 +1,15 @@
 "use client";
-import { ActivityRoute, Crag, Route, Sector } from "@/graphql/generated";
+
+import {
+  ActivityRoute,
+  AscentType,
+  Crag,
+  Maybe,
+  PaginatedActivityRoutes,
+  PublishType,
+  Route,
+  Sector,
+} from "@/graphql/generated";
 import { createContext, useCallback, useLayoutEffect, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
@@ -10,6 +20,13 @@ import {
   useQueryState,
 } from "next-usequerystate";
 import useResizeObserver from "@/hooks/useResizeObserver";
+import {
+  LogRoutesProvider,
+  TLogRoute,
+} from "@/components/log-dialog/log-routes-context";
+import LogRoutesPopover from "./log-routes-popover";
+import dayjs from "dayjs";
+import Toast from "@/components/ui/toast";
 
 interface Props {
   crag: Crag;
@@ -61,8 +78,12 @@ interface CragRouteListColumn {
 interface CragRoutesContextType {
   cragRoutesState: CragRoutesState;
   setCragRoutesState: (cragRoutesState: CragRoutesState) => void;
+  checkedRoutes: TLogRoute[];
+  setCheckedRoute: (routeId: string, checked: boolean) => void;
+  uncheckAllRoutes: () => void;
 }
 
+// TODO: export context definition to another file and create hook to use it, and a provider component to provide it
 const CragRoutesContext = createContext<CragRoutesContextType>({
   cragRoutesState: {
     compact: null,
@@ -72,6 +93,9 @@ const CragRoutesContext = createContext<CragRoutesContextType>({
     sort: { column: "select", direction: "asc" },
   },
   setCragRoutesState: () => {},
+  checkedRoutes: [],
+  setCheckedRoute: () => {},
+  uncheckAllRoutes: () => {},
 });
 
 const cragRouteListColumns: CragRouteListColumn[] = [
@@ -257,11 +281,82 @@ function CragRoutes({ crag, mySummary }: Props) {
     return () => window.removeEventListener("scroll", updatePosition);
   }, []);
 
+  const [checkedRoutes, setCheckedRoutes] = useState<TLogRoute[]>([]);
+
+  const setCheckedRoute = (routeId: string, checked: boolean) => {
+    const allRoutes: Array<
+      Route & {
+        firstTry?: Maybe<PaginatedActivityRoutes>;
+        firstTick?: Maybe<PaginatedActivityRoutes>;
+        firstTrTick?: Maybe<PaginatedActivityRoutes>;
+      }
+    > = crag.sectors.flatMap((sector) => sector.routes);
+
+    if (checked) {
+      setCheckedRoutes([
+        ...checkedRoutes,
+        ...allRoutes
+          .filter((r) => r.id == routeId)
+          .map((r) => ({
+            id: r.id,
+            key: r.id,
+            name: r.name,
+            difficulty: r.difficulty || null,
+            defaultGradingSystemId: r.defaultGradingSystem.id as
+              | "french"
+              | "uiaa"
+              | "yds", // TODO: type
+            usersHistory: {
+              ...(r.difficultyVotes.length > 0 && {
+                lastDifficultyVote: {
+                  difficulty: r.difficultyVotes[0].difficulty,
+                  date: dayjs(r.difficultyVotes[0].updated).format("D.M.YYYY"),
+                },
+              }),
+              ...(r.starRatingVotes.length > 0 && {
+                lastStarRatingVote: {
+                  starRating: r.starRatingVotes[0].stars,
+                  date: dayjs(r.starRatingVotes[0].updated).format("D.M.YYYY"),
+                },
+              }),
+              firstTryDate: r.firstTry?.items[0]?.date || null,
+              firstTickDate: r.firstTick?.items[0]?.date || null,
+              firstTrTickDate: r.firstTrTick?.items[0]?.date || null,
+            },
+            logFormData: {
+              publishType: PublishType.Public,
+              impossibleAscentTypes: new Set<AscentType>(),
+              hiddenAscentTypes: new Set<AscentType>(),
+            },
+          })),
+      ]);
+    } else {
+      setCheckedRoutes(checkedRoutes.filter((r) => r.id != routeId));
+    }
+  };
+
+  const uncheckAllRoutes = () => {
+    setCheckedRoutes([]);
+  };
+
+  const [logSavedToastShown, setLogSavedToastShown] = useState(false);
+  const showLogSavedToast = () => {
+    setLogSavedToastShown(true);
+  };
+
   return (
-    <CragRoutesContext.Provider value={{ cragRoutesState, setCragRoutesState }}>
+    <CragRoutesContext.Provider
+      value={{
+        cragRoutesState,
+        setCragRoutesState,
+        checkedRoutes,
+        setCheckedRoute,
+        uncheckAllRoutes,
+      }}
+    >
       <CragRoutesActions />
       <div
-        className={`mx-auto 2xl:container ${
+        className={`mx-auto 2xl:container text-center ${
           cragRoutesState.noSectors ? "px-4" : ""
         } xs:px-8`}
       >
@@ -301,6 +396,21 @@ function CragRoutes({ crag, mySummary }: Props) {
             ))
           )}
         </div>
+
+        <LogRoutesProvider
+          logRoutes={checkedRoutes}
+          setLogRoutes={setCheckedRoutes}
+          crag={crag}
+          showLogSavedToast={showLogSavedToast}
+        >
+          <LogRoutesPopover />
+
+          <Toast
+            show={logSavedToastShown}
+            setShow={setLogSavedToastShown}
+            message="Vnos v plezalni dnevnik je bil shranjen."
+          />
+        </LogRoutesProvider>
       </div>
     </CragRoutesContext.Provider>
   );
