@@ -66,7 +66,7 @@ function RouteMyAscents({
                 {displayDate(date)}
               </td>
               <td className="pb-1">
-                <AscentType ascentType={ascentType} />
+                <AscentType type={ascentType} />
               </td>
             </tr>
           ))}
