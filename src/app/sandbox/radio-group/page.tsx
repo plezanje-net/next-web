@@ -1,5 +1,5 @@
 "use client";
-import { RadioGroup, Radio } from "../../../components/ui/radio-group";
+import { RadioGroup, Radio } from "@/components/ui/radio-group";
 
 function RadioGroupPage() {
   return (

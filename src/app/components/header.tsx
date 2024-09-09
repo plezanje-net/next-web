@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import IconClose from "../../components/ui/icons/close";
-import IconMenu from "../../components/ui/icons/menu";
-import IconSearch from "../../components/ui/icons/search";
+import IconClose from "@/components/ui/icons/close";
+import IconMenu from "@/components/ui/icons/menu";
+import IconSearch from "@/components/ui/icons/search";
 import Logo from "./header/logo";
-import { useI18nPathname } from "../../utils/hooks/use-i18n-pathname";
-import { AuthStatus } from "../../utils/auth/auth-status";
+import { useI18nPathname } from "@/utils/hooks/use-i18n-pathname";
+import { AuthStatus } from "@/utils/auth/auth-status";
 
 type NavLink = {
   label: string;
@@ -24,7 +24,7 @@ function Header({ authStatus }: Props) {
   const navLinks: NavLink[] = [
     {
       label: "Plezališča",
-      href: "/plezalisca?countries=slovenija&routeTypes=sport",
+      href: "/plezalisca?country=slovenija&routeType=sport",
       isActive: i18nPathname.test(["/{crags}*", "/{crag}*"]),
     },
     {

@@ -1,5 +1,4 @@
-import { GradingSystem } from "../graphql/generated";
-import { TGradingSystemId, gradingSystems } from "../utils/grading-systems";
+import { gradingSystems, TGradingSystemId } from "@/utils/grading-systems";
 
 type Props = {
   difficulty: number;

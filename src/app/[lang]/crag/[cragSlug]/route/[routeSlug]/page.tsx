@@ -4,10 +4,11 @@ type Params = {
 };
 
 function RoutePage({ params }: { params: Params }) {
+  console.log(params);
   return (
     <>
-      Route page placeholder here only to test returning to crag page with
-      browsser navigation
+      Route page placeholder here only to test navigation and set up the
+      structure detached from crag layout.
     </>
   );
 }

@@ -1,9 +1,11 @@
 import { TGradingSystemId, gradingSystems } from "./grading-systems";
 
-function difficultyToGrade(difficulty: number, gradingSystemId: string) {
+function difficultyToGrade(difficulty: number | null, gradingSystemId: string) {
   const grades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
 
   if (!grades) return null;
+
+  if (difficulty == null) return { difficulty: null, name: "P" };
 
   // assuming grades are ordered by difficulty low to high
   for (let i = 1; i < grades.length; i++) {

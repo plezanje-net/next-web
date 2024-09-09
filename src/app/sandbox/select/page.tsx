@@ -1,9 +1,9 @@
 "use client";
 import { IconSize } from "@/components/ui/icons/icon-size";
-import Button from "../../../components/ui/button";
-import IconColumns from "../../../components/ui/icons/columns";
-import IconStarFull from "../../../components/ui/icons/star-full";
-import { Select, Option } from "../../../components/ui/select";
+import Button from "@/components/ui/button";
+import IconColumns from "@/components/ui/icons/columns";
+import IconStarFull from "@/components/ui/icons/star-full";
+import { Select, Option } from "@/components/ui/select";
 import { gradingSystems } from "@/utils/grading-systems";
 
 import { useState } from "react";

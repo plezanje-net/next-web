@@ -1,8 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import TextField from "../../../../components/ui/text-field";
-import Button from "../../../../components/ui/button";
+import TextField from "@/components/ui/text-field";
+import Button from "@/components/ui/button";
 import loginAction from "./login-action";
 import { useRouter } from "next/navigation";
 

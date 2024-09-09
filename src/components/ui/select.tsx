@@ -1,5 +1,17 @@
-import { Listbox } from "@headlessui/react";
-import React, { Children, Fragment, ReactElement } from "react";
+import {
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
+import React, {
+  Children,
+  Fragment,
+  ReactElement,
+  useEffect,
+  useRef,
+} from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
@@ -11,7 +23,7 @@ interface OptionProps {
 
 function Option({ value, children, disabled }: OptionProps) {
   return (
-    <Listbox.Option
+    <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
@@ -23,11 +35,11 @@ function Option({ value, children, disabled }: OptionProps) {
       <div className="invisible text-neutral-900 ui-selected:visible">
         <IconCheck />
       </div>
-    </Listbox.Option>
+    </ListboxOption>
   );
 }
 
-interface SelectProps {
+type SelectProps = {
   value: string | string[];
   onChange: ((value: string) => void) | ((value: string[]) => void);
   children: ReactElement<OptionProps>[]; // all of the select's options
@@ -36,7 +48,8 @@ interface SelectProps {
   multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
-}
+  initialScrollToValue?: string;
+};
 
 function Select({
   value,
@@ -47,17 +60,23 @@ function Select({
   multi,
   customTrigger,
   disabled,
+  initialScrollToValue,
 }: SelectProps) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
-  let valueToLabel: {
+  let childrenValuesToLabels: {
     [key: string]: {
       label: string | ReactElement;
     };
   } = {};
-  Children.map(children, (child) => {
-    valueToLabel[child.props.value] = {
+
+  let childrenValuesToIndexes: Record<string, number> = {};
+
+  Children.map(children, (child, i) => {
+    childrenValuesToLabels[child.props.value] = {
       label: child.props.children,
     };
+
+    childrenValuesToIndexes[child.props.value] = i;
   });
 
   const constructSelectedLabel = (selected: string | string[]) => {
@@ -66,13 +85,13 @@ function Select({
       return (selected as string[]).map((value: string, index) => {
         return (
           <Fragment key={value}>
-            {valueToLabel[value].label}
+            {childrenValuesToLabels[value].label}
             {index < selected.length - 1 && <>, </>}
           </Fragment>
         );
       });
     } else {
-      return valueToLabel[selected as string].label;
+      return childrenValuesToLabels[selected as string].label;
     }
   };
 
@@ -85,13 +104,63 @@ function Select({
       className="relative bg-white"
       disabled={disabled}
     >
-      {label && <Listbox.Label>{label}</Listbox.Label>}
+      {({ open }) => (
+        <InnerListBox
+          label={label}
+          customTrigger={customTrigger}
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          constructSelectedLabel={constructSelectedLabel}
+          open={open}
+          childrenValuesToIndexes={childrenValuesToIndexes}
+          initialScrollToValue={initialScrollToValue}
+        >
+          {children}
+        </InnerListBox>
+      )}
+    </Listbox>
+  );
+}
+
+type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
+  constructSelectedLabel: (
+    selected: string | string[]
+  ) => string | ReactElement | ReactElement[];
+  open: boolean;
+  childrenValuesToIndexes: Record<string, number>;
+};
+
+function InnerListBox({
+  label,
+  customTrigger,
+  disabled,
+  value,
+  placeholder,
+  constructSelectedLabel,
+  open,
+  childrenValuesToIndexes,
+  initialScrollToValue,
+  children,
+}: InnerListBoxProps) {
+  const listboxOptionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (listboxOptionsRef.current && initialScrollToValue && !value) {
+      const i = childrenValuesToIndexes[initialScrollToValue];
+      listboxOptionsRef.current.scrollTop = (i - 3) * 40; // a child will always be 40px high (with current design :))
+    }
+  }, [open, childrenValuesToIndexes, initialScrollToValue, value]);
+
+  return (
+    <>
+      {label && <Label>{label}</Label>}
       {customTrigger ? (
-        <Listbox.Button as={Fragment}>{customTrigger}</Listbox.Button>
+        <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
       ) : (
-        <Listbox.Button
+        <ListboxButton
           className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
-            label ? "mt-1" : ""
+            label ? "mt-2" : ""
           } ${
             disabled
               ? "border-neutral-300 bg-neutral-100 text-neutral-400"
@@ -111,19 +180,23 @@ function Select({
           <div>
             <IconExpand />
           </div>
-        </Listbox.Button>
+        </ListboxButton>
       )}
 
       <div
-        className={`absolute z-10 pb-2 max-xs:fixed max-xs:left-4 max-xs:right-4 ${
-          customTrigger ? "w-auto whitespace-nowrap" : "w-full"
+        className={`absolute z-10 pb-2 ${
+          customTrigger
+            ? "w-auto whitespace-nowrap max-xs:fixed max-xs:left-4 max-xs:right-4"
+            : "w-full"
         }`}
       >
-        <Listbox.Options className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-          <div className="max-h-80 overflow-auto">{children}</div>
-        </Listbox.Options>
+        <ListboxOptions className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
+            {children}
+          </div>
+        </ListboxOptions>
       </div>
-    </Listbox>
+    </>
   );
 }
 

@@ -8,7 +8,7 @@ function IconsPage() {
   }
 
   const iconComponents = files
-    .filter((file) => file !== "icon.tsx")
+    .filter((file) => file !== "icon.tsx" && file != "icon-size.tsx")
     .map((file) => ({
       component: lazy(
         () => import(`../../../components/ui/icons/${file.replace(".tsx", "")}`)
