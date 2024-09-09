@@ -45,11 +45,11 @@ const TextField = forwardRef(function TextField(
         </label>
       )}
       <div
-        className={`flex items-center rounded-lg border border-neutral-400 focus:ring focus:ring-blue-100
+        className={`flex items-center rounded-lg border focus:ring focus:ring-blue-100
                     ${
                       isDisabled
                         ? "border-neutral-300 bg-neutral-100 text-neutral-400"
-                        : ""
+                        : "border-neutral-400"
                     }
                     ${
                       isFocused

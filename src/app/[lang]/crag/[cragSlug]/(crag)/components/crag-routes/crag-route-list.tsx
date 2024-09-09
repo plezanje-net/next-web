@@ -152,9 +152,9 @@ function CragRouteList({ routes, crag, ascents }: Props) {
       {!routes.length ? (
         <p className={`${bySector ? "py-4" : ""}`}>{noResultsText}</p>
       ) : !cragRoutesState.compact ? (
-        <table className="w-full">
+        <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-neutral-200 text-left text-neutral-500">
+            <tr className="border-b border-neutral-200 text-neutral-500">
               {/* # (checkbox) */}
               <th className="w-8 min-w-8 py-4 pl-0 pr-4 text-center font-normal">
                 #

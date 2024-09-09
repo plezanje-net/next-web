@@ -20,7 +20,8 @@ interface Props {
 }
 
 function CragRoute({ crag, route, ascent }: Props) {
-  const { cragRoutesState } = useContext(CragRoutesContext);
+  const { cragRoutesState, checkedRoutes, setCheckedRoute } =
+    useContext(CragRoutesContext);
 
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
@@ -32,7 +33,12 @@ function CragRoute({ crag, route, ascent }: Props) {
     >
       {/* # (checkbox) */}
       <td>
-        <Checkbox label="Označi kot plezano" hideLabel />
+        <Checkbox
+          label="Označi kot plezano"
+          hideLabel
+          checked={checkedRoutes.some((r) => r.id == route.id)}
+          onChange={(c) => setCheckedRoute(route.id, c)}
+        />
       </td>
 
       {/* Route name */}
@@ -101,7 +107,8 @@ function CragRoute({ crag, route, ascent }: Props) {
 }
 
 function CragRouteCompact({ crag, route, ascent }: Props) {
-  const { cragRoutesState } = useContext(CragRoutesContext);
+  const { cragRoutesState, checkedRoutes, setCheckedRoute } =
+    useContext(CragRoutesContext);
 
   const displayColumn = (name: string) =>
     cragRoutesState.selectedColumns.includes(name);
@@ -121,7 +128,12 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
     >
       <div className="w-7">
-        <Checkbox label="Označi kot plezano" hideLabel />
+        <Checkbox
+          label="Označi kot plezano"
+          hideLabel
+          checked={checkedRoutes.some((r) => r.id == route.id)}
+          onChange={(c) => setCheckedRoute(route.id, c)}
+        />
       </div>
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
