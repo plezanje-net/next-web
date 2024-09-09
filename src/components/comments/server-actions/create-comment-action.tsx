@@ -7,7 +7,8 @@ import urqlServer from "@/graphql/urql-server";
 async function createCommentAction(formData: FormData) {
   const result = await urqlServer().mutation(CreateCommentDocument, {
     input: {
-      cragId: formData.get("cragId"),
+      cragId: formData.get("cragId") || null,
+      routeId: formData.get("routeId") || null,
       content: formData.get("commentContent"),
       type: formData.get("commentType"),
     },

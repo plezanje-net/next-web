@@ -11,6 +11,7 @@ import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "@/utils/text-helpers";
 import RouteGrade from "./crag-route/route-grade";
 import Checkbox from "@/components/ui/checkbox";
+import RouteStarRating from "@/components/route-star-rating";
 
 interface Props {
   crag: Crag;
@@ -173,20 +174,6 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         {!statsText != !cragRoutesState.combine && <div className="pb-1"></div>}
       </div>
     </div>
-  );
-}
-
-interface RouteStarRatingProps {
-  route: Route;
-  size: IconSize.small | IconSize.regular;
-}
-
-function RouteStarRating({ route, size }: RouteStarRatingProps) {
-  return (
-    <>
-      {route.starRating == 2 && <IconStarFull size={size} />}
-      {route.starRating == 1 && <IconStarEmpty size={size} />}
-    </>
   );
 }
 
