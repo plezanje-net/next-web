@@ -1,11 +1,9 @@
 import { Crag } from "../graphql/generated";
-import { gradingSystems } from "../utils/grading-systems";
+import { TGradingSystemId, gradingSystems } from "../utils/grading-systems";
 
 // TODO: we decided to keep half grades for voting and lose modifiers on calculated grades. this becomes much simpler now. move to Grade??
 function difficultyToGrade(difficulty: number, gradingSystemId: string) {
-  const grades = Object.values(gradingSystems).find(
-    (gradingSystem) => gradingSystem.id === gradingSystemId
-  )?.grades;
+  const grades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
 
   if (!grades) return null;
 

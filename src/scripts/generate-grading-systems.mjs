@@ -46,19 +46,45 @@ const response = await fetch(url, {
 const data = await response.json();
 
 const gradingSystemsAsObject = {};
+const gradingSystemIdsAsStrings = [];
 
 data.data.gradingSystems.forEach((gradingSystem) => {
-  const camelId = gradingSystem.id.replace(/(?!^)-(.)/g, (_, char) =>
+  const gradingSystemId = gradingSystem.id.replace(/(?!^)-(.)/g, (_, char) =>
     char.toUpperCase()
   );
-  gradingSystemsAsObject[camelId] = gradingSystem;
+  gradingSystemsAsObject[gradingSystemId] = gradingSystem;
+  gradingSystemIdsAsStrings.push(`"${gradingSystemId}"`);
 });
 
 fs.writeFileSync(
   fullFilePath,
-  "/* This is an auto-generated file. */\n" +
-    "export const gradingSystems = " +
-    JSON.stringify(gradingSystemsAsObject)
-);
+  `/* This is an auto-generated file. */
+export type TGradingSystemId = ${gradingSystemIdsAsStrings.join(' | ')};
+
+  type TGradingSystem = {
+  __typename?: 'GradingSystem';
+  grades: TGrade[];
+  id: string;
+  name: string;
+  routeTypes: TRouteType[];
+};
+
+  type TGrade = {
+  __typename?: 'Grade';
+  difficulty: number;
+  id: string;
+  name: string;
+};
+
+  type TRouteType = {
+  __typename?: 'RouteType';
+  id: string;
+  name: string;
+};
+
+export type TGradingSystems = Record<TGradingSystemId, TGradingSystem>;
+
+export const gradingSystems =  ${JSON.stringify(gradingSystemsAsObject, null, 4)}
+`);
 
 console.log("All grading systems stored into " + fullFilePath);

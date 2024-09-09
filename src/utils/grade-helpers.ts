@@ -1,9 +1,7 @@
-import { gradingSystems } from "./grading-systems";
+import { TGradingSystemId, gradingSystems } from "./grading-systems";
 
 function difficultyToGrade(difficulty: number, gradingSystemId: string) {
-  const grades = Object.values(gradingSystems).find(
-    (gradingSystem) => gradingSystem.id === gradingSystemId
-  )?.grades;
+  const grades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
 
   if (!grades) return null;
 
