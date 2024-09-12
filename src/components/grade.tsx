@@ -1,5 +1,4 @@
-import { GradingSystem } from "@/graphql/generated";
-import { gradingSystems } from "@/utils/grading-systems";
+import { gradingSystems, TGradingSystemId } from "@/utils/grading-systems";
 
 type Props = {
   difficulty: number;
@@ -35,9 +34,7 @@ export function diffToGrade(
   gradingSystemId: string,
   legacy: boolean = false
 ): GradeDisplay {
-  const grades = gradingSystems.find(
-    (gradingSystem) => gradingSystem.id === gradingSystemId
-  )?.grades;
+  const grades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
 
   if (!grades) return { name: "", modifier: 0 };
   // legacy grades should always be accurate and can only be found as grade suggestions
