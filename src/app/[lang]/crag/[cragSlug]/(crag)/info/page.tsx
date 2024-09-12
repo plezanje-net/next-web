@@ -222,7 +222,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
           </div>
 
           <div>
-            <IconMore />
+            <IconMore size={IconSize.regular} />
           </div>
         </div>
 
