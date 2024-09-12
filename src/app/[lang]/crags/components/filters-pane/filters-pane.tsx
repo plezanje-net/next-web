@@ -108,7 +108,7 @@ function FiltersPane() {
       <div className="mt-5 border-t border-neutral-200 px-8 pb-5 pt-4">
         <Button variant="tertiary" onClick={filters.resetAll}>
           <span className="flex gap-2">
-            <IconReset size={IconSize.regular} />
+            <IconReset />
             Ponastavi vse
           </span>
         </Button>

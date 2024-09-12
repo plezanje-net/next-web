@@ -9,6 +9,7 @@ import ToggleFiltersPane from "./toggle-filters-pane";
 import SelectColumns from "./select-columns";
 import Sort from "./sort";
 import { useCragsContext } from "../crags-context";
+import { IconSize } from "@/components/ui/icons/icon-size";
 
 function ActionsRow() {
   const { search } = useCragsContext();
@@ -61,7 +62,7 @@ function ActionsRow() {
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
           <Button variant="quaternary">
-            <IconMore />
+            <IconMore size={IconSize.regular} />
           </Button>
         </div>
 
