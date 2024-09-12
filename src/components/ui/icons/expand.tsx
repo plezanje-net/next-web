@@ -11,4 +11,5 @@ function IconExpand() {
     </svg>
   );
 }
+
 export default IconExpand;

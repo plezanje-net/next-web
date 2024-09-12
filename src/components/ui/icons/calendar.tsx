@@ -11,4 +11,5 @@ function IconCalendar() {
     </svg>
   );
 }
+
 export default IconCalendar;

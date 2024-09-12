@@ -4,6 +4,12 @@ enum IconSize {
   large = "large", // 40px
 }
 
-// icon component should define a subset of sizes that it will implement -> not all icons have all sizes!
+/**
+ *
+ *  every icon component should define a subset of sizes that it will implement
+ *
+ *  note: not all icons have all sizes!
+ *
+ * */
 
 export { IconSize };

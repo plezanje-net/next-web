@@ -21,6 +21,7 @@ function IconStarFull({ size, inline = false }: TIconStarFullProps) {
           <path d="m243-96 63-266L96-541l276-24 108-251 108 252 276 23-210 179 63 266-237-141L243-96Z" />
         </svg>
       );
+
     case IconSize.regular:
       return (
         <svg

@@ -36,4 +36,5 @@ function IconRepeat({ size, inline = false }: TIconRepeatProps) {
       );
   }
 }
+
 export default IconRepeat;

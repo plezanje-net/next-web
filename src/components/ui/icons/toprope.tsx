@@ -35,4 +35,5 @@ function IconToprope({ size }: TIconTopropeProps) {
       );
   }
 }
+
 export default IconToprope;

@@ -1,10 +1,15 @@
-import Icon, { IconProps } from "./icon";
-
-function IconCollapse(props: IconProps) {
+function IconCollapse() {
   return (
-    <Icon {...props}>
-      <path d="M7.4 15.375L6 13.975L12 7.97498L18 13.975L16.6 15.375L12 10.775L7.4 15.375Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      width="24px"
+      height="24px"
+      className="fill-current"
+    >
+      <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
+    </svg>
   );
 }
+
 export default IconCollapse;

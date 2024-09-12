@@ -1,10 +1,15 @@
-import Icon, { IconProps } from "./icon";
-
-function IconMenu(props: IconProps) {
+function IconMenu() {
   return (
-    <Icon {...props}>
-      <path d="M3 18V16H21V18H3ZM3 13V11H21V13H3ZM3 8V6H21V8H3Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      width="24px"
+      height="24px"
+      className="fill-current"
+    >
+      <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+    </svg>
   );
 }
+
 export default IconMenu;

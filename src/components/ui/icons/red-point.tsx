@@ -33,4 +33,5 @@ function IconRedPoint({ size }: TIconRedPointProps) {
       );
   }
 }
+
 export default IconRedPoint;
