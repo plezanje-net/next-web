@@ -789,14 +789,14 @@ export type OrderByInput = {
 };
 
 export enum Orientation {
-  East = 'EAST',
-  North = 'NORTH',
-  Northeast = 'NORTHEAST',
-  Northwest = 'NORTHWEST',
-  South = 'SOUTH',
-  Southeast = 'SOUTHEAST',
-  Southwest = 'SOUTHWEST',
-  West = 'WEST'
+  East = 'east',
+  North = 'north',
+  Northeast = 'northeast',
+  Northwest = 'northwest',
+  South = 'south',
+  Southeast = 'southeast',
+  Southwest = 'southwest',
+  West = 'west'
 }
 
 export type PaginatedActivities = {
@@ -1221,10 +1221,10 @@ export type SearchResults = {
 };
 
 export enum Season {
-  Autumn = 'AUTUMN',
-  Spring = 'SPRING',
-  Summer = 'SUMMER',
-  Winter = 'WINTER'
+  Autumn = 'autumn',
+  Spring = 'spring',
+  Summer = 'summer',
+  Winter = 'winter'
 }
 
 export type Sector = {
@@ -1389,10 +1389,10 @@ export type User = {
 };
 
 export enum WallAngle {
-  Overhang = 'OVERHANG',
-  Roof = 'ROOF',
-  Slab = 'SLAB',
-  Vertical = 'VERTICAL'
+  Overhang = 'overhang',
+  Roof = 'roof',
+  Slab = 'slab',
+  Vertical = 'vertical'
 }
 
 
