@@ -71,21 +71,21 @@ export type Area = {
 };
 
 export enum AscentType {
-  Aid = 'AID',
-  Allfree = 'ALLFREE',
-  Attempt = 'ATTEMPT',
-  Flash = 'FLASH',
-  Onsight = 'ONSIGHT',
-  Redpoint = 'REDPOINT',
-  Repeat = 'REPEAT',
-  Tick = 'TICK',
-  TAid = 'T_AID',
-  TAllfree = 'T_ALLFREE',
-  TAttempt = 'T_ATTEMPT',
-  TFlash = 'T_FLASH',
-  TOnsight = 'T_ONSIGHT',
-  TRedpoint = 'T_REDPOINT',
-  TRepeat = 'T_REPEAT'
+  Aid = 'aid',
+  Allfree = 'allfree',
+  Attempt = 'attempt',
+  Flash = 'flash',
+  Onsight = 'onsight',
+  Redpoint = 'redpoint',
+  Repeat = 'repeat',
+  TAid = 't_aid',
+  TAllfree = 't_allfree',
+  TAttempt = 't_attempt',
+  TFlash = 't_flash',
+  TOnsight = 't_onsight',
+  TRedpoint = 't_redpoint',
+  TRepeat = 't_repeat',
+  Tick = 'tick'
 }
 
 export type Club = {
@@ -787,14 +787,14 @@ export type OrderByInput = {
 };
 
 export enum Orientation {
-  East = 'EAST',
-  North = 'NORTH',
-  Northeast = 'NORTHEAST',
-  Northwest = 'NORTHWEST',
-  South = 'SOUTH',
-  Southeast = 'SOUTHEAST',
-  Southwest = 'SOUTHWEST',
-  West = 'WEST'
+  East = 'east',
+  North = 'north',
+  Northeast = 'northeast',
+  Northwest = 'northwest',
+  South = 'south',
+  Southeast = 'southeast',
+  Southwest = 'southwest',
+  West = 'west'
 }
 
 export type PaginatedActivities = {
@@ -889,10 +889,10 @@ export type PropertyType = {
 };
 
 export enum PublishType {
-  Club = 'CLUB',
-  Log = 'LOG',
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
+  Club = 'club',
+  Log = 'log',
+  Private = 'private',
+  Public = 'public'
 }
 
 export type Query = {
@@ -1219,10 +1219,10 @@ export type SearchResults = {
 };
 
 export enum Season {
-  Autumn = 'AUTUMN',
-  Spring = 'SPRING',
-  Summer = 'SUMMER',
-  Winter = 'WINTER'
+  Autumn = 'autumn',
+  Spring = 'spring',
+  Summer = 'summer',
+  Winter = 'winter'
 }
 
 export type Sector = {
@@ -1387,10 +1387,10 @@ export type User = {
 };
 
 export enum WallAngle {
-  Overhang = 'OVERHANG',
-  Roof = 'ROOF',
-  Slab = 'SLAB',
-  Vertical = 'VERTICAL'
+  Overhang = 'overhang',
+  Roof = 'roof',
+  Slab = 'slab',
+  Vertical = 'vertical'
 }
 
 

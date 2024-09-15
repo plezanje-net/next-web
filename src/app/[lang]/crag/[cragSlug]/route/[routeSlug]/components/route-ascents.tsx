@@ -6,6 +6,7 @@ import AscentType from "@/components/ascent-type";
 import { useState } from "react";
 import routeAscentsAction from "./server-actions/route-ascents-action";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 type TRouteAscentsProps = {
   routeId: string;
@@ -24,6 +25,7 @@ function RouteAscents({
   const [pageNumber, setPageNumber] = useState(1);
   const [allAscents, setAllAscents] = useState(false);
   const [pageCount, setPageCount] = useState(initialPageCount);
+  const breakpoint = useBreakpoint();
 
   function loadMore() {
     routeAscentsAction(routeId, pageNumber + 1, allAscents).then(
@@ -42,7 +44,7 @@ function RouteAscents({
     setAllAscents(value === "all");
     setPageNumber(1);
   }
-
+  
   return (
     <div className="@container">
       <div className="pb-1 ">
@@ -65,7 +67,7 @@ function RouteAscents({
                 </td>
               )}
               <td className="pb-1">
-                <AscentType type={ascentType} />
+                <AscentType type={ascentType} compact={['default', 'xs', 'md', 'lg'].includes(breakpoint)} />
               </td>
             </tr>
           ))}
