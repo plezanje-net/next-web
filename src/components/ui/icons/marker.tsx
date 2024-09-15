@@ -1,8 +1,10 @@
-interface IconMarkerProps {
+type TIconMarkerProps = {
   type: "parking" | "wall";
-}
+};
 
-function IconMarker({ type }: IconMarkerProps) {
+// TODO: why not just have multiple icons...?
+
+function IconMarker({ type }: TIconMarkerProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +28,10 @@ function IconMarker({ type }: IconMarkerProps) {
 
       {/* wall icon */}
       {type === "wall" && (
-        <g>
-          <path d="M26.2148 12.5H31.3198L32.1712 16.757L33.7187 18.3045L34.5799 29.5H17.2192L20.6834 15.6435L24.6477 14.8507L26.2148 12.5ZM24.5418 16.9114L22.3167 17.3565L19.7808 27.5H25.597L24.9767 23.1577L25.7035 20.9773L24.5418 16.9114ZM27.6173 27.5H32.4201L31.7813 19.1955L30.3288 17.743L29.6802 14.5H27.2852L26.3386 15.9199L27.7965 21.0227L27.0233 23.3423L27.6173 27.5Z" />
-        </g>
+        <path d="M26.2148 12.5H31.3198L32.1712 16.757L33.7187 18.3045L34.5799 29.5H17.2192L20.6834 15.6435L24.6477 14.8507L26.2148 12.5ZM24.5418 16.9114L22.3167 17.3565L19.7808 27.5H25.597L24.9767 23.1577L25.7035 20.9773L24.5418 16.9114ZM27.6173 27.5H32.4201L31.7813 19.1955L30.3288 17.743L29.6802 14.5H27.2852L26.3386 15.9199L27.7965 21.0227L27.0233 23.3423L27.6173 27.5Z" />
       )}
     </svg>
   );
 }
+
 export default IconMarker;

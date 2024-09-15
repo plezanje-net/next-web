@@ -33,4 +33,5 @@ function IconFlash({ size }: TIconFlashProps) {
       );
   }
 }
+
 export default IconFlash;

@@ -1,10 +1,15 @@
-import Icon, { IconProps } from "./icon";
-
-function IconColumns(props: IconProps) {
+function IconColumns() {
   return (
-    <Icon {...props}>
-      <path d="M4 18H8V6H4V18ZM10 18H14V6H10V18ZM16 18H20V6H16V18ZM4 20C3.45 20 2.97933 19.8043 2.588 19.413C2.196 19.021 2 18.55 2 18V6C2 5.45 2.196 4.97933 2.588 4.588C2.97933 4.196 3.45 4 4 4H20C20.55 4 21.021 4.196 21.413 4.588C21.8043 4.97933 22 5.45 22 6V18C22 18.55 21.8043 19.021 21.413 19.413C21.021 19.8043 20.55 20 20 20H4Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      width="24px"
+      height="24px"
+      className="fill-current"
+    >
+      <path d="M160-240h160v-480H160v480Zm240 0h160v-480H400v480Zm240 0h160v-480H640v480Zm-480 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z" />
+    </svg>
   );
 }
+
 export default IconColumns;

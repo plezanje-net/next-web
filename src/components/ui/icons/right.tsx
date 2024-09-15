@@ -11,4 +11,5 @@ function IconRight() {
     </svg>
   );
 }
+
 export default IconRight;

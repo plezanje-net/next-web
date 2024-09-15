@@ -1,10 +1,15 @@
-import Icon, { IconProps } from "./icon";
-
-function IconFilter(props: IconProps) {
+function IconFilter() {
   return (
-    <Icon {...props}>
-      <path d="M11 21V15H13V17H21V19H13V21H11ZM3 19V17H9V19H3ZM7 15V13H3V11H7V9H9V15H7ZM11 13V11H21V13H11ZM15 9V3H17V5H21V7H17V9H15ZM3 7V5H13V7H3Z" />
-    </Icon>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      width="24px"
+      height="24px"
+      className="fill-current"
+    >
+      <path d="M440-120v-240h80v80h320v80H520v80h-80Zm-320-80v-80h240v80H120Zm160-160v-80H120v-80h160v-80h80v240h-80Zm160-80v-80h400v80H440Zm160-160v-240h80v80h160v80H680v80h-80Zm-480-80v-80h400v80H120Z" />
+    </svg>
   );
 }
+
 export default IconFilter;

@@ -18,6 +18,7 @@ function IconStarEmpty({ size }: TIconStarEmptyProps) {
           <path d="m352-245 128-76 129 76-34-144 111-95-147-13-59-137-59 137-147 13 112 95-34 144ZM243-96l63-266L96-541l276-24 108-251 108 252 276 23-210 179 63 266-237-141L243-96Zm237-333Z" />
         </svg>
       );
+
     case IconSize.regular:
       return (
         <svg
@@ -32,4 +33,5 @@ function IconStarEmpty({ size }: TIconStarEmptyProps) {
       );
   }
 }
+
 export default IconStarEmpty;

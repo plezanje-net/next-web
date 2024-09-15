@@ -33,4 +33,5 @@ function IconAttempt({ size }: TIconAttemptProps) {
       );
   }
 }
+
 export default IconAttempt;

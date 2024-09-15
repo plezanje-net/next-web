@@ -1,10 +1,10 @@
 import { IconSize } from "./icon-size";
 
-type TIconAllFreeProps = {
+type TIconToday = {
   size: IconSize.small | IconSize.regular;
 };
 
-function IconAllFree({ size }: TIconAllFreeProps) {
+function IconToday({ size }: TIconToday) {
   switch (size) {
     case IconSize.small:
       return (
@@ -15,7 +15,7 @@ function IconAllFree({ size }: TIconAllFreeProps) {
           height="20"
           className="fill-current"
         >
-          <path d="M132-192q-15.3 0-25.65-11Q96-214 96-229.111q0-8.889 3.867-16.569 3.866-7.681 11.6-12.199L444-491v-73q0-15.3 11.122-25.65Q466.244-600 482-600q20 0 33-14.442t13-34.5Q528-669 514-682.5T480-696q-20 0-34 14t-14 34h-72q0-50 35.202-85t85-35Q530-768 565-733.379t35 84.202Q600-609 577-576.5 554-544 516-533v42l332.533 234.043q7.734 4.536 11.6 12.246Q864-237 864-228q0 15.3-10.35 25.65Q843.3-192 828-192H132Zm114-72h468L480-428 246-264Z" />
+          <path d="M384.225-264Q344-264 316-291.775q-28-27.774-28-68Q288-400 315.775-428q27.774-28 68-28Q424-456 452-428.225q28 27.774 28 68Q480-320 452.225-292q-27.774 28-68 28ZM216-96q-29.7 0-50.85-21.5Q144-139 144-168v-528q0-29 21.15-50.5T216-768h72v-96h72v96h240v-96h72v96h72q29.7 0 50.85 21.5Q816-725 816-696v528q0 29-21.15 50.5T744-96H216Zm0-72h528v-360H216v360Zm0-432h528v-96H216v96Zm0 0v-96 96Z" />
         </svg>
       );
 
@@ -34,4 +34,4 @@ function IconAllFree({ size }: TIconAllFreeProps) {
   }
 }
 
-export default IconAllFree;
+export default IconToday;
