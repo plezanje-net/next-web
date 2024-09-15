@@ -21,7 +21,6 @@ type Props = {
 
 async function getCragBySlug(crag: string): Promise<Crag> {
   const { user: loggedInUser } = await authStatus();
-  console.log(loggedInUser);
 
   const firstTryArInput = !!loggedInUser
     ? {
@@ -37,7 +36,7 @@ async function getCragBySlug(crag: string): Promise<Crag> {
 
   const firstTickArInput = !!loggedInUser
     ? {
-        ascentType: tickAscentTypes.map((at) => at.toLowerCase()),
+        ascentType: tickAscentTypes,
         pageSize: 1,
         pageNumber: 1,
         orderBy: {
@@ -50,7 +49,7 @@ async function getCragBySlug(crag: string): Promise<Crag> {
 
   const firstTrTickArInput = !!loggedInUser
     ? {
-        ascentType: trTickAscentTypes.map((at) => at.toLowerCase()),
+        ascentType: trTickAscentTypes,
         pageSize: 1,
         pageNumber: 1,
         orderBy: {
