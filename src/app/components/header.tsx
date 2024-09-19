@@ -34,7 +34,7 @@ function Header({ authStatus }: Props) {
     },
     {
       label: "Plezalni dnevnik",
-      href: "/plezalni-dnevnik",
+      href: "/plezalni-dnevnik/vzponi",
       isActive: false,
     },
   ];
