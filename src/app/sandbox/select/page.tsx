@@ -184,7 +184,7 @@ function SelectPage() {
 
       <div className="mt-14 w-40">
         <h5>A narrow select</h5>
-        <div className="mt-4">
+        <div className="mt-4 text-right">
           <Select
             label="Izberi možnost"
             placeholder="Izberi možnost"
@@ -266,6 +266,11 @@ function SelectPage() {
             </Option>
           ))}
         </Select>
+        <select>          {grades.map((grade) => (
+          <option key={grade.id} value={grade.name}>
+            {grade.name}
+          </option>
+        ))}</select>
       </div>
     </div>
   );
