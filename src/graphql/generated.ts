@@ -71,21 +71,21 @@ export type Area = {
 };
 
 export enum AscentType {
-  Aid = 'AID',
-  Allfree = 'ALLFREE',
-  Attempt = 'ATTEMPT',
-  Flash = 'FLASH',
-  Onsight = 'ONSIGHT',
-  Redpoint = 'REDPOINT',
-  Repeat = 'REPEAT',
-  Tick = 'TICK',
-  TAid = 'T_AID',
-  TAllfree = 'T_ALLFREE',
-  TAttempt = 'T_ATTEMPT',
-  TFlash = 'T_FLASH',
-  TOnsight = 'T_ONSIGHT',
-  TRedpoint = 'T_REDPOINT',
-  TRepeat = 'T_REPEAT'
+  Aid = 'aid',
+  Allfree = 'allfree',
+  Attempt = 'attempt',
+  Flash = 'flash',
+  Onsight = 'onsight',
+  Redpoint = 'redpoint',
+  Repeat = 'repeat',
+  TAid = 't_aid',
+  TAllfree = 't_allfree',
+  TAttempt = 't_attempt',
+  TFlash = 't_flash',
+  TOnsight = 't_onsight',
+  TRedpoint = 't_redpoint',
+  TRepeat = 't_repeat',
+  Tick = 'tick'
 }
 
 export type Club = {
@@ -787,14 +787,14 @@ export type OrderByInput = {
 };
 
 export enum Orientation {
-  East = 'EAST',
-  North = 'NORTH',
-  Northeast = 'NORTHEAST',
-  Northwest = 'NORTHWEST',
-  South = 'SOUTH',
-  Southeast = 'SOUTHEAST',
-  Southwest = 'SOUTHWEST',
-  West = 'WEST'
+  East = 'east',
+  North = 'north',
+  Northeast = 'northeast',
+  Northwest = 'northwest',
+  South = 'south',
+  Southeast = 'southeast',
+  Southwest = 'southwest',
+  West = 'west'
 }
 
 export type PaginatedActivities = {
@@ -889,10 +889,10 @@ export type PropertyType = {
 };
 
 export enum PublishType {
-  Club = 'CLUB',
-  Log = 'LOG',
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
+  Club = 'club',
+  Log = 'log',
+  Private = 'private',
+  Public = 'public'
 }
 
 export type Query = {
@@ -1219,10 +1219,10 @@ export type SearchResults = {
 };
 
 export enum Season {
-  Autumn = 'AUTUMN',
-  Spring = 'SPRING',
-  Summer = 'SUMMER',
-  Winter = 'WINTER'
+  Autumn = 'autumn',
+  Spring = 'spring',
+  Summer = 'summer',
+  Winter = 'winter'
 }
 
 export type Sector = {
@@ -1387,13 +1387,14 @@ export type User = {
 };
 
 export enum WallAngle {
-  Overhang = 'OVERHANG',
-  Roof = 'ROOF',
-  Slab = 'SLAB',
-  Vertical = 'VERTICAL'
+  Overhang = 'overhang',
+  Roof = 'roof',
+  Slab = 'slab',
+  Vertical = 'vertical'
 }
 
 
+export const MyActivityRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyActivityRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FindActivityRoutesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"myActivityRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"ascentType"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"partner"}},{"kind":"Field","name":{"kind":"Name","value":"publish"}},{"kind":"Field","name":{"kind":"Name","value":"activity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"isProject"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pitch"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"isProject"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"meta"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"itemCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageNumber"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]}}]}}]} as unknown as DocumentNode<MyActivityRoutesQuery, MyActivityRoutesQueryVariables>;
 export const HomeLatestAscentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HomeLatestAscents"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"activitiesInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FindActivitiesInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"activityRoutesInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FindActivityRoutesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"activities"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"activitiesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"routes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"activityRoutesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"ascentType"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"meta"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"itemCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageNumber"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]}}]}}]} as unknown as DocumentNode<HomeLatestAscentsQuery, HomeLatestAscentsQueryVariables>;
 export const HomeLatestDifficultyVotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HomeLatestDifficultyVotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LatestDifficultyVotesInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestDifficultyVotes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]}}]}}]} as unknown as DocumentNode<HomeLatestDifficultyVotesQuery, HomeLatestDifficultyVotesQueryVariables>;
 export const CreateCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCommentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateCommentMutation, CreateCommentMutationVariables>;
@@ -1416,6 +1417,7 @@ export const DryRunCreateActivityDocument = {"kind":"Document","definitions":[{"
 export const ProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]} as unknown as DocumentNode<ProfileQuery, ProfileQueryVariables>;
 export const namedOperations = {
   Query: {
+    MyActivityRoutes: 'MyActivityRoutes',
     HomeLatestAscents: 'HomeLatestAscents',
     HomeLatestDifficultyVotes: 'HomeLatestDifficultyVotes',
     CragComments: 'CragComments',
@@ -1440,6 +1442,13 @@ export const namedOperations = {
     CreateActivity: 'CreateActivity'
   }
 }
+export type MyActivityRoutesQueryVariables = Exact<{
+  input?: InputMaybe<FindActivityRoutesInput>;
+}>;
+
+
+export type MyActivityRoutesQuery = { __typename?: 'Query', myActivityRoutes: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null, ascentType: AscentType, notes?: string | null, partner?: string | null, publish: PublishType, activity?: { __typename?: 'Activity', id: string } | null, route: { __typename?: 'Route', isProject: boolean, difficulty?: number | null, name: string, slug: string, id: string, crag: { __typename?: 'Crag', id: string, name: string, slug: string, country: { __typename?: 'Country', slug: string } }, defaultGradingSystem: { __typename?: 'GradingSystem', id: string } }, pitch?: { __typename?: 'Pitch', number: number, isProject: boolean, difficulty?: number | null } | null }>, meta: { __typename?: 'PaginationMeta', itemCount: number, pageCount: number, pageNumber: number, pageSize: number } } };
+
 export type HomeLatestAscentsQueryVariables = Exact<{
   activitiesInput?: InputMaybe<FindActivitiesInput>;
   activityRoutesInput?: InputMaybe<FindActivityRoutesInput>;

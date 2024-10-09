@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "./button";
 import IconFirst from "./icons/first";
 import IconLast from "./icons/last";
@@ -11,8 +13,12 @@ interface TPaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ currentPage, totalPages, onPageChange }: TPaginationProps) => {
-  const handlePageClick = (page: number) => () => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: TPaginationProps) => {
+  const handlePageClick = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
     }
@@ -22,38 +28,45 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: TPaginationProps)
     <div className="flex items-center">
       <Button
         variant="quaternary"
-        onClick={handlePageClick(1)}
+        onClick={() => handlePageClick(1)}
         disabled={currentPage === 1}
       >
         <IconFirst />
       </Button>
       <Button
         variant="quaternary"
-        onClick={handlePageClick(currentPage - 1)}
+        onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <IconLeft />
       </Button>
-      <div className="flex gap-2 items-center">Stran 
-      <Select value={`${currentPage}`} onChange={(e: string) => handlePageClick(Number(e))}>
-        
-        {Array.from({ length: totalPages }, (_, index) => (
-          <Option key={index} value={`${index + 1}`}>{`${index + 1}`}</Option>
-      ))}
-      </Select>
-
-       od {totalPages} 
-       </div>
+      <div className="flex gap-2 items-center">
+        Stran
+        <div className="min-w-20">
+          <Select
+            value={`${currentPage}`}
+            onChange={(e: string) => handlePageClick(Number(e))}
+          >
+            {Array.from({ length: totalPages }, (_, index) => (
+              <Option
+                key={index}
+                value={`${index + 1}`}
+              >{`${index + 1}`}</Option>
+            ))}
+          </Select>
+        </div>
+        od {totalPages}
+      </div>
       <Button
         variant="quaternary"
-        onClick={handlePageClick(currentPage + 1)}
+        onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         <IconRight />
       </Button>
       <Button
         variant="quaternary"
-        onClick={handlePageClick(totalPages)}
+        onClick={() => handlePageClick(totalPages)}
         disabled={currentPage === totalPages}
       >
         <IconLast />

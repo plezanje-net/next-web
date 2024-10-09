@@ -1,19 +1,91 @@
-"use client";
+import {
+  FindActivityRoutesInput,
+  MyActivityRoutesDocument,
+} from "@/graphql/generated";
+import urqlServer from "@/graphql/urql-server";
+import { gql } from "urql";
+import AscentList from "./components/acent-list/ascent-list";
+import { AscentsProvider } from "./components/ascents-context";
 
-import Pagination from "@/components/ui/pagination";
+type TSearchParams = {
+  page: string;
+};
 
-function ClimbingLogPage() {
+type TClimbingLogPageProps = {
+  searchParams: TSearchParams;
+};
 
-  function handlePageChange () {
-    console.log('page changed');
-  }
+async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
+  const pageNumber = parseInt(searchParams.page) || 1;
+
+  const {
+    data: { myActivityRoutes },
+  } = await urqlServer().query(MyActivityRoutesDocument, {
+    input: {
+      pageSize: 8,
+      pageNumber,
+      orderBy: {
+        field: "date",
+        direction: "DESC",
+      },
+    },
+  });
 
   return (
-    <>
-      Ascents
-      <Pagination currentPage={1} totalPages={100} onPageChange={handlePageChange} />
-    </>
+    <AscentsProvider>
+      <AscentList
+        ascents={myActivityRoutes.items}
+        paginationMeta={myActivityRoutes.meta}
+      />
+    </AscentsProvider>
   );
 }
+
+gql`
+  query MyActivityRoutes($input: FindActivityRoutesInput) {
+    myActivityRoutes(input: $input) {
+      items {
+        id
+        date
+        ascentType
+        notes
+        partner
+        publish
+        activity {
+          id
+        }
+        route {
+          crag {
+            id
+            name
+            slug
+            country {
+              slug
+            }
+          }
+          isProject
+          difficulty
+          defaultGradingSystem {
+            id
+          }
+          name
+          slug
+          id
+        }
+        pitch {
+          number
+          isProject
+          difficulty
+        }
+      }
+      meta {
+        itemCount
+        pageCount
+        pageNumber
+        pageSize
+      }
+    }
+  }
+`;
 
 export default ClimbingLogPage;

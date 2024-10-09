@@ -3,7 +3,6 @@ import {
   NavigateOptions,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { NextRouter } from "next/router";
 
 interface Options {
   shallow?: boolean;
