@@ -1,5 +1,5 @@
 import { Select, Option } from "./ui/select";
-import { gradingSystems } from "@/utils/grading-systems";
+import { TGradingSystemId, gradingSystems } from "@/utils/grading-systems";
 import IconPlus from "./ui/icons/plus";
 import Button from "./ui/button";
 import IconMinus from "./ui/icons/minus";
@@ -93,8 +93,7 @@ export default GradeSelector;
 // Helpers
 
 const getGrades = (gradingSystemId: string, halfGrades: boolean = false) => {
-  const fullGrades =
-    gradingSystems.find((gs) => gs.id === gradingSystemId)?.grades || [];
+  const fullGrades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
 
   let grades = [];
 
