@@ -615,7 +615,7 @@ const getSlugToNameMap = <T extends Area | Country>(entities: T[]) => {
 
 const getMinMaxDifficulty = () => {
   // For now we can only filter by french grades. Should add other grading systems in a future task?
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades!;
+  const frenchGrades = gradingSystems["french"].grades;
 
   return {
     minDifficulty: frenchGrades[0].difficulty,
@@ -624,7 +624,7 @@ const getMinMaxDifficulty = () => {
 };
 
 const getDifficultyGradeMap = () => {
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades!;
+  const frenchGrades = gradingSystems["french"].grades;
 
   return frenchGrades.reduce((prev: Record<string, string>, cur) => {
     prev[cur.difficulty] = cur.name;
