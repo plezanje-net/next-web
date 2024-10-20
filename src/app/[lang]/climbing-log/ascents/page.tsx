@@ -10,6 +10,7 @@ import ActionsRow from "./components/actions-row/actions-row";
 
 type TSearchParams = {
   page: string;
+  sort?: string;
 };
 
 type TClimbingLogPageProps = {
@@ -19,6 +20,8 @@ type TClimbingLogPageProps = {
 async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
   const pageNumber = parseInt(searchParams.page) || 1;
 
+  const [sortField, sortDirection] = (searchParams.sort || "date,desc").split(',');
+
   const {
     data: { myActivityRoutes },
   } = await urqlServer().query(MyActivityRoutesDocument, {
@@ -26,8 +29,8 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
       pageSize: 8,
       pageNumber,
       orderBy: {
-        field: "date",
-        direction: "DESC",
+        field: sortField,
+        direction: sortDirection.toUpperCase(),
       },
     },
   });

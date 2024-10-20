@@ -8,7 +8,7 @@
 // import ShowMap from "./show-map";
 // import ToggleFiltersPane from "./toggle-filters-pane";
 import SelectColumns from "./select-columns";
-// import Sort from "./sort";
+import Sort from "./sort";
 
 function ActionsRow() {
   return (
@@ -34,7 +34,7 @@ function ActionsRow() {
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          {/* <Sort /> */}
+          <Sort />
         </div>
       </div>
     </>
