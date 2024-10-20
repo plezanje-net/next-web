@@ -6,6 +6,7 @@ import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import AscentList from "./components/acent-list/ascent-list";
 import { AscentsProvider } from "./components/ascents-context";
+import ActionsRow from "./components/actions-row/actions-row";
 
 type TSearchParams = {
   page: string;
@@ -33,6 +34,7 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
 
   return (
     <AscentsProvider>
+      <ActionsRow />
       <AscentList
         ascents={myActivityRoutes.items}
         paginationMeta={myActivityRoutes.meta}
