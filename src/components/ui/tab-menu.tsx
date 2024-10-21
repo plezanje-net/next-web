@@ -14,7 +14,7 @@ interface TabMenuProps {
 
 function TabMenu({ items }: TabMenuProps) {
   return (
-    <ul className="flex justify-center border-b border-b-neutral-200">
+    <ul className="flex justify-center border-b border-b-neutral-200 border-t border-t-transparent">
       {items.map((item, index) => (
         <li
           key={index}
