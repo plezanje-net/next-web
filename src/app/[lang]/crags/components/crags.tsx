@@ -1,24 +1,22 @@
 "use client";
 
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import FiltersPane from "./filters-pane/filters-pane";
 import CragList from "./crag-list/crag-list";
 import ActionsRow from "./actions-row/actions-row";
+import Breadcrumbs from "@/components/breadcrumbs";
 
 function Crags() {
+  const crumbs = [
+    { label: "Plezanje.net", link: "/" },
+    { label: "Plezališča", link: null },
+  ];
+
   return (
     <>
       <ContentHeader
         heading="Plezališča"
-        breadcrumbs={
-          <Breadcrumbs
-            items={[
-              { label: "Plezanje.net", link: "/" },
-              { label: "Plezališča", link: "" },
-            ]}
-          />
-        }
+        breadcrumbs={<Breadcrumbs crumbs={crumbs} />}
       />
 
       <ActionsRow />
