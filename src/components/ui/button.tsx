@@ -11,6 +11,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   disabled?: boolean;
   loading?: boolean;
+  type?: "button" | "reset" | "submit";
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -18,6 +19,7 @@ const Button = forwardRef(function Button(
   {
     children,
     variant = "primary",
+    type = "submit",
     disabled = false,
     loading = false,
     onClick,
@@ -63,6 +65,7 @@ const Button = forwardRef(function Button(
       className={buttonStyles}
       disabled={disabled}
       onClick={onClick}
+      type={type}
     >
       {loading ? (
         <div className="relative">
