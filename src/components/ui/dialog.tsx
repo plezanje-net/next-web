@@ -111,7 +111,7 @@ function Dialog({
           >
             <DialogTitle as={titleSize}>{title}</DialogTitle>
 
-            <Description className="mt-8" as="div">
+            <Description className="mt-6" as="div">
               {children}
             </Description>
 

@@ -38,6 +38,7 @@ gql`
       fullName
       email
       roles
+      gender
     }
   }
 `;
