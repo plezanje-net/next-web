@@ -11,20 +11,18 @@ async function createImageAction(token: string, formData: FormData, progressCall
       authorization: token ? `Bearer ${token}` : "",
     },
     onUploadProgress: (p) => {
-      console.log("progress", p);
       if (p.progress !== undefined) {
 
         progressCallback(p.progress);
       }
     }
   }).then(data => {
-    console.log(data);
     if (data.status === 200) {
 
     }
 
     return true;
-  }).catch(function (error) {
+  }).catch(function () {
     throw new Error('Creating image data failed.');
   });
 }
