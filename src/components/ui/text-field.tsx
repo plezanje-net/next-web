@@ -62,7 +62,9 @@ const TextField = forwardRef(function TextField(
           }`}
       >
         {prefix && (
-          <div className={`${buttonPrefix ? "pl-1" : "pl-2"}`}>{prefix}</div>
+          <div className={`${buttonPrefix ? "pl-1 relative z-10" : "pl-2"}`}>
+            {prefix}
+          </div>
         )}
 
         <Input
@@ -74,8 +76,8 @@ const TextField = forwardRef(function TextField(
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`flex-1 outline-none min-w-0 rounded-lg w-full py-2 placeholder:text-neutral-400
-            ${prefix ? (buttonPrefix ? "ml-1" : "ml-2") : "ml-4"}
-            ${suffix ? (buttonSuffix ? "mr-1" : "mr-2") : "mr-4"}
+            ${prefix ? (buttonPrefix ? "pl-1" : "pl-2") : "pl-4"}
+            ${suffix ? (buttonSuffix ? "pr-1" : "pr-2") : "pr-4"}
           `}
         />
 
