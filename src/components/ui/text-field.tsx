@@ -38,7 +38,7 @@ const TextField = forwardRef(function TextField(
   const inputRef = useForwardedRef(forwardedRef);
 
   const focusInput = () => {
-    // inputRef.current?.focus();
+    inputRef.current?.focus();
   };
 
   const buttonPrefix = prefix?.type === Button;
