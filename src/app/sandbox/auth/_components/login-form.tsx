@@ -43,7 +43,7 @@ function LoginForm() {
           onChange={(value) => changeHandler("email", value)}
           value={formData.email}
           placeholder="Uporabniško ime"
-          isDisabled={loggingIn}
+          disabled={loggingIn}
         />
       </div>
       <div className="pt-2">
@@ -53,7 +53,7 @@ function LoginForm() {
           onChange={(value) => changeHandler("password", value)}
           value={formData.password}
           placeholder="Geslo"
-          isDisabled={loggingIn}
+          disabled={loggingIn}
           type="password"
         />
       </div>

@@ -1,17 +1,13 @@
 import useForwardedRef from "@/hooks/useForwardedRef";
 import { Description, Field, Input, Label } from "@headlessui/react";
-import {
-  Dispatch,
-  ForwardedRef,
-  ReactElement,
-  SetStateAction,
-  forwardRef,
-} from "react";
+import { ForwardedRef, ReactElement, forwardRef } from "react";
 import Button from "./button";
 
 type TInputProps = {
+  name?: string;
   value: string;
-  onChange: Dispatch<SetStateAction<string>>;
+  type?: string;
+  onChange: (value: string) => void;
   label?: string;
   placeholder?: string;
   description?: string;
@@ -24,7 +20,9 @@ type TInputProps = {
 
 const TextField = forwardRef(function TextField(
   {
+    name,
     value,
+    type = "text",
     onChange,
     label,
     placeholder,
@@ -70,7 +68,8 @@ const TextField = forwardRef(function TextField(
         <Input
           ref={inputRef}
           onBlur={onBlur}
-          type="text"
+          type={type}
+          name={name}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
