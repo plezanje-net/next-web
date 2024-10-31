@@ -1,9 +1,14 @@
 import useForwardedRef from "@/hooks/useForwardedRef";
 import { Description, Field, Input, Label } from "@headlessui/react";
-import { ForwardedRef, ReactElement, forwardRef } from "react";
+import {
+  ForwardedRef,
+  KeyboardEventHandler,
+  ReactElement,
+  forwardRef,
+} from "react";
 import Button from "./button";
 
-type TInputProps = {
+type TTextFieldProps = {
   name?: string;
   value: string;
   type?: string;
@@ -16,6 +21,7 @@ type TInputProps = {
   prefix?: ReactElement;
   suffix?: ReactElement;
   onBlur?: () => void;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 };
 
 const TextField = forwardRef(function TextField(
@@ -32,7 +38,8 @@ const TextField = forwardRef(function TextField(
     prefix,
     suffix,
     onBlur,
-  }: TInputProps,
+    onKeyDown,
+  }: TTextFieldProps,
   forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
   const inputRef = useForwardedRef(forwardedRef);
@@ -75,6 +82,7 @@ const TextField = forwardRef(function TextField(
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          onKeyDown={onKeyDown}
           className={`flex-1 outline-none min-w-0 rounded-lg w-full py-2 placeholder:text-neutral-400
             ${prefix ? (buttonPrefix ? "pl-1" : "pl-2") : "pl-4"}
             ${suffix ? (buttonSuffix ? "pr-1" : "pr-2") : "pr-4"}
@@ -97,6 +105,7 @@ const TextField = forwardRef(function TextField(
 });
 
 export default TextField;
+export type { TTextFieldProps };
 
 /* 
 TODO:

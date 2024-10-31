@@ -25,12 +25,11 @@ import IconOrientation from "@/components/ui/icons/orientation";
 import GradeDistribution from "@/components/grade-distribution";
 import VisitsDistribution from "@/components/visits-distribution";
 import Map from "@/components/map/map";
-import Button from "@/components/ui/button";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
-import { TMarker } from "@/components/map/map-marker";
+import MapMarker from "@/components/map/map-marker";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -183,19 +182,24 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
   });
 
   // Construct array of all parkings and walls markers
-  const markers: TMarker[] = Object.entries(parkings).map(
-    ([_id, { lat, lon, sectors }]) => ({
-      type: "parking",
-      position: [lat, lon],
-      popupContent: <ParkingMarkerPopupContent sectors={sectors} />,
-    })
+  const markers = Object.entries(parkings).map(
+    ([id, { lat, lon, sectors }]) => (
+      <MapMarker
+        key={id}
+        type="parking"
+        position={[lat, lon]}
+        popupContent={<ParkingMarkerPopupContent sectors={sectors} />}
+      />
+    )
   );
   if (crag.lat && crag.lon) {
-    markers.push({
-      type: "wall",
-      position: [crag.lat, crag.lon],
-      popupContent: <div>{`Plezališče ${crag.name}`}</div>,
-    });
+    markers.push(
+      <MapMarker
+        type="wall"
+        position={[crag.lat, crag.lon]}
+        popupContent={<div>{`Plezališče ${crag.name}`}</div>}
+      />
+    );
   }
 
   return (
@@ -376,7 +380,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
 
         {/* Map */}
         <div className="md:col-span-2">
-          {markers.length > 0 && <Map autoBounds markers={markers} />}
+          {markers.length > 0 && (
+            <Map autoBounds markers={markers} className="xs:rounded-lg" />
+          )}
         </div>
       </div>
     </>
