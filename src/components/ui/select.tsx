@@ -1,4 +1,6 @@
 import {
+  Description,
+  Field,
   Label,
   Listbox,
   ListboxButton,
@@ -45,6 +47,7 @@ type SelectProps = {
   children: ReactElement<OptionProps>[]; // all of the select's options
   label?: string;
   placeholder?: string;
+  description?: string;
   multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
@@ -57,6 +60,7 @@ function Select({
   children,
   label,
   placeholder,
+  description,
   multi,
   customTrigger,
   disabled,
@@ -111,6 +115,7 @@ function Select({
           disabled={disabled}
           value={value}
           placeholder={placeholder}
+          description={description}
           constructSelectedLabel={constructSelectedLabel}
           open={open}
           childrenValuesToIndexes={childrenValuesToIndexes}
@@ -137,6 +142,7 @@ function InnerListBox({
   disabled,
   value,
   placeholder,
+  description,
   constructSelectedLabel,
   open,
   childrenValuesToIndexes,
@@ -153,7 +159,7 @@ function InnerListBox({
   }, [open, childrenValuesToIndexes, initialScrollToValue, value]);
 
   return (
-    <>
+    <Field>
       {label && <Label>{label}</Label>}
       {customTrigger ? (
         <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
@@ -183,6 +189,10 @@ function InnerListBox({
         </ListboxButton>
       )}
 
+      {description && (
+        <Description className="text-sm mt-1">{description}</Description>
+      )}
+
       <div
         className={`absolute z-10 pb-2 ${
           customTrigger
@@ -196,7 +206,7 @@ function InnerListBox({
           </div>
         </ListboxOptions>
       </div>
-    </>
+    </Field>
   );
 }
 
