@@ -13,6 +13,7 @@ type TLazyMapProps = {
   center?: [number, number];
   zoom?: number;
   autoBounds?: boolean;
+  scrollWheelZoom?: boolean;
 };
 
 function LazyMap({
@@ -22,6 +23,7 @@ function LazyMap({
   center,
   zoom,
   autoBounds,
+  scrollWheelZoom = false,
 }: TLazyMapProps) {
   let mapClassName = "h-[600px] w-full cursor-loading";
   if (className) {
@@ -49,7 +51,7 @@ function LazyMap({
   return (
     <MapContainer
       {...boundsOrCenterAndZoom}
-      scrollWheelZoom={false}
+      scrollWheelZoom={scrollWheelZoom}
       className={mapClassName}
     >
       <TileLayer
