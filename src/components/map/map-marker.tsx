@@ -2,9 +2,11 @@
 
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import IconMarker from "../ui/icons/marker";
 import { ReactNode } from "react";
 import { useClientRenderToString } from "@/hooks/useClientRenderToString";
+import IconMarkerWall from "../ui/icons/marker-wall";
+import IconMarkerParking from "../ui/icons/marker-parking";
+import { IconSize } from "../ui/icons/icon-size";
 
 type TMapMarkerProps = {
   type: "parking" | "wall";
@@ -19,7 +21,13 @@ function MapMarker({
   popupContent,
   interactive = true,
 }: TMapMarkerProps) {
-  const [icon] = useClientRenderToString(<IconMarker type={type} />);
+  const [icon] = useClientRenderToString(
+    type === "parking" ? (
+      <IconMarkerParking size={IconSize.xl} />
+    ) : (
+      <IconMarkerWall size={IconSize.xl} />
+    )
+  );
 
   return (
     <Marker

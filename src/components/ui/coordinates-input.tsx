@@ -7,11 +7,11 @@
 import Map from "../map/map";
 import Button from "./button";
 import Dialog, { DialogSize, DialogTitleSize } from "./dialog";
-import IconPin from "./icons/pin";
 import TextField, { TTextFieldProps } from "./text-field";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useMapEvent } from "react-leaflet";
 import MapMarker from "../map/map-marker";
+import IconMarker from "./icons/marker";
 
 type TCoordinatesInputProps = TTextFieldProps & {
   dialogTitle: string;
@@ -73,7 +73,7 @@ function CoordinatesInput({
         onChange={handleCoordinatesChange}
         suffix={
           <Button variant="quaternary" onClick={handleMarkerIconClick}>
-            <IconPin />
+            <IconMarker />
           </Button>
         }
       />
@@ -93,6 +93,7 @@ function CoordinatesInput({
             className="mt-4"
             center={markerPosition ? markerPosition : mapDefaultCenter}
             zoom={mapZoom}
+            scrollWheelZoom={true}
           >
             <PlacedMarker
               position={markerPosition}
