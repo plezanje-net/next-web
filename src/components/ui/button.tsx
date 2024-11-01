@@ -12,6 +12,7 @@ interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: "submit" | "reset" | "button";
 }
 
 const Button = forwardRef(function Button(
@@ -21,6 +22,7 @@ const Button = forwardRef(function Button(
     disabled = false,
     loading = false,
     onClick,
+    type = "button",
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
@@ -63,6 +65,7 @@ const Button = forwardRef(function Button(
       className={buttonStyles}
       disabled={disabled}
       onClick={onClick}
+      type={type}
     >
       {loading ? (
         <div className="relative">
