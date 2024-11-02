@@ -1,4 +1,5 @@
 "use client";
+import Filter from "./filter";
 // import Button from "@/components/ui/button";
 // import IconClose from "@/components/ui/icons/close";
 // import IconMore from "@/components/ui/icons/more";
@@ -26,9 +27,11 @@ function ActionsRow() {
       >
         <div className="flex items-center justify-center py-4 sm:py-5">
 
-          {/* <ToggleFiltersPane /> */}
+          <div>
+            <Filter />
+          </div>
 
-          {/* <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div> */}
+          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
           <SelectColumns />
 

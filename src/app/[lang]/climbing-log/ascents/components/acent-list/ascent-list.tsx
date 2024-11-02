@@ -41,7 +41,7 @@ function AscentList({ ascents, paginationMeta }: TAscentListProps) {
   const toIndex = Math.min(paginationMeta.pageNumber * paginationMeta.pageSize, paginationMeta.itemCount);
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className="mx-auto 2xl:container">
       {compact ? <AscentListCards ascents={ascents} /> : <AscentListTable ascents={ascents} />}
       <div className={`${compact ? 'p-4 flex flex-col gap-4 items-center' : 'flex items-center flex-row-reverse justify-between px-8 py-4'}`}>
         <Pagination

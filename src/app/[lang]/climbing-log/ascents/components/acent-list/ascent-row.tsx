@@ -38,7 +38,7 @@ function AscentRow ({ ascent }: TAscentRowProps) {
             break;
 
           case "ascentType":
-            cellContent = <AscentType type={ascent.ascentType} compact={false} iconSize={IconSize.small} />;
+            cellContent = <AscentType type={ascent.ascentType} compact={false} iconSize={IconSize.regular} />;
             break;
 
           case "notes":
