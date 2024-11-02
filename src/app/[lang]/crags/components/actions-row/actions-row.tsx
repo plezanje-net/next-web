@@ -82,14 +82,14 @@ function ActionsRow() {
             placeholder="Poišči po imenu"
             aria-label="Poišči po imenu"
             suffix={
-              search.query && (
+              search.query ? (
                 <Button
                   variant="quaternary"
                   onClick={() => search.setQuery("")}
                 >
                   <IconClose />
                 </Button>
-              )
+              ) : undefined
             }
           />
         </div>

@@ -207,7 +207,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
                 onChange={setPartners}
                 label="Soplezalci"
                 placeholder="Vnesi soplezalce"
-                isDisabled={loading}
+                disabled={loading}
               />
             </div>
           </div>
