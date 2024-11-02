@@ -1,14 +1,14 @@
 import { Crag } from "@/graphql/generated";
-import { Breadcrumb, Breadcrumbs } from "@/components/breadcrumbs";
 import CragTabMenu from "./crag-header/crag-tab-menu";
 import ContentHeader from "@/components/content-header";
+import Breadcrumbs from "@/components/breadcrumbs";
 
 type CragHeaderProps = {
   crag: Crag;
 };
 
 function CragHeader({ crag }: CragHeaderProps) {
-  const breadcrumbs: Breadcrumb[] = [
+  const crumbs = [
     {
       label: "Plezanje.net",
       link: "/",
@@ -19,13 +19,13 @@ function CragHeader({ crag }: CragHeaderProps) {
     },
     {
       label: crag.name,
-      link: `/plezalisce/${crag.slug}`,
+      link: null,
     },
   ];
 
   return (
     <ContentHeader
-      breadcrumbs={<Breadcrumbs items={breadcrumbs} />}
+      breadcrumbs={<Breadcrumbs crumbs={crumbs} />}
       heading={crag.name}
       tabMenu={<CragTabMenu crag={crag} />}
     />
