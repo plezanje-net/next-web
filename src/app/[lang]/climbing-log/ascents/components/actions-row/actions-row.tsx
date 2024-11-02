@@ -23,7 +23,7 @@ function ActionsRow() {
       */}
 
       <div
-        className="x-auto relative z-10 mx-auto rotate-0 items-center border-b border-b-neutral-200 px-4 2xl:container xs:px-8 sm:justify-between md:border-b-0 flex justify-center"
+        className="x-auto mx-auto rotate-0 items-center border-b border-b-neutral-200 px-4 2xl:container xs:px-8 sm:justify-between md:border-b-0 flex justify-center"
       >
         <div className="flex items-center justify-center py-4 sm:py-5">
 
