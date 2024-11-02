@@ -193,7 +193,7 @@ function CragsProvider({
       // orientations
       ((crag.orientations &&
         crag.orientations.some((orientation) =>
-          orientationFilterState.includes(orientation.toLowerCase())
+          orientationFilterState.includes(orientation)
         )) ||
         (!crag.orientations && showUnknownFilterState) ||
         orientationFilterState.length == 0) &&
@@ -212,9 +212,7 @@ function CragsProvider({
       //
       // seasons
       ((crag.seasons &&
-        crag.seasons.some((season) =>
-          seasonFilterState.includes(season.toLowerCase())
-        )) ||
+        crag.seasons.some((season) => seasonFilterState.includes(season))) ||
         (!crag.seasons && showUnknownFilterState) ||
         seasonFilterState.length == 0) &&
       //
@@ -226,9 +224,9 @@ function CragsProvider({
       // wall angles
       ((crag.wallAngles &&
         crag.wallAngles.some((wallAngle) =>
-          wallAngleFilterState.includes(wallAngle.toLowerCase())
+          wallAngleFilterState.includes(wallAngle)
         )) ||
-        (!crag.wallAngles && wallAngleFilterState) ||
+        (!crag.wallAngles && showUnknownFilterState) ||
         wallAngleFilterState.length == 0) &&
       //
       // approach time
@@ -310,14 +308,14 @@ function CragsProvider({
     "Orientacija",
     orientationFilterState,
     {
-      [Orientation.North.toLowerCase()]: "sever",
-      [Orientation.Northeast.toLowerCase()]: "severovzhod",
-      [Orientation.East.toLowerCase()]: "vzhod",
-      [Orientation.Southeast.toLowerCase()]: "jugovzhod",
-      [Orientation.South.toLowerCase()]: "jug",
-      [Orientation.Southwest.toLowerCase()]: "jugozahod",
-      [Orientation.West.toLowerCase()]: "zahod",
-      [Orientation.Northwest.toLowerCase()]: "severozahod",
+      [Orientation.North]: "sever",
+      [Orientation.Northeast]: "severovzhod",
+      [Orientation.East]: "vzhod",
+      [Orientation.Southeast]: "jugovzhod",
+      [Orientation.South]: "jug",
+      [Orientation.Southwest]: "jugozahod",
+      [Orientation.West]: "zahod",
+      [Orientation.Northwest]: "severozahod",
     },
     "all",
     setOrientationFilterState
@@ -343,10 +341,10 @@ function CragsProvider({
     "Sezona",
     seasonFilterState,
     {
-      [Season.Spring.toLowerCase()]: "pomlad",
-      [Season.Summer.toLowerCase()]: "poletje",
-      [Season.Autumn.toLowerCase()]: "jesen",
-      [Season.Winter.toLowerCase()]: "zima",
+      [Season.Spring]: "pomlad",
+      [Season.Summer]: "poletje",
+      [Season.Autumn]: "jesen",
+      [Season.Winter]: "zima",
     },
     "all",
     setSeasonFilterState
@@ -362,10 +360,10 @@ function CragsProvider({
     "Naklon stene",
     wallAngleFilterState,
     {
-      [WallAngle.Slab.toLowerCase()]: "plošče",
-      [WallAngle.Vertical.toLowerCase()]: "vertikale",
-      [WallAngle.Overhang.toLowerCase()]: "previsi",
-      [WallAngle.Roof.toLowerCase()]: "strehe",
+      [WallAngle.Slab]: "plošče",
+      [WallAngle.Vertical]: "vertikale",
+      [WallAngle.Overhang]: "previsi",
+      [WallAngle.Roof]: "strehe",
     },
     "all",
     setWallAngleFilterState
@@ -617,7 +615,7 @@ const getSlugToNameMap = <T extends Area | Country>(entities: T[]) => {
 
 const getMinMaxDifficulty = () => {
   // For now we can only filter by french grades. Should add other grading systems in a future task?
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades!;
+  const frenchGrades = gradingSystems["french"].grades;
 
   return {
     minDifficulty: frenchGrades[0].difficulty,
@@ -626,7 +624,7 @@ const getMinMaxDifficulty = () => {
 };
 
 const getDifficultyGradeMap = () => {
-  const frenchGrades = gradingSystems.find((gs) => gs.id === "french")?.grades!;
+  const frenchGrades = gradingSystems["french"].grades;
 
   return frenchGrades.reduce((prev: Record<string, string>, cur) => {
     prev[cur.difficulty] = cur.name;

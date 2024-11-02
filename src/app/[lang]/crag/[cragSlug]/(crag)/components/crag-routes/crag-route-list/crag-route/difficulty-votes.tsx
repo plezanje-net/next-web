@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import difficultyVotesAction from "./server-actions/difficulty-votes-action";
 import { DifficultyVote, Route } from "@/graphql/generated";
 import displayDate from "@/utils/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "@/utils/text-helpers";
-import { gradingSystems } from "@/utils/grading-systems";
 
 interface Props {
   route: Route;

@@ -82,13 +82,13 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
         partner: partners || null,
         notes: route.logFormData.note || null,
         routeId: route.id,
-        ascentType: ascentType.toLowerCase(),
+        ascentType: ascentType,
         votedDifficulty: route.logFormData.difficultyVote,
         votedStarRating:
           route.logFormData.starRatingVote == -1
             ? null
             : route.logFormData.starRatingVote,
-        publish: publishType.toLowerCase(),
+        publish: publishType,
         position: i, // position of the route within the same activity of ones log
       });
     }
