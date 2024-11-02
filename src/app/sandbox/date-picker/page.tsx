@@ -19,6 +19,12 @@ function DatePickerPage() {
     year: 2024,
   });
 
+  const [value3, setValue3] = useState<TDate>({
+    day: 19,
+    month: 5,
+    year: 2024,
+  });
+
   return (
     <div>
       <div className="relative mx-auto mt-8 w-80">
@@ -31,6 +37,12 @@ function DatePickerPage() {
         A regular datepicker
         <div className="mt-2">
           <DatePicker value={value1} onChange={setValue1} />
+        </div>
+      </div>
+      <div className="relative mx-auto mt-8 w-80">
+        A second regular datepicker to test overflow
+        <div className="mt-2">
+          <DatePicker value={value3} onChange={setValue3} />
         </div>
       </div>
     </div>
