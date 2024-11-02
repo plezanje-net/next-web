@@ -56,7 +56,7 @@ function Header({ authStatus }: Props) {
     .toUpperCase();
 
   return (
-    <header className="flex flex-col justify-between px-4 xs:px-8 lg:flex-row lg:items-center">
+    <header className="flex flex-col justify-between px-4 xs:px-8 lg:flex-row lg:items-center border-neutral-200 border-b">
       {/* Logo row */}
       <div className="box-content flex h-20 items-center justify-between">
         {/* Logo */}
