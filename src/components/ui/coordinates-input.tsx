@@ -53,11 +53,9 @@ function CoordinatesInput({
   const handleMapDialogConfirm = () => {
     if (markerPosition) {
       const latNum = markerPosition[0];
-      const lngNum = markerPosition[1];
+      const lonNum = markerPosition[1];
 
-      setCoordinates(
-        `${latNum.toFixed(5).toString().replace(".", ",")}, ${lngNum.toFixed(5).toString().replace(".", ",")}`
-      );
+      setCoordinates(formatCoordinates(latNum, lonNum));
     }
   };
 
@@ -132,7 +130,7 @@ function PlacedMarker({
 /**
  * Receives a string representation of coordinates
  * and returns false if cannot be parsed into valid coordinates
- * otherwise returns an object consisting of coordinates value tuple [lat, lng] and a 'normalized' string representation of the coordinates
+ * otherwise returns an object consisting of coordinates value tuple [lat, lon] and a 'normalized' string representation of the coordinates
  */
 const validateCoordinates = (
   coordinates: string
@@ -142,30 +140,33 @@ const validateCoordinates = (
       text: string;
     }
   | false => {
-  // we should accept decimal comma or decimal point in lat and lng
-  // we should accept lat and lng separated by space, comma or space+comma
+  // we should accept decimal comma or decimal point in lat and lon
+  // we should accept lat and lon separated by space, comma or space+comma
   const parsed = coordinates.match(
     /^(-?\d+(?:[.,]\d+)?)\s*[,\s]\s*(-?\d+(?:[.,]\d+)?)$/
   );
 
   const lat = parsed ? parsed[1] : null;
-  const lng = parsed ? parsed[2] : null;
+  const lon = parsed ? parsed[2] : null;
 
-  if (lat && lng) {
-    // get numbers from parsed lat and lng
+  if (lat && lon) {
+    // get numbers from parsed lat and lon
     const latNum = +lat.replace(",", ".");
-    const lngNum = +lng.replace(",", ".");
+    const lonNum = +lon.replace(",", ".");
 
-    // check that the range of lat and lng is valid
-    if (latNum >= -90 && latNum <= 90 && lngNum >= -180 && lngNum <= 180) {
+    // check that the range of lat and lon is valid
+    if (latNum >= -90 && latNum <= 90 && lonNum >= -180 && lonNum <= 180) {
       return {
-        value: [latNum, lngNum],
-        text: `${latNum.toString().replace(".", ",")}, ${lngNum.toString().replace(".", ",")}`,
+        value: [latNum, lonNum],
+        text: `${latNum.toString().replace(".", ",")}, ${lonNum.toString().replace(".", ",")}`,
       };
     }
   }
   return false;
 };
 
+const formatCoordinates = (lat: number, lon: number) =>
+  `${lat.toFixed(5).toString().replace(".", ",")}, ${lon.toFixed(5).toString().replace(".", ",")}`;
+
 export default CoordinatesInput;
-export { validateCoordinates };
+export { validateCoordinates, formatCoordinates };
