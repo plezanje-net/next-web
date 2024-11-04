@@ -16,6 +16,11 @@ type TAscentTypeOption = {
   value: AscentType;
 };
 
+type TRouteTypeOption = {
+  label: string;
+  value: string;
+};
+
 function Filter() {
   const nrFiltersActive = 0;
 
@@ -45,6 +50,14 @@ function Filter() {
     { label: "vse prosto", value: AscentType.Allfree },
     { label: "tehnično", value: AscentType.Aid },
     { label: "neuspel poskus", value: AscentType.Attempt },
+  ];
+
+  const routeTypeOptions: TRouteTypeOption[] = [
+    { label: "športna", value: "sport" },
+    { label: "večraztežajna", value: "multipitch" },
+    { label: "balvan", value: "boulder" },
+    { label: "alpinistična", value: "alpine" },
+    { label: "kombinirana", value: "combined" },
   ];
 
   const handleFilterClose = () => {
@@ -109,18 +122,34 @@ function Filter() {
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <div>Glede na vidnost</div>
-          <div className="mt-2 flex flex-col gap-1">
-            {visibilityOptions.map((option) => (
-              <div key={option.value}>
-                <Checkbox
-                  label={option.label}
-                  checked={false}
-                  onChange={() => {}}
-                />
-              </div>
-            ))}
+        <div className="flex flex-col gap-8">
+          <div>
+            <div>Glede na vidnost</div>
+            <div className="mt-2 flex flex-col gap-1">
+              {visibilityOptions.map((option) => (
+                <div key={option.value}>
+                  <Checkbox
+                    label={option.label}
+                    checked={false}
+                    onChange={() => {}}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div>Glede na tip smeri</div>
+            <div className="mt-2 flex flex-col gap-1">
+              {routeTypeOptions.map((option) => (
+                <div key={option.value}>
+                  <Checkbox
+                    label={option.label}
+                    checked={false}
+                    onChange={() => {}}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
