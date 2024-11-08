@@ -193,19 +193,14 @@ function InnerListBox({
         <Description className="text-sm mt-1">{description}</Description>
       )}
 
-      <div
-        className={`absolute z-10 pb-2 ${
-          customTrigger
-            ? "w-auto whitespace-nowrap max-xs:fixed max-xs:left-4 max-xs:right-4"
-            : "w-full"
-        }`}
+      <ListboxOptions
+        anchor="bottom start"
+        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
       >
-        <ListboxOptions className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-          <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
-            {children}
-          </div>
-        </ListboxOptions>
-      </div>
+        <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
+          {children}
+        </div>
+      </ListboxOptions>
     </Field>
   );
 }
