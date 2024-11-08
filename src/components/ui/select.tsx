@@ -195,7 +195,7 @@ function InnerListBox({
 
       <ListboxOptions
         anchor="bottom start"
-        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
+        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 z-10`}
       >
         <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
           {children}
