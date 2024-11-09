@@ -16,7 +16,7 @@ function EditSectors({ crag }: TEditCragSectorsProps) {
   return (
     <div className="px-4 xs:px-8 mt-5">
       {cragHasSectors ? (
-        <EditSectorsMany sectors={crag.sectors} />
+        <EditSectorsMany sectors={crag.sectors} cragId={crag.id} />
       ) : (
         <EditSectorsNone />
       )}

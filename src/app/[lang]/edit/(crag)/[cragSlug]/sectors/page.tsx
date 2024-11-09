@@ -36,8 +36,6 @@ async function EditSectorsPage({
     },
   ];
 
-  console.log(cragSlug);
-
   return (
     <>
       <ContentHeader
@@ -73,6 +71,7 @@ gql`
         id
         name
         label
+        position
       }
     }
   }
