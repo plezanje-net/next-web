@@ -15,12 +15,10 @@ type TEditCragSectorsManyProps = {
 function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
   const handleCragHasSectorsChange = () => {};
 
-  const [sectorDialogType, setSectorDialogType] = useState<"edit" | "new">(
-    "new"
-  );
+  const [sectorDialogType, setSectorDialogType] = useState<"new" | "edit">();
   const [sectorDialogIsOpen, setSectorDialogIsOpen] = useState(false);
-  const [position, setPosition] = useState<number>();
-  const [sector, setSector] = useState<Sector>();
+  const [position, setPosition] = useState(0);
+  const [sector, setSector] = useState<Sector>(sectors[0]);
 
   const handleAddSectorClick = (position: number) => {
     setSectorDialogType("new");
@@ -63,14 +61,22 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         </div>
       ))}
 
-      <SectorDialog
-        formType={sectorDialogType}
-        isOpen={sectorDialogIsOpen}
-        setIsOpen={setSectorDialogIsOpen}
-        position={position}
-        cragId={cragId}
-        sector={sector}
-      />
+      {sectorDialogType === "new" ? (
+        <SectorDialog
+          formType="new"
+          isOpen={sectorDialogIsOpen}
+          setIsOpen={setSectorDialogIsOpen}
+          position={position}
+          cragId={cragId}
+        />
+      ) : (
+        <SectorDialog
+          formType="edit"
+          isOpen={sectorDialogIsOpen}
+          setIsOpen={setSectorDialogIsOpen}
+          sector={sector}
+        />
+      )}
     </>
   );
 }

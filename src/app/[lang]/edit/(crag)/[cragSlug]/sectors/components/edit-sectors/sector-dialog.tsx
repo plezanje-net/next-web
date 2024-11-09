@@ -12,14 +12,29 @@ import { useRouter } from "next/navigation";
 import updateSectorAction from "../../server-actions/update-sector-action";
 import { Sector } from "@/graphql/generated";
 
-type TSectorDialogProps = {
+type TSectorDialogBaseProps = {
   formType: "new" | "edit";
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  position?: number;
-  cragId: string;
-  sector?: Sector;
 };
+
+type TNewSectorDialogProps = TSectorDialogBaseProps & {
+  formType: "new";
+  position: number;
+  cragId: string;
+
+  sector?: never;
+};
+
+type TEditSectorDialogProps = TSectorDialogBaseProps & {
+  formType: "edit";
+  sector: Sector;
+
+  position?: never;
+  cragId?: never;
+};
+
+type TSectorDialogProps = TNewSectorDialogProps | TEditSectorDialogProps;
 
 function SectorDialog({
   formType,
@@ -34,7 +49,9 @@ function SectorDialog({
 
   // sync name if this is an edit
   useEffect(() => {
-    setName(formType === "edit" && sector ? sector.name : "");
+    if (formType === "edit") {
+      setName(sector.name);
+    }
   }, [sector, formType]);
 
   const [nameError, setNameError] = useState("");
@@ -68,31 +85,19 @@ function SectorDialog({
 
     switch (formType) {
       case "new":
-        // TODO: either this guard or ! bellow... 🤷‍♂️
-        if (!position) {
-          throw new Error("position is required in new sector dialog");
-        }
-
         const newSectorData = {
           ...sectorData,
           cragId: cragId,
-          position: position!,
-          // position: position!,
+          position: position,
           publishStatus: "draft",
         };
         await createSectorAction(newSectorData);
         break;
 
       case "edit":
-        // TODO: either this guard or ! bellow... 🤷‍♂️
-        if (!sector) {
-          throw new Error("sector is required in edit sector dialog");
-        }
-
         const updateSectorData = {
           ...sectorData,
           id: sector.id,
-          // id: sector!.id,
         };
         await updateSectorAction(updateSectorData);
         break;
