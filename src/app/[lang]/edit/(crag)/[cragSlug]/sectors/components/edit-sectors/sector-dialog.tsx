@@ -47,10 +47,12 @@ function SectorDialog({
   const router = useRouter();
   const [name, setName] = useState("");
 
-  // sync name if this is an edit
+  // set appropriate default
   useEffect(() => {
     if (formType === "edit") {
       setName(sector.name);
+    } else {
+      setName("");
     }
   }, [sector, formType]);
 
@@ -135,7 +137,7 @@ function SectorDialog({
         disabled: loading,
         dontCloseOnConfirm: true,
       }}
-      titleSize={DialogTitleSize.large}
+      // titleSize={DialogTitleSize.large}
     >
       <form onSubmit={handleFormSubmit}>
         <TextField
