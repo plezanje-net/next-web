@@ -6,18 +6,19 @@ import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
-import { useState } from "react";
 
 type TSectorCardProps = {
   name: string;
-  onEditSectorClick: () => void;
-  onAddSectorClick: () => void;
+  onAddClick: () => void;
+  onEditClick: () => void;
+  onDeleteClick: () => void;
 };
 
 function SectorCard({
   name,
-  onEditSectorClick,
-  onAddSectorClick,
+  onAddClick,
+  onEditClick,
+  onDeleteClick,
 }: TSectorCardProps) {
   const moreAction = (
     <Button variant="quaternary" onClick={() => {}}>
@@ -56,7 +57,7 @@ function SectorCard({
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
             {/* edit */}
-            <Button variant="quaternary" onClick={onEditSectorClick}>
+            <Button variant="quaternary" onClick={onEditClick}>
               <IconEdit />
             </Button>
 
@@ -64,7 +65,7 @@ function SectorCard({
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
             {/* edit */}
-            <Button variant="quaternary" onClick={() => {}}>
+            <Button variant="quaternary" onClick={onDeleteClick}>
               <IconDelete />
             </Button>
 
@@ -72,7 +73,7 @@ function SectorCard({
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
             {/* add sector */}
-            <Button variant="quaternary" onClick={onAddSectorClick}>
+            <Button variant="quaternary" onClick={onAddClick}>
               <IconPlus />
             </Button>
           </div>

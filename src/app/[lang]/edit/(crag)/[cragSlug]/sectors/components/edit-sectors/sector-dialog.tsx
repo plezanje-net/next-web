@@ -122,7 +122,7 @@ function SectorDialog({
 
   return (
     <Dialog
-      title="Dodajanje sektorja"
+      title={formType === "new" ? "Dodajanje sektorja" : "Urejanje sektorja"}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       cancel={{

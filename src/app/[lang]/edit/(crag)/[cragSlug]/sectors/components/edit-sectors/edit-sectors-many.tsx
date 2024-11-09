@@ -6,6 +6,7 @@ import { Sector } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { useState } from "react";
 import SectorDialog from "./sector-dialog";
+import DeleteSectorDialog from "./delete-sector-dialog";
 
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
@@ -32,6 +33,13 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
     setSectorDialogIsOpen(true);
   };
 
+  const [deleteSectorDialogIsOpen, setDeleteSectorDialogIsOpen] =
+    useState(false);
+  const handleDeleteSectorClick = (sector: Sector) => {
+    setSector(sector);
+    setDeleteSectorDialogIsOpen(true);
+  };
+
   return (
     <>
       <Checkbox
@@ -55,8 +63,9 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         <div key={sector.id} className="mt-2">
           <SectorCard
             name={`${sector.label} - ${sector.name}`}
-            onEditSectorClick={() => handleEditSectorClick(sector)}
-            onAddSectorClick={() => handleAddSectorClick(sector.position + 1)}
+            onEditClick={() => handleEditSectorClick(sector)}
+            onAddClick={() => handleAddSectorClick(sector.position + 1)}
+            onDeleteClick={() => handleDeleteSectorClick(sector)}
           />
         </div>
       ))}
@@ -77,6 +86,12 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
           sector={sector}
         />
       )}
+
+      <DeleteSectorDialog
+        isOpen={deleteSectorDialogIsOpen}
+        setIsOpen={setDeleteSectorDialogIsOpen}
+        sector={sector}
+      />
     </>
   );
 }
