@@ -22,6 +22,7 @@ type TTextFieldProps = {
   prefix?: ReactElement;
   suffix?: ReactElement;
   onBlur?: () => void;
+  autoFocus?: boolean;
 };
 
 const TextField = forwardRef(function TextField(
@@ -38,6 +39,7 @@ const TextField = forwardRef(function TextField(
     prefix,
     suffix,
     onBlur,
+    autoFocus,
   }: TTextFieldProps,
   forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
@@ -101,6 +103,7 @@ const TextField = forwardRef(function TextField(
           min={type == "natural" ? "0" : undefined}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
+          autoFocus={autoFocus}
         />
 
         {suffix && (
