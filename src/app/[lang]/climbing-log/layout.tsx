@@ -1,6 +1,4 @@
-import { Crag, CragHeaderDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { Breadcrumbs, Breadcrumb } from "@/components/breadcrumbs";
+import Breadcrumbs from "@/components/breadcrumbs";
 import ClimbingLogTabMenu from "./components/climbing-log-tab-menu";
 
 interface Params {
@@ -14,7 +12,7 @@ interface Props {
 
 async function CragLayout({ children, params: { cragSlug } }: Props) {
 
-  const breadcrumbs: Breadcrumb[] = [
+  const crumbs = [
     {
       label: "Plezanje.net",
       link: "/",
@@ -29,7 +27,7 @@ async function CragLayout({ children, params: { cragSlug } }: Props) {
       <div className="bg-neutral-100">
         <div className="mx-auto px-4 2xl:container xs:px-8">
           <div className="pt-4">
-            <Breadcrumbs items={breadcrumbs} />
+            <Breadcrumbs crumbs={crumbs} />
             <h1 className="pb-8 pt-12 text-3xl">Plezalni dnevnik</h1>
           </div>
         </div>
