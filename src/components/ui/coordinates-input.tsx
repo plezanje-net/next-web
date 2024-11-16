@@ -10,8 +10,6 @@ import Dialog, { DialogSize, DialogTitleSize } from "./dialog";
 import TextField, { TTextFieldProps } from "./text-field";
 import { Dispatch, SetStateAction, useState } from "react";
 import IconMarker from "./icons/marker";
-import dynamic from "next/dynamic";
-// import PlacedMarker from "./placed-marker";
 import { useMapEvent } from "react-leaflet";
 import MapMarker from "../map/map-marker";
 
@@ -127,16 +125,7 @@ function PlacedMarker({
   ) : (
     <MapMarker type={markerType} position={[0, 0]} interactive={false} hidden />
   );
-  // return (
-  //   position && (
-  //     <MapMarker type={markerType} position={position} interactive={false} />
-  //   )
-  // );
 }
-
-// export const LazyPlacedMarker = dynamic(() => import("./placed-marker"), {
-//   ssr: false,
-// });
 
 /**
  * Receives a string representation of coordinates
