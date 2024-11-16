@@ -1,4 +1,4 @@
-import Dialog, { DialogTitleSize } from "@/components/ui/dialog";
+import Dialog from "@/components/ui/dialog";
 import TextField from "@/components/ui/text-field";
 import {
   Dispatch,
@@ -94,6 +94,7 @@ function SectorDialog({
           publishStatus: "draft",
         };
         await createSectorAction(newSectorData);
+        setName("");
         break;
 
       case "edit":
@@ -108,7 +109,6 @@ function SectorDialog({
     // TODO: check for errors
 
     // reset form state and close dialog
-    setName("");
     setIsOpen(false);
     setLoading(false);
 
@@ -137,7 +137,6 @@ function SectorDialog({
         disabled: loading,
         dontCloseOnConfirm: true,
       }}
-      // titleSize={DialogTitleSize.large}
     >
       <form onSubmit={handleFormSubmit}>
         <TextField

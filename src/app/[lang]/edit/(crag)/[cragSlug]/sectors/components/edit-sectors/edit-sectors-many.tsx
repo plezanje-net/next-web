@@ -4,7 +4,7 @@ import Checkbox from "@/components/ui/checkbox";
 import IconPlus from "@/components/ui/icons/plus";
 import { Sector } from "@/graphql/generated";
 import SectorCard from "./sector-card";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import SectorDialog from "./sector-dialog";
 import DeleteSectorDialog from "./delete-sector-dialog";
 import {
@@ -34,12 +34,16 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleCragHasSectorsChange = () => {};
-
   const [sectorDialogType, setSectorDialogType] = useState<"new" | "edit">();
   const [sectorDialogIsOpen, setSectorDialogIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
   const [sector, setSector] = useState<Sector>(sectors[0]);
+  const [sortedSectors, setSortedSectors] = useState(sectors);
+  useEffect(() => {
+    setSortedSectors(sectors);
+  }, [sectors]);
+
+  const handleCragHasSectorsChange = () => {};
 
   const handleAddSectorClick = (position: number) => {
     setSectorDialogType("new");
@@ -59,8 +63,6 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
     setSector(sector);
     setDeleteSectorDialogIsOpen(true);
   };
-
-  const [sortedSectors, setSortedSectors] = useState(sectors);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
