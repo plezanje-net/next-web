@@ -506,7 +506,7 @@ function DatePicker({
             {({ close }) => (
               <div
                 ref={calendarPaneRef}
-                className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
+                className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative"
               >
                 <div className="flex justify-between">
                   {/* month shuffler */}
@@ -632,8 +632,8 @@ function Year({ value, onChange, month }: TYearProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
-            <div className="max-h-80 overflow-auto ">
+          <ListboxOptions className="absolute left-0 right-0 bg-white mx-px top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+            <div className="h-full overflow-auto ">
               {getYearsRange(value).map((year, index) => (
                 <MontOrYearOption key={index} value={year}>
                   {year}
@@ -674,8 +674,8 @@ function Month({ value, onChange, year }: TMonthProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute left-0 right-0 bg-white mx-px top-[52px] h-[calc(100%-52px)] overflow-hidden">
-            <div className="max-h-80 overflow-auto">
+          <ListboxOptions className="absolute left-0 right-0 bg-white mx-px top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+            <div className="h-full overflow-auto">
               {monthNamesFull.map((monthName, index) => (
                 <MontOrYearOption key={index} value={index + 1}>
                   {monthName}
