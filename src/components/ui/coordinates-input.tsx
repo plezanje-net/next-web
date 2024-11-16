@@ -8,9 +8,12 @@ import Map from "../map/map";
 import Button from "./button";
 import Dialog, { DialogSize, DialogTitleSize } from "./dialog";
 import TextField, { TTextFieldProps } from "./text-field";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import IconMarker from "./icons/marker";
 import dynamic from "next/dynamic";
+// import PlacedMarker from "./placed-marker";
+import { useMapEvent } from "react-leaflet";
+import MapMarker from "../map/map-marker";
 
 type TCoordinatesInputProps = TTextFieldProps & {
   dialogTitle: string;
@@ -92,7 +95,7 @@ function CoordinatesInput({
             zoom={mapZoom}
             scrollWheelZoom={true}
           >
-            <LazyPlacedMarker
+            <PlacedMarker
               position={markerPosition}
               setPosition={setMarkerPosition}
               markerType={markerType}
@@ -104,9 +107,31 @@ function CoordinatesInput({
   );
 }
 
-export const LazyPlacedMarker = dynamic(() => import("./placed-marker"), {
-  ssr: false,
-});
+type TPlacedMarkerProps = {
+  position: [number, number] | undefined;
+  setPosition: Dispatch<SetStateAction<[number, number] | undefined>>;
+  markerType: "wall" | "parking";
+};
+
+function PlacedMarker({
+  position,
+  setPosition,
+  markerType,
+}: TPlacedMarkerProps) {
+  useMapEvent("click", (e) => {
+    setPosition([e.latlng.lat, e.latlng.lng]);
+  });
+
+  return (
+    position && (
+      <MapMarker type={markerType} position={position} interactive={false} />
+    )
+  );
+}
+
+// export const LazyPlacedMarker = dynamic(() => import("./placed-marker"), {
+//   ssr: false,
+// });
 
 /**
  * Receives a string representation of coordinates

@@ -3,15 +3,6 @@
 import Map from "@/components/map/map";
 import MapEventDemo from "./map-event-demo";
 import MapMarker from "@/components/map/map-marker";
-import dynamic from "next/dynamic";
-
-const LazyMapMarker = dynamic(() => import("@/components/map/map-marker"), {
-  ssr: false,
-});
-
-const LazyMapEventDemo = dynamic(() => import("./map-event-demo"), {
-  ssr: false,
-});
 
 function MapPage() {
   return (
@@ -21,13 +12,13 @@ function MapPage() {
         center={[45.567706816120364, 13.863458632993037]}
         zoom={17}
         markers={[
-          <LazyMapMarker
+          <MapMarker
             key={0}
             type="parking"
             position={[45.567196, 13.862597]}
             popupContent={"Parkirišče Mišja peč"}
           />,
-          <LazyMapMarker
+          <MapMarker
             key={1}
             type="wall"
             position={[45.568112, 13.863984]}
@@ -35,7 +26,7 @@ function MapPage() {
           />,
         ]}
       >
-        <LazyMapEventDemo />
+        <MapEventDemo />
       </Map>
       <div className="mb-16 mt-16">
         <h3 className="text-lg">Notes</h3>
