@@ -165,7 +165,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     setCragCoordinatesError("");
   };
 
-  const handleSaveClick = async () => {
+  const handleFormAction = async () => {
     setLoading(true);
 
     // Validate form
@@ -258,7 +258,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
   return (
     <div className="flex justify-center px-4 xs:px-8 mt-7">
       <div className="w-full max-w-2xl">
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form action={handleFormAction}>
           {/* Main grid for inputs layout */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-6">
             {/* Crag name */}
@@ -548,7 +548,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
               <Button variant="secondary" disabled={loading}>
                 Prekliči
               </Button>
-              <Button onClick={handleSaveClick} loading={loading}>
+              <Button type="submit" loading={loading}>
                 Shrani
               </Button>
             </div>

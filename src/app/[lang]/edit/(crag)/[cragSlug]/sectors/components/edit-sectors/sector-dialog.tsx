@@ -5,6 +5,7 @@ import {
   FormEvent,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import createSectorAction from "../../server-actions/create-sector-action";
@@ -56,6 +57,8 @@ function SectorDialog({
     }
   }, [sector, formType]);
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [nameError, setNameError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -70,7 +73,11 @@ function SectorDialog({
     setNameError("");
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = () => {
+    formRef.current?.requestSubmit();
+  };
+
+  const handleFormAction = async () => {
     setLoading(true);
 
     // validate form
@@ -115,11 +122,6 @@ function SectorDialog({
     router.refresh();
   };
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleConfirm();
-  };
-
   return (
     <Dialog
       title={formType === "new" ? "Dodajanje sektorja" : "Urejanje sektorja"}
@@ -138,7 +140,7 @@ function SectorDialog({
         dontCloseOnConfirm: true,
       }}
     >
-      <form onSubmit={handleFormSubmit}>
+      <form action={handleFormAction} ref={formRef}>
         <TextField
           label="Ime sektorja"
           value={name}
