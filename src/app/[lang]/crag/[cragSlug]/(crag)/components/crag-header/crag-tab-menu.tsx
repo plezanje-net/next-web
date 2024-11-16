@@ -6,7 +6,7 @@ import IconComment from "@/components/ui/icons/comment";
 import IconGallery from "@/components/ui/icons/gallery";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
-import TabMenu, { TabMenuItem } from "@/components/ui/tab-menu";
+import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 import { IconSize } from "@/components/ui/icons/icon-size";
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 function CragTabMenu({ crag }: Props) {
   const i18nPathname = useI18nPathname();
 
-  const menuItems: TabMenuItem[] = [
+  const menuItems: TTabMenuItem[] = [
     {
       label: "Info",
       link: `/plezalisce/${crag.slug}/info`,

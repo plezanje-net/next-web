@@ -1,68 +1,33 @@
-"use client";
-import Link from "next/link";
-import { useRef } from "react";
-import {
-  AriaBreadcrumbItemProps,
-  AriaBreadcrumbsProps,
-  useBreadcrumbItem,
-  useBreadcrumbs,
-} from "react-aria";
+import Link from "./ui/link";
 
-export type Breadcrumb = {
+type Crumb = {
   label: string;
-  link: string;
+  link: string | null;
 };
-export interface BreadcrumbsProps extends AriaBreadcrumbsProps {
-  items: Breadcrumb[];
-}
 
-export function Breadcrumbs(props: BreadcrumbsProps) {
-  let { navProps } = useBreadcrumbs(props);
+type BreadcrumbsProps = {
+  crumbs: Crumb[];
+};
 
+function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
   return (
-    <nav {...navProps}>
-      <ol className="flex">
-        {props.items.map((item, i) => (
-          <BreadcrumbItem
-            key={i}
-            label={item.label}
-            link={item.link}
-            isCurrent={i === props.items.length - 1}
-          ></BreadcrumbItem>
+    <nav>
+      <ol className="flex flex-wrap">
+        {crumbs.map((crumb, index) => (
+          <li key={index}>
+            {crumb.link ? (
+              <Link variant="secondary" href={crumb.link}>
+                {crumb.label}
+              </Link>
+            ) : (
+              <span>{crumb.label}</span>
+            )}
+            {index < crumbs.length - 1 && <span className="px-1">/</span>}
+          </li>
         ))}
       </ol>
     </nav>
   );
 }
 
-interface BreadcrumbItemProps
-  extends Omit<AriaBreadcrumbItemProps, "children"> {
-  label: string;
-  link: string;
-  isCurrent: boolean;
-}
-
-function BreadcrumbItem(props: BreadcrumbItemProps) {
-  let ref = useRef(null);
-  let { itemProps } = useBreadcrumbItem(
-    props as unknown as AriaBreadcrumbItemProps,
-    ref
-  );
-  return (
-    <li>
-      <Link
-        {...itemProps}
-        ref={ref}
-        href={props.link}
-        className={props.isCurrent ? "cursor-default" : "cursor-pointer"}
-      >
-        {props.label}
-      </Link>
-      {!props.isCurrent && (
-        <span aria-hidden="true" className="px-1">
-          /
-        </span>
-      )}
-    </li>
-  );
-}
+export default Breadcrumbs;

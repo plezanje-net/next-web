@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import {
   Description,
   Label,
@@ -6,13 +6,65 @@ import {
   Radio as RadioHUI,
 } from "@headlessui/react";
 
-interface RadioProps {
+type TRadioGroupProps = {
+  name?: string;
+  value?: string;
+  onChange?: Dispatch<SetStateAction<string | undefined>>;
+  label?: string;
+  description?: string;
+  defaultValue?: string;
+  disabled?: boolean;
+  error?: string;
+  inline?: boolean;
+  children: ReactNode[];
+};
+
+function RadioGroup({
+  name,
+  value,
+  onChange,
+  label,
+  description,
+  defaultValue,
+  disabled,
+  error,
+  inline,
+  children,
+}: TRadioGroupProps) {
+  return (
+    <RadioGroupHUI
+      name={name}
+      value={value}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      disabled={disabled}
+    >
+      <Label>{label}</Label>
+
+      <div
+        className={`flex items-start
+                    ${label ? "mt-2" : ""}
+                    ${inline ? "space-x-4" : "flex-col space-y-1"}`}
+      >
+        {children}
+      </div>
+
+      {description && (
+        <Description className="mt-1 text-sm">{description}</Description>
+      )}
+
+      {error && <div className="mt-1 text-sm text-red-500">{error}</div>}
+    </RadioGroupHUI>
+  );
+}
+
+type TRadioProps = {
   value: string;
   disabled?: boolean;
   children: ReactNode;
-}
+};
 
-function Radio({ value, disabled, children }: RadioProps) {
+function Radio({ value, disabled, children }: TRadioProps) {
   return (
     <RadioHUI
       value={value}
@@ -66,58 +118,6 @@ function Radio({ value, disabled, children }: RadioProps) {
         </>
       )}
     </RadioHUI>
-  );
-}
-
-interface RadioGroupProps {
-  name?: string;
-  value?: string;
-  onChange?: (value: string) => void;
-  label?: string;
-  description?: string;
-  defaultValue?: string;
-  disabled?: boolean;
-  error?: string;
-  inline?: boolean;
-  children: ReactNode[];
-}
-
-function RadioGroup({
-  name,
-  value,
-  onChange,
-  label,
-  description,
-  defaultValue,
-  disabled,
-  error,
-  inline,
-  children,
-}: RadioGroupProps) {
-  return (
-    <RadioGroupHUI
-      name={name}
-      value={value}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      disabled={disabled}
-    >
-      <Label>{label}</Label>
-
-      <div
-        className={`flex items-start
-                    ${label ? "mt-2" : ""}
-                    ${inline ? "space-x-4" : "flex-col space-y-1"}`}
-      >
-        {children}
-      </div>
-
-      {description && (
-        <Description className="mt-1 text-sm">{description}</Description>
-      )}
-
-      {error && <div className="mt-1 text-sm text-red-500">{error}</div>}
-    </RadioGroupHUI>
   );
 }
 

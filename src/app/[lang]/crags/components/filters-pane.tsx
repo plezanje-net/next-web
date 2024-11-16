@@ -3,7 +3,6 @@ import { Fragment } from "react";
 import { Filter, MultiFilter, RangeFilter } from "./filtersHelp";
 import Button from "@/components/ui/button";
 import IconReset from "@/components/ui/icons/reset";
-import { IconSize } from "@/components/ui/icons/icon-size";
 
 type TFiltersPane = {
   open: boolean;

@@ -86,11 +86,11 @@ function Search() {
           onChange={handleSearchFieldChange}
           value={cragRoutesState.search?.query || ""}
           suffix={
-            cragRoutesState.search?.query && (
+            cragRoutesState.search?.query ? (
               <Button variant="quaternary" onClick={handleClearIconClick}>
                 <IconClose />
               </Button>
-            )
+            ) : undefined
           }
           onBlur={handleSearchFieldBlur}
         />
