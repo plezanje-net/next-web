@@ -122,11 +122,16 @@ function PlacedMarker({
     setPosition([e.latlng.lat, e.latlng.lng]);
   });
 
-  return (
-    position && (
-      <MapMarker type={markerType} position={position} interactive={false} />
-    )
+  return position ? (
+    <MapMarker type={markerType} position={position} interactive={false} />
+  ) : (
+    <MapMarker type={markerType} position={[0, 0]} interactive={false} hidden />
   );
+  // return (
+  //   position && (
+  //     <MapMarker type={markerType} position={position} interactive={false} />
+  //   )
+  // );
 }
 
 // export const LazyPlacedMarker = dynamic(() => import("./placed-marker"), {

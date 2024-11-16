@@ -13,6 +13,7 @@ type TLazyMapMarkerProps = {
   position: [number, number];
   popupContent?: ReactNode;
   interactive?: boolean;
+  hidden?: boolean;
 };
 
 function LazyMapMarker({
@@ -20,6 +21,7 @@ function LazyMapMarker({
   position,
   popupContent,
   interactive = true,
+  hidden,
 }: TLazyMapMarkerProps) {
   const [icon] = useClientRenderToString(
     type === "parking" ? (
@@ -40,6 +42,7 @@ function LazyMapMarker({
       })}
       position={position}
       interactive={interactive}
+      opacity={hidden ? 0 : 1}
     >
       {popupContent && <Popup>{popupContent}</Popup>}
     </Marker>
