@@ -105,7 +105,7 @@ function SectorCard({
             {/* divider */}
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-            {/* edit */}
+            {/* delete */}
             <Button
               variant="quaternary"
               disabled={disabled}
