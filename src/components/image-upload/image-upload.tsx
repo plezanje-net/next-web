@@ -43,7 +43,7 @@ async function createImageAction(
   formData: FormData,
   progressCallback: (percentage: number) => void
 ) {
-  return new Promise<TImageUploadResponse>(function (resolve, reject) {
+  return new Promise<TImageUploadResponse>((resolve, reject) => {
     if (!token) reject({ status: 401, statusText: "Missing token" });
 
     try {
@@ -210,70 +210,6 @@ function ImageUpload({
     setPercentage(percentage);
   };
 
-  useEffect(() => {
-    if (isSubmitting) {
-      setError("");
-      const createImage = async (): Promise<void> => {
-        try {
-          const fd = new FormData();
-          fd.append("author", formData.author);
-          fd.append("title", formData.title);
-          fd.append("image", formData.image as Blob);
-          fd.append("entityId", formData.entityId);
-          fd.append("entityType", formData.entityType);
-          createImageAction(token ?? "", fd, onFileUploadProgressChanged)
-            .then(() => {
-              setLogDialogIsOpen(false);
-              resetForm();
-              router.refresh();
-            })
-            .catch(() => {
-              setError(ERROR_MESSAGE);
-            })
-            .finally(() => {
-              setIsSubmitting(false);
-            });
-        } catch (error) {
-          setError(ERROR_MESSAGE);
-          setIsSubmitting(false);
-        }
-      };
-
-      const file: File | null = formData.image;
-      const title: string = formData.title;
-      const formAuthor: string = formData.author;
-
-      if (
-        file === null ||
-        title.length == 0 ||
-        (formAuthor !== null && formAuthor.length == 0)
-      ) {
-        setFormError((prevState) => {
-          const newState = {
-            ...prevState,
-            image: file === null,
-            title: title.length == 0,
-            author: formAuthor !== null && formAuthor.length == 0,
-          };
-          return newState;
-        });
-        setIsSubmitting(false);
-      } else {
-        createImage();
-      }
-    }
-  }, [
-    formData.author,
-    formData.entityId,
-    formData.entityType,
-    formData.image,
-    formData.title,
-    isSubmitting,
-    resetForm,
-    router,
-    token,
-  ]);
-
   const handleTitleChange = async (value: string) => {
     if (titleRef.current !== null) {
       setFormData({ ...formData, title: value });
@@ -308,9 +244,59 @@ function ImageUpload({
     }
   };
 
-  function handleClose(): void {
+  const handleClose = () => {
+    formRef.current?.requestSubmit();
+  };
+
+  const handleFormAction = async () => {
     setIsSubmitting(true);
-  }
+    setError("");
+
+    const file: File | null = formData.image;
+    const title: string = formData.title;
+    const formAuthor: string = formData.author;
+
+    if (
+      file === null ||
+      title.length == 0 ||
+      (formAuthor !== null && formAuthor.length == 0)
+    ) {
+      setFormError((prevState) => {
+        const newState = {
+          ...prevState,
+          image: file === null,
+          title: title.length == 0,
+          author: formAuthor !== null && formAuthor.length == 0,
+        };
+        return newState;
+      });
+      setIsSubmitting(false);
+    } else {
+      try {
+        const fd = new FormData();
+        fd.append("author", formData.author);
+        fd.append("title", formData.title);
+        fd.append("image", formData.image as Blob);
+        fd.append("entityId", formData.entityId);
+        fd.append("entityType", formData.entityType);
+        createImageAction(token ?? "", fd, onFileUploadProgressChanged)
+          .then(() => {
+            setLogDialogIsOpen(false);
+            resetForm();
+            router.refresh();
+          })
+          .catch(() => {
+            setError(ERROR_MESSAGE);
+          })
+          .finally(() => {
+            setIsSubmitting(false);
+          });
+      } catch (error) {
+        setError(ERROR_MESSAGE);
+        setIsSubmitting(false);
+      }
+    }
+  };
 
   return (
     <Dialog
@@ -334,7 +320,7 @@ function ImageUpload({
       closeCallback={resetForm}
       setIsOpen={setLogDialogIsOpen}
     >
-      <form ref={formRef}>
+      <form ref={formRef} action={handleFormAction}>
         {pickedImage && (
           <div className="flex flex-row justify-between">
             <div className="min-w-14 h-14 relative mb-6 mt-2">
