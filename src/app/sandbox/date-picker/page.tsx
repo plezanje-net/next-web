@@ -30,7 +30,7 @@ function DatePickerPage() {
       <div className="relative mx-auto mt-8 w-80">
         A regular datepicker
         <div className="mt-2">
-          <DatePicker value={value1} onChange={setValue1} />
+          <DatePicker value={value1} onChange={setValue1} label="Datepicker label" />
         </div>
       </div>
       <div className="relative mx-auto mt-8 w-80">

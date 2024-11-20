@@ -108,9 +108,6 @@ function DatePicker({
   label,
   disabled = false,
 }: TDatePickerProps) {
-  const calendarPaneRef = useRef<HTMLDivElement>(null);
-  const calendarButtonRef = useRef<HTMLButtonElement>(null);
-
   const dayInputRef = useRef<HTMLInputElement>(null);
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
@@ -487,25 +484,22 @@ function DatePicker({
           </div>
         </div>
       </Field>
-      <div className="absolute right-1 top-0 h-full items-center flex">
+      <div className="absolute right-1 bottom-[1px] items-center flex h-10">
         <Popover className="relative">
           <PopoverButton
             as={Button}
             variant="quaternary"
-            // onClick={handleCalendarButtonClick}
-            ref={calendarButtonRef}
             disabled={disabled}
           >
             <IconCalendar />
           </PopoverButton>
           <PopoverPanel
             anchor="bottom end"
-            className="[--anchor-offset:4px] [--anchor-gap:8px]"
+            className="[--anchor-offset:4px] [--anchor-gap:12px]"
             focus={true}
           >
             {({ close }) => (
               <div
-                ref={calendarPaneRef}
                 className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative"
               >
                 <div className="flex justify-between">
@@ -632,7 +626,7 @@ function Year({ value, onChange, month }: TYearProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute left-0 right-0 bg-white mx-px top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute left-0 right-0 bg-white top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
             <div className="h-full overflow-auto ">
               {getYearsRange(value).map((year, index) => (
                 <MontOrYearOption key={index} value={year}>
@@ -674,7 +668,7 @@ function Month({ value, onChange, year }: TMonthProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute left-0 right-0 bg-white mx-px top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+          <ListboxOptions className="absolute left-0 right-0 bg-white top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
             <div className="h-full overflow-auto">
               {monthNamesFull.map((monthName, index) => (
                 <MontOrYearOption key={index} value={index + 1}>
