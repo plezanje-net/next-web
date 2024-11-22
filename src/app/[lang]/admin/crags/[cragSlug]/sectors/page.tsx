@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
-import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
+import TabMenu from "@/components/ui/tab-menu";
 import { EditSectorsPageCragDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
@@ -21,21 +21,6 @@ async function EditSectorsPage({
   const { data: cragData } = await cragDataPromise;
   const crag = cragData.cragBySlug;
 
-  const tabMenuItems: TTabMenuItem[] = [
-    {
-      label: "Osnovni podatki",
-      link: `/edit/${cragSlug}`,
-      isActive: false,
-      icon: <IconInfo />,
-    },
-    {
-      label: "Sektorji in smeri",
-      link: `/edit/${cragSlug}/sectors`,
-      isActive: true,
-      icon: <IconRoutes />,
-    },
-  ];
-
   return (
     <>
       <ContentHeader
@@ -45,12 +30,33 @@ async function EditSectorsPage({
             crumbs={[
               { label: "Plezanje.net", link: "/" },
               { label: "Urejanje", link: null },
-              { label: crag.name, link: `/edit/${cragSlug}` },
+              { label: "Plezališča", link: null },
+              {
+                label: crag.name,
+                link: `/urejanje/plezalisca/${cragSlug}/uredi`,
+              },
               { label: "Sektorji", link: null },
             ]}
           />
         }
-        tabMenu={<TabMenu items={tabMenuItems} />}
+        tabMenu={
+          <TabMenu
+            items={[
+              {
+                label: "Osnovni podatki",
+                link: `/urejanje/plezalisca/${cragSlug}/uredi`,
+                isActive: false,
+                icon: <IconInfo />,
+              },
+              {
+                label: "Sektorji in smeri",
+                link: `/urejanje/plezalisca/${cragSlug}/sektorji`,
+                isActive: true,
+                icon: <IconRoutes />,
+              },
+            ]}
+          />
+        }
       />
 
       <EditSectors crag={crag} />

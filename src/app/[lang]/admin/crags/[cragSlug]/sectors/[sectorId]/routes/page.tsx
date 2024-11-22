@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
-import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
+import TabMenu from "@/components/ui/tab-menu";
 import { EditRoutesPageSectorDocument, Route } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
@@ -20,21 +20,6 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
   const { data: sectorData } = await sectorDataPromise;
   const sector = sectorData.sector;
 
-  const tabMenuItems: TTabMenuItem[] = [
-    {
-      label: "Osnovni podatki",
-      link: `/en/edit/${sector.crag.slug}`,
-      isActive: false,
-      icon: <IconInfo />,
-    },
-    {
-      label: "Sektorji in smeri",
-      link: `/en/edit/${sector.crag.slug}/sectors`,
-      isActive: true,
-      icon: <IconRoutes />,
-    },
-  ];
-
   // Dep.: sector label is deprecated. remove it after it is migrated into name on be.
   return (
     <>
@@ -45,19 +30,45 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
             crumbs={[
               { label: "Plezanje.net", link: "/" },
               { label: "Urejanje", link: null },
-              { label: sector.crag.name, link: `/en/edit/${sector.crag.slug}` },
+              { label: "Plezališča", link: null },
+              {
+                label: sector.crag.name,
+                link: `/urejanje/plezalisca/${sector.crag.slug}/uredi`,
+              },
               {
                 label: "Sektorji",
-                link: `/en/edit/${sector.crag.slug}/sectors`,
+                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji`,
               },
               { label: `${sector.label} - ${sector.name}`, link: null },
+              { label: "Smeri", link: null },
             ]}
           />
         }
-        tabMenu={<TabMenu items={tabMenuItems} />}
+        tabMenu={
+          <TabMenu
+            items={[
+              {
+                label: "Osnovni podatki",
+                link: `/urejanje/plezalisca/${sector.crag.slug}/uredi`,
+                isActive: false,
+                icon: <IconInfo />,
+              },
+              {
+                label: "Sektorji in smeri",
+                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji/${sector.id}/smeri`,
+                isActive: true,
+                icon: <IconRoutes />,
+              },
+            ]}
+          />
+        }
       />
 
-      <EditRoutes routes={sector.routes} sectorId={sectorId} />
+      <EditRoutes
+        routes={sector.routes}
+        sectorId={sector.id}
+        cragSlug={sector.crag.slug}
+      />
     </>
   );
 }

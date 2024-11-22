@@ -1,5 +1,5 @@
 import { Country, Crag } from "@/graphql/generated";
-import CragForm from "../../components/crag-form";
+import CragForm from "../../../components/crag-form";
 
 type TEditCragForm = {
   countriesWithAreas: Country[];

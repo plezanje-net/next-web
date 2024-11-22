@@ -8,6 +8,7 @@ import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { usePathname, useRouter } from "next/navigation";
 
 type TSectorCardProps = {
   id: string;
@@ -26,6 +27,9 @@ function SectorCard({
   onEditClick,
   onDeleteClick,
 }: TSectorCardProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const moreAction = (
     <Button variant="quaternary" disabled={disabled} onClick={() => {}}>
       <IconMore size={IconSize.regular} />
@@ -81,7 +85,13 @@ function SectorCard({
         <div className="border-t border-neutral-200 px-4 py-2 md:border-none">
           <div className="flex justify-end items-center">
             {/* edit routes */}
-            <Button variant="quaternary" disabled={disabled} onClick={() => {}}>
+            <Button
+              variant="quaternary"
+              disabled={disabled}
+              onClick={() => {
+                router.push(`${pathname}/${id}/smeri`); // TODO: why does router.push(`./${id}/smeri`);
+              }}
+            >
               <IconRoutes />
             </Button>
 

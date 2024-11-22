@@ -30,8 +30,8 @@ import CoordinatesInput, {
 } from "@/components/ui/coordinates-input";
 import Checkbox from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
-import createCragAction from "../new-crag/server-actions/create-crag-action";
-import updateCragAction from "../[cragSlug]/server-actions/update-crag-action";
+import createCragAction from "../add/server-actions/create-crag-action";
+import updateCragAction from "../[cragSlug]/edit/server-actions/update-crag-action";
 
 type TCragFormProps = {
   formType: "edit" | "new";
@@ -251,7 +251,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
         savedCrag = await updateCragAction(updateCragData);
     }
 
-    router.push(savedCrag.slug);
+    router.push(`${savedCrag.slug}/uredi`);
     setLoading(false);
   };
 

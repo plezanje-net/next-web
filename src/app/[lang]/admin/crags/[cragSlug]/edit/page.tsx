@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
-import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
+import TabMenu from "@/components/ui/tab-menu";
 import {
   EditCragPageCountriesDocument,
   EditCragPageCragDocument,
@@ -30,21 +30,6 @@ async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
 
   const crag = cragData.cragBySlug;
 
-  const tabMenuItems: TTabMenuItem[] = [
-    {
-      label: "Osnovni podatki",
-      link: `/edit/${cragSlug}`,
-      isActive: true,
-      icon: <IconInfo />,
-    },
-    {
-      label: "Sektorji in smeri",
-      link: `/edit/${cragSlug}/sectors`,
-      isActive: false,
-      icon: <IconRoutes />,
-    },
-  ];
-
   return (
     <>
       <ContentHeader
@@ -54,11 +39,29 @@ async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
             crumbs={[
               { label: "Plezanje.net", link: "/" },
               { label: "Urejanje", link: null },
+              { label: "Plezališča", link: null },
               { label: crag.name, link: null },
             ]}
           />
         }
-        tabMenu={<TabMenu items={tabMenuItems} />}
+        tabMenu={
+          <TabMenu
+            items={[
+              {
+                label: "Osnovni podatki",
+                link: `/urejanje/plezalisca/${cragSlug}/uredi`,
+                isActive: true,
+                icon: <IconInfo />,
+              },
+              {
+                label: "Sektorji in smeri",
+                link: `/urejanje/plezalisca/${cragSlug}/sektorji`,
+                isActive: false,
+                icon: <IconRoutes />,
+              },
+            ]}
+          />
+        }
       />
 
       <EditCragForm countriesWithAreas={countriesData.countries} crag={crag} />

@@ -1,6 +1,6 @@
 import { Crag } from "@/graphql/generated";
-import EditSectorsNone from "./edit-sectors/edit-sectors-none";
-import EditSectorsMany from "./edit-sectors/edit-sectors-many";
+import EditSectorsNone from "./edit-sectors-none";
+import EditSectorsMany from "./edit-sectors-many";
 
 type TEditCragSectorsProps = {
   crag: Crag;

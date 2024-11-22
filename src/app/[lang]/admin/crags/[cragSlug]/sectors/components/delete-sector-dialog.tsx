@@ -1,7 +1,7 @@
 import Dialog from "@/components/ui/dialog";
 import { Sector } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
-import deleteSectorAction from "../../server-actions/delete-sector-action";
+import deleteSectorAction from "../server-actions/delete-sector-action";
 import { useRouter } from "next/navigation";
 
 type TDeleteSectorDialog = {

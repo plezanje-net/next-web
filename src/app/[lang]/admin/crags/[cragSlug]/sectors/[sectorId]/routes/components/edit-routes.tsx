@@ -11,18 +11,22 @@ import IconDelete from "@/components/ui/icons/delete";
 import IconReturn from "@/components/ui/icons/return";
 import IconPlus from "@/components/ui/icons/plus";
 import RouteDialog from "./route-dialog";
+import { useRouter } from "next/navigation";
+import Link from "@/components/ui/link";
 
 type TEditRoutesProps = {
   routes: Route[];
+  cragSlug: string;
   sectorId: string;
 };
 
-function EditRoutes({ routes, sectorId }: TEditRoutesProps) {
+function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
   const [allRoutesSelected, setAllRoutesSelected] = useState(false);
   const [newRouteDialogIsOpen, setNewRouteDialogIsOpen] = useState(false);
 
   const handleAllRoutesSelectedChange = (checked: boolean) => {};
 
+  const router = useRouter();
   const loading = false;
 
   return (
@@ -71,7 +75,12 @@ function EditRoutes({ routes, sectorId }: TEditRoutesProps) {
           </Button>
         </div>
         <div>
-          <Button variant="quaternary">
+          <Button
+            variant="quaternary"
+            onClick={() =>
+              router.push(`/urejanje/plezalisca/${cragSlug}/sektorji`)
+            }
+          >
             <span className="flex">
               <IconReturn />
               <span className="ml-2 hidden lg:block">Nazaj na sektorje</span>
