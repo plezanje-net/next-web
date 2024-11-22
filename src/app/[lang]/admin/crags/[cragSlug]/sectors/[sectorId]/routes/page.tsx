@@ -68,6 +68,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
         routes={sector.routes}
         sectorId={sector.id}
         cragSlug={sector.crag.slug}
+        sectors={sector.crag.sectors}
       />
     </>
   );
@@ -93,24 +94,24 @@ gql`
         #   defaultGradingSystem {
         #     id
         #   }
-        #   sectors {
-        #     id
-        #     label
-        #     name
-        #     routes {
-        #       id
-        #       name
-        #       difficulty
-        #       defaultGradingSystem {
-        #         id
-        #         name
-        #       }
-        #       publishStatus
-        #       pitches {
-        #         id
-        #       }
-        #     }
-        #   }
+        sectors {
+          id
+          label
+          name
+          #     routes {
+          #       id
+          #       name
+          #       difficulty
+          #       defaultGradingSystem {
+          #         id
+          #         name
+          #       }
+          #       publishStatus
+          #       pitches {
+          #         id
+          #       }
+          #     }
+        }
       }
       routes {
         id

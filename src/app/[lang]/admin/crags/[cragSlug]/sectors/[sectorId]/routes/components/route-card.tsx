@@ -17,12 +17,18 @@ import { CSS } from "@dnd-kit/utilities";
 type TRouteCardProps = {
   route: Route;
   sectorId: string;
+  checked: boolean;
+  onCheckedChange: (checked: boolean, routeId: Route) => void;
   disabled: boolean;
 };
 
-function RouteCard({ route, sectorId, disabled }: TRouteCardProps) {
-  const [checked, setChecked] = useState(false);
-
+function RouteCard({
+  route,
+  sectorId,
+  checked,
+  onCheckedChange,
+  disabled,
+}: TRouteCardProps) {
   const grade = difficultyToGrade(
     route.difficulty || null,
     route.defaultGradingSystem.id
@@ -69,7 +75,7 @@ function RouteCard({ route, sectorId, disabled }: TRouteCardProps) {
               label={route.name}
               hideLabel
               checked={checked}
-              onChange={setChecked}
+              onChange={(checked) => onCheckedChange(checked, route)}
               disabled={disabled}
             />
           </div>

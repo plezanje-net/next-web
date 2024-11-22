@@ -1,6 +1,6 @@
 "use client";
 
-import { Route } from "@/graphql/generated";
+import { Route, Sector } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card";
 import Checkbox from "@/components/ui/checkbox";
@@ -29,14 +29,16 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import updateRouteAction from "../server-actions/update-route-action";
+import SwitchSectorDialog from "./switch-sector-dialog";
 
 type TEditRoutesProps = {
   routes: Route[];
   cragSlug: string;
   sectorId: string;
+  sectors: Sector[];
 };
 
-function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
+function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +49,9 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
 
   const [allRoutesSelected, setAllRoutesSelected] = useState(false);
   const [newRouteDialogIsOpen, setNewRouteDialogIsOpen] = useState(false);
+  const [checkedRoutes, setCheckedRoutes] = useState<Route[]>([]);
+  const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
+    useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -86,6 +91,14 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
 
   const handleAllRoutesSelectedChange = (checked: boolean) => {};
 
+  const handleOnCheckedChange = (checked: boolean, route: Route) => {
+    if (checked) {
+      setCheckedRoutes([...checkedRoutes, route]);
+    } else {
+      setCheckedRoutes(checkedRoutes.filter((r) => r !== route));
+    }
+  };
+
   return (
     <div className="px-4 xs:px-8">
       {/* actions row */}
@@ -112,7 +125,10 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
           {/* divider */}
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          <Button variant="quaternary">
+          <Button
+            variant="quaternary"
+            onClick={() => setSwitchSectorDialogIsOpen(true)}
+          >
             <span className="flex">
               <IconSwitchSector />
               <span className="ml-2 hidden lg:block">
@@ -173,6 +189,8 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
                   route={route}
                   sectorId={sectorId}
                   disabled={loading}
+                  checked={checkedRoutes.includes(route)}
+                  onCheckedChange={handleOnCheckedChange}
                 />
               </Fragment>
             ))}
@@ -186,6 +204,13 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
         setIsOpen={setNewRouteDialogIsOpen}
         position={0}
         sectorId={sectorId}
+      />
+
+      <SwitchSectorDialog
+        isOpen={switchSectorDialogIsOpen}
+        setIsOpen={setSwitchSectorDialogIsOpen}
+        routes={checkedRoutes}
+        sectors={sectors.filter((sector) => sector.id != sectorId)}
       />
     </div>
   );
