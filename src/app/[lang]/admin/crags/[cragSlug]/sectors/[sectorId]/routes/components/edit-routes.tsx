@@ -1,7 +1,7 @@
 "use client";
 
 import { Route } from "@/graphql/generated";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
@@ -13,6 +13,22 @@ import IconPlus from "@/components/ui/icons/plus";
 import RouteDialog from "./route-dialog";
 import { useRouter } from "next/navigation";
 import Link from "@/components/ui/link";
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import updateRouteAction from "../server-actions/update-route-action";
 
 type TEditRoutesProps = {
   routes: Route[];
@@ -21,13 +37,54 @@ type TEditRoutesProps = {
 };
 
 function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const [sortedRoutes, setSortedRoutes] = useState(routes);
+  useEffect(() => {
+    setSortedRoutes(routes);
+  }, [routes]);
+
   const [allRoutesSelected, setAllRoutesSelected] = useState(false);
   const [newRouteDialogIsOpen, setNewRouteDialogIsOpen] = useState(false);
 
-  const handleAllRoutesSelectedChange = (checked: boolean) => {};
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-  const router = useRouter();
-  const loading = false;
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setLoading(true);
+      const droppedRouteIndex = sortedRoutes.findIndex(
+        (route) => route.id === active.id
+      );
+      const targetRouteIndex = sortedRoutes.findIndex(
+        (route) => route.id === over.id
+      );
+      const newSortedRoutes = arrayMove(
+        sortedRoutes,
+        droppedRouteIndex,
+        targetRouteIndex
+      );
+      setSortedRoutes(newSortedRoutes);
+      const updatedRouteData = {
+        id: sortedRoutes[droppedRouteIndex].id,
+        position:
+          droppedRouteIndex > targetRouteIndex
+            ? sortedRoutes[targetRouteIndex].position
+            : sortedRoutes[targetRouteIndex].position + 1,
+      };
+      await updateRouteAction(updatedRouteData);
+      router.refresh();
+      setLoading(false);
+    }
+  };
+
+  const handleAllRoutesSelectedChange = (checked: boolean) => {};
 
   return (
     <div className="px-4 xs:px-8">
@@ -101,11 +158,27 @@ function EditRoutes({ routes, cragSlug, sectorId }: TEditRoutesProps) {
         </button>
       </div>
 
-      {routes.map((route) => (
-        <Fragment key={route.id}>
-          <RouteCard route={route} sectorId={sectorId} />
-        </Fragment>
-      ))}
+      <DndContext
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+        modifiers={[restrictToParentElement]}
+        sensors={sensors}
+        id="sort-routes-dnd-context-id"
+      >
+        <SortableContext items={sortedRoutes}>
+          <div>
+            {sortedRoutes.map((route) => (
+              <Fragment key={route.id}>
+                <RouteCard
+                  route={route}
+                  sectorId={sectorId}
+                  disabled={loading}
+                />
+              </Fragment>
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
 
       <RouteDialog
         formType="new"

@@ -89,7 +89,7 @@ function SectorCard({
               variant="quaternary"
               disabled={disabled}
               onClick={() => {
-                router.push(`${pathname}/${id}/smeri`); // TODO: why does router.push(`./${id}/smeri`);
+                router.push(`${pathname}/${id}/smeri`);
               }}
             >
               <IconRoutes />

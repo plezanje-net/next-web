@@ -11,13 +11,16 @@ import { difficultyToGrade } from "@/utils/grade-helpers";
 import { useState } from "react";
 import RouteDialog from "./route-dialog";
 import DeleteRouteDialog from "./delete-route-dialog";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type TRouteCardProps = {
   route: Route;
   sectorId: string;
+  disabled: boolean;
 };
 
-function RouteCard({ route, sectorId }: TRouteCardProps) {
+function RouteCard({ route, sectorId, disabled }: TRouteCardProps) {
   const [checked, setChecked] = useState(false);
 
   const grade = difficultyToGrade(
@@ -29,13 +32,35 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
   const [editRouteDialogIsOpen, setEditRouteDialogIsOpen] = useState(false);
   const [deleteRouteDialogIsOpen, setDeleteRouteDialogIsOpen] = useState(false);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: route.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <>
-      <div className="bg-neutral-100 rounded-lg flex mt-2 md:gap-2 md:items-center flex-col md:flex-row">
+      <div
+        ref={setNodeRef}
+        style={style}
+        className={`bg-neutral-100 rounded-lg flex mt-2 md:gap-2 md:items-center flex-col md:flex-row ${isDragging ? "z-50 relative shadow-lg" : ""}`}
+      >
         {/* drag handle, checkbox, name, grade, length and other info if space allows */}
         <div className="flex flex-1 items-center px-4 py-2">
-          <div>
-            <Button disabled={false} variant="quaternary">
+          <div
+            {...(disabled ? {} : attributes)}
+            {...(disabled ? {} : listeners)}
+            tabIndex={-1}
+          >
+            <Button disabled={disabled} variant="quaternary">
               <IconDrag />
             </Button>
           </div>
@@ -45,6 +70,7 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
               hideLabel
               checked={checked}
               onChange={setChecked}
+              disabled={disabled}
             />
           </div>
 
@@ -60,7 +86,7 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
           {/* edit */}
           <Button
             variant="quaternary"
-            disabled={false}
+            disabled={disabled}
             onClick={() => setEditRouteDialogIsOpen(true)}
           >
             <IconEdit />
@@ -72,7 +98,7 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
           {/* delete */}
           <Button
             variant="quaternary"
-            disabled={false}
+            disabled={disabled}
             onClick={() => {
               setDeleteRouteDialogIsOpen(true);
             }}
@@ -86,7 +112,7 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
           {/* add route */}
           <Button
             variant="quaternary"
-            disabled={false}
+            disabled={disabled}
             onClick={() => {
               setNewRouteDialogIsOpen(true);
             }}
