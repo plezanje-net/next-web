@@ -51,7 +51,7 @@ function RouteCard({ route, sectorId }: TRouteCardProps) {
           <div className="ml-4 flex-1 md:max-w-80 truncate">{route.name}</div>
           <div className="ml-4 min-w-10 lg:min-w-30">{grade?.name}</div>
           <div className="ml-4 min-w-12 text-right md:text-left">
-            {route.length} m
+            {route.length !== null && <span>{route.length} m</span>}
           </div>
         </div>
 
