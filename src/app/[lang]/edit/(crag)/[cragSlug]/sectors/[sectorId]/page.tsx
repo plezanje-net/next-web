@@ -57,7 +57,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
         tabMenu={<TabMenu items={tabMenuItems} />}
       />
 
-      <EditRoutes routes={sector.routes} />
+      <EditRoutes routes={sector.routes} sectorId={sectorId} />
     </>
   );
 }
@@ -104,24 +104,23 @@ gql`
       routes {
         id
         name
+        routeType {
+          id
+        }
         difficulty
         defaultGradingSystem {
           id
         }
         length
+        position
         # author
         # slug
         # publishStatus
         # isProject
-        # position
         # created
         # sector {
         #   id
         #   publishStatus
-        # }
-        # routeType {
-        #   id
-        #   name
         # }
         # difficulty
         # difficultyVotes {
