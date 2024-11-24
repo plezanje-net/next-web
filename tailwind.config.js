@@ -68,9 +68,6 @@ module.exports = {
         30: "7.5rem", // 120px
         42: "10.5rem", // 168px
       },
-      height: {
-        18: "4.5rem", // 72px
-      },
       minWidth: {
         0.5: "0.125rem", // 2px
         8: "2rem", // 32px

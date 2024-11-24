@@ -55,7 +55,7 @@ type TLogRoutesContext = {
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
   setRouteAscentType: (id: string, key: string, at: AscentType | null) => void;
   setRouteDifficultyVote: (id: string, key: string, dv: number | null) => void;
-  setRouteStarRatingVote: (id: string, srv: number | undefined) => void;
+  setRouteStarRatingVote: (id: string, srv: number | null) => void;
   setRoutePublishType: (key: string, pt: PublishType) => void;
   setRouteNote: (key: string, n: string) => void;
   resetAll: () => void;
@@ -149,7 +149,7 @@ function LogRoutesProvider({
 
   const setRouteStarRatingVote = (
     id: string,
-    newStarRatingVote: number | undefined
+    newStarRatingVote: number | null
   ) => {
     setLogRoutes((logRoutes) => {
       const newLogRoutes = [...logRoutes];

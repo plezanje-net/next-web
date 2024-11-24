@@ -4,7 +4,7 @@ import { AllCountriesDocument, AllCragsDocument } from "@/graphql/generated";
 import { CragsProvider } from "./components/crags-context";
 import Crags from "./components/crags";
 
-async function CragsPage() {
+async function Crags2Page() {
   const cragsDataPromise = urqlServer().query(AllCragsDocument, {});
   const countriesDataPromise = urqlServer().query(AllCountriesDocument, {});
   const [{ data: cragsData }, { data: countriesData }] = await Promise.all([
@@ -22,7 +22,7 @@ async function CragsPage() {
   );
 }
 
-export default CragsPage;
+export default Crags2Page;
 
 gql`
   query AllCrags {

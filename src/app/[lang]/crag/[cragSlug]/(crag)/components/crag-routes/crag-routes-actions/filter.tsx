@@ -15,9 +15,8 @@ import Checkbox from "@/components/ui/checkbox";
 function Filter() {
   const { cragRoutesState, setCragRoutesState } = useContext(CragRoutesContext);
 
-  const [routesTouchesFilterValue, setRoutesTouchesFilterValue] = useState<
-    string | undefined
-  >("all");
+  const [routesTouchesFilterValue, setRoutesTouchesFilterValue] =
+    useState("all");
   const [nrFiltersActive, setNrFiltersActive] = useState(0);
   const [difficultyFilterValue, setDifficultyFilterValue] = useState({
     from: minSliderValue,

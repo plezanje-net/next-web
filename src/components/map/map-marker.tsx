@@ -1,36 +1,26 @@
-"use client";
-
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import IconMarker from "../ui/icons/marker";
 import { ReactNode } from "react";
 import { useClientRenderToString } from "@/hooks/useClientRenderToString";
-import IconMarkerWall from "../ui/icons/marker-wall";
-import IconMarkerParking from "../ui/icons/marker-parking";
-import { IconSize } from "../ui/icons/icon-size";
 
 type TMapMarkerProps = {
+  marker: TMarker;
+  index: number;
+};
+
+type TMarker = {
   type: "parking" | "wall";
   position: [number, number];
   popupContent?: ReactNode;
-  interactive?: boolean;
 };
 
-function MapMarker({
-  type,
-  position,
-  popupContent,
-  interactive = true,
-}: TMapMarkerProps) {
-  const [icon] = useClientRenderToString(
-    type === "parking" ? (
-      <IconMarkerParking size={IconSize.xl} />
-    ) : (
-      <IconMarkerWall size={IconSize.xl} />
-    )
-  );
+function MapMarker({ marker, index }: TMapMarkerProps) {
+  const [icon] = useClientRenderToString(<IconMarker type={marker.type} />);
 
   return (
     <Marker
+      key={index}
       icon={L.divIcon({
         className: "",
         html: icon,
@@ -38,12 +28,12 @@ function MapMarker({
         iconAnchor: [26, 52],
         popupAnchor: [0, -46],
       })}
-      position={position}
-      interactive={interactive}
+      position={marker.position}
     >
-      {popupContent && <Popup>{popupContent}</Popup>}
+      <Popup>{marker.popupContent}</Popup>
     </Marker>
   );
 }
 
+export type { TMarker };
 export default MapMarker;

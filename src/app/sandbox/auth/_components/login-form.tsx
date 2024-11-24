@@ -58,9 +58,7 @@ function LoginForm() {
         />
       </div>
       <div className="pt-2">
-        <Button disabled={loggingIn} type="submit">
-          Login
-        </Button>
+        <Button disabled={loggingIn}>Login</Button>
       </div>
       {error && <div className="pt-2 text-red-500">{error}</div>}
     </form>
