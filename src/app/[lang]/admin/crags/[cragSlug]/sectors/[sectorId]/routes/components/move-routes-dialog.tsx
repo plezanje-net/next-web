@@ -2,32 +2,35 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
-import { Route, Sector } from "@/graphql/generated";
+import { Route } from "@/graphql/generated";
 import updateRoutesAction from "../server-actions/update-routes-action";
 
-type TSwitchSectorProps = {
+type TMoveRoutesDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   routes: Route[];
-  targetSectors: Sector[];
+  targetRoutes: Route[];
 };
 
-function SwitchSectorDialog({
+function MoveRoutesDialog({
   isOpen,
   setIsOpen,
   routes,
-  targetSectors,
-}: TSwitchSectorProps) {
+  targetRoutes,
+}: TMoveRoutesDialogProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
 
+  const [targetPosition, setTargetPosition] = useState("");
+  const [targetPositionError, setTargetPositionError] = useState("");
+
   const resetForm = () => {
     // reset fields
-    setTargetSector("");
+    setTargetPosition("");
 
     // clear errors
-    setTargetSectorError("");
+    setTargetPositionError("");
   };
 
   const handleCancel = () => {
@@ -44,15 +47,23 @@ function SwitchSectorDialog({
 
     // Validate form
     //    - sector is required
-    if (!targetSector) {
-      setTargetSectorError("Ciljni sektor je obvezen podatek.");
+    if (!targetPosition) {
+      setTargetPositionError("Ciljna smer je obvezen podatek.");
       setLoading(false);
       return;
     }
 
+    // sort routes by their current positions in reverse order (be is 'pushing' what is at current (target) position and below, so we need to reposition routes from the back)
+    const routesReversed = [...routes].sort(
+      (r1, r2) => r2.position - r1.position
+    );
+
     const routesData = [];
-    for (let i = 0; i < routes.length; i++) {
-      routesData.push({ id: routes[i].id, sectorId: targetSector });
+    for (let i = 0; i < routesReversed.length; i++) {
+      routesData.push({
+        id: routesReversed[i].id,
+        position: +targetPosition + 1,
+      });
     }
 
     await updateRoutesAction(routesData);
@@ -65,17 +76,14 @@ function SwitchSectorDialog({
     router.refresh();
   };
 
-  const [targetSector, setTargetSector] = useState("");
-  const [targetSectorError, setTargetSectorError] = useState("");
-
-  const handleTargetSectorChange = (targetSector: string) => {
-    setTargetSectorError("");
-    setTargetSector(targetSector);
+  const handleTargetRouteChange = (targetPosition: string) => {
+    setTargetPositionError("");
+    setTargetPosition(targetPosition);
   };
 
   return (
     <Dialog
-      title="Premik smeri v drug sektor"
+      title="Premik smeri znotraj sektorja"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       cancel={{
@@ -93,7 +101,7 @@ function SwitchSectorDialog({
     >
       <form onSubmit={handleOnSubmit} ref={formRef}>
         <div>
-          Izberi sektor, v katerega želiš premakniti{" "}
+          Izberi smer, za katero želiš premakniti{" "}
           {routes.length == 1 ? (
             <span>
               smer <span className="font-medium">{routes[0].name}</span>
@@ -105,21 +113,23 @@ function SwitchSectorDialog({
         </div>
 
         <div className="mt-6">
-          {/* Dep.: remove sector label after it is removed from BE  */}
           <Select
-            value={targetSector}
-            onChange={handleTargetSectorChange}
-            label="Ciljni sektor"
+            value={targetPosition}
+            onChange={handleTargetRouteChange}
+            label="Ciljna smer"
             disabled={loading}
-            errorMessage={targetSectorError}
+            errorMessage={targetPositionError}
           >
-            {targetSectors.map((sector) => (
-              <Option key={sector.id} value={sector.id}>
-                <>
-                  {sector.label} - {sector.name}
-                </>
-              </Option>
-            ))}
+            {[
+              <Option key="sol" value="0">
+                -- na začetek --
+              </Option>,
+              ...targetRoutes.map((route) => (
+                <Option key={route.id} value={`${route.position}`}>
+                  {route.name}
+                </Option>
+              )),
+            ]}
           </Select>
         </div>
       </form>
@@ -127,4 +137,4 @@ function SwitchSectorDialog({
   );
 }
 
-export default SwitchSectorDialog;
+export default MoveRoutesDialog;

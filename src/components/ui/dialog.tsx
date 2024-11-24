@@ -100,12 +100,17 @@ function Dialog({
       <DialogHUI open={isOpenValue} onClose={handleClose}>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div
-          className="fixed inset-0 bg-neutral-900 bg-opacity-25 z-30"
+          className="fixed inset-0 bg-neutral-900 bg-opacity-25"
           aria-hidden="true"
         />
+        {/* TODO: <div
+          className="fixed inset-0 bg-neutral-900 bg-opacity-25 z-30"
+          aria-hidden="true"
+        /> */}
 
         {/* Full-screen container to center the panel */}
-        <div className="fixed inset-0 overflow-y-auto p-5 xs:p-10 z-30">
+        <div className="fixed inset-0 overflow-y-auto p-5 xs:p-10">
+          {/* TODO: <div className="fixed inset-0 overflow-y-auto p-5 xs:p-10 z-30"> */}
           <DialogPanel
             className={`mx-auto rounded-lg bg-white shadow-lg p-8 ${dialogSize}`}
           >

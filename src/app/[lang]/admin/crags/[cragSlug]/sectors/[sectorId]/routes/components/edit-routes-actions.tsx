@@ -9,12 +9,14 @@ import IconReturn from "@/components/ui/icons/return";
 import { useRouter } from "next/navigation";
 import SwitchSectorDialog from "./switch-sector-dialog";
 import useIsVisible from "@/hooks/useIsVisible";
+import MoveRoutesDialog from "./move-routes-dialog";
 
 type TEditRoutesActionsProps = {
   cragSlug: string;
   sectorId: string;
   checkedRoutes: Route[];
   allSectors: Sector[];
+  allRoutes: Route[];
 };
 
 function EditRoutesActions({
@@ -22,12 +24,15 @@ function EditRoutesActions({
   sectorId,
   cragSlug,
   checkedRoutes,
+  allRoutes,
 }: TEditRoutesActionsProps) {
   const router = useRouter();
 
-  const [allRoutesSelected, setAllRoutesSelected] = useState(false);
-  const handleAllRoutesSelectedChange = (checked: boolean) => {};
+  // TODO: wire up check all checkbox
+  const [allRoutesChecked, setAllRoutesChecked] = useState(false);
+  const handleAllRoutesCheckedChange = (checked: boolean) => {};
 
+  const [moveRoutesDialogIsOpen, setMoveRoutesDialogIsOpen] = useState(false);
   const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
     useState(false);
 
@@ -41,13 +46,16 @@ function EditRoutesActions({
 
       {/* actions row */}
       <div
-        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-20" : ""}`}
+        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg" : ""}`}
       >
+        {/*TODO: <div
+        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-20" : ""}`}
+      > */}
         {/* check all */}
         <div className="flex items-center">
           <Checkbox
-            checked={allRoutesSelected}
-            onChange={handleAllRoutesSelectedChange}
+            checked={allRoutesChecked}
+            onChange={handleAllRoutesCheckedChange}
             label="Označi vse"
             hideLabel="max-xs:sr-only"
           />
@@ -56,7 +64,10 @@ function EditRoutesActions({
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
           {/* change position of all checked routes */}
-          <Button variant="quaternary">
+          <Button
+            variant="quaternary"
+            onClick={() => setMoveRoutesDialogIsOpen(true)}
+          >
             <span className="flex">
               <IconMoveRoutes />
               <span className="ml-2 hidden lg:block">Premakni</span>
@@ -106,6 +117,16 @@ function EditRoutesActions({
           </Button>
         </div>
       </div>
+
+      <MoveRoutesDialog
+        isOpen={moveRoutesDialogIsOpen}
+        setIsOpen={setMoveRoutesDialogIsOpen}
+        routes={checkedRoutes}
+        targetRoutes={allRoutes.filter(
+          (route) =>
+            !checkedRoutes.find((checkedRoute) => checkedRoute.id == route.id)
+        )}
+      />
 
       <SwitchSectorDialog
         isOpen={switchSectorDialogIsOpen}

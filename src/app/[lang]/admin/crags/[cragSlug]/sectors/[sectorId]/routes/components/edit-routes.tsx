@@ -44,6 +44,15 @@ function EditRoutes({
     setSortedRoutes(routes);
   }, [routes]);
 
+  const [checkedRouteIds, setCheckedRouteIds] = useState<string[]>([]);
+  const handleOnCheckedChange = (checked: boolean, routeId: string) => {
+    if (checked) {
+      setCheckedRouteIds([...checkedRouteIds, routeId]);
+    } else {
+      setCheckedRouteIds(checkedRouteIds.filter((rId) => rId !== routeId));
+    }
+  };
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -80,25 +89,20 @@ function EditRoutes({
     }
   };
 
-  const [checkedRoutes, setCheckedRoutes] = useState<Route[]>([]);
-  const handleOnCheckedChange = (checked: boolean, route: Route) => {
-    if (checked) {
-      setCheckedRoutes([...checkedRoutes, route]);
-    } else {
-      setCheckedRoutes(checkedRoutes.filter((r) => r !== route));
-    }
-  };
-
   return (
     <>
       <EditRoutesActions
         allSectors={allSectors}
         sectorId={sectorId}
         cragSlug={cragSlug}
-        checkedRoutes={checkedRoutes}
+        checkedRoutes={sortedRoutes.filter((route) =>
+          checkedRouteIds.includes(route.id)
+        )}
+        allRoutes={sortedRoutes}
       />
 
-      <div className="px-4 xs:px-8 relative z-10">
+      <div className="px-4 xs:px-8">
+        {/* TODO: <div className="px-4 xs:px-8 relative z-10"> */}
         <NewFirstRouteButton sectorId={sectorId} disabled={loading} />
       </div>
 
@@ -118,7 +122,7 @@ function EditRoutes({
                     route={route}
                     sectorId={sectorId}
                     disabled={loading}
-                    checked={checkedRoutes.includes(route)}
+                    checked={checkedRouteIds.includes(route.id)}
                     onCheckedChange={handleOnCheckedChange}
                   />
                 </Fragment>

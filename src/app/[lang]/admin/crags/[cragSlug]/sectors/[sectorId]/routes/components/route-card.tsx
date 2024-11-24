@@ -18,7 +18,7 @@ type TRouteCardProps = {
   route: Route;
   sectorId: string;
   checked: boolean;
-  onCheckedChange: (checked: boolean, routeId: Route) => void;
+  onCheckedChange: (checked: boolean, routeId: string) => void;
   disabled: boolean;
 };
 
@@ -75,7 +75,7 @@ function RouteCard({
               label={route.name}
               hideLabel
               checked={checked}
-              onChange={(checked) => onCheckedChange(checked, route)}
+              onChange={(checked) => onCheckedChange(checked, route.id)}
               disabled={disabled}
             />
           </div>
