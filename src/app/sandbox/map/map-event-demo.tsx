@@ -7,8 +7,6 @@ import MapMarker from "@/components/map/map-marker";
 function MapEventDemo() {
   const [position, setPosition] = useState<[number, number] | undefined>();
   const map = useMapEvent("click", (e) => {
-    console.log(e.latlng);
-    console.log(map);
     setPosition([e.latlng.lat, e.latlng.lng]);
   });
 
