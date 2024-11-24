@@ -1,7 +1,7 @@
 "use client";
 
 import { Route, Sector } from "@/graphql/generated";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import RouteCard from "./route-card";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
@@ -30,6 +30,7 @@ import {
 } from "@dnd-kit/sortable";
 import updateRouteAction from "../server-actions/update-route-action";
 import SwitchSectorDialog from "./switch-sector-dialog";
+import useIsVisible from "@/hooks/useIsVisible";
 
 type TEditRoutesProps = {
   routes: Route[];
@@ -99,11 +100,17 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
     }
   };
 
+  const dummyRef = useRef(null);
+  const sticky = !useIsVisible(dummyRef, true);
+
   return (
-    <div className="px-4 xs:px-8">
+    <div>
+      {/* A dummy div, for detecting when the 'stickiness' of the actions row starts (when this div dissapears from view) */}
+      <div ref={dummyRef}></div>
       {/* actions row */}
-      {/* TODO: export to another component? */}
-      <div className="flex items-center justify-between my-5">
+      <div
+        className={`px-4 xs:px-8 flex items-center justify-between py-4 sticky top-0 z-10 bg-white ${sticky ? "shadow-lg" : ""}`}
+      >
         <div className="flex items-center">
           <Checkbox
             checked={allRoutesSelected}
@@ -162,56 +169,58 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
         </div>
       </div>
 
-      {/* new route button */}
-      <div className="h-12 flex items-stretch mt-5">
-        <button
-          disabled={false}
-          className={`w-full flex justify-end items-center border border-dashed rounded-lg px-4 outline-none focus-visible:ring focus-visible:ring-blue-100  ${loading ? "text-neutral-400 border-neutral-300" : "text-neutral-500 hover:border-neutral-500 hover:text-neutral-600 active:text-neutral-700 active:border-neutral-600 border-neutral-400"}`}
-          onClick={() => setNewRouteDialogIsOpen(true)}
+      <div className="px-4 xs:px-8">
+        {/* new route button */}
+        <div className="h-12 flex items-stretch">
+          <button
+            disabled={false}
+            className={`w-full flex justify-end items-center border border-dashed rounded-lg px-4 outline-none focus-visible:ring focus-visible:ring-blue-100  ${loading ? "text-neutral-400 border-neutral-300" : "text-neutral-500 hover:border-neutral-500 hover:text-neutral-600 active:text-neutral-700 active:border-neutral-600 border-neutral-400"}`}
+            onClick={() => setNewRouteDialogIsOpen(true)}
+          >
+            <span className="mr-2">dodaj smer na začetek</span>
+            <IconPlus />
+          </button>
+        </div>
+
+        <DndContext
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
+          modifiers={[restrictToParentElement]}
+          sensors={sensors}
+          id="sort-routes-dnd-context-id"
         >
-          <span className="mr-2">dodaj smer na začetek</span>
-          <IconPlus />
-        </button>
+          <SortableContext items={sortedRoutes}>
+            <div>
+              {sortedRoutes.map((route) => (
+                <Fragment key={route.id}>
+                  <RouteCard
+                    route={route}
+                    sectorId={sectorId}
+                    disabled={loading}
+                    checked={checkedRoutes.includes(route)}
+                    onCheckedChange={handleOnCheckedChange}
+                  />
+                </Fragment>
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+
+        <RouteDialog
+          formType="new"
+          isOpen={newRouteDialogIsOpen}
+          setIsOpen={setNewRouteDialogIsOpen}
+          position={0}
+          sectorId={sectorId}
+        />
+
+        <SwitchSectorDialog
+          isOpen={switchSectorDialogIsOpen}
+          setIsOpen={setSwitchSectorDialogIsOpen}
+          routes={checkedRoutes}
+          sectors={sectors.filter((sector) => sector.id != sectorId)}
+        />
       </div>
-
-      <DndContext
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
-        modifiers={[restrictToParentElement]}
-        sensors={sensors}
-        id="sort-routes-dnd-context-id"
-      >
-        <SortableContext items={sortedRoutes}>
-          <div>
-            {sortedRoutes.map((route) => (
-              <Fragment key={route.id}>
-                <RouteCard
-                  route={route}
-                  sectorId={sectorId}
-                  disabled={loading}
-                  checked={checkedRoutes.includes(route)}
-                  onCheckedChange={handleOnCheckedChange}
-                />
-              </Fragment>
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
-
-      <RouteDialog
-        formType="new"
-        isOpen={newRouteDialogIsOpen}
-        setIsOpen={setNewRouteDialogIsOpen}
-        position={0}
-        sectorId={sectorId}
-      />
-
-      <SwitchSectorDialog
-        isOpen={switchSectorDialogIsOpen}
-        setIsOpen={setSwitchSectorDialogIsOpen}
-        routes={checkedRoutes}
-        sectors={sectors.filter((sector) => sector.id != sectorId)}
-      />
     </div>
   );
 }
