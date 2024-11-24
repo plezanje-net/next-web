@@ -41,8 +41,9 @@ function EditRoutesActions({
 
       {/* actions row */}
       <div
-        className={`px-4 xs:px-8 flex items-center justify-between py-4 sticky top-0 bg-white ${sticky ? "shadow-lg" : ""}`}
+        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-20" : ""}`}
       >
+        {/* check all */}
         <div className="flex items-center">
           <Checkbox
             checked={allRoutesSelected}
@@ -54,6 +55,7 @@ function EditRoutesActions({
           {/* divider */}
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
+          {/* change position of all checked routes */}
           <Button variant="quaternary">
             <span className="flex">
               <IconMoveRoutes />
@@ -64,6 +66,7 @@ function EditRoutesActions({
           {/* divider */}
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
+          {/* move checked routes into another sector */}
           <Button
             variant="quaternary"
             onClick={() => setSwitchSectorDialogIsOpen(true)}
@@ -79,6 +82,7 @@ function EditRoutesActions({
           {/* divider */}
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
+          {/* delete checked routes */}
           <Button variant="quaternary">
             <span className="flex">
               <IconDelete />
@@ -86,6 +90,8 @@ function EditRoutesActions({
             </span>
           </Button>
         </div>
+
+        {/* back to crag sectors */}
         <div>
           <Button
             variant="quaternary"

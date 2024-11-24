@@ -90,7 +90,7 @@ function EditRoutes({
   };
 
   return (
-    <div>
+    <>
       <EditRoutesActions
         allSectors={allSectors}
         sectorId={sectorId}
@@ -98,9 +98,11 @@ function EditRoutes({
         checkedRoutes={checkedRoutes}
       />
 
-      <div className="px-4 xs:px-8">
+      <div className="px-4 xs:px-8 relative z-10">
         <NewFirstRouteButton sectorId={sectorId} disabled={loading} />
+      </div>
 
+      <div className="px-4 xs:px-8">
         <DndContext
           onDragEnd={handleDragEnd}
           collisionDetection={closestCenter}
@@ -125,7 +127,7 @@ function EditRoutes({
           </SortableContext>
         </DndContext>
       </div>
-    </div>
+    </>
   );
 }
 
