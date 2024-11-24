@@ -3,17 +3,17 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { ReactNode } from "react";
+import { Fragment, ReactElement, ReactNode } from "react";
 import "./map.css";
-import MapMarker, { TMarker } from "./map-marker";
 
 type TLazyMapProps = {
   children?: ReactNode;
-  markers?: TMarker[];
+  markers?: ReactElement[];
   className?: string;
   center?: [number, number];
   zoom?: number;
   autoBounds?: boolean;
+  scrollWheelZoom?: boolean;
 };
 
 function LazyMap({
@@ -23,8 +23,9 @@ function LazyMap({
   center,
   zoom,
   autoBounds,
+  scrollWheelZoom = false,
 }: TLazyMapProps) {
-  let mapClassName = "h-[600px] w-full xs:rounded-lg";
+  let mapClassName = "h-[600px] w-full cursor-loading";
   if (className) {
     mapClassName = `${mapClassName} ${className}`;
   }
@@ -38,7 +39,9 @@ function LazyMap({
     zoom?: number;
   } = {};
   if (autoBounds && markers) {
-    boundsOrCenterAndZoom.bounds = markers.map((marker) => marker.position);
+    boundsOrCenterAndZoom.bounds = markers.map(
+      (marker) => marker.props.position
+    );
     boundsOrCenterAndZoom.boundsOptions = { padding: [30, 60] };
   } else {
     boundsOrCenterAndZoom.center = center;
@@ -48,7 +51,7 @@ function LazyMap({
   return (
     <MapContainer
       {...boundsOrCenterAndZoom}
-      scrollWheelZoom={false}
+      scrollWheelZoom={scrollWheelZoom}
       className={mapClassName}
     >
       <TileLayer
@@ -57,7 +60,7 @@ function LazyMap({
       />
 
       {markers?.map((marker, index) => (
-        <MapMarker key={index} marker={marker} index={index} />
+        <Fragment key={index}>{marker}</Fragment>
       ))}
 
       {children}
