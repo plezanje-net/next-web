@@ -101,11 +101,9 @@ function EditRoutes({
         allRoutes={sortedRoutes}
       />
 
-      <div className="px-4 xs:px-8">
-        {/* TODO: <div className="px-4 xs:px-8 relative z-10"> */}
+      <div className="px-4 xs:px-8 relative">
         <NewFirstRouteButton sectorId={sectorId} disabled={loading} />
       </div>
-
       <div className="px-4 xs:px-8">
         <DndContext
           onDragEnd={handleDragEnd}

@@ -46,11 +46,8 @@ function EditRoutesActions({
 
       {/* actions row */}
       <div
-        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg" : ""}`}
+        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-10" : ""}`}
       >
-        {/*TODO: <div
-        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-20" : ""}`}
-      > */}
         {/* check all */}
         <div className="flex items-center">
           <Checkbox
