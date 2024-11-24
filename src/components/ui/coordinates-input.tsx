@@ -9,9 +9,9 @@ import Button from "./button";
 import Dialog, { DialogSize, DialogTitleSize } from "./dialog";
 import TextField, { TTextFieldProps } from "./text-field";
 import { Dispatch, SetStateAction, useState } from "react";
+import IconMarker from "./icons/marker";
 import { useMapEvent } from "react-leaflet";
 import MapMarker from "../map/map-marker";
-import IconMarker from "./icons/marker";
 
 type TCoordinatesInputProps = TTextFieldProps & {
   dialogTitle: string;
@@ -120,10 +120,10 @@ function PlacedMarker({
     setPosition([e.latlng.lat, e.latlng.lng]);
   });
 
-  return (
-    position && (
-      <MapMarker type={markerType} position={position} interactive={false} />
-    )
+  return position ? (
+    <MapMarker type={markerType} position={position} interactive={false} />
+  ) : (
+    <MapMarker type={markerType} position={[0, 0]} interactive={false} hidden />
   );
 }
 
