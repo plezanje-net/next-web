@@ -1,18 +1,11 @@
 "use client";
 
 import { Route, Sector } from "@/graphql/generated";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card";
-import Checkbox from "@/components/ui/checkbox";
-import Button from "@/components/ui/button";
-import IconMoveRoutes from "@/components/ui/icons/move-routes";
-import IconSwitchSector from "@/components/ui/icons/switch-sector";
-import IconDelete from "@/components/ui/icons/delete";
-import IconReturn from "@/components/ui/icons/return";
 import IconPlus from "@/components/ui/icons/plus";
 import RouteDialog from "./route-dialog";
 import { useRouter } from "next/navigation";
-import Link from "@/components/ui/link";
 import {
   DndContext,
   DragEndEvent,
@@ -29,17 +22,21 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import updateRouteAction from "../server-actions/update-route-action";
-import SwitchSectorDialog from "./switch-sector-dialog";
-import useIsVisible from "@/hooks/useIsVisible";
+import EditRoutesActions from "./edit-routes-actions";
 
 type TEditRoutesProps = {
   routes: Route[];
   cragSlug: string;
   sectorId: string;
-  sectors: Sector[];
+  allSectors: Sector[];
 };
 
-function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
+function EditRoutes({
+  routes,
+  cragSlug,
+  sectorId,
+  allSectors,
+}: TEditRoutesProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -48,11 +45,7 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
     setSortedRoutes(routes);
   }, [routes]);
 
-  const [allRoutesSelected, setAllRoutesSelected] = useState(false);
   const [newRouteDialogIsOpen, setNewRouteDialogIsOpen] = useState(false);
-  const [checkedRoutes, setCheckedRoutes] = useState<Route[]>([]);
-  const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
-    useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -90,8 +83,7 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
     }
   };
 
-  const handleAllRoutesSelectedChange = (checked: boolean) => {};
-
+  const [checkedRoutes, setCheckedRoutes] = useState<Route[]>([]);
   const handleOnCheckedChange = (checked: boolean, route: Route) => {
     if (checked) {
       setCheckedRoutes([...checkedRoutes, route]);
@@ -100,74 +92,14 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
     }
   };
 
-  const dummyRef = useRef(null);
-  const sticky = !useIsVisible(dummyRef, true);
-
   return (
     <div>
-      {/* A dummy div, for detecting when the 'stickiness' of the actions row starts (when this div dissapears from view) */}
-      <div ref={dummyRef}></div>
-      {/* actions row */}
-      <div
-        className={`px-4 xs:px-8 flex items-center justify-between py-4 sticky top-0 z-10 bg-white ${sticky ? "shadow-lg" : ""}`}
-      >
-        <div className="flex items-center">
-          <Checkbox
-            checked={allRoutesSelected}
-            onChange={handleAllRoutesSelectedChange}
-            label="Označi vse"
-            hideLabel="max-xs:sr-only"
-          />
-
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
-
-          <Button variant="quaternary">
-            <span className="flex">
-              <IconMoveRoutes />
-              <span className="ml-2 hidden lg:block">Premakni</span>
-            </span>
-          </Button>
-
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
-
-          <Button
-            variant="quaternary"
-            onClick={() => setSwitchSectorDialogIsOpen(true)}
-          >
-            <span className="flex">
-              <IconSwitchSector />
-              <span className="ml-2 hidden lg:block">
-                Premakni v drug sektor
-              </span>
-            </span>
-          </Button>
-
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
-
-          <Button variant="quaternary">
-            <span className="flex">
-              <IconDelete />
-              <span className="ml-2 hidden lg:block">Izbriši</span>
-            </span>
-          </Button>
-        </div>
-        <div>
-          <Button
-            variant="quaternary"
-            onClick={() =>
-              router.push(`/urejanje/plezalisca/${cragSlug}/sektorji`)
-            }
-          >
-            <span className="flex">
-              <IconReturn />
-              <span className="ml-2 hidden lg:block">Nazaj na sektorje</span>
-            </span>
-          </Button>
-        </div>
-      </div>
+      <EditRoutesActions
+        allSectors={allSectors}
+        sectorId={sectorId}
+        cragSlug={cragSlug}
+        checkedRoutes={checkedRoutes}
+      />
 
       <div className="px-4 xs:px-8">
         {/* new route button */}
@@ -212,13 +144,6 @@ function EditRoutes({ routes, cragSlug, sectorId, sectors }: TEditRoutesProps) {
           setIsOpen={setNewRouteDialogIsOpen}
           position={0}
           sectorId={sectorId}
-        />
-
-        <SwitchSectorDialog
-          isOpen={switchSectorDialogIsOpen}
-          setIsOpen={setSwitchSectorDialogIsOpen}
-          routes={checkedRoutes}
-          sectors={sectors.filter((sector) => sector.id != sectorId)}
         />
       </div>
     </div>

@@ -68,7 +68,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
         routes={sector.routes}
         sectorId={sector.id}
         cragSlug={sector.crag.slug}
-        sectors={sector.crag.sectors}
+        allSectors={sector.crag.sectors}
       />
     </>
   );

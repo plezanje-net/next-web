@@ -9,14 +9,14 @@ type TSwitchSectorProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   routes: Route[];
-  sectors: Sector[];
+  targetSectors: Sector[];
 };
 
 function SwitchSectorDialog({
   isOpen,
   setIsOpen,
   routes,
-  sectors,
+  targetSectors,
 }: TSwitchSectorProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -113,7 +113,7 @@ function SwitchSectorDialog({
             disabled={loading}
             errorMessage={targetSectorError}
           >
-            {sectors.map((sector) => (
+            {targetSectors.map((sector) => (
               <Option key={sector.id} value={sector.id}>
                 <>
                   {sector.label} - {sector.name}
