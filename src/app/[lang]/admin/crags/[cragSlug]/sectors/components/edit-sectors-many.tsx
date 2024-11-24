@@ -24,6 +24,7 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import updateSectorAction from "../server-actions/update-sector-action";
 import { useRouter } from "next/navigation";
+import NewFirstSectorButton from "./new-first-sector-button";
 
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
@@ -115,16 +116,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         onChange={handleCragHasSectorsChange}
       />
 
-      <div className="h-18 flex items-stretch mt-5">
-        <button
-          disabled={loading}
-          className={`w-full flex justify-end items-center border border-dashed rounded-lg px-4 outline-none focus-visible:ring focus-visible:ring-blue-100  ${loading ? "text-neutral-400 border-neutral-300" : "text-neutral-500 hover:border-neutral-500 hover:text-neutral-600 active:text-neutral-700 active:border-neutral-600 border-neutral-400"}`}
-          onClick={() => handleAddSectorClick(0)}
-        >
-          <span className="mr-2">dodaj sektor na začetek</span>
-          <IconPlus />
-        </button>
-      </div>
+      <NewFirstSectorButton cragId={cragId} disabled={loading} />
 
       <DndContext
         onDragEnd={handleDragEnd}
