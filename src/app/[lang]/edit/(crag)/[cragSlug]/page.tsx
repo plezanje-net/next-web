@@ -39,7 +39,7 @@ async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
     },
     {
       label: "Sektorji in smeri",
-      link: `/`, // TODO: enter link
+      link: `/edit/${cragSlug}/sectors`,
       isActive: false,
       icon: <IconRoutes />,
     },
