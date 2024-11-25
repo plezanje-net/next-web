@@ -4,7 +4,10 @@
     "/{crag}/:cragSlug/{route}/:routeSlug*",
     "/{crag}/:cragSlug/{comments}",
     "/{crag}/:cragSlug/{gallery}",
-    "/{crag}/:cragSlug*"
+    "/{crag}/:cragSlug*",
+    "/{climbing-log}/{calendar}",
+    "/{climbing-log}/{ascents}",
+    "/{climbing-log}/{statistics}"
   ],
   "translations": {
     "sl": {
@@ -13,7 +16,11 @@
       "route": "smer",
       "info": "info",
       "comments": "komentarji",
-      "gallery": "galerija"
+      "gallery": "galerija",
+      "climbing-log": "plezalni-dnevnik",
+      "calendar": "koledar",
+      "ascents": "vzponi",
+      "statistics": "statistika"
     },
     "en": {
       "crags": "crags",
@@ -21,7 +28,11 @@
       "route": "route",
       "info": "info",
       "comments": "comments",
-      "gallery": "gallery"
+      "gallery": "gallery",
+      "climbing-log": "climbing-log",
+      "calendar": "calendar",
+      "ascents": "ascents",
+      "statistics": "statistics"
     }
   },
   "defaultLanguage": "sl"
