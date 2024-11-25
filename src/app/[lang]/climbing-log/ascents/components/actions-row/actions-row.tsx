@@ -1,5 +1,6 @@
 "use client";
-import Filter from "./filter";
+import { useState } from "react";
+import Filter, { TAscentListFilter } from "./filter";
 // import Button from "@/components/ui/button";
 // import IconClose from "@/components/ui/icons/close";
 // import IconMore from "@/components/ui/icons/more";
@@ -11,7 +12,15 @@ import Filter from "./filter";
 import SelectColumns from "./select-columns";
 import Sort from "./sort";
 
-function ActionsRow() {
+type TActionsRowProps = {
+  filterValues: TAscentListFilter;
+};
+
+function ActionsRow({ filterValues }: TActionsRowProps) {
+
+  const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState(false);
+
+  
   return (
     <>
       {/* Actions row */}
@@ -28,7 +37,7 @@ function ActionsRow() {
         <div className="flex items-center justify-center py-4 sm:py-5">
 
           <div>
-            <Filter />
+            <Filter filterValues={filterValues} isOpen={isFiltersDialogOpen} setIsOpen={setIsFiltersDialogOpen} />
           </div>
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>

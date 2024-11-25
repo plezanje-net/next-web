@@ -2,12 +2,12 @@
 
 import Pagination from "@/components/ui/pagination";
 import { ActivityRoute, PaginationMeta } from "@/graphql/generated";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useAscentsContext } from "../ascents-context";
 import AscentListCards from "./ascent-list-cards";
 import AscentListTable from "./ascent-list-table";
+import useSearchParamsHandler from "@/hooks/useSearchParamsHandler";
 
 type TAscentListProps = {
   ascents: ActivityRoute[];
@@ -31,26 +31,40 @@ function AscentList({ ascents, paginationMeta }: TAscentListProps) {
   );
   const containerRef = useResizeObserver(onResize);
 
-  const router = useRouter();
+  const { updateSearchParams } = useSearchParamsHandler();
 
   function handlePageChange(pageNumber: number) {
-    router.push(`/plezalni-dnevnik/vzponi?page=${pageNumber}`);
+    updateSearchParams({ page: `${pageNumber}` });
   }
 
-  const fromIndex = (paginationMeta.pageNumber - 1) * paginationMeta.pageSize + 1;
-  const toIndex = Math.min(paginationMeta.pageNumber * paginationMeta.pageSize, paginationMeta.itemCount);
+  const fromIndex =
+    (paginationMeta.pageNumber - 1) * paginationMeta.pageSize + 1;
+  const toIndex = Math.min(
+    paginationMeta.pageNumber * paginationMeta.pageSize,
+    paginationMeta.itemCount
+  );
 
   return (
     <div ref={containerRef} className="mx-auto 2xl:container">
-      {compact ? <AscentListCards ascents={ascents} /> : <AscentListTable ascents={ascents} />}
-      <div className={`${compact ? 'p-4 flex flex-col gap-4 items-center' : 'flex items-center flex-row-reverse justify-between px-8 py-4'}`}>
-        <Pagination
-          currentPage={paginationMeta.pageNumber}
-          totalPages={paginationMeta.pageCount}
-          onPageChange={handlePageChange}
-        />
-        <div>{fromIndex}-{toIndex} od {paginationMeta.itemCount} vzponov</div>
-      </div>
+      {compact ? (
+        <AscentListCards ascents={ascents} />
+      ) : (
+        <AscentListTable ascents={ascents} />
+      )}
+      {paginationMeta.itemCount > 0 && (
+        <div
+          className={`${compact ? "p-4 flex flex-col gap-4 items-center" : "flex items-center flex-row-reverse justify-between px-8 py-4"}`}
+        >
+          <Pagination
+            currentPage={paginationMeta.pageNumber}
+            totalPages={paginationMeta.pageCount}
+            onPageChange={handlePageChange}
+          />
+          <div>
+            {fromIndex}-{toIndex} od {paginationMeta.itemCount} vzponov
+          </div>
+        </div>
+      )}
     </div>
   );
 }

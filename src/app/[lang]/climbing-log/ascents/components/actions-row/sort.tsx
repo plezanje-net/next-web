@@ -1,19 +1,18 @@
 import Button from "@/components/ui/button";
 import IconSort from "@/components/ui/icons/sort";
 import { Select, Option } from "@/components/ui/select";
-import { toggleQueryParam } from "@/utils/route-helpers";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useSearchParamsHandler from "@/hooks/useSearchParamsHandler";
+import { useSearchParams } from "next/navigation";
 
 function Sort() {
+  const searchParams = useSearchParams();
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const { updateSearchParams } = useSearchParamsHandler();
 
-  const sort = searchParams.get('sort') || 'date,desc';
-  
-  function setSort (value: string) {
-    toggleQueryParam(router, pathname, searchParams, 'sort', value);
+  const sort = searchParams.get("sort") || "date,desc";
+
+  function setSort(value: string) {
+    updateSearchParams({ sort: value });
   }
 
   return (

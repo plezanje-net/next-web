@@ -81,7 +81,7 @@ const Combobox = forwardRef(function Combobox(
           }
           ${
             disabled ? "border-neutral-300 bg-neutral-100 text-neutral-400" : ""
-          }`}
+          }${label ? " mt-2" : ""}`}
         >
           <ComboboxInput
             ref={inputRef}
