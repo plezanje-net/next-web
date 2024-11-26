@@ -1,33 +1,27 @@
 import Dialog from "@/components/ui/dialog";
-import { Sector } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
-import deleteSectorAction from "../server-actions/delete-sector-action";
 import { useRouter } from "next/navigation";
+import { Route } from "@/graphql/generated";
+import deleteRoutesAction from "../server-actions/delete-routes-action";
 
-type TDeleteSectorDialog = {
+type TDeleteRoutesDialog = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  sector: Sector;
+  routes: Route[];
 };
 
-function DeleteSectorDialog({
+function DeleteRoutesDialog({
   isOpen,
   setIsOpen,
-  sector,
-}: TDeleteSectorDialog) {
+  routes,
+}: TDeleteRoutesDialog) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
-  // Dep.: sector.label is deprecated. remove after removed in BE
-  const labelAndName =
-    sector.label && sector.name
-      ? `${sector.label} - ${sector.name}`
-      : sector.label || sector.name || "";
-
   const handleConfirm = async () => {
     setLoading(true);
-    await deleteSectorAction(sector.id);
+    await deleteRoutesAction(routes.map((route) => route.id));
     setIsOpen(false);
     setLoading(false);
     router.refresh();
@@ -35,7 +29,7 @@ function DeleteSectorDialog({
 
   return (
     <Dialog
-      title="Brisanje sektorja"
+      title="Brisanje smeri"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       cancel={{ label: "Prekliči", disabled: loading }}
@@ -48,11 +42,20 @@ function DeleteSectorDialog({
       }}
     >
       <>
-        Ali res želiš izbrisati sektor{" "}
-        <span className="font-medium">{labelAndName}</span> in vse smeri v njem?
+        <div>
+          Ali res želiš izbrisati{" "}
+          {routes.length == 1 ? (
+            <span>
+              smer <span className="font-medium">{routes[0].name}</span>
+            </span>
+          ) : (
+            <span>vse označene smeri</span>
+          )}
+          ?
+        </div>
       </>
     </Dialog>
   );
 }
 
-export default DeleteSectorDialog;
+export default DeleteRoutesDialog;

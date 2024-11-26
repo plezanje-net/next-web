@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import SwitchSectorDialog from "./switch-sector-dialog";
 import useIsVisible from "@/hooks/useIsVisible";
 import MoveRoutesDialog from "./move-routes-dialog";
+import DeleteRoutesDialog from "./delete-routes-dialog";
 
 type TEditRoutesActionsProps = {
   cragSlug: string;
@@ -35,6 +36,8 @@ function EditRoutesActions({
   const [moveRoutesDialogIsOpen, setMoveRoutesDialogIsOpen] = useState(false);
   const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
     useState(false);
+  const [deleteRoutesDialogIsOpen, setDeleteRoutesDialogIsOpen] =
+    useState(false);
 
   const dummyRef = useRef(null);
   const sticky = !useIsVisible(dummyRef, true);
@@ -57,46 +60,61 @@ function EditRoutesActions({
             hideLabel="max-xs:sr-only"
           />
 
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+          {checkedRoutes.length > 0 && (
+            <>
+              {/* divider */}
+              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          {/* change position of all checked routes */}
-          <Button
-            variant="quaternary"
-            onClick={() => setMoveRoutesDialogIsOpen(true)}
-          >
-            <span className="flex">
-              <IconMoveRoutes />
-              <span className="ml-2 hidden lg:block">Premakni</span>
-            </span>
-          </Button>
-
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+              {/* change position of all checked routes */}
+              <Button
+                variant="quaternary"
+                onClick={() => setMoveRoutesDialogIsOpen(true)}
+              >
+                <span className="flex">
+                  <IconMoveRoutes />
+                  <span className="ml-2 hidden lg:block">Premakni</span>
+                </span>
+              </Button>
+            </>
+          )}
 
           {/* move checked routes into another sector */}
-          <Button
-            variant="quaternary"
-            onClick={() => setSwitchSectorDialogIsOpen(true)}
-          >
-            <span className="flex">
-              <IconSwitchSector />
-              <span className="ml-2 hidden lg:block">
-                Premakni v drug sektor
-              </span>
-            </span>
-          </Button>
+          {checkedRoutes.length > 0 && (
+            <>
+              {/* divider */}
+              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-          {/* divider */}
-          <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+              <Button
+                variant="quaternary"
+                onClick={() => setSwitchSectorDialogIsOpen(true)}
+              >
+                <span className="flex">
+                  <IconSwitchSector />
+                  <span className="ml-2 hidden lg:block">
+                    Premakni v drug sektor
+                  </span>
+                </span>
+              </Button>
+            </>
+          )}
 
-          {/* delete checked routes */}
-          <Button variant="quaternary">
-            <span className="flex">
-              <IconDelete />
-              <span className="ml-2 hidden lg:block">Izbriši</span>
-            </span>
-          </Button>
+          {checkedRoutes.length > 0 && (
+            <>
+              {/* divider */}
+              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+
+              {/* delete checked routes */}
+              <Button
+                variant="quaternary"
+                onClick={() => setDeleteRoutesDialogIsOpen(true)}
+              >
+                <span className="flex">
+                  <IconDelete />
+                  <span className="ml-2 hidden lg:block">Izbriši</span>
+                </span>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* back to crag sectors */}
@@ -130,6 +148,12 @@ function EditRoutesActions({
         setIsOpen={setSwitchSectorDialogIsOpen}
         routes={checkedRoutes}
         targetSectors={allSectors.filter((sector) => sector.id != sectorId)}
+      />
+
+      <DeleteRoutesDialog
+        isOpen={deleteRoutesDialogIsOpen}
+        setIsOpen={setDeleteRoutesDialogIsOpen}
+        routes={checkedRoutes}
       />
     </>
   );

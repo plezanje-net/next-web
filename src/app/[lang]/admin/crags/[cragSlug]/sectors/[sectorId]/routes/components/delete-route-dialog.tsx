@@ -30,7 +30,7 @@ function DeleteRouteDialog({ isOpen, setIsOpen, route }: TDeleteRouteDialog) {
       setIsOpen={setIsOpen}
       cancel={{ label: "Prekliči", disabled: loading }}
       confirm={{
-        label: "Briši",
+        label: "Izbriši",
         callback: handleConfirm,
         dontCloseOnConfirm: true,
         loading: loading,
