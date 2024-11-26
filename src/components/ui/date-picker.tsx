@@ -5,6 +5,7 @@ import {
   useState,
   KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
+  useMemo,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -30,6 +31,8 @@ type TDate = {
   month: number | "mm";
   year: number | "llll";
 };
+
+type TDateString = string | null;
 
 const monthNamesShort = [
   "Jan",
@@ -96,14 +99,14 @@ const getDayMax = (month: number | "mm", year: number | "llll") => {
 };
 
 type TDatePickerProps = {
-  value: TDate;
-  onChange: (value: TDate) => void;
+  value: TDateString;
+  onChange: (value: TDateString) => void;
   label?: string;
   disabled?: boolean;
 };
 
 function DatePicker({
-  value,
+  value: inputValue,
   onChange,
   label,
   disabled = false,
@@ -112,11 +115,28 @@ function DatePicker({
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
 
+  const value: TDate = useMemo(
+    () => {
+      const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
+      return inputValue
+      ? { day: +day, month: +month, year: +year }
+      : { day: "dd", month: "mm", year: "llll" }
+    },
+    [inputValue]
+  );
+
+  const handleChange = (date: TDate) => {
+    onChange(
+      date.day == "dd" || date.month == "mm" || date.year == "llll"
+        ? null
+        : `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
+    );
+  }
+
   const today = dayjs();
 
   const handleDayClick = (date: TDate, close: () => void) => {
-    console.log(date);
-    onChange(date);
+    handleChange(date);
     close();
   };
 
@@ -223,7 +243,7 @@ function DatePicker({
 
     // if day should change, call onChange with the new value
     if (newDay != value.day) {
-      onChange({ ...value, day: newDay });
+      handleChange({ ...value, day: newDay });
     }
   };
 
@@ -301,7 +321,7 @@ function DatePicker({
         newDay = dayMax;
       }
 
-      onChange({ ...value, month: newMonth, day: newDay });
+      handleChange({ ...value, month: newMonth, day: newDay });
 
       setShownMonthAndYear({
         ...shownMonthAndYear,
@@ -367,7 +387,7 @@ function DatePicker({
         newDay = dayMax;
       }
 
-      onChange({ ...value, day: newDay, year: newYear });
+      handleChange({ ...value, day: newDay, year: newYear });
 
       setShownMonthAndYear({
         ...shownMonthAndYear,
@@ -486,11 +506,7 @@ function DatePicker({
       </Field>
       <div className="absolute right-1 bottom-[1px] items-center flex h-10">
         <Popover className="relative">
-          <PopoverButton
-            as={Button}
-            variant="quaternary"
-            disabled={disabled}
-          >
+          <PopoverButton as={Button} variant="quaternary" disabled={disabled}>
             <IconCalendar />
           </PopoverButton>
           <PopoverPanel
@@ -499,9 +515,7 @@ function DatePicker({
             focus={true}
           >
             {({ close }) => (
-              <div
-                className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative"
-              >
+              <div className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative">
                 <div className="flex justify-between">
                   {/* month shuffler */}
                   <div className="flex items-center">
@@ -836,4 +850,4 @@ function Day({
 // TODO: calendar days keyboard navigation
 
 export default DatePicker;
-export type { TDate };
+export type { TDate, TDateString };
