@@ -5,7 +5,7 @@ import {
   useState,
   KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
-  MouseEvent as ReactMouseEvent,
+  useMemo,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -14,7 +14,6 @@ import IconRight from "./icons/right";
 import dayjs from "dayjs";
 import IconExpand from "./icons/expand";
 import IconCheck from "./icons/check";
-import FocusTrap from "focus-trap-react";
 import {
   Field,
   Label,
@@ -22,6 +21,9 @@ import {
   ListboxButton,
   ListboxOption,
   ListboxOptions,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
 } from "@headlessui/react";
 
 type TDate = {
@@ -29,6 +31,8 @@ type TDate = {
   month: number | "mm";
   year: number | "llll";
 };
+
+type TDateString = string | null;
 
 const monthNamesShort = [
   "Jan",
@@ -95,104 +99,45 @@ const getDayMax = (month: number | "mm", year: number | "llll") => {
 };
 
 type TDatePickerProps = {
-  value: TDate;
-  onChange: (value: TDate) => void;
+  value: TDateString;
+  onChange: (value: TDateString) => void;
   label?: string;
   disabled?: boolean;
 };
 
 function DatePicker({
-  value,
+  value: inputValue,
   onChange,
   label,
   disabled = false,
 }: TDatePickerProps) {
-  const [calendarPaneOpened, setCalendarPaneOpened] = useState(false);
-
-  const calendarPaneRef = useRef<HTMLDivElement>(null);
-  const calendarButtonRef = useRef<HTMLButtonElement>(null);
-
   const dayInputRef = useRef<HTMLInputElement>(null);
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
 
-  const monthsPaneRef = useRef<HTMLDivElement>(null);
-  const yearsPaneRef = useRef<HTMLDivElement>(null);
+  const value: TDate = useMemo(
+    () => {
+      const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
+      return inputValue
+      ? { day: +day, month: +month, year: +year }
+      : { day: "dd", month: "mm", year: "llll" }
+    },
+    [inputValue]
+  );
+
+  const handleChange = (date: TDate) => {
+    onChange(
+      date.day == "dd" || date.month == "mm" || date.year == "llll"
+        ? null
+        : `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
+    );
+  }
 
   const today = dayjs();
 
-  const handleCalendarButtonClick = (e: ReactMouseEvent) => {
-    e.stopPropagation();
-
-    if (calendarPaneOpened) {
-      setCalendarPaneOpened(false);
-    } else {
-      setShownMonthAndYear({
-        month: value.month == "mm" ? today.month() + 1 : value.month,
-        year: value.year == "llll" ? today.year() : value.year,
-      });
-      setCalendarPaneOpened(true);
-    }
-  };
-
-  // close calendar pane if clicked outside
-  useEffect(() => {
-    const clickOutsideListener = (e: MouseEvent) => {
-      // exceptions
-      if (
-        calendarButtonRef.current &&
-        calendarButtonRef.current.contains(e.target as Node)
-      ) {
-        // calendar icon button was clicked, do nothing, this is handled elsewhere
-        return;
-      }
-      if (
-        monthsPaneRef.current &&
-        monthsPaneRef.current.contains(e.target as Node)
-      ) {
-        // month selection dropdown/pane, do not close calendar pane, it is on top and handled elsewhere
-        return;
-      }
-      if (
-        yearsPaneRef.current &&
-        yearsPaneRef.current.contains(e.target as Node)
-      ) {
-        // year selection dropdown/pane, do not close calendar pane, year dropdown is on top and handled elsewhere
-        return;
-      }
-
-      // close the calendar pane if it is opened and a click outside of it ocurred
-      if (
-        calendarPaneRef.current &&
-        !calendarPaneRef.current.contains(e.target as Node)
-      ) {
-        setCalendarPaneOpened(false);
-      }
-    };
-    document.addEventListener("mousedown", clickOutsideListener);
-
-    return () => {
-      document.removeEventListener("mousedown", clickOutsideListener);
-    };
-  }, []);
-
-  // close calendar pane if esc pressed
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (calendarPaneOpened && e.key === "Escape") {
-        setCalendarPaneOpened(false);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [calendarPaneOpened]);
-
-  const handleDayClick = (date: TDate) => {
-    onChange(date);
-    setCalendarPaneOpened(false);
+  const handleDayClick = (date: TDate, close: () => void) => {
+    handleChange(date);
+    close();
   };
 
   const [shownMonthAndYear, setShownMonthAndYear] = useState({
@@ -298,7 +243,7 @@ function DatePicker({
 
     // if day should change, call onChange with the new value
     if (newDay != value.day) {
-      onChange({ ...value, day: newDay });
+      handleChange({ ...value, day: newDay });
     }
   };
 
@@ -376,7 +321,7 @@ function DatePicker({
         newDay = dayMax;
       }
 
-      onChange({ ...value, month: newMonth, day: newDay });
+      handleChange({ ...value, month: newMonth, day: newDay });
 
       setShownMonthAndYear({
         ...shownMonthAndYear,
@@ -442,7 +387,7 @@ function DatePicker({
         newDay = dayMax;
       }
 
-      onChange({ ...value, day: newDay, year: newYear });
+      handleChange({ ...value, day: newDay, year: newYear });
 
       setShownMonthAndYear({
         ...shownMonthAndYear,
@@ -491,177 +436,177 @@ function DatePicker({
   };
 
   return (
-    <Field>
-      {label && <Label>{label}</Label>}
-      {/* day, month, year 'manual' inputs */}
-      <div
-        className={`relative flex w-full items-center justify-between gap-2 rounded-lg border py-1 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""} ${disabled ? "border-neutral-300 bg-neutral-100" : "border-neutral-400 bg-white"}`}
-        onClick={handleInputFieldClick}
-      >
-        <div>
-          <input
-            ref={dayInputRef}
-            type="text"
-            onKeyDown={handleDayKeyDown}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-              value.day == "dd" || disabled
-                ? "text-neutral-400 focus:text-neutral-900"
-                : ""
-            }`}
-            style={{ width: `${dayInputWidth}px` }}
-            value={value.day}
-            onChange={() => {}}
-            onFocus={(e) => {
-              e.target.selectionEnd = 0;
-            }}
-            onClick={(e) => e.stopPropagation()}
-            disabled={disabled}
-          />
-          <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
-          <input
-            ref={monthInputRef}
-            type="text"
-            onKeyDown={handleMonthKeyDown}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-              value.month == "mm" || disabled
-                ? "text-neutral-400 focus:text-neutral-900"
-                : ""
-            }`}
-            style={{ width: `${monthInputWidth}px` }}
-            value={value.month}
-            onChange={() => {}}
-            onFocus={(e) => {
-              e.target.selectionEnd = 0;
-            }}
-            onClick={(e) => e.stopPropagation()}
-            disabled={disabled}
-          />
-          <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
-          <input
-            ref={yearInputRef}
-            type="text"
-            onKeyDown={!disabled ? handleYearKeyDown : () => {}}
-            className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-              value.year == "llll" || disabled
-                ? "text-neutral-400 focus:text-neutral-900"
-                : ""
-            }`}
-            style={{ width: `${yearInputWidth}px` }}
-            value={value.year}
-            onChange={() => {}}
-            onFocus={(e) => {
-              e.target.selectionEnd = 0;
-            }}
-            onClick={(e) => e.stopPropagation()}
-            disabled={disabled}
-          />
-        </div>
-
-        <Button
-          variant="quaternary"
-          onClick={handleCalendarButtonClick}
-          ref={calendarButtonRef}
-          disabled={disabled}
+    <div className="relative">
+      <Field>
+        {label && <Label>{label}</Label>}
+        {/* day, month, year 'manual' inputs */}
+        <div
+          className={`relative flex w-full items-center justify-between gap-2 rounded-lg border py-2 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""} ${disabled ? "border-neutral-300 bg-neutral-100" : "border-neutral-400 bg-white"}`}
+          onClick={handleInputFieldClick}
         >
-          <IconCalendar />
-        </Button>
-      </div>
-
-      {/* calendar pane */}
-      {calendarPaneOpened && (
-        <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-          <div
-            ref={calendarPaneRef}
-            className="absolute z-50 mt-2 w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3"
-          >
-            <div className="flex justify-between">
-              {/* month shuffler */}
-              <div className="flex items-center">
-                <Button
-                  variant="quaternary"
-                  onClick={handlePrevMonthClick}
-                  disabled={
-                    shownMonthAndYear.month == 1 && shownMonthAndYear.year == 1
-                  }
-                >
-                  <IconLeft />
-                </Button>
-
-                {/* 'direct' month select */}
-                <Month
-                  value={shownMonthAndYear.month}
-                  onChange={(m) => {
-                    setShownMonthAndYear((smy) => ({ ...smy, month: m }));
-                  }}
-                  year={shownMonthAndYear.year}
-                />
-
-                <Button
-                  variant="quaternary"
-                  onClick={handleNextMonthClick}
-                  disabled={
-                    shownMonthAndYear.month == 12 &&
-                    shownMonthAndYear.year == 9999
-                  }
-                >
-                  <IconRight />
-                </Button>
-              </div>
-
-              {/* year shuffler */}
-              <div className="flex items-center">
-                <Button
-                  variant="quaternary"
-                  onClick={handlePrevYearClick}
-                  disabled={shownMonthAndYear.year == 1}
-                >
-                  <IconLeft />
-                </Button>
-
-                {/* 'direct' year select */}
-                <Year
-                  value={shownMonthAndYear.year}
-                  onChange={(y) => {
-                    setShownMonthAndYear((smy) => ({ ...smy, year: y }));
-                  }}
-                  month={shownMonthAndYear.month}
-                />
-
-                <Button
-                  variant="quaternary"
-                  onClick={handleNextYearClick}
-                  disabled={shownMonthAndYear.year == 9999}
-                >
-                  <IconRight />
-                </Button>
-              </div>
-            </div>
-
-            {/* days */}
-            <div className="mt-2">
-              {/* days names */}
-              <div className="flex">
-                {["P", "T", "S", "Č", "P", "S", "N"].map((dayName, i) => (
-                  <Fragment key={i}>
-                    <div className="flex h-[34px] w-[34px] min-[400px]:h-10 min-[400px]:w-10 items-center justify-center">
-                      {dayName}
-                    </div>
-                  </Fragment>
-                ))}
-              </div>
-              {/* days numbers */}
-
-              <MonthDays
-                month={shownMonthAndYear.month}
-                year={shownMonthAndYear.year}
-                selectedDate={value}
-                onDayClick={handleDayClick}
-              />
-            </div>
+          <div>
+            <input
+              ref={dayInputRef}
+              type="text"
+              onKeyDown={handleDayKeyDown}
+              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                value.day == "dd" || disabled
+                  ? "text-neutral-400 focus:text-neutral-900"
+                  : ""
+              }`}
+              style={{ width: `${dayInputWidth}px` }}
+              value={value.day}
+              onChange={() => {}}
+              onFocus={(e) => {
+                e.target.selectionEnd = 0;
+              }}
+              onClick={(e) => e.stopPropagation()}
+              disabled={disabled}
+            />
+            <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
+            <input
+              ref={monthInputRef}
+              type="text"
+              onKeyDown={handleMonthKeyDown}
+              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                value.month == "mm" || disabled
+                  ? "text-neutral-400 focus:text-neutral-900"
+                  : ""
+              }`}
+              style={{ width: `${monthInputWidth}px` }}
+              value={value.month}
+              onChange={() => {}}
+              onFocus={(e) => {
+                e.target.selectionEnd = 0;
+              }}
+              onClick={(e) => e.stopPropagation()}
+              disabled={disabled}
+            />
+            <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
+            <input
+              ref={yearInputRef}
+              type="text"
+              onKeyDown={!disabled ? handleYearKeyDown : () => {}}
+              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                value.year == "llll" || disabled
+                  ? "text-neutral-400 focus:text-neutral-900"
+                  : ""
+              }`}
+              style={{ width: `${yearInputWidth}px` }}
+              value={value.year}
+              onChange={() => {}}
+              onFocus={(e) => {
+                e.target.selectionEnd = 0;
+              }}
+              onClick={(e) => e.stopPropagation()}
+              disabled={disabled}
+            />
           </div>
-        </FocusTrap>
-      )}
-    </Field>
+        </div>
+      </Field>
+      <div className="absolute right-1 bottom-[1px] items-center flex h-10">
+        <Popover className="relative">
+          <PopoverButton as={Button} variant="quaternary" disabled={disabled}>
+            <IconCalendar />
+          </PopoverButton>
+          <PopoverPanel
+            anchor="bottom end"
+            className="[--anchor-offset:4px] [--anchor-gap:12px]"
+            focus={true}
+          >
+            {({ close }) => (
+              <div className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative">
+                <div className="flex justify-between">
+                  {/* month shuffler */}
+                  <div className="flex items-center">
+                    <Button
+                      variant="quaternary"
+                      onClick={handlePrevMonthClick}
+                      disabled={
+                        shownMonthAndYear.month == 1 &&
+                        shownMonthAndYear.year == 1
+                      }
+                    >
+                      <IconLeft />
+                    </Button>
+
+                    {/* 'direct' month select */}
+                    <Month
+                      value={shownMonthAndYear.month}
+                      onChange={(m) => {
+                        setShownMonthAndYear((smy) => ({ ...smy, month: m }));
+                      }}
+                      year={shownMonthAndYear.year}
+                    />
+
+                    <Button
+                      variant="quaternary"
+                      onClick={handleNextMonthClick}
+                      disabled={
+                        shownMonthAndYear.month == 12 &&
+                        shownMonthAndYear.year == 9999
+                      }
+                    >
+                      <IconRight />
+                    </Button>
+                  </div>
+
+                  {/* year shuffler */}
+                  <div className="flex items-center">
+                    <Button
+                      variant="quaternary"
+                      onClick={handlePrevYearClick}
+                      disabled={shownMonthAndYear.year == 1}
+                    >
+                      <IconLeft />
+                    </Button>
+
+                    {/* 'direct' year select */}
+                    <Year
+                      value={shownMonthAndYear.year}
+                      onChange={(y) => {
+                        setShownMonthAndYear((smy) => ({ ...smy, year: y }));
+                      }}
+                      month={shownMonthAndYear.month}
+                    />
+
+                    <Button
+                      variant="quaternary"
+                      onClick={handleNextYearClick}
+                      disabled={shownMonthAndYear.year == 9999}
+                    >
+                      <IconRight />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* days */}
+                <div className="mt-2">
+                  {/* days names */}
+                  <div className="flex">
+                    {["P", "T", "S", "Č", "P", "S", "N"].map((dayName, i) => (
+                      <Fragment key={i}>
+                        <div className="flex h-[34px] w-[34px] min-[400px]:h-10 min-[400px]:w-10 items-center justify-center">
+                          {dayName}
+                        </div>
+                      </Fragment>
+                    ))}
+                  </div>
+                  {/* days numbers */}
+
+                  <MonthDays
+                    month={shownMonthAndYear.month}
+                    year={shownMonthAndYear.year}
+                    selectedDate={value}
+                    onDayClick={(date) => handleDayClick(date, close)}
+                  />
+                </div>
+              </div>
+            )}
+          </PopoverPanel>
+        </Popover>
+      </div>
+    </div>
   );
 }
 
@@ -695,8 +640,8 @@ function Year({ value, onChange, month }: TYearProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute -left-px -right-px top-14 overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-300 bg-white focus-visible:outline-none focus-visible:outline-double focus-visible:ring focus-visible:ring-blue-100">
-            <div className="max-h-80 overflow-auto ">
+          <ListboxOptions className="absolute left-0 right-0 bg-white top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+            <div className="h-full overflow-auto ">
               {getYearsRange(value).map((year, index) => (
                 <MontOrYearOption key={index} value={year}>
                   {year}
@@ -723,7 +668,7 @@ function Month({ value, onChange, year }: TMonthProps) {
         <>
           <ListboxButton as={Fragment}>
             {open ? (
-              <div className="absolute left-0 right-0 flex cursor-pointer justify-between bg-white px-12">
+              <div className="absolute left-0 right-0 mx-px flex cursor-pointer justify-between bg-white px-12">
                 <div className="flex gap-2">
                   {monthNamesFull[value - 1]}
                   <IconExpand />
@@ -737,8 +682,8 @@ function Month({ value, onChange, year }: TMonthProps) {
             )}
           </ListboxButton>
 
-          <ListboxOptions className="absolute -left-px -right-px top-[52px] overflow-hidden rounded-lg rounded-t-none border border-neutral-400 border-t-neutral-200 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-            <div className="max-h-80 overflow-auto">
+          <ListboxOptions className="absolute left-0 right-0 bg-white top-[52px] h-[calc(100%-52px)] overflow-hidden rounded-b-lg rounded-lg rounded-t-none border-t border-t-neutral-200  focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
+            <div className="h-full overflow-auto">
               {monthNamesFull.map((monthName, index) => (
                 <MontOrYearOption key={index} value={index + 1}>
                   {monthName}
@@ -905,4 +850,4 @@ function Day({
 // TODO: calendar days keyboard navigation
 
 export default DatePicker;
-export type { TDate };
+export type { TDate, TDateString };

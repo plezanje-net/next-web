@@ -23,6 +23,7 @@ const Button = forwardRef(function Button(
     loading = false,
     onClick,
     type = "button",
+    ...rest
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
@@ -66,6 +67,7 @@ const Button = forwardRef(function Button(
       disabled={disabled}
       onClick={onClick}
       type={type}
+      {...rest}
     >
       {loading ? (
         <div className="relative">
