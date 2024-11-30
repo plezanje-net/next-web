@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Route } from "@/graphql/generated";
 import deleteRoutesAction from "../server-actions/delete-routes-action";
 
-type TDeleteRoutesDialog = {
+type TDeleteRoutesDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   routes: Route[];
@@ -14,7 +14,7 @@ function DeleteRoutesDialog({
   isOpen,
   setIsOpen,
   routes,
-}: TDeleteRoutesDialog) {
+}: TDeleteRoutesDialogProps) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);

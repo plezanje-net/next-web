@@ -5,7 +5,7 @@ import { Option, Select } from "@/components/ui/select";
 import { Route, Sector } from "@/graphql/generated";
 import updateRoutesAction from "../server-actions/update-routes-action";
 
-type TSwitchSectorProps = {
+type TSwitchSectorDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   routes: Route[];
@@ -17,7 +17,7 @@ function SwitchSectorDialog({
   setIsOpen,
   routes,
   targetSectors,
-}: TSwitchSectorProps) {
+}: TSwitchSectorDialogProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
