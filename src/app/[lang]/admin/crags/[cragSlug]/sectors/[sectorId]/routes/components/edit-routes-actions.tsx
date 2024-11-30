@@ -11,6 +11,8 @@ import SwitchSectorDialog from "./switch-sector-dialog";
 import useIsVisible from "@/hooks/useIsVisible";
 import MoveRoutesDialog from "./move-routes-dialog";
 import DeleteRoutesDialog from "./delete-routes-dialog";
+import IconMergeRoutes from "@/components/ui/icons/merge-routes";
+import MergeRoutesDialog from "./merge-routes-dialog";
 
 type TEditRoutesActionsProps = {
   cragSlug: string;
@@ -36,6 +38,7 @@ function EditRoutesActions({
   const [moveRoutesDialogIsOpen, setMoveRoutesDialogIsOpen] = useState(false);
   const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
     useState(false);
+  const [mergeRoutesDialogIsOpen, setMergeRoutesDialogIsOpen] = useState(false);
   const [deleteRoutesDialogIsOpen, setDeleteRoutesDialogIsOpen] =
     useState(false);
 
@@ -98,6 +101,24 @@ function EditRoutesActions({
             </>
           )}
 
+          {/* merge two routes */}
+          {checkedRoutes.length == 2 && (
+            <>
+              {/* divider */}
+              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+
+              <Button
+                variant="quaternary"
+                onClick={() => setMergeRoutesDialogIsOpen(true)}
+              >
+                <span className="flex">
+                  <IconMergeRoutes />
+                  <span className="ml-2 hidden lg:block">Združi</span>
+                </span>
+              </Button>
+            </>
+          )}
+
           {checkedRoutes.length > 0 && (
             <>
               {/* divider */}
@@ -148,6 +169,12 @@ function EditRoutesActions({
         setIsOpen={setSwitchSectorDialogIsOpen}
         routes={checkedRoutes}
         targetSectors={allSectors.filter((sector) => sector.id != sectorId)}
+      />
+
+      <MergeRoutesDialog
+        isOpen={mergeRoutesDialogIsOpen}
+        setIsOpen={setMergeRoutesDialogIsOpen}
+        routes={checkedRoutes}
       />
 
       <DeleteRoutesDialog

@@ -12,7 +12,6 @@ type TEditRoutesPageProps = {
   params: { sectorId: string };
 };
 
-// TODO: rework be to enable getting sector by slug?
 async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
   const sectorDataPromise = urqlServer().query(EditRoutesPageSectorDocument, {
     id: sectorId,
@@ -125,11 +124,11 @@ gql`
         }
         length
         position
+        created
         # author
         # slug
         # publishStatus
         # isProject
-        # created
         # sector {
         #   id
         #   publishStatus
