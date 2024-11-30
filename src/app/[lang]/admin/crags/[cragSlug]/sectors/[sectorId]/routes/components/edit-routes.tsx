@@ -53,6 +53,14 @@ function EditRoutes({
     }
   };
 
+  const handleCheckAll = () => {
+    if (checkedRouteIds.length === sortedRoutes.length) {
+      setCheckedRouteIds([]);
+    } else {
+      setCheckedRouteIds(sortedRoutes.map((route) => route.id));
+    }
+  };
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -99,6 +107,7 @@ function EditRoutes({
           checkedRouteIds.includes(route.id)
         )}
         allRoutes={sortedRoutes}
+        onCheckAll={handleCheckAll}
       />
 
       <div className="px-4 xs:px-8 relative">

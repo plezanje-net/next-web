@@ -20,6 +20,7 @@ type TEditRoutesActionsProps = {
   checkedRoutes: Route[];
   allSectors: Sector[];
   allRoutes: Route[];
+  onCheckAll: () => void;
 };
 
 function EditRoutesActions({
@@ -28,12 +29,9 @@ function EditRoutesActions({
   cragSlug,
   checkedRoutes,
   allRoutes,
+  onCheckAll,
 }: TEditRoutesActionsProps) {
   const router = useRouter();
-
-  // TODO: wire up check all checkbox
-  const [allRoutesChecked, setAllRoutesChecked] = useState(false);
-  const handleAllRoutesCheckedChange = (checked: boolean) => {};
 
   const [moveRoutesDialogIsOpen, setMoveRoutesDialogIsOpen] = useState(false);
   const [switchSectorDialogIsOpen, setSwitchSectorDialogIsOpen] =
@@ -57,8 +55,9 @@ function EditRoutesActions({
         {/* check all */}
         <div className="flex items-center">
           <Checkbox
-            checked={allRoutesChecked}
-            onChange={handleAllRoutesCheckedChange}
+            checked={checkedRoutes.length > 0}
+            indeterminate={checkedRoutes.length < allRoutes.length}
+            onChange={onCheckAll}
             label="Označi vse"
             hideLabel="max-xs:sr-only"
           />
