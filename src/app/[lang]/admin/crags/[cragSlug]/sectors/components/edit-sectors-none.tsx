@@ -3,10 +3,18 @@
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconRoutes from "@/components/ui/icons/routes";
+import { Sector } from "@/graphql/generated";
+import { usePathname, useRouter } from "next/navigation";
 
-function EditSectorsNone() {
+type TEditSectorsNoneProps = {
+  dummySector: Sector;
+};
+
+function EditSectorsNone({ dummySector }: TEditSectorsNoneProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const handleCragHasSectorsChange = () => {};
-  const handleEditRoutesButtonClick = () => {};
 
   return (
     <div className="w-full flex justify-between flex-wrap gap-4">
@@ -16,7 +24,12 @@ function EditSectorsNone() {
         onChange={handleCragHasSectorsChange}
       />
 
-      <Button variant="quaternary" onClick={handleEditRoutesButtonClick}>
+      <Button
+        variant="quaternary"
+        onClick={() => {
+          router.push(`${pathname}/${dummySector.id}/smeri`);
+        }}
+      >
         <span className="flex">
           <IconRoutes />
           <span className="ml-2">Uredi smeri</span>
