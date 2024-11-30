@@ -1,13 +1,6 @@
 import Dialog from "@/components/ui/dialog";
 import TextField from "@/components/ui/text-field";
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import createSectorAction from "../server-actions/create-sector-action";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../server-actions/update-sector-action";

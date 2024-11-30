@@ -112,7 +112,7 @@ function MoveRoutesDialog({
           .
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <Select
             value={targetPosition}
             onChange={handleTargetRouteChange}

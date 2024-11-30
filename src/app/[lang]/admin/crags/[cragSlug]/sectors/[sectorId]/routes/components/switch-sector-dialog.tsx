@@ -104,7 +104,7 @@ function SwitchSectorDialog({
           .
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           {/* Dep.: remove sector label after it is removed from BE  */}
           <Select
             value={targetSector}

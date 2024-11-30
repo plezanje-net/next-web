@@ -99,7 +99,7 @@ function MergeRoutesDialog({
           Izberi 'glavno smer' v kateri se bodo združili podatki obeh smeri.
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <RadioGroup
             value={mainRouteId}
             onChange={(mainRouteId) => {
