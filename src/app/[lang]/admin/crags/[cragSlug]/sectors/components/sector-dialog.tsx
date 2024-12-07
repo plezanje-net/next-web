@@ -1,6 +1,13 @@
 import Dialog from "@/components/ui/dialog";
 import TextField from "@/components/ui/text-field";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import createSectorAction from "../server-actions/create-sector-action";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../server-actions/update-sector-action";
@@ -70,7 +77,8 @@ function SectorDialog({
     formRef.current?.requestSubmit();
   };
 
-  const handleFormAction = async () => {
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
 
     // validate form
@@ -133,7 +141,7 @@ function SectorDialog({
         dontCloseOnConfirm: true,
       }}
     >
-      <form action={handleFormAction} ref={formRef}>
+      <form onSubmit={handleOnSubmit} ref={formRef}>
         <TextField
           label="Ime sektorja"
           value={name}

@@ -22,7 +22,7 @@ import {
   Season,
   WallAngle,
 } from "@/graphql/generated";
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { gradingSystems } from "@/utils/grading-systems";
 import CoordinatesInput, {
   formatCoordinates,
@@ -165,7 +165,8 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     setCragCoordinatesError("");
   };
 
-  const handleFormAction = async () => {
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
 
     // Validate form
@@ -241,6 +242,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
         };
 
         savedCrag = await createCragAction(newCragData);
+
         break;
       case "edit":
         const updateCragData = {
@@ -251,14 +253,14 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
         savedCrag = await updateCragAction(updateCragData);
     }
 
-    router.push(`${savedCrag.slug}/uredi`);
+    router.push(`/urejanje/plezalisca/${savedCrag.slug}/uredi`);
     setLoading(false);
   };
 
   return (
     <div className="flex justify-center px-4 xs:px-8 mt-7">
       <div className="w-full max-w-2xl">
-        <form action={handleFormAction}>
+        <form onSubmit={handleOnSubmit}>
           {/* Main grid for inputs layout */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-6">
             {/* Crag name */}

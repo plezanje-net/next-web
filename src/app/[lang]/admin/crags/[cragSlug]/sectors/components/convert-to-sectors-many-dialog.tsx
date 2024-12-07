@@ -1,6 +1,6 @@
 import Dialog from "@/components/ui/dialog";
 import TextField from "@/components/ui/text-field";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../server-actions/update-sector-action";
 import { Sector } from "@/graphql/generated";
@@ -39,7 +39,8 @@ function ConvertToSectorsManyDialog({
     formRef.current?.requestSubmit();
   };
 
-  const handleFormAction = async () => {
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
 
     // validate form
@@ -84,7 +85,7 @@ function ConvertToSectorsManyDialog({
         dontCloseOnConfirm: true,
       }}
     >
-      <form action={handleFormAction} ref={formRef}>
+      <form onSubmit={handleOnSubmit} ref={formRef}>
         <div>
           Vse smeri v plezališču bodo premaknjene v novo ustvarjen sektor.
         </div>
