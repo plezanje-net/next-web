@@ -3,7 +3,7 @@ import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
 import { Route, Sector } from "@/graphql/generated";
-import updateRoutesAction from "../server-actions/update-routes-action";
+import moveRoutesToSectorAction from "../server-actions/move-routes-to-sector-action";
 
 type TSwitchSectorDialogProps = {
   isOpen: boolean;
@@ -21,6 +21,14 @@ function SwitchSectorDialog({
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
+
+  const [targetSector, setTargetSector] = useState("");
+  const [targetSectorError, setTargetSectorError] = useState("");
+
+  const handleTargetSectorChange = (targetSector: string) => {
+    setTargetSectorError("");
+    setTargetSector(targetSector);
+  };
 
   const resetForm = () => {
     // reset fields
@@ -50,12 +58,13 @@ function SwitchSectorDialog({
       return;
     }
 
-    const routesData = [];
-    for (let i = 0; i < routes.length; i++) {
-      routesData.push({ id: routes[i].id, sectorId: targetSector });
-    }
+    // assuming all routes passed in are sorted by position already
+    const routesData = {
+      ids: routes.map((route) => route.id),
+      sectorId: targetSector,
+    };
 
-    await updateRoutesAction(routesData);
+    await moveRoutesToSectorAction(routesData);
     resetForm();
 
     // TODO: check for errors
@@ -63,14 +72,6 @@ function SwitchSectorDialog({
     setIsOpen(false);
     setLoading(false);
     router.refresh();
-  };
-
-  const [targetSector, setTargetSector] = useState("");
-  const [targetSectorError, setTargetSectorError] = useState("");
-
-  const handleTargetSectorChange = (targetSector: string) => {
-    setTargetSectorError("");
-    setTargetSector(targetSector);
   };
 
   return (
