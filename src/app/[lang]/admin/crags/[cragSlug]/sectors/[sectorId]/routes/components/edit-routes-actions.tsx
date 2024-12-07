@@ -81,7 +81,7 @@ function EditRoutesActions({
           )}
 
           {/* move checked routes into another sector */}
-          {checkedRoutes.length > 0 && (
+          {checkedRoutes.length > 0 && allSectors.length > 1 && (
             <>
               {/* divider */}
               <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
