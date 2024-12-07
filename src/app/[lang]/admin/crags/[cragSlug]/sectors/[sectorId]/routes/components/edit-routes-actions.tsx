@@ -13,10 +13,11 @@ import MoveRoutesDialog from "./move-routes-dialog";
 import DeleteRoutesDialog from "./delete-routes-dialog";
 import IconMergeRoutes from "@/components/ui/icons/merge-routes";
 import MergeRoutesDialog from "./merge-routes-dialog";
+import ConvertToSectorsManyDialog from "../../../components/convert-to-sectors-many-dialog";
 
 type TEditRoutesActionsProps = {
   cragSlug: string;
-  sectorId: string;
+  sector: Sector;
   checkedRoutes: Route[];
   allSectors: Sector[];
   allRoutes: Route[];
@@ -25,7 +26,7 @@ type TEditRoutesActionsProps = {
 
 function EditRoutesActions({
   allSectors,
-  sectorId,
+  sector,
   cragSlug,
   checkedRoutes,
   allRoutes,
@@ -39,9 +40,16 @@ function EditRoutesActions({
   const [mergeRoutesDialogIsOpen, setMergeRoutesDialogIsOpen] = useState(false);
   const [deleteRoutesDialogIsOpen, setDeleteRoutesDialogIsOpen] =
     useState(false);
+  const [
+    convertToSectorsManyDialogIsOpen,
+    setConvertToSectorsManyDialogIsOpen,
+  ] = useState(false);
 
   const dummyRef = useRef(null);
   const sticky = !useIsVisible(dummyRef, true);
+
+  const noSectorsCrag =
+    allSectors.length === 1 && sector.name === "" && sector.label === "";
 
   return (
     <>
@@ -50,7 +58,7 @@ function EditRoutesActions({
 
       {/* actions row */}
       <div
-        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky py-4 bg-white ${sticky ? "shadow-lg z-10" : ""}`}
+        className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky h-16 bg-white ${sticky ? "shadow-lg z-10" : ""}`}
       >
         {/* check all */}
         <div className="flex items-center">
@@ -137,19 +145,27 @@ function EditRoutesActions({
           )}
         </div>
 
-        {/* back to crag sectors */}
+        {/* back to crag sectors or make into crag with sectors */}
         <div>
-          <Button
-            variant="quaternary"
-            onClick={() =>
-              router.push(`/urejanje/plezalisca/${cragSlug}/sektorji`)
-            }
-          >
-            <span className="flex">
-              <IconReturn />
-              <span className="ml-2 hidden lg:block">Nazaj na sektorje</span>
-            </span>
-          </Button>
+          {noSectorsCrag ? (
+            <Checkbox
+              label="Plezališče ima več sektorjev"
+              checked={false}
+              onChange={() => setConvertToSectorsManyDialogIsOpen(true)}
+            />
+          ) : (
+            <Button
+              variant="quaternary"
+              onClick={() =>
+                router.push(`/urejanje/plezalisca/${cragSlug}/sektorji`)
+              }
+            >
+              <span className="flex">
+                <IconReturn />
+                <span className="ml-2 hidden lg:block">Nazaj na sektorje</span>
+              </span>
+            </Button>
+          )}
         </div>
       </div>
 
@@ -167,7 +183,7 @@ function EditRoutesActions({
         isOpen={switchSectorDialogIsOpen}
         setIsOpen={setSwitchSectorDialogIsOpen}
         routes={checkedRoutes}
-        targetSectors={allSectors.filter((sector) => sector.id != sectorId)}
+        targetSectors={allSectors.filter((s) => s.id != sector.id)}
       />
 
       <MergeRoutesDialog
@@ -180,6 +196,12 @@ function EditRoutesActions({
         isOpen={deleteRoutesDialogIsOpen}
         setIsOpen={setDeleteRoutesDialogIsOpen}
         routes={checkedRoutes}
+      />
+
+      <ConvertToSectorsManyDialog
+        isOpen={convertToSectorsManyDialogIsOpen}
+        setIsOpen={setConvertToSectorsManyDialogIsOpen}
+        sector={sector}
       />
     </>
   );

@@ -23,7 +23,8 @@ function EditSectorsNone({ dummySector }: TEditSectorsNoneProps) {
 
   return (
     <>
-      <div className="w-full flex justify-between flex-wrap gap-4">
+      {/* Actions row */}
+      <div className="w-full flex justify-between flex-wrap gap-4 h-16 items-center">
         <Checkbox
           label="Plezališče ima več sektorjev"
           checked={false}

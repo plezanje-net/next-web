@@ -26,14 +26,14 @@ import NewFirstRouteButton from "./new-first-route-button";
 type TEditRoutesProps = {
   routes: Route[];
   cragSlug: string;
-  sectorId: string;
+  sector: Sector;
   allSectors: Sector[];
 };
 
 function EditRoutes({
   routes,
   cragSlug,
-  sectorId,
+  sector,
   allSectors,
 }: TEditRoutesProps) {
   const router = useRouter();
@@ -101,7 +101,7 @@ function EditRoutes({
     <>
       <EditRoutesActions
         allSectors={allSectors}
-        sectorId={sectorId}
+        sector={sector}
         cragSlug={cragSlug}
         checkedRoutes={sortedRoutes.filter((route) =>
           checkedRouteIds.includes(route.id)
@@ -111,7 +111,7 @@ function EditRoutes({
       />
 
       <div className="px-4 xs:px-8 relative">
-        <NewFirstRouteButton sectorId={sectorId} disabled={loading} />
+        <NewFirstRouteButton sectorId={sector.id} disabled={loading} />
       </div>
 
       <div className="px-4 xs:px-8">
@@ -128,7 +128,7 @@ function EditRoutes({
                 <Fragment key={route.id}>
                   <RouteCard
                     route={route}
-                    sectorId={sectorId}
+                    sectorId={sector.id}
                     disabled={loading}
                     checked={checkedRouteIds.includes(route.id)}
                     onCheckedChange={handleOnCheckedChange}

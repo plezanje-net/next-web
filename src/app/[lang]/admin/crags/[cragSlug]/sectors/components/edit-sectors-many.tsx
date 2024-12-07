@@ -113,12 +113,15 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
 
   return (
     <>
-      <Checkbox
-        label="Plezališče ima več sektorjev"
-        checked={true}
-        disabled={loading}
-        onChange={() => setConvertToSectorsNoneDialogIsOpen(true)}
-      />
+      {/* Actions row */}
+      <div className="h-16 flex items-center">
+        <Checkbox
+          label="Plezališče ima več sektorjev"
+          checked={true}
+          disabled={loading}
+          onChange={() => setConvertToSectorsNoneDialogIsOpen(true)}
+        />
+      </div>
 
       <NewFirstSectorButton cragId={cragId} disabled={loading} />
 
