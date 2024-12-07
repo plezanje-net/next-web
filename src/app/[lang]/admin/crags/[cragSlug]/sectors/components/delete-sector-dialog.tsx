@@ -3,6 +3,7 @@ import { Sector } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
 import deleteSectorAction from "../server-actions/delete-sector-action";
 import { useRouter } from "next/navigation";
+import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TDeleteSectorDialog = {
   isOpen: boolean;
@@ -18,12 +19,6 @@ function DeleteSectorDialog({
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-
-  // Dep.: sector.label is deprecated. remove after removed in BE
-  const labelAndName =
-    sector.label && sector.name
-      ? `${sector.label} - ${sector.name}`
-      : sector.label || sector.name || "";
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -49,7 +44,11 @@ function DeleteSectorDialog({
     >
       <>
         Ali res želiš izbrisati sektor{" "}
-        <span className="font-medium">{labelAndName}</span> in vse smeri v njem?
+        <span className="font-medium">
+          {/* Dep.: sector.label is deprecated. remove after removed in BE */}
+          {labelAndNameToString(sector.label, sector.name)}
+        </span>{" "}
+        in vse smeri v njem?
       </>
     </Dialog>
   );

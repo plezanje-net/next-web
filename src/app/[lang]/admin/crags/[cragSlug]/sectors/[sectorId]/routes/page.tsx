@@ -3,10 +3,11 @@ import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu from "@/components/ui/tab-menu";
-import { EditRoutesPageSectorDocument, Route } from "@/graphql/generated";
+import { EditRoutesPageSectorDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditRoutes from "./components/edit-routes";
+import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TEditRoutesPageProps = {
   params: { sectorId: string };
@@ -19,11 +20,16 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
   const { data: sectorData } = await sectorDataPromise;
   const sector = sectorData.sector;
 
-  // Dep.: sector label is deprecated. remove it after it is migrated into name on be.
+  const noSectorsCrag =
+    sector.crag.sectors.length === 1 &&
+    sector.name === "" &&
+    sector.label === "";
+
+  // Dep: sector label is deprecated. remove it after it is migrated into name on be.
   return (
     <>
       <ContentHeader
-        heading={`Urejanje smeri v sektorju ${sector.label} - ${sector.name}`}
+        heading={`Urejanje smeri v ${noSectorsCrag ? `plezališču ${sector.crag.name}` : `sektorju ${labelAndNameToString(sector.label, sector.name)}`}`}
         breadcrumbs={
           <Breadcrumbs
             crumbs={[
@@ -38,7 +44,14 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
                 label: "Sektorji",
                 link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji`,
               },
-              { label: `${sector.label} - ${sector.name}`, link: null },
+              ...(noSectorsCrag
+                ? []
+                : [
+                    {
+                      label: labelAndNameToString(sector.label, sector.name),
+                      link: null,
+                    },
+                  ]),
               { label: "Smeri", link: null },
             ]}
           />
@@ -85,31 +98,10 @@ gql`
         id
         slug
         name
-        #   country {
-        #     name
-        #     id
-        #     slug
-        #   }
-        #   defaultGradingSystem {
-        #     id
-        #   }
         sectors {
           id
           label
           name
-          #     routes {
-          #       id
-          #       name
-          #       difficulty
-          #       defaultGradingSystem {
-          #         id
-          #         name
-          #       }
-          #       publishStatus
-          #       pitches {
-          #         id
-          #       }
-          #     }
         }
       }
       routes {
@@ -125,29 +117,6 @@ gql`
         length
         position
         created
-        # author
-        # slug
-        # publishStatus
-        # isProject
-        # sector {
-        #   id
-        #   publishStatus
-        # }
-        # difficulty
-        # difficultyVotes {
-        #   difficulty
-        #   isBase
-        # }
-        # pitches {
-        #   difficulty
-        #   height
-        #   id
-        #   number
-        # }
-        # user {
-        #   id
-        # }
-        # nrTries
       }
     }
   }

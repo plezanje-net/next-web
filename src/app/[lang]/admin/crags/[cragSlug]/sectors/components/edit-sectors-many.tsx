@@ -25,6 +25,7 @@ import updateSectorAction from "../server-actions/update-sector-action";
 import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
+import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
@@ -135,7 +136,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
               <Fragment key={sector.id}>
                 <SectorCard
                   id={sector.id}
-                  name={`${sector.label} - ${sector.name}`}
+                  name={labelAndNameToString(sector.label, sector.name)}
                   disabled={loading}
                   onEditClick={() => handleEditSectorClick(sector)}
                   onAddClick={() => handleAddSectorClick(sector.position + 1)}

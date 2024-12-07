@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
 import { Route, Sector } from "@/graphql/generated";
 import moveRoutesToSectorAction from "../server-actions/move-routes-to-sector-action";
+import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TSwitchSectorDialogProps = {
   isOpen: boolean;
@@ -116,9 +117,7 @@ function SwitchSectorDialog({
           >
             {targetSectors.map((sector) => (
               <Option key={sector.id} value={sector.id}>
-                <>
-                  {sector.label} - {sector.name}
-                </>
+                <>{labelAndNameToString(sector.label, sector.name)}</>
               </Option>
             ))}
           </Select>
