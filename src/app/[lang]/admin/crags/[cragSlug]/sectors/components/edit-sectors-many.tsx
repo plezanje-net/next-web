@@ -1,7 +1,6 @@
 "use client";
 
 import Checkbox from "@/components/ui/checkbox";
-import IconPlus from "@/components/ui/icons/plus";
 import { Sector } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { Fragment, useEffect, useState } from "react";
@@ -25,6 +24,7 @@ import { restrictToParentElement } from "@dnd-kit/modifiers";
 import updateSectorAction from "../server-actions/update-sector-action";
 import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
+import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
@@ -44,8 +44,6 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
     setSortedSectors(sectors);
   }, [sectors]);
 
-  const handleCragHasSectorsChange = () => {};
-
   const handleAddSectorClick = (position: number) => {
     setSectorDialogType("new");
     setPosition(position);
@@ -64,6 +62,11 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
     setSector(sector);
     setDeleteSectorDialogIsOpen(true);
   };
+
+  const [
+    convertToSectorsNoneDialogIsOpen,
+    setConvertToSectorsNoneDialogIsOpen,
+  ] = useState(false);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -113,7 +116,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         label="Plezališče ima več sektorjev"
         checked={true}
         disabled={loading}
-        onChange={handleCragHasSectorsChange}
+        onChange={() => setConvertToSectorsNoneDialogIsOpen(true)}
       />
 
       <NewFirstSectorButton cragId={cragId} disabled={loading} />
@@ -165,6 +168,12 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         isOpen={deleteSectorDialogIsOpen}
         setIsOpen={setDeleteSectorDialogIsOpen}
         sector={sector}
+      />
+
+      <ConvertToSectorsNoneDialog
+        isOpen={convertToSectorsNoneDialogIsOpen}
+        setIsOpen={setConvertToSectorsNoneDialogIsOpen}
+        cragId={cragId}
       />
     </>
   );
