@@ -1,44 +1,38 @@
 "use client";
 
-import DatePicker, { TDate } from "@/components/ui/date-picker";
+import DatePicker from "@/components/ui/date-picker";
 import { useState } from "react";
 
 function DatePickerPage() {
-  const [value1, setValue1] = useState<TDate>({
-    // day: 19,
-    // month: 5,
-    // year: 2024,
-    day: "dd",
-    month: "mm",
-    year: "llll",
-  });
+  const [value1, setValue1] = useState<string | null>(null);
+  const [value2, setValue2] = useState<string | null>("2024-05-19");
+  const [value3, setValue3] = useState<string | null>("2024-05-19");
 
-  const [value2, setValue2] = useState<TDate>({
-    day: 19,
-    month: 5,
-    year: 2024,
-  });
-
-  const [value3, setValue3] = useState<TDate>({
-    day: 19,
-    month: 5,
-    year: 2024,
-  });
+  function handleDateChange(value: string | null) {
+    console.log("Date changed", value);
+    setValue1(value);
+  }
 
   return (
     <div>
       <div className="relative mx-auto mt-8 w-80">
         A regular datepicker
         <div className="mt-2">
-          <DatePicker value={value1} onChange={setValue1} label="Datepicker label" />
+          <DatePicker
+            value={value1}
+            onChange={handleDateChange}
+            label="Datepicker label"
+          />
         </div>
       </div>
       <div className="relative mx-auto mt-8 w-80">
         A disabled date picker
         <div className="mt-2">
-          <DatePicker value={value2} onChange={setValue2} disabled />A second
-          regular datepicker to test overflow
+          <DatePicker value={value2} onChange={setValue2} disabled />
         </div>
+      </div>
+      <div className="relative mx-auto mt-8 w-80">
+        A second regular datepicker to test overflow
         <div className="mt-2">
           <DatePicker value={value3} onChange={setValue3} />
         </div>
