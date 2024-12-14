@@ -5,7 +5,8 @@ type TCheckboxProps = {
   label: string;
   onChange?: (value: boolean) => void;
   checked?: boolean;
-  hideLabel?: boolean;
+  indeterminate?: boolean;
+  hideLabel?: boolean | string;
 };
 
 function Checkbox({
@@ -13,8 +14,18 @@ function Checkbox({
   label,
   onChange,
   checked = false,
+  indeterminate = false,
   hideLabel = false,
 }: TCheckboxProps) {
+  let hideLabelClass = "";
+  if (hideLabel === true) {
+    hideLabelClass = "sr-only";
+  } else if (hideLabel !== false) {
+    hideLabelClass = hideLabel;
+  } else {
+    hideLabelClass = "";
+  }
+
   return (
     <div className="flex items-center">
       <Switch
@@ -44,13 +55,17 @@ function Checkbox({
             `}
             >
               <svg width="16" height="16" viewBox="0 0 16 16">
-                <path
-                  d="M6.36668 12.1333L2.43335 8.19998L3.51668 7.11664L6.36668 9.96664L12.4834 3.84998L13.5667 4.93331L6.36668 12.1333Z"
-                  fill="white"
-                />
+                {indeterminate ? (
+                  <path d="M 3.5 7.2 h9 v1.6 h-9 v -1.6 Z" fill="white" />
+                ) : (
+                  <path
+                    d="M6.36668 12.1333L2.43335 8.19998L3.51668 7.11664L6.36668 9.96664L12.4834 3.84998L13.5667 4.93331L6.36668 12.1333Z"
+                    fill="white"
+                  />
+                )}
               </svg>
             </div>
-            <span className={`mt-0.5 text-left ${hideLabel ? "sr-only" : ""}`}>
+            <span className={`mt-0.5 text-left ${hideLabelClass}`}>
               {label}
             </span>
           </>
