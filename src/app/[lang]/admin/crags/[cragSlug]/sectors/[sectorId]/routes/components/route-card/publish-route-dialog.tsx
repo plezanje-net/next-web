@@ -1,27 +1,31 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import deleteRouteAction from "../server-actions/delete-route-action";
 import { Route } from "@/graphql/generated";
+import updateRouteAction from "../../server-actions/update-route-action";
 
-type TDeleteRouteDialogProps = {
+type TPublishRouteDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   route: Route;
 };
 
-function DeleteRouteDialog({
+function PublishRouteDialog({
   isOpen,
   setIsOpen,
   route,
-}: TDeleteRouteDialogProps) {
+}: TPublishRouteDialogProps) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
   const handleConfirm = async () => {
     setLoading(true);
-    await deleteRouteAction(route.id);
+
+    const routeData = { id: route.id, publishStatus: "published" };
+
+    await updateRouteAction(routeData);
+
     setIsOpen(false);
     setLoading(false);
     router.refresh();
@@ -29,12 +33,12 @@ function DeleteRouteDialog({
 
   return (
     <Dialog
-      title="Brisanje smeri"
+      title="Objava smeri"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       cancel={{ label: "Prekliči", disabled: loading }}
       confirm={{
-        label: "Izbriši",
+        label: "Objavi",
         callback: handleConfirm,
         dontCloseOnConfirm: true,
         loading: loading,
@@ -42,11 +46,11 @@ function DeleteRouteDialog({
       }}
     >
       <>
-        Ali res želiš izbrisati smer{" "}
+        Ali res želiš objaviti smer{" "}
         <span className="font-medium">{route.name}</span>?
       </>
     </Dialog>
   );
 }
 
-export default DeleteRouteDialog;
+export default PublishRouteDialog;

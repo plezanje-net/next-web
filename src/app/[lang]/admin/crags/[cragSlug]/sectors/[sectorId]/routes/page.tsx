@@ -123,6 +123,9 @@ gql`
         position
         created
         publishStatus
+        user {
+          fullName
+        }
       }
     }
   }

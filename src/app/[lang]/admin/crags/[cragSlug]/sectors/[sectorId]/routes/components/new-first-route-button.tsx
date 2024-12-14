@@ -1,5 +1,5 @@
 import IconPlus from "@/components/ui/icons/plus";
-import RouteDialog from "./route-dialog";
+import RouteDialog from "./route-card/route-dialog";
 import { useState } from "react";
 
 type TNewFirstRouteButtonProps = {

@@ -66,9 +66,6 @@ function PublishStatusActions({
                   <span className="ml-2">Objavi</span>
                 </span>
               </Button>
-
-              {/* divider */}
-              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
             </>
           )}
 
@@ -84,7 +81,7 @@ function PublishStatusActions({
               </Button>
 
               {/* divider */}
-              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+              <div className="ml-3 h-6 border-l border-neutral-200 pr-3"></div>
 
               {/* reject */}
               <Button
@@ -94,9 +91,6 @@ function PublishStatusActions({
               >
                 <IconClose />
               </Button>
-
-              {/* divider */}
-              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
               {/* reject publish */}
               <RejectPublishRouteDialog
@@ -126,12 +120,11 @@ function PublishStatusActions({
               >
                 <span className="flex">
                   <IconPublish />
-                  <span className="ml-2">Predlagaj objavo</span>
+                  <span className="ml-2 whitespace-nowrap">
+                    Predlagaj objavo
+                  </span>
                 </span>
               </Button>
-
-              {/* divider */}
-              <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
             </>
           )}
 

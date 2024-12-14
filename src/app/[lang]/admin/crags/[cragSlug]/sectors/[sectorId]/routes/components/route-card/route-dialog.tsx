@@ -6,9 +6,9 @@ import { Option, Select } from "@/components/ui/select";
 import { TGradingSystemId, gradingSystems } from "@/utils/grading-systems";
 import Checkbox from "@/components/ui/checkbox";
 import TextArea from "@/components/ui/text-area";
-import createRouteAction from "../server-actions/create-route-action";
+import createRouteAction from "../../server-actions/create-route-action";
 import { Route } from "@/graphql/generated";
-import updateRouteAction from "../server-actions/update-route-action";
+import updateRouteAction from "../../server-actions/update-route-action";
 
 type TRouteDialogBaseProps = {
   formType: "new" | "edit";

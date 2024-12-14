@@ -2,7 +2,7 @@
 
 import { Route, Sector } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
-import RouteCard from "./route-card";
+import RouteCard from "./route-card/route-card";
 import { useRouter } from "next/navigation";
 import {
   DndContext,

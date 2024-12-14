@@ -2,7 +2,7 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Route } from "@/graphql/generated";
-import updateRouteAction from "../server-actions/update-route-action";
+import updateRouteAction from "../../server-actions/update-route-action";
 import TextArea from "@/components/ui/text-area";
 
 type TRejectPublishRouteDialogProps = {
