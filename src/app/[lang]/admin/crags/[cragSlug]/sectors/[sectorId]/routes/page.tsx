@@ -8,12 +8,16 @@ import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditRoutes from "./components/edit-routes";
 import { labelAndNameToString } from "@/utils/sector-helpers";
+import authStatus from "@/utils/auth/auth-status";
 
 type TEditRoutesPageProps = {
   params: { sectorId: string };
 };
 
 async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
+  const { user: loggedInUser } = await authStatus();
+  const loggedInUserIsEditor = !!loggedInUser?.roles.includes("admin");
+
   const sectorDataPromise = urqlServer().query(EditRoutesPageSectorDocument, {
     id: sectorId,
   });
@@ -81,6 +85,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
         sector={sector}
         cragSlug={sector.crag.slug}
         allSectors={sector.crag.sectors}
+        loggedInUserIsEditor={loggedInUserIsEditor}
       />
     </>
   );
@@ -117,6 +122,7 @@ gql`
         length
         position
         created
+        publishStatus
       }
     }
   }

@@ -54,6 +54,9 @@ module.exports = {
         100: "#F0B3AA",
         500: "#d9422b",
       },
+      amber: {
+        25: "#FBF5EA",
+      },
       current: "currentColor",
 
       // ...

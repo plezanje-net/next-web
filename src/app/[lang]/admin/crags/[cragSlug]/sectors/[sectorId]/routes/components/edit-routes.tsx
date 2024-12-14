@@ -28,6 +28,7 @@ type TEditRoutesProps = {
   cragSlug: string;
   sector: Sector;
   allSectors: Sector[];
+  loggedInUserIsEditor: boolean;
 };
 
 function EditRoutes({
@@ -35,6 +36,7 @@ function EditRoutes({
   cragSlug,
   sector,
   allSectors,
+  loggedInUserIsEditor,
 }: TEditRoutesProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -54,10 +56,21 @@ function EditRoutes({
   };
 
   const handleCheckAll = () => {
-    if (checkedRouteIds.length === sortedRoutes.length) {
+    if (
+      checkedRouteIds.length ===
+      sortedRoutes.filter(
+        (route) => loggedInUserIsEditor || route.publishStatus === "draft"
+      ).length
+    ) {
       setCheckedRouteIds([]);
     } else {
-      setCheckedRouteIds(sortedRoutes.map((route) => route.id));
+      setCheckedRouteIds(
+        sortedRoutes
+          .filter(
+            (route) => loggedInUserIsEditor || route.publishStatus === "draft"
+          )
+          .map((route) => route.id)
+      );
     }
   };
 
@@ -108,6 +121,7 @@ function EditRoutes({
         )}
         allRoutes={sortedRoutes}
         onCheckAll={handleCheckAll}
+        loggedInUserIsEditor={loggedInUserIsEditor}
       />
 
       <div className="px-4 xs:px-8 relative">
@@ -132,6 +146,7 @@ function EditRoutes({
                     disabled={loading}
                     checked={checkedRouteIds.includes(route.id)}
                     onCheckedChange={handleOnCheckedChange}
+                    loggedInUserIsEditor={loggedInUserIsEditor}
                   />
                 </Fragment>
               ))}

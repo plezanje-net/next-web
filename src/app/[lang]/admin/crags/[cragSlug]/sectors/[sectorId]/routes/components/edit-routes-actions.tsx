@@ -22,6 +22,7 @@ type TEditRoutesActionsProps = {
   allSectors: Sector[];
   allRoutes: Route[];
   onCheckAll: () => void;
+  loggedInUserIsEditor: boolean;
 };
 
 function EditRoutesActions({
@@ -31,6 +32,7 @@ function EditRoutesActions({
   checkedRoutes,
   allRoutes,
   onCheckAll,
+  loggedInUserIsEditor,
 }: TEditRoutesActionsProps) {
   const router = useRouter();
 
@@ -64,7 +66,13 @@ function EditRoutesActions({
         <div className="flex items-center">
           <Checkbox
             checked={checkedRoutes.length > 0}
-            indeterminate={checkedRoutes.length < allRoutes.length}
+            indeterminate={
+              checkedRoutes.length <
+              allRoutes.filter(
+                (route) =>
+                  loggedInUserIsEditor || route.publishStatus === "draft"
+              ).length
+            }
             onChange={onCheckAll}
             label="Označi vse"
             hideLabel="max-xs:sr-only"

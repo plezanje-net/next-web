@@ -13,6 +13,7 @@ import RouteDialog from "./route-dialog";
 import DeleteRouteDialog from "./delete-route-dialog";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import PublishStatusActions from "./publish-status-actions";
 
 type TRouteCardProps = {
   route: Route;
@@ -20,6 +21,7 @@ type TRouteCardProps = {
   checked: boolean;
   onCheckedChange: (checked: boolean, routeId: string) => void;
   disabled: boolean;
+  loggedInUserIsEditor: boolean;
 };
 
 function RouteCard({
@@ -28,6 +30,7 @@ function RouteCard({
   checked,
   onCheckedChange,
   disabled,
+  loggedInUserIsEditor,
 }: TRouteCardProps) {
   const grade = difficultyToGrade(
     route.difficulty || null,
@@ -52,21 +55,47 @@ function RouteCard({
     transition,
   };
 
+  // TODO: get enums from be?
+  let publishStatusBgStyle;
+  switch (route.publishStatus) {
+    case "draft":
+      publishStatusBgStyle = "bg-red-25";
+      break;
+    case "in_review":
+      publishStatusBgStyle = "bg-amber-25";
+      break;
+    case "published":
+    default:
+      publishStatusBgStyle = "bg-neutral-100";
+  }
+
   return (
     <>
       <div
         ref={setNodeRef}
         style={style}
-        className={`bg-neutral-100 rounded-lg flex mt-2 md:gap-2 md:items-center flex-col md:flex-row ${isDragging ? "z-50 relative shadow-lg" : ""}`}
+        className={`${publishStatusBgStyle} rounded-lg flex mt-2 md:gap-2 md:items-center flex-col md:flex-row ${isDragging ? "z-50 relative shadow-lg" : ""}`}
       >
         {/* drag handle, checkbox, name, grade, length and other info if space allows */}
         <div className="flex flex-1 items-center px-4 py-2">
           <div
-            {...(disabled ? {} : attributes)}
-            {...(disabled ? {} : listeners)}
+            {...(disabled ||
+            !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              ? {}
+              : attributes)}
+            {...(disabled ||
+            !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              ? {}
+              : listeners)}
             tabIndex={-1}
           >
-            <Button disabled={disabled} variant="quaternary">
+            <Button
+              disabled={
+                disabled ||
+                !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              }
+              variant="quaternary"
+            >
               <IconDrag />
             </Button>
           </div>
@@ -76,7 +105,10 @@ function RouteCard({
               hideLabel
               checked={checked}
               onChange={(checked) => onCheckedChange(checked, route.id)}
-              disabled={disabled}
+              disabled={
+                disabled ||
+                !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              }
             />
           </div>
 
@@ -89,10 +121,19 @@ function RouteCard({
 
         {/* actions */}
         <div className="flex items-center justify-end border-t border-neutral-200 md:border-none px-4 py-2">
+          <PublishStatusActions
+            route={route}
+            loggedInUserIsEditor={loggedInUserIsEditor}
+            disabled={disabled}
+          />
+
           {/* edit */}
           <Button
             variant="quaternary"
-            disabled={disabled}
+            disabled={
+              disabled ||
+              !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+            }
             onClick={() => setEditRouteDialogIsOpen(true)}
           >
             <IconEdit />
@@ -104,7 +145,10 @@ function RouteCard({
           {/* delete */}
           <Button
             variant="quaternary"
-            disabled={disabled}
+            disabled={
+              disabled ||
+              !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+            }
             onClick={() => {
               setDeleteRouteDialogIsOpen(true);
             }}
@@ -153,3 +197,10 @@ function RouteCard({
 }
 
 export default RouteCard;
+
+function actionPermitted(
+  loggedInUserIsEditor: boolean,
+  routePublishStatus: string
+) {
+  return loggedInUserIsEditor || routePublishStatus === "draft";
+}
