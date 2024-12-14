@@ -18,6 +18,7 @@ import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import updateRouteAction from "../server-actions/update-route-action";
 import EditRoutesActions from "./edit-routes-actions";
@@ -136,7 +137,10 @@ function EditRoutes({
           sensors={sensors}
           id="sort-routes-dnd-context-id"
         >
-          <SortableContext items={sortedRoutes}>
+          <SortableContext
+            items={sortedRoutes}
+            strategy={verticalListSortingStrategy}
+          >
             <div>
               {sortedRoutes.map((route) => (
                 <Fragment key={route.id}>
