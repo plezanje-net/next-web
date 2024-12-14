@@ -186,7 +186,7 @@ function RouteCard({
             </div>
 
             {/* publish actions */}
-            <div className="flex">
+            <div className="flex items-center ml-4">
               <PublishStatusActions
                 route={route}
                 loggedInUserIsEditor={loggedInUserIsEditor}

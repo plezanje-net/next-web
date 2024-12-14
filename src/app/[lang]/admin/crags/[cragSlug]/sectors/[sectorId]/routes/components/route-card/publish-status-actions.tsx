@@ -77,7 +77,10 @@ function PublishStatusActions({
                 disabled={disabled}
                 onClick={() => setPublishRouteDialogIsOpen(true)}
               >
-                <IconCheck />
+                <span className="flex">
+                  <IconCheck />
+                  <span className="ml-2 hidden @3xl:block">Potrdi objavo</span>
+                </span>
               </Button>
 
               {/* divider */}
@@ -89,7 +92,10 @@ function PublishStatusActions({
                 disabled={disabled}
                 onClick={() => setRejectDeclinePublishRouteDialogIsOpen(true)}
               >
-                <IconClose />
+                <span className="flex">
+                  <IconClose />
+                  <span className="ml-2 hidden @3xl:block">Zavrni objavo</span>
+                </span>
               </Button>
 
               {/* reject publish */}
@@ -120,7 +126,7 @@ function PublishStatusActions({
               >
                 <span className="flex">
                   <IconPublish />
-                  <span className="ml-2 whitespace-nowrap">
+                  <span className="ml-2 hidden @sm:block">
                     Predlagaj objavo
                   </span>
                 </span>
