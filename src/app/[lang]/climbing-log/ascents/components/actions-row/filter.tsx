@@ -2,12 +2,13 @@ import Button from "@/components/ui/button";
 import IconFilter from "@/components/ui/icons/filter";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import Checkbox from "@/components/ui/checkbox";
-import { AscentType, Crag, PublishType } from "@/graphql/generated";
+import { AscentType, Crag, PublishType, Route } from "@/graphql/generated";
 import DatePicker, { TDateString } from "@/components/ui/date-picker";
 import { Dispatch, FormEvent, SetStateAction, useMemo, useState } from "react";
 import Combobox from "@/components/ui/combobox";
 import populateCragsAction from "./server-actions/populate-crags-action";
 import useAdvancedSearchParams from "@/hooks/useSearchParamsHandler";
+import populateRoutesAction from "./server-actions/populate-routes-action";
 
 type TVisibilityOption = {
   label: string;
@@ -26,6 +27,7 @@ type TRouteTypeOption = {
 
 export type TAscentListFilter = {
   crag?: Crag;
+  route?: Route;
   dateFrom?: TDateString;
   dateTo?: TDateString;
   ascentType?: string[];
@@ -40,7 +42,6 @@ type TFilterProps = {
 };
 
 function Filter({ filterValues, isOpen, setIsOpen }: TFilterProps) {
-  
   const [dateFrom, setDateFrom] = useState<TDateString>(
     filterValues.dateFrom ?? null
   );
@@ -93,34 +94,46 @@ function Filter({ filterValues, isOpen, setIsOpen }: TFilterProps) {
     }));
   }
 
-  const [cragId, setCragId] = useState<string | null>(null);
+  const [cragId, setCragId] = useState<string | null>(
+    filterValues.crag?.id ?? null
+  );
   function handleCragChange(value: string | null) {
     setCragId(value);
   }
 
-  const countActiveFilters = () => {
-    let nrFilters = 0;
-    if (dateFrom) {
-      nrFilters++;
+  async function populateRoutes(text: string) {
+    if (text === "") {
+      return [];
     }
-    if (dateTo) {
-      nrFilters++;
-    }
-    if (ascentTypeValues.length > 0) {
-      nrFilters++;
-    }
-    if (visibilityValues.length > 0) {
-      nrFilters++;
-    }
-    if (routeTypeValues.length > 0) {
-      nrFilters++;
-    }
-    return (dateFrom || dateTo ? 1 : 0) 
-      + (ascentTypeValues.length > 0 ? 1 : 0) 
-      + (visibilityValues.length > 0 ? 1 : 0)
-      + (routeTypeValues.length > 0 ? 1 : 0)
-      + (cragId ? 1 : 0);
-  };
+    const routes = await populateRoutesAction(text, cragId ?? undefined);
+    return routes.map((route) => ({
+      value: route.id,
+      name: route.name,
+    }));
+  }
+
+  const [routeId, setRouteId] = useState<string | null>(
+    filterValues.route?.id ?? null
+  );
+  function handleRouteChange(value: string | null) {
+    setRouteId(value);
+  }
+
+  function countActiveFilters() {
+    const conditions = [
+      dateFrom || dateTo,
+      ascentTypeValues.length > 0,
+      visibilityValues.length > 0,
+      routeTypeValues.length > 0,
+      cragId,
+      routeId,
+    ];
+
+    return conditions.reduce(
+      (count, condition) => count + (condition ? 1 : 0),
+      0
+    );
+  }
 
   const [nrActiveFilters, setNrActiveFilters] = useState(countActiveFilters());
 
@@ -135,6 +148,7 @@ function Filter({ filterValues, isOpen, setIsOpen }: TFilterProps) {
     updateSearchParams({
       page: null,
       crag: cragId,
+      route: routeId,
       dateFrom,
       dateTo,
       ascentType: ascentTypeValues,
@@ -185,7 +199,7 @@ function Filter({ filterValues, isOpen, setIsOpen }: TFilterProps) {
         className="flex flex-col flex-wrap gap-8 md:flex-row"
         onSubmit={handleSubmit}
       >
-        <div className="w-30 lg:w-80 flex flex-col gap-4">
+        <div className="lg:w-80 flex flex-col gap-4">
           <div>
             <DatePicker
               value={dateFrom}
@@ -209,6 +223,22 @@ function Filter({ filterValues, isOpen, setIsOpen }: TFilterProps) {
               label="Plezališče"
               onChange={handleCragChange}
               populate={populateCrags}
+              disabled={routeId !== null}
+            />
+          </div>
+          <div>
+            <Combobox
+              value={
+                filterValues.route
+                  ? {
+                      value: filterValues.route.id,
+                      name: filterValues.route.name,
+                    }
+                  : null
+              }
+              label="Smer"
+              onChange={handleRouteChange}
+              populate={populateRoutes}
             />
           </div>
         </div>

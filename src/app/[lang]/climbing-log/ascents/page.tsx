@@ -1,6 +1,6 @@
 import {
   AscentListFiltersCragDocument,
-  FindActivityRoutesInput,
+  AscentListFiltersRouteDocument,
   MyActivityRoutesDocument,
 } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
@@ -13,6 +13,7 @@ import { TAscentListFilter } from "./components/actions-row/filter";
 type TSearchParams = {
   page: string;
   crag: string;
+  route: string;
   dateFrom?: string;
   dateTo?: string;
   ascentType?: string | string[];
@@ -43,10 +44,11 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
         direction: sortDirection.toUpperCase(),
       },
       cragId: searchParams.crag,
+      routeId: searchParams.route,
       dateFrom: searchParams.dateFrom,
       dateTo: searchParams.dateTo,
       ascentType: searchParams.ascentType,
-      routeTypes:  searchParams.routeType,
+      routeTypes: searchParams.routeType,
       publish: searchParams.visibility,
     },
   });
@@ -62,24 +64,42 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
     filterValues.crag = crag;
   }
 
+  if (searchParams.route) {
+    const {
+      data: { route },
+    } = await urqlServer().query(AscentListFiltersRouteDocument, {
+      input: searchParams.route,
+    });
+    filterValues.route = route;
+  }
+
   if (searchParams.dateFrom) {
-    filterValues.dateFrom = searchParams.dateFrom
+    filterValues.dateFrom = searchParams.dateFrom;
   }
 
   if (searchParams.dateTo) {
-    filterValues.dateTo = searchParams.dateTo
+    filterValues.dateTo = searchParams.dateTo;
   }
 
   if (searchParams.ascentType) {
-    filterValues.ascentType = typeof searchParams.ascentType === "string" ? [searchParams.ascentType] : searchParams.ascentType
+    filterValues.ascentType =
+      typeof searchParams.ascentType === "string"
+        ? [searchParams.ascentType]
+        : searchParams.ascentType;
   }
 
   if (searchParams.routeType) {
-    filterValues.routeType = typeof searchParams.routeType === "string" ? [searchParams.routeType] : searchParams.routeType
+    filterValues.routeType =
+      typeof searchParams.routeType === "string"
+        ? [searchParams.routeType]
+        : searchParams.routeType;
   }
 
   if (searchParams.visibility) {
-    filterValues.visibility = typeof searchParams.visibility === "string" ? [searchParams.visibility] : searchParams.visibility
+    filterValues.visibility =
+      typeof searchParams.visibility === "string"
+        ? [searchParams.visibility]
+        : searchParams.visibility;
   }
 
   return (
@@ -138,6 +158,37 @@ gql`
       }
     }
   }
+`;
+
+gql`
+  query AscentListFiltersCrag($input: String!) {
+    crag(id: $input) {
+      id
+      name
+      slug
+      country {
+        slug
+      }
+    }
+  }
+`;
+
+gql`
+query AscentListFiltersRoute($input: String!) {
+  route(id: $input) {
+    id
+    name
+    slug
+    crag {
+      id
+      name
+      slug
+      country {
+        slug
+      }
+    }
+  }
+}
 `;
 
 export default ClimbingLogPage;
