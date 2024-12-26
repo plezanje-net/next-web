@@ -15,6 +15,9 @@ type TSearchParams = {
   crag: string;
   dateFrom?: string;
   dateTo?: string;
+  ascentType?: string | string[];
+  routeType?: string | string[];
+  visibility?: string | string[];
   sort?: string;
 };
 
@@ -41,7 +44,10 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
       },
       cragId: searchParams.crag,
       dateFrom: searchParams.dateFrom,
-      dateTo: searchParams.dateFrom,
+      dateTo: searchParams.dateTo,
+      ascentType: searchParams.ascentType,
+      routeTypes:  searchParams.routeType,
+      publish: searchParams.visibility,
     },
   });
 
@@ -57,21 +63,23 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
   }
 
   if (searchParams.dateFrom) {
-    const [yearFrom, monthFrom, dayFrom] = searchParams.dateFrom.split("-");
-    filterValues.dateFrom = {
-      day: parseInt(dayFrom),
-      month: parseInt(monthFrom),
-      year: parseInt(yearFrom),
-    };
+    filterValues.dateFrom = searchParams.dateFrom
   }
 
   if (searchParams.dateTo) {
-    const [yearTo, monthTo, dayTo] = searchParams.dateTo.split("-");
-    filterValues.dateTo = {
-      day: parseInt(dayTo),
-      month: parseInt(monthTo),
-      year: parseInt(yearTo),
-    };
+    filterValues.dateTo = searchParams.dateTo
+  }
+
+  if (searchParams.ascentType) {
+    filterValues.ascentType = typeof searchParams.ascentType === "string" ? [searchParams.ascentType] : searchParams.ascentType
+  }
+
+  if (searchParams.routeType) {
+    filterValues.routeType = typeof searchParams.routeType === "string" ? [searchParams.routeType] : searchParams.routeType
+  }
+
+  if (searchParams.visibility) {
+    filterValues.visibility = typeof searchParams.visibility === "string" ? [searchParams.visibility] : searchParams.visibility
   }
 
   return (
