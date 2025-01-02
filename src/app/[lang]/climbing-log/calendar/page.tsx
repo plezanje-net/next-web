@@ -98,7 +98,7 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
           {days.map((day, i) => (
             <div key={i} className="bg-white p-2 lg:p-4 min-h-[calc((100vw-32px)/7*1.5)] lg:min-h-[calc((100vw-32px)/7)] flex flex-col lg:gap-4">
               <div
-                className={`text-center lg:text-right${!day.isCurrentMonth ? " text-neutral-400" : ""}`}
+                className={`text-center lg:text-right${!day.isCurrentMonth ? " text-neutral-400" : ""}${day.isToday ? " text-blue-400" : ""}`}
               >
                 {day.dayNumber}
               </div>
