@@ -1,6 +1,6 @@
 "use client";
 
-import { Route, Sector } from "@/graphql/generated";
+import { Route, Sector, User } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card/route-card";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,7 @@ type TEditRoutesProps = {
   sector: Sector;
   allSectors: Sector[];
   loggedInUserIsEditor: boolean;
+  loggedInUser: User | undefined;
 };
 
 function EditRoutes({
@@ -38,6 +39,7 @@ function EditRoutes({
   sector,
   allSectors,
   loggedInUserIsEditor,
+  loggedInUser,
 }: TEditRoutesProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -151,6 +153,7 @@ function EditRoutes({
                     checked={checkedRouteIds.includes(route.id)}
                     onCheckedChange={handleOnCheckedChange}
                     loggedInUserIsEditor={loggedInUserIsEditor}
+                    loggedInUser={loggedInUser}
                   />
                 </Fragment>
               ))}

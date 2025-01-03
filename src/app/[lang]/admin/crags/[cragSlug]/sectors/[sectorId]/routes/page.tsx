@@ -86,6 +86,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
         cragSlug={sector.crag.slug}
         allSectors={sector.crag.sectors}
         loggedInUserIsEditor={loggedInUserIsEditor}
+        loggedInUser={loggedInUser}
       />
     </>
   );
@@ -124,6 +125,7 @@ gql`
         created
         publishStatus
         user {
+          id
           fullName
         }
       }

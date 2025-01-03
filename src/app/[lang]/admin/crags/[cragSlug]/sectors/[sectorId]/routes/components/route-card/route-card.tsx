@@ -6,7 +6,7 @@ import IconDelete from "@/components/ui/icons/delete";
 import IconDrag from "@/components/ui/icons/drag";
 import IconEdit from "@/components/ui/icons/edit";
 import IconPlus from "@/components/ui/icons/plus";
-import { Route } from "@/graphql/generated";
+import { Route, User } from "@/graphql/generated";
 import { difficultyToGrade } from "@/utils/grade-helpers";
 import { useState } from "react";
 import RouteDialog from "./route-dialog";
@@ -23,6 +23,7 @@ type TRouteCardProps = {
   onCheckedChange: (checked: boolean, routeId: string) => void;
   disabled: boolean;
   loggedInUserIsEditor: boolean;
+  loggedInUser: User | undefined;
 };
 
 function RouteCard({
@@ -32,6 +33,7 @@ function RouteCard({
   onCheckedChange,
   disabled,
   loggedInUserIsEditor,
+  loggedInUser,
 }: TRouteCardProps) {
   const grade = difficultyToGrade(
     route.difficulty || null,
@@ -178,11 +180,16 @@ function RouteCard({
         {route.publishStatus !== "published" && (
           <div className="flex justify-between border-t border-neutral-200 px-4 py-2 items-center h-12">
             <div className="flex text-neutral-500 @lg:ml-20">
-              <span className="hidden @lg:block">
-                {genderizeVerb("Prispeval", "M")}:&nbsp;
-              </span>
-              {/* TODO: say Tvoj prispevek if yours. after auth context added */}
-              {route.user?.fullName}
+              {loggedInUser && loggedInUser.id === route.user?.id ? (
+                "Tvoj prispevek"
+              ) : (
+                <>
+                  <span className="hidden @lg:block">
+                    {genderizeVerb("Prispeval", "M")}:&nbsp;
+                  </span>
+                  {route.user?.fullName}
+                </>
+              )}
             </div>
 
             {/* publish actions */}
