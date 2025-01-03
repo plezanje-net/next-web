@@ -6,6 +6,7 @@
     "/{crag}/:cragSlug/{gallery}",
     "/{crag}/:cragSlug*",
     "/{climbing-log}/{calendar}",
+    "/{climbing-log}/{calendar}/:date",
     "/{climbing-log}/{ascents}",
     "/{climbing-log}/{statistics}"
   ],

@@ -6,6 +6,7 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
   useMemo,
+  ReactElement,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -101,6 +102,7 @@ const getDayMax = (month: number | "mm", year: number | "llll") => {
 type TDatePickerProps = {
   value: TDateString;
   onChange: (value: TDateString) => void;
+  displayValue?: string;
   label?: string;
   disabled?: boolean;
 };
@@ -108,6 +110,7 @@ type TDatePickerProps = {
 function DatePicker({
   value: inputValue,
   onChange,
+  displayValue,
   label,
   disabled = false,
 }: TDatePickerProps) {
@@ -115,15 +118,12 @@ function DatePicker({
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
 
-  const value: TDate = useMemo(
-    () => {
-      const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
-      return inputValue
+  const value: TDate = useMemo(() => {
+    const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
+    return inputValue
       ? { day: +day, month: +month, year: +year }
-      : { day: "dd", month: "mm", year: "llll" }
-    },
-    [inputValue]
-  );
+      : { day: "dd", month: "mm", year: "llll" };
+  }, [inputValue]);
 
   const handleChange = (date: TDate) => {
     onChange(
@@ -131,7 +131,7 @@ function DatePicker({
         ? null
         : `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
     );
-  }
+  };
 
   const today = dayjs();
 
@@ -444,64 +444,68 @@ function DatePicker({
           className={`relative flex w-full items-center justify-between gap-2 rounded-lg border py-2 pl-4 pr-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${label ? "mt-2" : ""} ${disabled ? "border-neutral-300 bg-neutral-100" : "border-neutral-400 bg-white"}`}
           onClick={handleInputFieldClick}
         >
-          <div>
-            <input
-              ref={dayInputRef}
-              type="text"
-              onKeyDown={handleDayKeyDown}
-              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-                value.day == "dd" || disabled
-                  ? "text-neutral-400 focus:text-neutral-900"
-                  : ""
-              }`}
-              style={{ width: `${dayInputWidth}px` }}
-              value={value.day}
-              onChange={() => {}}
-              onFocus={(e) => {
-                e.target.selectionEnd = 0;
-              }}
-              onClick={(e) => e.stopPropagation()}
-              disabled={disabled}
-            />
-            <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
-            <input
-              ref={monthInputRef}
-              type="text"
-              onKeyDown={handleMonthKeyDown}
-              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-                value.month == "mm" || disabled
-                  ? "text-neutral-400 focus:text-neutral-900"
-                  : ""
-              }`}
-              style={{ width: `${monthInputWidth}px` }}
-              value={value.month}
-              onChange={() => {}}
-              onFocus={(e) => {
-                e.target.selectionEnd = 0;
-              }}
-              onClick={(e) => e.stopPropagation()}
-              disabled={disabled}
-            />
-            <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
-            <input
-              ref={yearInputRef}
-              type="text"
-              onKeyDown={!disabled ? handleYearKeyDown : () => {}}
-              className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
-                value.year == "llll" || disabled
-                  ? "text-neutral-400 focus:text-neutral-900"
-                  : ""
-              }`}
-              style={{ width: `${yearInputWidth}px` }}
-              value={value.year}
-              onChange={() => {}}
-              onFocus={(e) => {
-                e.target.selectionEnd = 0;
-              }}
-              onClick={(e) => e.stopPropagation()}
-              disabled={disabled}
-            />
-          </div>
+          {displayValue ? (
+            <>{displayValue}</>
+          ) : (
+            <div>
+              <input
+                ref={dayInputRef}
+                type="text"
+                onKeyDown={handleDayKeyDown}
+                className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                  value.day == "dd" || disabled
+                    ? "text-neutral-400 focus:text-neutral-900"
+                    : ""
+                }`}
+                style={{ width: `${dayInputWidth}px` }}
+                value={value.day}
+                onChange={() => {}}
+                onFocus={(e) => {
+                  e.target.selectionEnd = 0;
+                }}
+                onClick={(e) => e.stopPropagation()}
+                disabled={disabled}
+              />
+              <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
+              <input
+                ref={monthInputRef}
+                type="text"
+                onKeyDown={handleMonthKeyDown}
+                className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                  value.month == "mm" || disabled
+                    ? "text-neutral-400 focus:text-neutral-900"
+                    : ""
+                }`}
+                style={{ width: `${monthInputWidth}px` }}
+                value={value.month}
+                onChange={() => {}}
+                onFocus={(e) => {
+                  e.target.selectionEnd = 0;
+                }}
+                onClick={(e) => e.stopPropagation()}
+                disabled={disabled}
+              />
+              <span className={`${disabled ? "text-neutral-400" : ""}`}>.</span>
+              <input
+                ref={yearInputRef}
+                type="text"
+                onKeyDown={!disabled ? handleYearKeyDown : () => {}}
+                className={`m-0 inline rounded-sm border-0 p-0 text-center caret-transparent outline-none focus-visible:bg-blue-100 bg-transparent ${
+                  value.year == "llll" || disabled
+                    ? "text-neutral-400 focus:text-neutral-900"
+                    : ""
+                }`}
+                style={{ width: `${yearInputWidth}px` }}
+                value={value.year}
+                onChange={() => {}}
+                onFocus={(e) => {
+                  e.target.selectionEnd = 0;
+                }}
+                onClick={(e) => e.stopPropagation()}
+                disabled={disabled}
+              />
+            </div>
+          )}
         </div>
       </Field>
       <div className="absolute right-1 bottom-[1px] items-center flex h-10">

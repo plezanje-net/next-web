@@ -6,11 +6,11 @@ import {
 } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import dayjs from "dayjs";
-import locale from "dayjs/locale/sl";
 import weekday from "dayjs/plugin/weekday";
+import locale from "dayjs/locale/sl";
 import localeData from "dayjs/plugin/localeData";
-import CalendarActivity from "./components/calendar-activity";
 import ActionsRow from "./components/actions-row/actions-row";
+import CalendarDay, { TCalendarDay } from "./components/calendar-day";
 
 type TSearchParams = {
   date: string;
@@ -18,13 +18,6 @@ type TSearchParams = {
 
 type TCalendarPageProps = {
   searchParams: TSearchParams;
-};
-
-type TCalendarDay = {
-  dayNumber: number;
-  isCurrentMonth: boolean;
-  isToday: boolean;
-  activities: Activity[];
 };
 
 async function CalendarPage({ searchParams }: TCalendarPageProps) {
@@ -59,7 +52,6 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
     },
   });
 
-
   dayjs.extend(weekday);
   dayjs.locale(locale);
   dayjs.extend(localeData);
@@ -70,14 +62,17 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
 
   let currentDay = firstDay.clone();
   while (
-    currentDay.format('YYYY-MM') <= dayjs(date).format('YYYY-MM') ||
+    currentDay.format("YYYY-MM") <= dayjs(date).format("YYYY-MM") ||
     currentDay.weekday() !== 0
   ) {
     days.push({
+      date: currentDay.format("YYYY-MM-DD"),
       dayNumber: currentDay.date(),
       isCurrentMonth: currentDay.month() === dayjs(date).month(),
       isToday: currentDay.isSame(dayjs(), "day"),
-      activities: myActivities.items.filter((activity: Activity) => dayjs(activity.date).isSame(currentDay, "day")),
+      activities: myActivities.items.filter((activity: Activity) =>
+        dayjs(activity.date).isSame(currentDay, "day")
+      ),
     });
     currentDay = currentDay.add(1, "day");
   }
@@ -89,23 +84,18 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
         <div className="flex">
           {Array.from({ length: 7 }, (_, i) => (
             <div className="flex-1 text-center text-neutral-500" key={i}>
-              <span className="hidden lg:inline">{firstDay.weekday(i).format("ddd").substring(0, 3)}</span>
-              <span className="lg:hidden uppercase">{firstDay.weekday(i).format("ddd").substring(0, 1)}</span>
+              <span className="hidden lg:inline">
+                {firstDay.weekday(i).format("ddd").substring(0, 3)}
+              </span>
+              <span className="lg:hidden uppercase">
+                {firstDay.weekday(i).format("ddd").substring(0, 1)}
+              </span>
             </div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-[1px] bg-neutral-200 border border-neutral-200 mt-2">
           {days.map((day, i) => (
-            <div key={i} className="bg-white p-2 lg:p-4 min-h-[calc((100vw-32px)/7*1.5)] lg:min-h-[calc((100vw-32px)/7)] flex flex-col lg:gap-4">
-              <div
-                className={`text-center lg:text-right${!day.isCurrentMonth ? " text-neutral-400" : ""}${day.isToday ? " text-blue-400" : ""}`}
-              >
-                {day.dayNumber}
-              </div>
-              <div className="flex flex-wrap grow items-center justify-center lg:items-start lg:justify-start lg:gap-4">
-                {day.activities.map((activity, i) => <CalendarActivity key={i} activity={activity} />)}
-              </div>
-            </div>
+            <CalendarDay key={i} day={day} />
           ))}
         </div>
       </div>
