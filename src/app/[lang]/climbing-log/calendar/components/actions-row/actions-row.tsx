@@ -7,6 +7,7 @@ import IconRight from "@/components/ui/icons/right";
 import IconCalendar from "@/components/ui/icons/calendar";
 import dayjs from "dayjs";
 import useAdvancedSearchParams from "@/hooks/useSearchParamsHandler";
+import Link from "next/link";
 
 type TActionsRowProps = {
   firstEntryYear: number;
@@ -65,7 +66,10 @@ function ActionsRow({ firstEntryYear, date }: TActionsRowProps) {
           >
             <IconLeft />
           </Button>
-          <IconCalendar />
+          <Link href="/plezalni-dnevnik/koledar" className="flex gap-2">
+            <IconCalendar />
+            <span>Danes</span>
+          </Link>
           <Button
             variant="quaternary"
             onClick={handleNextMonth}

@@ -8,6 +8,7 @@ import DatePicker, { TDateString } from "@/components/ui/date-picker";
 import locale from "dayjs/locale/sl";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type TActionsRowProps = {
   date: string;
@@ -74,7 +75,10 @@ function ActionsRow({ date }: TActionsRowProps) {
           <Button variant="quaternary" onClick={handlePrevDay}>
             <IconLeft />
           </Button>
-          <IconCalendar />
+          <Link href={`/plezalni-dnevnik/koledar/${dayjs().format('YYYY-MM-DD')}`} className="flex gap-2">
+            <IconCalendar />
+            <span>Danes</span>
+          </Link>
           <Button variant="quaternary" onClick={handleNextDay}>
             <IconRight />
           </Button>

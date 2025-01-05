@@ -61,6 +61,7 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
   const days: TCalendarDay[] = [];
 
   let currentDay = firstDay.clone();
+  let firstWeek = true;
   while (
     currentDay.format("YYYY-MM") <= dayjs(date).format("YYYY-MM") ||
     currentDay.weekday() !== 0
@@ -73,14 +74,18 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
       activities: myActivities.items.filter((activity: Activity) =>
         dayjs(activity.date).isSame(currentDay, "day")
       ),
+      borderClass: `${currentDay.weekday() > 0 ? " border-l" : ""}${!firstWeek ? " border-t" : ""}`,
     });
     currentDay = currentDay.add(1, "day");
+    if (currentDay.weekday() == 6 && firstWeek) {
+      firstWeek = false;
+    }
   }
 
   return (
     <>
       <ActionsRow firstEntryYear={firstEntryYear} date={date} />
-      <div className="x-auto mx-auto rotate-0 px-4 2xl:container xs:px-8">
+      <div className="x-auto mx-auto rotate-0 px-4 2xl:container xs:px-8 pb-8">
         <div className="flex">
           {Array.from({ length: 7 }, (_, i) => (
             <div className="flex-1 text-center text-neutral-500" key={i}>
@@ -93,7 +98,7 @@ async function CalendarPage({ searchParams }: TCalendarPageProps) {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-[1px] bg-neutral-200 border border-neutral-200 mt-2">
+        <div className="grid grid-cols-7 border border-neutral-200 mt-2 rounded-lg">
           {days.map((day, i) => (
             <CalendarDay key={i} day={day} />
           ))}
