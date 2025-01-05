@@ -96,6 +96,8 @@ function RejectDialog({
     setIsOpen(false);
     setLoading(false);
     router.refresh();
+
+    // TODO: if this was a crag that was rejected, redirect somewhere... where?
   };
 
   return (

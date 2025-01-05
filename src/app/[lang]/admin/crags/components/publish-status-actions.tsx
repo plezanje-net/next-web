@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "@/components/ui/button";
 import IconPublish from "@/components/ui/icons/publish";
 import { Crag, Route, Sector } from "@/graphql/generated";
@@ -57,6 +59,9 @@ function PublishStatusActions({
     case "Sector":
       hasParent = true;
       parentStatus = contributable.crag.publishStatus;
+      approveRejectClass = "hidden @2xl:block";
+      break;
+    case "Crag":
       approveRejectClass = "hidden @2xl:block";
       break;
   }
