@@ -7,6 +7,7 @@ import { EditSectorsPageCragDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditSectors from "./components/edit-sectors";
+import authStatus from "@/utils/auth/auth-status";
 
 type TEditSectorsPageProps = {
   params: { cragSlug: string };
@@ -15,6 +16,9 @@ type TEditSectorsPageProps = {
 async function EditSectorsPage({
   params: { cragSlug },
 }: TEditSectorsPageProps) {
+  const { user: loggedInUser } = await authStatus();
+  const loggedInUserIsEditor = !!loggedInUser?.roles.includes("admin");
+
   const cragDataPromise = urqlServer().query(EditSectorsPageCragDocument, {
     cragSlug: cragSlug,
   });
@@ -59,7 +63,11 @@ async function EditSectorsPage({
         }
       />
 
-      <EditSectors crag={crag} />
+      <EditSectors
+        crag={crag}
+        loggedInUserIsEditor={loggedInUserIsEditor}
+        loggedInUser={loggedInUser}
+      />
     </>
   );
 }
@@ -74,10 +82,23 @@ gql`
       slug
       name
       sectors {
+        __typename
         id
         name
         label
         position
+        publishStatus
+        user {
+          id
+          fullName
+        }
+        routes {
+          id
+        }
+        crag {
+          id
+          publishStatus
+        }
       }
     }
   }

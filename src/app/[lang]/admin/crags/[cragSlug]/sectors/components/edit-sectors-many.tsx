@@ -1,7 +1,7 @@
 "use client";
 
 import Checkbox from "@/components/ui/checkbox";
-import { Sector } from "@/graphql/generated";
+import { Sector, User } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { Fragment, useEffect, useState } from "react";
 import SectorDialog from "./sector-dialog";
@@ -19,20 +19,27 @@ import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import updateSectorAction from "../server-actions/update-sector-action";
 import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
-import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
   cragId: string;
+  loggedInUserIsEditor: boolean;
+  loggedInUser: User | undefined;
 };
 
-function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
+function EditSectorsMany({
+  sectors,
+  cragId,
+  loggedInUser,
+  loggedInUserIsEditor,
+}: TEditCragSectorsManyProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -132,18 +139,22 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         sensors={sensors}
         id="sort-sectors-dnd-context-id"
       >
-        <SortableContext items={sortedSectors}>
+        <SortableContext
+          items={sortedSectors}
+          strategy={verticalListSortingStrategy}
+        >
           <div>
             {/* Dep: sector.label is deprecated. remove after api migrates it to name */}
             {sortedSectors.map((sector) => (
               <Fragment key={sector.id}>
                 <SectorCard
-                  id={sector.id}
-                  name={labelAndNameToString(sector.label, sector.name)}
+                  sector={sector}
                   disabled={loading}
                   onEditClick={() => handleEditSectorClick(sector)}
                   onAddClick={() => handleAddSectorClick(sector.position + 1)}
                   onDeleteClick={() => handleDeleteSectorClick(sector)}
+                  loggedInUserIsEditor={loggedInUserIsEditor}
+                  loggedInUser={loggedInUser}
                 />
               </Fragment>
             ))}

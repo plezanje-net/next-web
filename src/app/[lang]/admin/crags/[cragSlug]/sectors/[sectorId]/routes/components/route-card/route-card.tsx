@@ -13,8 +13,8 @@ import RouteDialog from "./route-dialog";
 import DeleteRouteDialog from "./delete-route-dialog";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import PublishStatusActions from "./publish-status-actions";
 import { genderizeVerb } from "@/utils/text-helpers";
+import PublishStatusActions from "../../../../../../components/publish-status-actions";
 
 type TRouteCardProps = {
   route: Route;
@@ -192,14 +192,12 @@ function RouteCard({
               )}
             </div>
 
-            {/* publish actions */}
-            <div className="flex items-center ml-4">
-              <PublishStatusActions
-                route={route}
-                loggedInUserIsEditor={loggedInUserIsEditor}
-                disabled={disabled}
-              />
-            </div>
+            {/* publish status actions */}
+            <PublishStatusActions
+              contributable={route}
+              loggedInUserIsEditor={loggedInUserIsEditor}
+              disabled={disabled}
+            />
           </div>
         )}
       </div>

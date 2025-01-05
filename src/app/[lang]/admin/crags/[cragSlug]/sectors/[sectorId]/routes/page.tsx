@@ -128,6 +128,10 @@ gql`
           id
           fullName
         }
+        sector {
+          id
+          publishStatus
+        }
       }
     }
   }

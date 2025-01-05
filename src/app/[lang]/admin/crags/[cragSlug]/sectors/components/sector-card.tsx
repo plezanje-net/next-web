@@ -6,26 +6,32 @@ import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
+import { Sector, User } from "@/graphql/generated";
+import { genderizeVerb } from "@/utils/text-helpers";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { usePathname, useRouter } from "next/navigation";
+import PublishStatusActions from "../../../components/publish-status-actions";
+import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TSectorCardProps = {
-  id: string;
-  name: string;
+  sector: Sector;
   disabled?: boolean;
   onAddClick: () => void;
   onEditClick: () => void;
   onDeleteClick: () => void;
+  loggedInUserIsEditor: boolean;
+  loggedInUser: User | undefined;
 };
 
 function SectorCard({
-  id,
-  name,
+  sector,
   disabled,
   onAddClick,
   onEditClick,
   onDeleteClick,
+  loggedInUserIsEditor,
+  loggedInUser,
 }: TSectorCardProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -43,24 +49,39 @@ function SectorCard({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id: sector.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
   };
 
+  // TODO: get enums from be?
+  // TODO: export to helper
+  let publishStatusBgStyle;
+  switch (sector.publishStatus) {
+    case "draft":
+      publishStatusBgStyle = "bg-red-25";
+      break;
+    case "in_review":
+      publishStatusBgStyle = "bg-amber-25";
+      break;
+    case "published":
+    default:
+      publishStatusBgStyle = "bg-neutral-100";
+  }
+
   return (
+    // {/* sector card */}
     <div
       ref={setNodeRef}
       style={style}
-      className={`mt-2 rounded-lg ${isDragging ? "z-50 relative shadow-lg" : ""}`}
+      className={`@container rounded-lg mt-2 ${publishStatusBgStyle} ${isDragging ? "z-50 relative shadow-lg" : ""}`}
     >
-      <div
-        className={`w-full bg-neutral-100 rounded-lg flex flex-col md:flex-row md:items-center justify-between ${disabled ? "text-neutral-400" : ""}`}
-      >
-        {/* drag handle, name and menu  */}
-        <div className="px-4 py-5 flex items-center justify-between">
+      {/* drag, name, actions */}
+      <div className="flex justify-between flex-col @2xl:flex-row @2xl:items-center">
+        {/* drag, name, (more) */}
+        <div className="flex justify-between items-center px-4 py-5">
           <div className="flex items-center">
             <div
               {...(disabled ? {} : attributes)}
@@ -76,29 +97,31 @@ function SectorCard({
                 <IconDrag />
               </Button>
             </div>
-            <h4 className="ml-2">{name}</h4>
+            <h4 className="ml-4">
+              {labelAndNameToString(sector.label, sector.name)}
+            </h4>
           </div>
-          <div className="md:hidden">{moreAction}</div>
+          <div className="@2xl:hidden">{moreAction}</div>
         </div>
 
         {/* actions */}
-        <div className="border-t border-neutral-200 px-4 py-2 md:border-none">
+        <div className="border-t border-neutral-200 @2xl:border-none px-4 py-2">
           <div className="flex justify-end items-center">
             {/* edit routes */}
             <Button
               variant="quaternary"
               disabled={disabled}
               onClick={() => {
-                router.push(`${pathname}/${id}/smeri`);
+                router.push(`${pathname}/${sector.id}/smeri`);
               }}
             >
               <IconRoutes />
             </Button>
 
             {/* divider */}
-            <div className="hidden md:block ml-3 h-6 border-l border-neutral-300 pr-3"></div>
+            <div className="hidden @2xl:block ml-3 h-6 border-l border-neutral-300 pr-3"></div>
 
-            <div className="hidden md:block">{moreAction}</div>
+            <div className="hidden @2xl:block">{moreAction}</div>
 
             {/* divider */}
             <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
@@ -138,6 +161,32 @@ function SectorCard({
           </div>
         </div>
       </div>
+
+      {/* contributor, publish actions */}
+      {sector.publishStatus !== "published" && (
+        <div className="flex justify-between items-center border-t border-neutral-200 px-4 py-2">
+          {/* contributor */}
+          <div className="flex text-neutral-500 @md:ml-12 py-1">
+            {loggedInUser && loggedInUser.id === sector.user?.id ? (
+              "Tvoj prispevek"
+            ) : (
+              <>
+                <span className="hidden @md:block">
+                  {genderizeVerb("Prispeval", "M")}:&nbsp;
+                </span>
+                {sector.user?.fullName}
+              </>
+            )}
+          </div>
+
+          {/* publish status actions */}
+          <PublishStatusActions
+            contributable={sector}
+            disabled={disabled || false}
+            loggedInUserIsEditor={loggedInUserIsEditor}
+          />
+        </div>
+      )}
     </div>
   );
 }
