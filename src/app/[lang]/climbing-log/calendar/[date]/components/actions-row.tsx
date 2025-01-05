@@ -36,6 +36,7 @@ function ActionsRow({ date }: TActionsRowProps) {
 
   dayjs.locale(locale);
 
+
   const displayValue = useMemo(
     () =>
       capitalizeFirstLetter(dayjs(date).format("dddd, D. ")) +
@@ -43,15 +44,29 @@ function ActionsRow({ date }: TActionsRowProps) {
     [date]
   );
 
+  const displayValueMobile = useMemo(
+    () =>
+      capitalizeFirstLetter(dayjs(date).format("ddd, D. ")) +
+      capitalizeFirstLetter(dayjs(date).format("MMM YYYY")),
+    [date]
+  );
+
   return (
     <>
-      <div className="x-auto mx-auto rotate-0 items-center p-4 2xl:container xs:px-8 sm:justify-between flex justify-center gap-3 flex-wrap sm:py-5">
+      <div className="x-auto mx-auto rotate-0 items-center p-4 2xl:container xs:px-8 justify-between flex gap-3 flex-wrap sm:py-5">
         <div className="flex items-center justify-center gap-2">
-          <div className="w-80">
+          <div className="w-80 hidden sm:block">
             <DatePicker
               value={date}
               onChange={handleDateChange}
               displayValue={displayValue}
+            />
+          </div>
+          <div className="w-48 sm:hidden">
+            <DatePicker
+              value={date}
+              onChange={handleDateChange}
+              displayValue={displayValueMobile}
             />
           </div>
         </div>
