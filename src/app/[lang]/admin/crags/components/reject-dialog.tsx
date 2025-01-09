@@ -95,9 +95,14 @@ function RejectDialog({
 
     setIsOpen(false);
     setLoading(false);
-    router.refresh();
 
-    // TODO: if this was a crag that was rejected, redirect somewhere... where?
+    if (contributable.__typename === "Crag") {
+      // if we are rejecting a crag, redirect to home, since a rejected (now draft again) crag is not visible to the current user
+      router.push(`/`);
+      // TODO: when (if) there is an edit all crags page, redirect there.
+    } else {
+      router.refresh();
+    }
   };
 
   return (
