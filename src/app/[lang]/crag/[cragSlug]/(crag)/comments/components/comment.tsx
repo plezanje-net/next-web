@@ -1,5 +1,8 @@
+"use client";
+
 import { User } from "@/graphql/generated";
 import CommentActions from "./comment-actions";
+import { useAuthContext } from "../../../../../../components/auth-context";
 
 interface CommentProps {
   commentId: string;
@@ -8,7 +11,6 @@ interface CommentProps {
   content: string | null | undefined; // TODO: fix type when BE marks this field as non nullable
   type: CommentType;
   author: User | null | undefined; // TODO: fix type when BE marks this field as non nullable
-  currentUser: User | undefined;
 }
 
 enum CommentType {
@@ -23,8 +25,9 @@ function Comment({
   content,
   type,
   author,
-  currentUser,
 }: CommentProps) {
+  const { currentUser } = useAuthContext();
+
   return (
     <div
       className={`${

@@ -516,11 +516,21 @@ export type LoginResponse = {
   user: User;
 };
 
+export type MergeRoutesInput = {
+  sourceRouteId: Scalars['String']['input'];
+  targetRouteId: Scalars['String']['input'];
+};
+
 export type MoveRouteToSectorInput = {
   id: Scalars['String']['input'];
   primaryRoute?: InputMaybe<Scalars['String']['input']>;
   sectorId: Scalars['String']['input'];
   targetRouteId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MoveRoutesToSectorInput = {
+  ids: Array<Scalars['String']['input']>;
+  sectorId: Scalars['String']['input'];
 };
 
 export type Mutation = {
@@ -548,10 +558,14 @@ export type Mutation = {
   deleteCrag: Scalars['Boolean']['output'];
   deleteImage: Scalars['Boolean']['output'];
   deleteRoute: Scalars['Boolean']['output'];
+  deleteRoutes: Array<Scalars['Boolean']['output']>;
   deleteSector: Scalars['Boolean']['output'];
   deleteUser: Scalars['Boolean']['output'];
   login: LoginResponse;
+  mergeAllSectors: Scalars['Boolean']['output'];
+  mergeRoutes: Scalars['Boolean']['output'];
   moveRouteToSector: Scalars['Boolean']['output'];
+  moveRoutesToSector: Scalars['Boolean']['output'];
   moveSectorToCrag: Scalars['Boolean']['output'];
   processAllCrags: Scalars['Boolean']['output'];
   recover: Scalars['Boolean']['output'];
@@ -688,6 +702,11 @@ export type MutationDeleteRouteArgs = {
 };
 
 
+export type MutationDeleteRoutesArgs = {
+  ids: Array<Scalars['String']['input']>;
+};
+
+
 export type MutationDeleteSectorArgs = {
   id: Scalars['String']['input'];
 };
@@ -703,8 +722,23 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationMergeAllSectorsArgs = {
+  cragId: Scalars['String']['input'];
+};
+
+
+export type MutationMergeRoutesArgs = {
+  input: MergeRoutesInput;
+};
+
+
 export type MutationMoveRouteToSectorArgs = {
   input: MoveRouteToSectorInput;
+};
+
+
+export type MutationMoveRoutesToSectorArgs = {
+  input: MoveRoutesToSectorInput;
 };
 
 
@@ -1436,7 +1470,7 @@ export const CragDocument = {"kind":"Document","definitions":[{"kind":"Operation
 export const CragActivitiesByMonthDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CragActivitiesByMonth"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"crag"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"crag"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"activityByMonth"}}]}}]}}]} as unknown as DocumentNode<CragActivitiesByMonthQuery, CragActivitiesByMonthQueryVariables>;
 export const CreateActivityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateActivity"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateActivityInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"routes"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateActivityRouteInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createActivity"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"routes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"routes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateActivityMutation, CreateActivityMutationVariables>;
 export const DryRunCreateActivityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"DryRunCreateActivity"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateActivityInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"routes"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateActivityRouteInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dryRunCreateActivity"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"routes"},"value":{"kind":"Variable","name":{"kind":"Name","value":"routes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"before"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"ascentType"}},{"kind":"Field","name":{"kind":"Name","value":"routeId"}},{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"after"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"ascentType"}},{"kind":"Field","name":{"kind":"Name","value":"routeId"}}]}}]}}]}}]} as unknown as DocumentNode<DryRunCreateActivityQuery, DryRunCreateActivityQueryVariables>;
-export const ProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]} as unknown as DocumentNode<ProfileQuery, ProfileQueryVariables>;
+export const AuthContextProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AuthContextProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]} as unknown as DocumentNode<AuthContextProfileQuery, AuthContextProfileQueryVariables>;
 export const namedOperations = {
   Query: {
     HomeLatestAscents: 'HomeLatestAscents',
@@ -1457,7 +1491,7 @@ export const namedOperations = {
     Crag: 'Crag',
     CragActivitiesByMonth: 'CragActivitiesByMonth',
     DryRunCreateActivity: 'DryRunCreateActivity',
-    Profile: 'Profile'
+    AuthContextProfile: 'AuthContextProfile'
   },
   Mutation: {
     CreateComment: 'CreateComment',
@@ -1670,7 +1704,7 @@ export type DryRunCreateActivityQueryVariables = Exact<{
 
 export type DryRunCreateActivityQuery = { __typename?: 'Query', dryRunCreateActivity: Array<{ __typename?: 'SideEffect', before: { __typename?: 'ActivityRoute', date?: any | null, ascentType: AscentType, routeId: string, route: { __typename?: 'Route', name: string } }, after: { __typename?: 'ActivityRoute', date?: any | null, ascentType: AscentType, routeId: string } }> };
 
-export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
+export type AuthContextProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: string, firstname: string, lastname: string, fullName: string, email?: string | null, roles: Array<string> } };
+export type AuthContextProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: string, firstname: string, lastname: string, fullName: string, email?: string | null, roles: Array<string> } };

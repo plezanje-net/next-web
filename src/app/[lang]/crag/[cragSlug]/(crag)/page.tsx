@@ -4,12 +4,13 @@ import {
   Crag,
   CragSectorsDocument,
   MyCragSummaryDocument,
+  User,
 } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
-import authStatus from "@/utils/auth/auth-status";
 import tickAscentTypes from "@/utils/constants/tick-ascent-types";
 import trTickAscentTypes from "@/utils/constants/tr-tick-ascent-types";
+import fetchCurrentUser from "@/utils/auth/fetch-current-user";
 
 type Params = {
   cragSlug: string;
@@ -19,10 +20,11 @@ type Props = {
   params: Params;
 };
 
-async function getCragBySlug(crag: string): Promise<Crag> {
-  const { user: loggedInUser } = await authStatus();
-
-  const firstTryArInput = !!loggedInUser
+async function getCragBySlug(
+  crag: string,
+  currentUser: User | null
+): Promise<Crag> {
+  const firstTryArInput = !!currentUser
     ? {
         pageSize: 1,
         pageNumber: 1,
@@ -30,11 +32,11 @@ async function getCragBySlug(crag: string): Promise<Crag> {
           field: "date",
           direction: "ASC",
         },
-        userId: loggedInUser.id,
+        userId: currentUser.id,
       }
     : null;
 
-  const firstTickArInput = !!loggedInUser
+  const firstTickArInput = !!currentUser
     ? {
         ascentType: tickAscentTypes,
         pageSize: 1,
@@ -43,11 +45,11 @@ async function getCragBySlug(crag: string): Promise<Crag> {
           field: "date",
           direction: "ASC",
         },
-        userId: loggedInUser.id,
+        userId: currentUser.id,
       }
     : null;
 
-  const firstTrTickArInput = !!loggedInUser
+  const firstTrTickArInput = !!currentUser
     ? {
         ascentType: trTickAscentTypes,
         pageSize: 1,
@@ -56,16 +58,16 @@ async function getCragBySlug(crag: string): Promise<Crag> {
           field: "date",
           direction: "ASC",
         },
-        userId: loggedInUser.id,
+        userId: currentUser.id,
       }
     : null;
 
-  const difficultyVotesInput = !!loggedInUser
-    ? { userId: loggedInUser.id }
+  const difficultyVotesInput = !!currentUser
+    ? { userId: currentUser.id }
     : null;
 
-  const starRatingVotesInput = !!loggedInUser
-    ? { userId: loggedInUser.id }
+  const starRatingVotesInput = !!currentUser
+    ? { userId: currentUser.id }
     : null;
 
   const {
@@ -77,14 +79,17 @@ async function getCragBySlug(crag: string): Promise<Crag> {
     firstTrTickArInput,
     difficultyVotesInput,
     starRatingVotesInput,
-    loggedIn: !!loggedInUser,
+    loggedIn: !!currentUser,
   });
 
   return cragBySlug;
 }
 
-async function getMySummary(crag: string): Promise<ActivityRoute[]> {
-  const { loggedIn } = await authStatus();
+async function getMySummary(
+  crag: string,
+  currentUser: User | null
+): Promise<ActivityRoute[]> {
+  const loggedIn = !!currentUser;
 
   if (!loggedIn) {
     return [];
@@ -100,9 +105,11 @@ async function getMySummary(crag: string): Promise<ActivityRoute[]> {
 }
 
 async function CragPage({ params: { cragSlug } }: Props) {
+  const currentUser = await fetchCurrentUser();
+
   const [cragBySlug, myCragSummary] = await Promise.all([
-    getCragBySlug(cragSlug),
-    getMySummary(cragSlug),
+    getCragBySlug(cragSlug, currentUser),
+    getMySummary(cragSlug, currentUser),
   ]);
 
   return (
