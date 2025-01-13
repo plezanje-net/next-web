@@ -170,7 +170,7 @@ function EditRoutesActions({
             >
               <span className="flex">
                 <IconReturn />
-                <span className="ml-2 hidden lg:block">Nazaj na sektorje</span>
+                <span className="ml-2 hidden sm:block">Nazaj na sektorje</span>
               </span>
             </Button>
           )}

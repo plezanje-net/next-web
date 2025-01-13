@@ -114,7 +114,7 @@ function EditRoutes({
   };
 
   return (
-    <>
+    <div className="2xl:container mx-auto">
       <EditRoutesActions
         allSectors={allSectors}
         sector={sector}
@@ -161,7 +161,7 @@ function EditRoutes({
           </SortableContext>
         </DndContext>
       </div>
-    </>
+    </div>
   );
 }
 

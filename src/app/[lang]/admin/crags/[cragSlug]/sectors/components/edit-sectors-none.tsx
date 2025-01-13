@@ -26,12 +26,14 @@ function EditSectorsNone({ dummySector }: TEditSectorsNoneProps) {
   return (
     <>
       {/* Actions row */}
-      <div className="w-full flex justify-between flex-wrap gap-4 h-16 items-center">
-        <Checkbox
-          label="Plezališče ima več sektorjev"
-          checked={false}
-          onChange={() => setConvertToSectorsManyDialogIsOpen(true)}
-        />
+      <div className="w-full flex justify-between flex-wrap gap-4 items-center py-4">
+        <div className="py-1">
+          <Checkbox
+            label="Plezališče ima več sektorjev"
+            checked={false}
+            onChange={() => setConvertToSectorsManyDialogIsOpen(true)}
+          />
+        </div>
 
         <Button
           variant="quaternary"

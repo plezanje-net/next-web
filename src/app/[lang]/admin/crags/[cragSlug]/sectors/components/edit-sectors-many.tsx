@@ -121,7 +121,7 @@ function EditSectorsMany({
   return (
     <>
       {/* Actions row */}
-      <div className="h-16 flex items-center">
+      <div className="py-5 flex items-center">
         <Checkbox
           label="Plezališče ima več sektorjev"
           checked={true}

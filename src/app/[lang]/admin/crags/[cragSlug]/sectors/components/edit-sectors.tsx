@@ -20,7 +20,7 @@ function EditSectors({
     !!crag.sectors[0]?.label;
 
   return (
-    <div className="px-4 xs:px-8">
+    <div className="px-4 xs:px-8 2xl:container mx-auto">
       {cragHasSectors ? (
         <EditSectorsMany
           sectors={crag.sectors}
