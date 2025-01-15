@@ -1,6 +1,5 @@
 import { registerUrql } from "@urql/next/rsc";
 import { cacheExchange, createClient, fetchExchange } from "@urql/core";
-import { cookies } from "next/headers";
 import getAuthToken from "@/utils/auth/auth-token";
 
 const makeClient = () => {
