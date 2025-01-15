@@ -42,8 +42,7 @@ function Header() {
     setMenuOpened(!menuOpened);
   };
 
-  const { currentUser } = useAuthContext();
-  const loggedIn = currentUser !== null;
+  const { currentUser, loggedIn } = useAuthContext();
 
   const userFullName = currentUser?.fullName;
   const userFullNameShort = [

@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext } from "react";
 
 type TAuthContext = {
   currentUser: User | null;
+  loggedIn: boolean;
 };
 
 const AuthContext = createContext<TAuthContext | undefined>(undefined);
@@ -15,8 +16,10 @@ type TAuthProviderProps = {
 };
 
 function AuthProvider({ children, currentUser }: TAuthProviderProps) {
+  const loggedIn = currentUser !== null;
+
   return (
-    <AuthContext.Provider value={{ currentUser }}>
+    <AuthContext.Provider value={{ currentUser, loggedIn }}>
       {children}
     </AuthContext.Provider>
   );

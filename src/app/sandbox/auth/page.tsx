@@ -5,8 +5,7 @@ import LogoutButton from "./_components/logout-button";
 import { useAuthContext } from "../../components/auth-context";
 
 function AuthPage() {
-  const { currentUser } = useAuthContext();
-  const loggedIn = currentUser !== null;
+  const { loggedIn } = useAuthContext();
 
   if (loggedIn) {
     return <LogoutButton />;
