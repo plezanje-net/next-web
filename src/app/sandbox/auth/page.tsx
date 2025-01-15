@@ -1,9 +1,12 @@
-import authStatus from "@/utils/auth/auth-status";
+"use client";
+
 import LoginForm from "./_components/login-form";
 import LogoutButton from "./_components/logout-button";
+import { useAuthContext } from "../../components/auth-context";
 
-async function Auth() {
-  const { loggedIn } = await authStatus();
+function AuthPage() {
+  const { loggedIn } = useAuthContext();
+
   if (loggedIn) {
     return <LogoutButton />;
   }
@@ -11,4 +14,4 @@ async function Auth() {
   return <LoginForm />;
 }
 
-export default Auth;
+export default AuthPage;
