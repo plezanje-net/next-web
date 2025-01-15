@@ -49,12 +49,10 @@ async function RootLayout({ children }: RootLayoutProps) {
       </Head>
 
       <body className={`text-neutral-900 ${poppins.className}`}>
-        <ClientProviders>
-          <AuthProvider currentUser={await getCurrentUser()}>
-            <Header />
-            <main>{children}</main>
-          </AuthProvider>
-        </ClientProviders>
+        <AuthProvider currentUser={await getCurrentUser()}>
+          <Header />
+          <main>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );
