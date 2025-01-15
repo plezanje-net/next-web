@@ -3,15 +3,13 @@
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconRoutes from "@/components/ui/icons/routes";
-import { Sector, User } from "@/graphql/generated";
+import { Sector } from "@/graphql/generated";
 import { usePathname, useRouter } from "next/navigation";
 import ConvertToSectorsManyDialog from "./convert-to-sectors-many-dialog";
 import { useState } from "react";
 
 type TEditSectorsNoneProps = {
   dummySector: Sector;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
 function EditSectorsNone({ dummySector }: TEditSectorsNoneProps) {

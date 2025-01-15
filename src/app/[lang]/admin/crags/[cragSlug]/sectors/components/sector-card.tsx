@@ -6,13 +6,14 @@ import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
-import { Sector, User } from "@/graphql/generated";
+import { Sector } from "@/graphql/generated";
 import { genderizeVerb } from "@/utils/text-helpers";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { usePathname, useRouter } from "next/navigation";
 import PublishStatusActions from "../../../components/publish-status-actions";
 import { labelAndNameToString } from "@/utils/sector-helpers";
+import { useAuthContext } from "../../../../../../components/auth-context";
 
 type TSectorCardProps = {
   sector: Sector;
@@ -20,8 +21,6 @@ type TSectorCardProps = {
   onAddClick: () => void;
   onEditClick: () => void;
   onDeleteClick: () => void;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
 function SectorCard({
@@ -30,9 +29,9 @@ function SectorCard({
   onAddClick,
   onEditClick,
   onDeleteClick,
-  loggedInUserIsEditor,
-  loggedInUser,
 }: TSectorCardProps) {
+  const { currentUser } = useAuthContext();
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -167,7 +166,7 @@ function SectorCard({
         <div className="flex justify-between items-center border-t border-neutral-200 px-4 py-2">
           {/* contributor */}
           <div className="flex text-neutral-500 @md:ml-12 py-1">
-            {loggedInUser && loggedInUser.id === sector.user?.id ? (
+            {currentUser && currentUser.id === sector.user?.id ? (
               "Tvoj prispevek"
             ) : (
               <>
@@ -183,7 +182,6 @@ function SectorCard({
           <PublishStatusActions
             contributable={sector}
             disabled={disabled || false}
-            loggedInUserIsEditor={loggedInUserIsEditor}
           />
         </div>
       )}

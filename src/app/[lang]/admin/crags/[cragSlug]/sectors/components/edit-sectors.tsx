@@ -1,18 +1,12 @@
-import { Crag, User } from "@/graphql/generated";
+import { Crag } from "@/graphql/generated";
 import EditSectorsNone from "./edit-sectors-none";
 import EditSectorsMany from "./edit-sectors-many";
 
 type TEditCragSectorsProps = {
   crag: Crag;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
-function EditSectors({
-  crag,
-  loggedInUser,
-  loggedInUserIsEditor,
-}: TEditCragSectorsProps) {
+function EditSectors({ crag }: TEditCragSectorsProps) {
   // Dep: crag.label is deprecated. remove it's use after api is updated and labels migrated into name
   const cragHasSectors =
     crag.sectors.length > 1 ||
@@ -22,18 +16,9 @@ function EditSectors({
   return (
     <div className="px-4 xs:px-8 2xl:container mx-auto">
       {cragHasSectors ? (
-        <EditSectorsMany
-          sectors={crag.sectors}
-          cragId={crag.id}
-          loggedInUserIsEditor={loggedInUserIsEditor}
-          loggedInUser={loggedInUser}
-        />
+        <EditSectorsMany sectors={crag.sectors} cragId={crag.id} />
       ) : (
-        <EditSectorsNone
-          dummySector={crag.sectors[0]}
-          loggedInUserIsEditor={loggedInUserIsEditor}
-          loggedInUser={loggedInUser}
-        />
+        <EditSectorsNone dummySector={crag.sectors[0]} />
       )}
     </div>
   );

@@ -1,18 +1,15 @@
-import { Crag, User } from "@/graphql/generated";
+import { Crag } from "@/graphql/generated";
 import PublishStatusActions from "../../../components/publish-status-actions";
 import { genderizeVerb } from "@/utils/text-helpers";
+import getCurrentUser from "@/utils/auth/get-current-user";
 
 type TCragPublishStatusCard = {
   crag: Crag;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
-function CragPublishStatusCard({
-  crag,
-  loggedInUserIsEditor,
-  loggedInUser,
-}: TCragPublishStatusCard) {
+async function CragPublishStatusCard({ crag }: TCragPublishStatusCard) {
+  const currentUser = await getCurrentUser();
+
   // TODO: export to helper
   let publishStatusBgStyle;
   switch (crag.publishStatus) {
@@ -33,7 +30,7 @@ function CragPublishStatusCard({
         className={`@container max-w-2xl w-full mx-auto rounded-lg ${publishStatusBgStyle}`}
       >
         <div className="px-4 py-3">
-          {loggedInUserIsEditor ? (
+          {currentUser?.roles.includes("admin") ? (
             <>
               {crag.publishStatus === "draft" && (
                 <>
@@ -76,7 +73,7 @@ function CragPublishStatusCard({
         <div className="px-4 py-2 border-t border-neutral-200 flex justify-between items-center">
           {/* contributor */}
           <div className="flex text-neutral-500 py-1">
-            {loggedInUser && loggedInUser.id === crag.user?.id ? (
+            {currentUser && currentUser.id === crag.user?.id ? (
               "Tvoj prispevek"
             ) : (
               <>
@@ -88,11 +85,7 @@ function CragPublishStatusCard({
             )}
           </div>
 
-          <PublishStatusActions
-            contributable={crag}
-            loggedInUserIsEditor={loggedInUserIsEditor}
-            disabled={false}
-          />
+          <PublishStatusActions contributable={crag} disabled={false} />
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ import DeleteRoutesDialog from "./delete-routes-dialog";
 import IconMergeRoutes from "@/components/ui/icons/merge-routes";
 import MergeRoutesDialog from "./merge-routes-dialog";
 import ConvertToSectorsManyDialog from "../../../components/convert-to-sectors-many-dialog";
+import { useAuthContext } from "../../../../../../../../components/auth-context";
 
 type TEditRoutesActionsProps = {
   cragSlug: string;
@@ -22,7 +23,6 @@ type TEditRoutesActionsProps = {
   allSectors: Sector[];
   allRoutes: Route[];
   onCheckAll: () => void;
-  loggedInUserIsEditor: boolean;
 };
 
 function EditRoutesActions({
@@ -32,8 +32,9 @@ function EditRoutesActions({
   checkedRoutes,
   allRoutes,
   onCheckAll,
-  loggedInUserIsEditor,
 }: TEditRoutesActionsProps) {
+  const { currentUser } = useAuthContext();
+
   const router = useRouter();
 
   const [moveRoutesDialogIsOpen, setMoveRoutesDialogIsOpen] = useState(false);
@@ -70,7 +71,8 @@ function EditRoutesActions({
               checkedRoutes.length <
               allRoutes.filter(
                 (route) =>
-                  loggedInUserIsEditor || route.publishStatus === "draft"
+                  currentUser?.roles.includes("admin") ||
+                  route.publishStatus === "draft"
               ).length
             }
             onChange={onCheckAll}

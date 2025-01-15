@@ -9,18 +9,19 @@ import IconClose from "@/components/ui/icons/close";
 import PublishDialog from "./publish-dialog";
 import SuggestPublishDialog from "./suggest-publish-dialog";
 import RejectDialog from "./reject-dialog";
+import { useAuthContext } from "../../../../components/auth-context";
 
 type TPublishStatusActionsProps = {
   contributable: Route | Sector | Crag;
-  loggedInUserIsEditor: boolean;
   disabled: boolean;
 };
 
 function PublishStatusActions({
   contributable,
-  loggedInUserIsEditor,
   disabled,
 }: TPublishStatusActionsProps) {
+  const { currentUser } = useAuthContext();
+
   const [publishDialogIsOpen, setPublishDialogIsOpen] = useState(false);
   const [suggestPublishDialogIsOpen, setSuggestPublishDialogIsOpen] =
     useState(false);
@@ -68,7 +69,7 @@ function PublishStatusActions({
 
   return (
     <div className="flex items-center ml-4">
-      {loggedInUserIsEditor ? (
+      {currentUser?.roles.includes("admin") ? (
         <>
           {/* editor user */}
           {contributable.publishStatus === "draft" && (

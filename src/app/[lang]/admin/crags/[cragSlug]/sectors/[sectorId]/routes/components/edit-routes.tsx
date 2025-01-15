@@ -1,6 +1,6 @@
 "use client";
 
-import { Route, Sector, User } from "@/graphql/generated";
+import { Route, Sector } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card/route-card";
 import { useRouter } from "next/navigation";
@@ -23,14 +23,13 @@ import {
 import updateRouteAction from "../server-actions/update-route-action";
 import EditRoutesActions from "./edit-routes-actions";
 import NewFirstRouteButton from "./new-first-route-button";
+import { useAuthContext } from "../../../../../../../../components/auth-context";
 
 type TEditRoutesProps = {
   routes: Route[];
   cragSlug: string;
   sector: Sector;
   allSectors: Sector[];
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
 function EditRoutes({
@@ -38,9 +37,9 @@ function EditRoutes({
   cragSlug,
   sector,
   allSectors,
-  loggedInUserIsEditor,
-  loggedInUser,
 }: TEditRoutesProps) {
+  const { currentUser } = useAuthContext();
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +61,9 @@ function EditRoutes({
     if (
       checkedRouteIds.length ===
       sortedRoutes.filter(
-        (route) => loggedInUserIsEditor || route.publishStatus === "draft"
+        (route) =>
+          currentUser?.roles.includes("admin") ||
+          route.publishStatus === "draft"
       ).length
     ) {
       setCheckedRouteIds([]);
@@ -70,7 +71,9 @@ function EditRoutes({
       setCheckedRouteIds(
         sortedRoutes
           .filter(
-            (route) => loggedInUserIsEditor || route.publishStatus === "draft"
+            (route) =>
+              currentUser?.roles.includes("admin") ||
+              route.publishStatus === "draft"
           )
           .map((route) => route.id)
       );
@@ -124,7 +127,6 @@ function EditRoutes({
         )}
         allRoutes={sortedRoutes}
         onCheckAll={handleCheckAll}
-        loggedInUserIsEditor={loggedInUserIsEditor}
       />
 
       <div className="px-4 xs:px-8 relative">
@@ -152,8 +154,6 @@ function EditRoutes({
                     disabled={loading}
                     checked={checkedRouteIds.includes(route.id)}
                     onCheckedChange={handleOnCheckedChange}
-                    loggedInUserIsEditor={loggedInUserIsEditor}
-                    loggedInUser={loggedInUser}
                   />
                 </Fragment>
               ))}

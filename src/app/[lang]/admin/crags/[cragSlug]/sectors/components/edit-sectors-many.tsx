@@ -1,7 +1,7 @@
 "use client";
 
 import Checkbox from "@/components/ui/checkbox";
-import { Sector, User } from "@/graphql/generated";
+import { Sector } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { Fragment, useEffect, useState } from "react";
 import SectorDialog from "./sector-dialog";
@@ -30,16 +30,9 @@ import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 type TEditCragSectorsManyProps = {
   sectors: Sector[];
   cragId: string;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
-function EditSectorsMany({
-  sectors,
-  cragId,
-  loggedInUser,
-  loggedInUserIsEditor,
-}: TEditCragSectorsManyProps) {
+function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -153,8 +146,6 @@ function EditSectorsMany({
                   onEditClick={() => handleEditSectorClick(sector)}
                   onAddClick={() => handleAddSectorClick(sector.position + 1)}
                   onDeleteClick={() => handleDeleteSectorClick(sector)}
-                  loggedInUserIsEditor={loggedInUserIsEditor}
-                  loggedInUser={loggedInUser}
                 />
               </Fragment>
             ))}

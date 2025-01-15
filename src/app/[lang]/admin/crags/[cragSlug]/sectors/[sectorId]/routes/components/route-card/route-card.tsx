@@ -6,7 +6,7 @@ import IconDelete from "@/components/ui/icons/delete";
 import IconDrag from "@/components/ui/icons/drag";
 import IconEdit from "@/components/ui/icons/edit";
 import IconPlus from "@/components/ui/icons/plus";
-import { Route, User } from "@/graphql/generated";
+import { Route } from "@/graphql/generated";
 import { difficultyToGrade } from "@/utils/grade-helpers";
 import { useState } from "react";
 import RouteDialog from "./route-dialog";
@@ -15,6 +15,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { genderizeVerb } from "@/utils/text-helpers";
 import PublishStatusActions from "../../../../../../components/publish-status-actions";
+import { useAuthContext } from "../../../../../../../../../components/auth-context";
 
 type TRouteCardProps = {
   route: Route;
@@ -22,8 +23,6 @@ type TRouteCardProps = {
   checked: boolean;
   onCheckedChange: (checked: boolean, routeId: string) => void;
   disabled: boolean;
-  loggedInUserIsEditor: boolean;
-  loggedInUser: User | undefined;
 };
 
 function RouteCard({
@@ -32,9 +31,9 @@ function RouteCard({
   checked,
   onCheckedChange,
   disabled,
-  loggedInUserIsEditor,
-  loggedInUser,
 }: TRouteCardProps) {
+  const { currentUser } = useAuthContext();
+
   const grade = difficultyToGrade(
     route.difficulty || null,
     route.defaultGradingSystem.id
@@ -87,11 +86,17 @@ function RouteCard({
             {/* drag handle */}
             <div
               {...(disabled ||
-              !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              !actionPermitted(
+                !!currentUser?.roles.includes("admin"),
+                route.publishStatus
+              )
                 ? {}
                 : attributes)}
               {...(disabled ||
-              !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+              !actionPermitted(
+                !!currentUser?.roles.includes("admin"),
+                route.publishStatus
+              )
                 ? {}
                 : listeners)}
               tabIndex={-1}
@@ -99,7 +104,10 @@ function RouteCard({
               <Button
                 disabled={
                   disabled ||
-                  !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+                  !actionPermitted(
+                    !!currentUser?.roles.includes("admin"),
+                    route.publishStatus
+                  )
                 }
                 variant="quaternary"
               >
@@ -115,7 +123,10 @@ function RouteCard({
                 onChange={(checked) => onCheckedChange(checked, route.id)}
                 disabled={
                   disabled ||
-                  !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+                  !actionPermitted(
+                    !!currentUser?.roles.includes("admin"),
+                    route.publishStatus
+                  )
                 }
               />
             </div>
@@ -136,7 +147,10 @@ function RouteCard({
               variant="quaternary"
               disabled={
                 disabled ||
-                !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+                !actionPermitted(
+                  !!currentUser?.roles.includes("admin"),
+                  route.publishStatus
+                )
               }
               onClick={() => setEditRouteDialogIsOpen(true)}
             >
@@ -151,7 +165,10 @@ function RouteCard({
               variant="quaternary"
               disabled={
                 disabled ||
-                !actionPermitted(loggedInUserIsEditor, route.publishStatus)
+                !actionPermitted(
+                  !!currentUser?.roles.includes("admin"),
+                  route.publishStatus
+                )
               }
               onClick={() => {
                 setDeleteRouteDialogIsOpen(true);
@@ -180,7 +197,7 @@ function RouteCard({
         {route.publishStatus !== "published" && (
           <div className="flex justify-between border-t border-neutral-200 px-4 py-2 items-center h-12">
             <div className="flex text-neutral-500 @lg:ml-20">
-              {loggedInUser && loggedInUser.id === route.user?.id ? (
+              {currentUser && currentUser.id === route.user?.id ? (
                 "Tvoj prispevek"
               ) : (
                 <>
@@ -193,11 +210,7 @@ function RouteCard({
             </div>
 
             {/* publish status actions */}
-            <PublishStatusActions
-              contributable={route}
-              loggedInUserIsEditor={loggedInUserIsEditor}
-              disabled={disabled}
-            />
+            <PublishStatusActions contributable={route} disabled={disabled} />
           </div>
         )}
       </div>

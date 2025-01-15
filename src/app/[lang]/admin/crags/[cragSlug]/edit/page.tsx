@@ -10,7 +10,6 @@ import {
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditCragForm from "./components/edit-crag-form";
-import authStatus from "@/utils/auth/auth-status";
 import CragPublishStatusCard from "./components/crag-publish-status-card";
 
 type TEditCragPageProps = {
@@ -18,9 +17,6 @@ type TEditCragPageProps = {
 };
 
 async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
-  const { user: loggedInUser } = await authStatus();
-  const loggedInUserIsEditor = !!loggedInUser?.roles.includes("admin");
-
   const countriesDataPromise = urqlServer().query(
     EditCragPageCountriesDocument,
     {}
@@ -70,11 +66,7 @@ async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
       />
 
       {crag.publishStatus !== "published" && (
-        <CragPublishStatusCard
-          crag={crag}
-          loggedInUserIsEditor={loggedInUserIsEditor}
-          loggedInUser={loggedInUser}
-        />
+        <CragPublishStatusCard crag={crag} />
       )}
 
       <EditCragForm countriesWithAreas={countriesData.countries} crag={crag} />
