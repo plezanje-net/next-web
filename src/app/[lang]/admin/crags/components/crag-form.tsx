@@ -126,6 +126,23 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
   );
   const [isHidden, setIsHidden] = useState(defaultValues.isHidden);
 
+  const formDirty =
+    defaultValues.approachDescription !== approachDescription ||
+    defaultValues.approachTime !== approachTime ||
+    defaultValues.area !== area ||
+    defaultValues.cragCoordinates !== cragCoordinates ||
+    defaultValues.cragDescription !== cragDescription ||
+    defaultValues.cragType !== cragType ||
+    defaultValues.country !== country ||
+    defaultValues.gradingSystem !== gradingSystem ||
+    defaultValues.isHidden !== isHidden ||
+    defaultValues.name !== name ||
+    defaultValues.orientations.toString() !== orientations.toString() ||
+    defaultValues.parkingCoordinates !== parkingCoordinates ||
+    defaultValues.rainproof !== rainproof ||
+    defaultValues.seasons.toString() !== seasons.toString() ||
+    defaultValues.wallAngles.toString() !== wallAngles.toString();
+
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -547,10 +564,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
             <div className="h-px bg-neutral-200 col-span-2"></div>
 
             <div className="col-span-2 text-right flex flex-wrap justify-end gap-4">
-              <Button variant="secondary" disabled={loading}>
-                Prekliči
-              </Button>
-              <Button type="submit" loading={loading}>
+              <Button type="submit" loading={loading} disabled={!formDirty}>
                 Shrani
               </Button>
             </div>
