@@ -4,8 +4,8 @@ import Header from "./components/header";
 import { Poppins } from "next/font/google";
 import ClientProviders from "./components/client-providers";
 import { AuthProvider } from "./components/auth-context";
-import fetchCurrentUser from "../utils/auth/fetch-current-user";
 import { ReactNode } from "react";
+import getCurrentUser from "../utils/auth/get-current-user";
 
 const poppins = Poppins({
   weight: ["400", "500"],
@@ -50,7 +50,7 @@ async function RootLayout({ children }: RootLayoutProps) {
 
       <body className={`text-neutral-900 ${poppins.className}`}>
         <ClientProviders>
-          <AuthProvider currentUser={await fetchCurrentUser()}>
+          <AuthProvider currentUser={await getCurrentUser()}>
             <Header />
             <main>{children}</main>
           </AuthProvider>

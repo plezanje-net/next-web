@@ -10,7 +10,7 @@ import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
 import tickAscentTypes from "@/utils/constants/tick-ascent-types";
 import trTickAscentTypes from "@/utils/constants/tr-tick-ascent-types";
-import fetchCurrentUser from "@/utils/auth/fetch-current-user";
+import getCurrentUser from "@/utils/auth/get-current-user";
 
 type Params = {
   cragSlug: string;
@@ -105,7 +105,7 @@ async function getMySummary(
 }
 
 async function CragPage({ params: { cragSlug } }: Props) {
-  const currentUser = await fetchCurrentUser();
+  const currentUser = await getCurrentUser();
 
   const [cragBySlug, myCragSummary] = await Promise.all([
     getCragBySlug(cragSlug, currentUser),

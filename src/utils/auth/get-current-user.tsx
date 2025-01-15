@@ -2,7 +2,7 @@ import { gql } from "urql/core";
 import urqlServer from "@/graphql/urql-server";
 import { AuthContextProfileDocument } from "@/graphql/generated";
 
-async function fetchCurrentUser() {
+async function getCurrentUser() {
   const result = await urqlServer().query(AuthContextProfileDocument);
 
   if (result.error) {
@@ -20,7 +20,7 @@ async function fetchCurrentUser() {
   return result.data.profile;
 }
 
-export default fetchCurrentUser;
+export default getCurrentUser;
 
 gql`
   query AuthContextProfile {
