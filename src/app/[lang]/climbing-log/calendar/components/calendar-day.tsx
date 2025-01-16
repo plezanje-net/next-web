@@ -17,7 +17,7 @@ export type TCalendarDayProps = {
 
 function CalendarDay({ day }: TCalendarDayProps) {
   return (
-    <Link href={`/plezalni-dnevnik/koledar/${day.date}`} className={`p-2 lg:p-4 min-h-[calc((100vw-32px)/7*1.5)] lg:min-h-[calc((100vw-32px)/7)] flex flex-col lg:gap-4${day.isCurrentMonth ? " cursor-pointer" : ""} border-neutral-200${day.borderClass}`}>
+    <Link href={`/plezalni-dnevnik/koledar/${day.date}`} className={`p-2 lg:p-4 min-h-[calc((100vw-32px)/7*1.5)] lg:min-h-[calc((100vw-32px)/7)] xl:min-h-[210px] flex flex-col lg:gap-4${day.isCurrentMonth ? " cursor-pointer" : ""} border-neutral-200${day.borderClass}`}>
       <div
         className={`text-center lg:text-right${!day.isCurrentMonth ? " text-neutral-400" : ""}${day.isToday ? " text-blue-400" : ""}`}
       >

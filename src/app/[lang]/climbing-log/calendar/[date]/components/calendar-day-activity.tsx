@@ -1,6 +1,7 @@
 import AscentType from "@/components/ascent-type";
 import Grade from "@/components/grade";
 import Button from "@/components/ui/button";
+import IconDot from "@/components/ui/icons/dot";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { Activity } from "@/graphql/generated";
@@ -22,10 +23,8 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
     <div
       className={`border-t border-neutral-200 flex gap-2 ${activity.type === "crag" ? "py-3" : "py-5"}`}
     >
-      <div className="w-6 h-8 flex items-center justify-center">
-        <div
-          className={`w-3.5 h-3.5 bg-${activityType.color} rounded-full`}
-        ></div>
+      <div className={`text-${activityType.color} pt-1`}>
+        <IconDot size={IconSize.regular} />
       </div>
       <div className="grow">
         <div className="flex items-center">

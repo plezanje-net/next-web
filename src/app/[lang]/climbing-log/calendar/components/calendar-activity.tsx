@@ -1,4 +1,6 @@
 import Grade from "@/components/grade";
+import IconDot from "@/components/ui/icons/dot";
+import { IconSize } from "@/components/ui/icons/icon-size";
 import { Activity, ActivityRoute, Route } from "@/graphql/generated";
 import activityTypes from "@/utils/constants/activity-types";
 import { useMemo } from "react";
@@ -29,8 +31,8 @@ function CalendarActivity({ activity }: TCalendarActivityProps) {
 
   return (
     <div className="flex">
-      <div className="w-3 h-3 flex items-center justify-center lg:w-5 lg:h-5">
-        <div className={`w-2.5 h-2.5 bg-${activityType.color} rounded-full`}></div>
+      <div className={`w-3 h-3 pt-0.5 flex items-center justify-center lg:w-5 lg:h-5 text-${activityType.color}`}>
+        <IconDot size={IconSize.small} />
       </div>
       <div className="hidden lg:block">
         <div>{activityType.label}</div>
