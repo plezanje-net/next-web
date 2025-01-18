@@ -211,7 +211,6 @@ function EditRoutesActions({
       <ConvertToSectorsManyDialog
         isOpen={convertToSectorsManyDialogIsOpen}
         setIsOpen={setConvertToSectorsManyDialogIsOpen}
-        dummySector={sector}
         crag={crag}
       />
     </>
