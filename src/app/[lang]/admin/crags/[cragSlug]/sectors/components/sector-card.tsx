@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import PublishStatusActions from "../../../components/publish-status-actions";
 import { labelAndNameToString } from "@/utils/sector-helpers";
 import { useAuthContext } from "../../../../../../components/auth-context";
+import { canEdit } from "@/utils/contributables-helpers";
 
 type TSectorCardProps = {
   sector: Sector;
@@ -83,13 +84,13 @@ function SectorCard({
         <div className="flex justify-between items-center px-4 py-5">
           <div className="flex items-center">
             <div
-              {...(disabled ? {} : attributes)}
-              {...(disabled ? {} : listeners)}
+              {...(disabled || !canEdit(currentUser, sector) ? {} : attributes)}
+              {...(disabled || !canEdit(currentUser, sector) ? {} : listeners)}
               tabIndex={-1}
               className="outline-none"
             >
               <Button
-                disabled={disabled}
+                disabled={disabled || !canEdit(currentUser, sector)}
                 variant="quaternary"
                 onClick={() => {}}
               >
@@ -128,7 +129,7 @@ function SectorCard({
             {/* edit */}
             <Button
               variant="quaternary"
-              disabled={disabled}
+              disabled={disabled || !canEdit(currentUser, sector)}
               onClick={onEditClick}
             >
               <IconEdit />
@@ -140,7 +141,7 @@ function SectorCard({
             {/* delete */}
             <Button
               variant="quaternary"
-              disabled={disabled}
+              disabled={disabled || !canEdit(currentUser, sector)}
               onClick={onDeleteClick}
             >
               <IconDelete />

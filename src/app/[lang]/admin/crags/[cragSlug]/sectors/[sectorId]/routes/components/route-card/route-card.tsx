@@ -16,6 +16,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { genderizeVerb } from "@/utils/text-helpers";
 import PublishStatusActions from "../../../../../../components/publish-status-actions";
 import { useAuthContext } from "../../../../../../../../../components/auth-context";
+import { canEdit } from "@/utils/contributables-helpers";
 
 type TRouteCardProps = {
   route: Route;
@@ -85,30 +86,12 @@ function RouteCard({
           <div className="flex items-center flex-1 py-2 px-4">
             {/* drag handle */}
             <div
-              {...(disabled ||
-              !actionPermitted(
-                !!currentUser?.roles.includes("admin"),
-                route.publishStatus
-              )
-                ? {}
-                : attributes)}
-              {...(disabled ||
-              !actionPermitted(
-                !!currentUser?.roles.includes("admin"),
-                route.publishStatus
-              )
-                ? {}
-                : listeners)}
+              {...(disabled || !canEdit(currentUser, route) ? {} : attributes)}
+              {...(disabled || !canEdit(currentUser, route) ? {} : listeners)}
               tabIndex={-1}
             >
               <Button
-                disabled={
-                  disabled ||
-                  !actionPermitted(
-                    !!currentUser?.roles.includes("admin"),
-                    route.publishStatus
-                  )
-                }
+                disabled={disabled || !canEdit(currentUser, route)}
                 variant="quaternary"
               >
                 <IconDrag />
@@ -121,13 +104,7 @@ function RouteCard({
                 hideLabel
                 checked={checked}
                 onChange={(checked) => onCheckedChange(checked, route.id)}
-                disabled={
-                  disabled ||
-                  !actionPermitted(
-                    !!currentUser?.roles.includes("admin"),
-                    route.publishStatus
-                  )
-                }
+                disabled={disabled || !canEdit(currentUser, route)}
               />
             </div>
             {/* route name */}
@@ -145,13 +122,7 @@ function RouteCard({
             {/* edit */}
             <Button
               variant="quaternary"
-              disabled={
-                disabled ||
-                !actionPermitted(
-                  !!currentUser?.roles.includes("admin"),
-                  route.publishStatus
-                )
-              }
+              disabled={disabled || !canEdit(currentUser, route)}
               onClick={() => setEditRouteDialogIsOpen(true)}
             >
               <IconEdit />
@@ -163,13 +134,7 @@ function RouteCard({
             {/* delete */}
             <Button
               variant="quaternary"
-              disabled={
-                disabled ||
-                !actionPermitted(
-                  !!currentUser?.roles.includes("admin"),
-                  route.publishStatus
-                )
-              }
+              disabled={disabled || !canEdit(currentUser, route)}
               onClick={() => {
                 setDeleteRouteDialogIsOpen(true);
               }}
@@ -240,10 +205,3 @@ function RouteCard({
 }
 
 export default RouteCard;
-
-function actionPermitted(
-  loggedInUserIsEditor: boolean,
-  routePublishStatus: string
-) {
-  return loggedInUserIsEditor || routePublishStatus === "draft";
-}

@@ -15,6 +15,7 @@ import IconMergeRoutes from "@/components/ui/icons/merge-routes";
 import MergeRoutesDialog from "./merge-routes-dialog";
 import ConvertToSectorsManyDialog from "../../../components/convert-to-sectors-many-dialog";
 import { useAuthContext } from "../../../../../../../../components/auth-context";
+import { canEdit } from "@/utils/contributables-helpers";
 
 type TEditRoutesActionsProps = {
   crag: Crag;
@@ -66,6 +67,10 @@ function EditRoutesActions({
         {/* check all */}
         <div className="flex items-center">
           <Checkbox
+            disabled={
+              !currentUser?.roles.includes("admin") &&
+              !allRoutes.some((route) => route.publishStatus === "draft")
+            }
             checked={checkedRoutes.length > 0}
             indeterminate={
               checkedRoutes.length <
@@ -159,6 +164,7 @@ function EditRoutesActions({
         <div>
           {noSectorsCrag ? (
             <Checkbox
+              disabled={!canEdit(currentUser, crag)}
               label="Plezališče ima več sektorjev"
               checked={false}
               onChange={() => setConvertToSectorsManyDialogIsOpen(true)}

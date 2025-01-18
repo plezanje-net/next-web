@@ -3,17 +3,21 @@
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconRoutes from "@/components/ui/icons/routes";
-import { Crag, Sector } from "@/graphql/generated";
+import { Crag } from "@/graphql/generated";
 import { usePathname, useRouter } from "next/navigation";
 import ConvertToSectorsManyDialog from "./convert-to-sectors-many-dialog";
 import { useState } from "react";
 import createSectorAction from "../server-actions/create-sector-action";
+import { useAuthContext } from "../../../../../../components/auth-context";
+import { canEdit } from "@/utils/contributables-helpers";
 
 type TEditSectorsNoneProps = {
   crag: Crag;
 };
 
 function EditSectorsNone({ crag }: TEditSectorsNoneProps) {
+  const { currentUser } = useAuthContext();
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -48,6 +52,7 @@ function EditSectorsNone({ crag }: TEditSectorsNoneProps) {
       <div className="w-full flex justify-between flex-wrap gap-4 items-center py-4">
         <div className="py-1">
           <Checkbox
+            disabled={!canEdit(currentUser, crag)}
             label="Plezališče ima več sektorjev"
             checked={false}
             onChange={() => setConvertToSectorsManyDialogIsOpen(true)}

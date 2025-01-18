@@ -26,12 +26,16 @@ import updateSectorAction from "../server-actions/update-sector-action";
 import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
+import { useAuthContext } from "../../../../../../components/auth-context";
+import { canEdit } from "@/utils/contributables-helpers";
 
 type TEditSectorsManyProps = {
   crag: Crag;
 };
 
 function EditSectorsMany({ crag }: TEditSectorsManyProps) {
+  const { currentUser } = useAuthContext();
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -117,7 +121,7 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
         <Checkbox
           label="Plezališče ima več sektorjev"
           checked={true}
-          disabled={loading}
+          disabled={loading || !canEdit(currentUser, crag)}
           onChange={() => setConvertToSectorsNoneDialogIsOpen(true)}
         />
       </div>
