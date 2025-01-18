@@ -64,26 +64,36 @@ function EditRoutesActions({
       <div
         className={`px-4 xs:px-8 flex items-center justify-between top-0 sticky h-16 bg-white ${sticky ? "shadow-lg z-10" : ""}`}
       >
-        {/* check all */}
         <div className="flex items-center">
-          <Checkbox
-            disabled={
-              !currentUser?.roles.includes("admin") &&
-              !allRoutes.some((route) => route.publishStatus === "draft")
-            }
-            checked={checkedRoutes.length > 0}
-            indeterminate={
-              checkedRoutes.length <
-              allRoutes.filter(
-                (route) =>
-                  currentUser?.roles.includes("admin") ||
-                  route.publishStatus === "draft"
-              ).length
-            }
-            onChange={onCheckAll}
-            label="Označi vse"
-            hideLabel="max-xs:sr-only"
-          />
+          {/* check all */}
+          {allRoutes.length > 0 && (
+            <Checkbox
+              disabled={
+                !currentUser?.roles.includes("admin") &&
+                !allRoutes.some((route) => route.publishStatus === "draft")
+              }
+              checked={
+                checkedRoutes.length > 0 &&
+                checkedRoutes.length ==
+                  allRoutes.filter(
+                    (route) =>
+                      currentUser?.roles.includes("admin") ||
+                      route.publishStatus === "draft"
+                  ).length
+              }
+              indeterminate={
+                checkedRoutes.length <
+                  allRoutes.filter(
+                    (route) =>
+                      currentUser?.roles.includes("admin") ||
+                      route.publishStatus === "draft"
+                  ).length && checkedRoutes.length > 0
+              }
+              onChange={onCheckAll}
+              label="Označi vse"
+              hideLabel="max-xs:sr-only"
+            />
+          )}
 
           {checkedRoutes.length > 0 && (
             <>

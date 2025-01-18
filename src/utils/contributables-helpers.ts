@@ -8,4 +8,16 @@ function canEdit(user: User | null, contributable: Route | Sector | Crag) {
   return false;
 }
 
-export { canEdit };
+function getBgStyle(publishStatus: string) {
+  switch (publishStatus) {
+    case "draft":
+      return "bg-red-25";
+    case "in_review":
+      return "bg-amber-25";
+    case "published":
+    default:
+      return "bg-neutral-100";
+  }
+}
+
+export { canEdit, getBgStyle };

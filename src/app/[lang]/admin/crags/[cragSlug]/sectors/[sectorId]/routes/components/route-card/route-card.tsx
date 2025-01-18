@@ -16,7 +16,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { genderizeVerb } from "@/utils/text-helpers";
 import PublishStatusActions from "../../../../../../components/publish-status-actions";
 import { useAuthContext } from "../../../../../../../../../components/auth-context";
-import { canEdit } from "@/utils/contributables-helpers";
+import { canEdit, getBgStyle } from "@/utils/contributables-helpers";
 
 type TRouteCardProps = {
   route: Route;
@@ -58,27 +58,13 @@ function RouteCard({
     transition,
   };
 
-  // TODO: get enums from be?
-  let publishStatusBgStyle;
-  switch (route.publishStatus) {
-    case "draft":
-      publishStatusBgStyle = "bg-red-25";
-      break;
-    case "in_review":
-      publishStatusBgStyle = "bg-amber-25";
-      break;
-    case "published":
-    default:
-      publishStatusBgStyle = "bg-neutral-100";
-  }
-
   return (
     <>
       {/* route card */}
       <div
         ref={setNodeRef}
         style={style}
-        className={`@container rounded-lg flex flex-col mt-2 ${publishStatusBgStyle} ${isDragging ? "z-50 relative shadow-lg" : ""}`}
+        className={`@container rounded-lg flex flex-col mt-2 ${getBgStyle(route.publishStatus)} ${isDragging ? "z-50 relative shadow-lg" : ""}`}
       >
         {/* first row: drag, check, name, grade, length, actions */}
         <div className="flex flex-col justify-between @3xl:flex-row">

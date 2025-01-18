@@ -14,7 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import PublishStatusActions from "../../../components/publish-status-actions";
 import { labelAndNameToString } from "@/utils/sector-helpers";
 import { useAuthContext } from "../../../../../../components/auth-context";
-import { canEdit } from "@/utils/contributables-helpers";
+import { canEdit, getBgStyle } from "@/utils/contributables-helpers";
 
 type TSectorCardProps = {
   sector: Sector;
@@ -56,27 +56,12 @@ function SectorCard({
     transition,
   };
 
-  // TODO: get enums from be?
-  // TODO: export to helper
-  let publishStatusBgStyle;
-  switch (sector.publishStatus) {
-    case "draft":
-      publishStatusBgStyle = "bg-red-25";
-      break;
-    case "in_review":
-      publishStatusBgStyle = "bg-amber-25";
-      break;
-    case "published":
-    default:
-      publishStatusBgStyle = "bg-neutral-100";
-  }
-
   return (
     // {/* sector card */}
     <div
       ref={setNodeRef}
       style={style}
-      className={`@container rounded-lg mt-2 ${publishStatusBgStyle} ${isDragging ? "z-50 relative shadow-lg" : ""}`}
+      className={`@container rounded-lg mt-2 ${getBgStyle(sector.publishStatus)} ${isDragging ? "z-50 relative shadow-lg" : ""}`}
     >
       {/* drag, name, actions */}
       <div className="flex justify-between flex-col @2xl:flex-row @2xl:items-center">
