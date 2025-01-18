@@ -1,7 +1,7 @@
 "use client";
 
 import Checkbox from "@/components/ui/checkbox";
-import { Sector } from "@/graphql/generated";
+import { Crag, Sector } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { Fragment, useEffect, useState } from "react";
 import SectorDialog from "./sector-dialog";
@@ -27,23 +27,22 @@ import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 
-type TEditCragSectorsManyProps = {
-  sectors: Sector[];
-  cragId: string;
+type TEditSectorsManyProps = {
+  crag: Crag;
 };
 
-function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
+function EditSectorsMany({ crag }: TEditSectorsManyProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const [sectorDialogType, setSectorDialogType] = useState<"new" | "edit">();
   const [sectorDialogIsOpen, setSectorDialogIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
-  const [sector, setSector] = useState<Sector>(sectors[0]);
-  const [sortedSectors, setSortedSectors] = useState(sectors);
+  const [sector, setSector] = useState<Sector>(crag.sectors[0]);
+  const [sortedSectors, setSortedSectors] = useState(crag.sectors);
   useEffect(() => {
-    setSortedSectors(sectors);
-  }, [sectors]);
+    setSortedSectors(crag.sectors);
+  }, [crag.sectors]);
 
   const handleAddSectorClick = (position: number) => {
     setSectorDialogType("new");
@@ -123,7 +122,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
         />
       </div>
 
-      <NewFirstSectorButton cragId={cragId} disabled={loading} />
+      <NewFirstSectorButton cragId={crag.id} disabled={loading} />
 
       <DndContext
         onDragEnd={handleDragEnd}
@@ -159,7 +158,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
           isOpen={sectorDialogIsOpen}
           setIsOpen={setSectorDialogIsOpen}
           position={position}
-          cragId={cragId}
+          cragId={crag.id}
         />
       ) : (
         <SectorDialog
@@ -179,7 +178,7 @@ function EditSectorsMany({ sectors, cragId }: TEditCragSectorsManyProps) {
       <ConvertToSectorsNoneDialog
         isOpen={convertToSectorsNoneDialogIsOpen}
         setIsOpen={setConvertToSectorsNoneDialogIsOpen}
-        cragId={cragId}
+        cragId={crag.id}
       />
     </>
   );

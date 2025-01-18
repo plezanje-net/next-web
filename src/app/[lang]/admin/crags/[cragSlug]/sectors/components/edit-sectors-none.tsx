@@ -10,11 +10,10 @@ import { useState } from "react";
 import createSectorAction from "../server-actions/create-sector-action";
 
 type TEditSectorsNoneProps = {
-  dummySector: Sector | null;
   crag: Crag;
 };
 
-function EditSectorsNone({ dummySector, crag }: TEditSectorsNoneProps) {
+function EditSectorsNone({ crag }: TEditSectorsNoneProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -27,19 +26,19 @@ function EditSectorsNone({ dummySector, crag }: TEditSectorsNoneProps) {
     // We have two cases here:
     // 1. Crag has no sector -> a new dummy sector has to be created. then redirect to the routes page.
     // 2. Crag has a (nameless) dummy sector -> just redirect to the routes page.
-    if (dummySector === null) {
-      const newSectorData = {
+    if (crag.sectors.length === 0) {
+      const newDummySectorData = {
         name: "",
         label: "",
         cragId: crag.id,
         position: 0,
         publishStatus: crag.publishStatus,
       };
-      const newDummySector = await createSectorAction(newSectorData);
+      const newDummySector = await createSectorAction(newDummySectorData);
 
       router.push(`${pathname}/${newDummySector.id}/smeri`);
     } else {
-      router.push(`${pathname}/${dummySector.id}/smeri`);
+      router.push(`${pathname}/${crag.sectors[0].id}/smeri`);
     }
   };
 
@@ -66,7 +65,6 @@ function EditSectorsNone({ dummySector, crag }: TEditSectorsNoneProps) {
       <ConvertToSectorsManyDialog
         isOpen={convertToSectorsManyDialogIsOpen}
         setIsOpen={setConvertToSectorsManyDialogIsOpen}
-        dummySector={dummySector}
         crag={crag}
       />
     </>

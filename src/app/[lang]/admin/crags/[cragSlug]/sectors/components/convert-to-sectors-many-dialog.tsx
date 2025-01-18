@@ -9,14 +9,12 @@ import createSectorAction from "../server-actions/create-sector-action";
 type TConvertToSectorsManyDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  dummySector: Sector | null;
   crag: Crag;
 };
 
 function ConvertToSectorsManyDialog({
   isOpen,
   setIsOpen,
-  dummySector,
   crag,
 }: TConvertToSectorsManyDialogProps) {
   const router = useRouter();
@@ -56,7 +54,7 @@ function ConvertToSectorsManyDialog({
     // We have two cases here:
     // 1. Crag has no sector -> a new sector has to be created.
     // 2. Crag has a (nameless) dummy sector -> dummy sector just needs to be renamed.
-    if (dummySector === null) {
+    if (crag.sectors.length === 0) {
       const newSectorData = {
         name: name,
         label: "",
@@ -65,13 +63,19 @@ function ConvertToSectorsManyDialog({
         publishStatus: "draft",
       };
       await createSectorAction(newSectorData);
-    } else {
+    } else if (
+      crag.sectors.length === 1 &&
+      crag.sectors[0].name === "" &&
+      crag.sectors[0].label === ""
+    ) {
       const updateSectorData = {
-        id: dummySector.id,
+        id: crag.sectors[0].id,
         name: name,
         label: "",
       };
       await updateSectorAction(updateSectorData);
+    } else {
+      throw new Error("Crag already has many sectors.");
     }
 
     // TODO: check for errors
