@@ -148,7 +148,7 @@ function RejectDialog({
             label="Razlog za zavrnitev"
             description={rejectionDescription}
             errorMessage={rejectionMessageError}
-            isDisabled={loading}
+            disabled={loading}
           />
         </div>
 

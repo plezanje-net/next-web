@@ -337,7 +337,7 @@ function RouteDialog({
             label="Opis smeri"
             value={description}
             onChange={setDescription}
-            isDisabled={loading}
+            disabled={loading}
           />
         </div>
 
