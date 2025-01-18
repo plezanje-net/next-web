@@ -73,6 +73,7 @@ gql`
       id
       slug
       name
+      publishStatus
       sectors {
         __typename
         id

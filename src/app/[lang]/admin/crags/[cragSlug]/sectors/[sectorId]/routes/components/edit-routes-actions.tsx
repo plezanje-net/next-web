@@ -1,5 +1,5 @@
 import IconMoveRoutes from "@/components/ui/icons/move-routes";
-import { Route, Sector } from "@/graphql/generated";
+import { Crag, Route, Sector } from "@/graphql/generated";
 import { useRef, useState } from "react";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
@@ -17,7 +17,7 @@ import ConvertToSectorsManyDialog from "../../../components/convert-to-sectors-m
 import { useAuthContext } from "../../../../../../../../components/auth-context";
 
 type TEditRoutesActionsProps = {
-  cragSlug: string;
+  crag: Crag;
   sector: Sector;
   checkedRoutes: Route[];
   allSectors: Sector[];
@@ -28,7 +28,7 @@ type TEditRoutesActionsProps = {
 function EditRoutesActions({
   allSectors,
   sector,
-  cragSlug,
+  crag,
   checkedRoutes,
   allRoutes,
   onCheckAll,
@@ -167,7 +167,7 @@ function EditRoutesActions({
             <Button
               variant="quaternary"
               onClick={() =>
-                router.push(`/urejanje/plezalisca/${cragSlug}/sektorji`)
+                router.push(`/urejanje/plezalisca/${crag.slug}/sektorji`)
               }
             >
               <span className="flex">
@@ -211,7 +211,8 @@ function EditRoutesActions({
       <ConvertToSectorsManyDialog
         isOpen={convertToSectorsManyDialogIsOpen}
         setIsOpen={setConvertToSectorsManyDialogIsOpen}
-        sector={sector}
+        dummySector={sector}
+        crag={crag}
       />
     </>
   );

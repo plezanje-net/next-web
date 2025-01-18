@@ -39,11 +39,27 @@ function SuggestPublishDialog({
 
     case "Crag":
       description = `Ali res želiš uredništvu predlagati objavo plezališča `;
-      cascadeText = contributable.sectors.length
-        ? contributable.sectors.some((sector) => sector.routes.length)
-          ? "Predlagaj tudi objavo vseh sektorjev in vseh smeri v tem plezališču."
-          : "Predlagaj tudi objavo vseh sektorje v tem plezališču."
-        : null;
+
+      const crag = contributable;
+      if (
+        crag.sectors.length === 1 &&
+        crag.sectors[0].name === "" &&
+        crag.sectors[0].label === ""
+      ) {
+        // crag has a dummy sector
+        if (crag.sectors[0].routes.length) {
+          cascadeText = "Predlagaj tudi objavo vseh smeri v tem plezališču.";
+        }
+      } else {
+        if (crag.sectors.length) {
+          cascadeText =
+            "Predlagaj tudi objavo vseh sektorjev v tem plezališču.";
+        }
+        if (crag.sectors.some((sector) => sector.routes.length)) {
+          cascadeText =
+            "Predlagaj tudi objavo vseh sektorjev in vseh smeri v tem plezališču.";
+        }
+      }
       break;
   }
 
@@ -67,6 +83,22 @@ function SuggestPublishDialog({
         break;
       case "Crag":
         await updateCragAction(data);
+
+        // If this is a sectorless crag, crag has a dummy sector and it's publish status also needs to be updated (despite cascadePublishStatus flag being false)
+        const crag = contributable;
+        if (
+          !cascadePublish &&
+          crag.sectors.length === 1 &&
+          crag.sectors[0].name === "" &&
+          crag.sectors[0].label === ""
+        ) {
+          const updateSectorData = {
+            id: crag.sectors[0].id,
+            publishStatus: "in_review",
+          };
+          await updateSectorAction(updateSectorData);
+        }
+        break;
     }
 
     setIsOpen(false);

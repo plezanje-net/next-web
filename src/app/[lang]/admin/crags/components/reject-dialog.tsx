@@ -47,11 +47,27 @@ function RejectDialog({
 
     case "Crag":
       description = `Ali res želiš zavrniti objavo plezališča `;
-      cascadeText = contributable.sectors.length
-        ? contributable.sectors.some((sector) => sector.routes.length)
-          ? "Zavrni tudi objavo vseh sektorje in vseh smeri v tem plezališču."
-          : "Zavrni tudi objavo vseh sektorjev v tem plezališču."
-        : null;
+
+      const crag = contributable;
+      if (
+        crag.sectors.length === 1 &&
+        crag.sectors[0].name === "" &&
+        crag.sectors[0].label === ""
+      ) {
+        // crag has a dummy sector
+        if (crag.sectors[0].routes.length) {
+          cascadeText = "Zavrni tudi objavo vseh smeri v tem plezališču.";
+        }
+      } else {
+        if (crag.sectors.length) {
+          cascadeText = "Zavrni tudi objavo vseh sektorjev v tem plezališču.";
+        }
+        if (crag.sectors.some((sector) => sector.routes.length)) {
+          cascadeText =
+            "Zavrni tudi objavo vseh sektorjev in vseh smeri v tem plezališču.";
+        }
+      }
+
       rejectionDescription =
         "Razlog za zavrnitev objave plezališča bo posredovan osebi, ki je predlagala objavo. Na podlagi tega sporočila bo lahko plezališče uredila tako, da bo primerno za objavo.";
       break;

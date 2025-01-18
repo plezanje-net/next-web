@@ -43,11 +43,27 @@ function PublishDialog({
     case "Crag":
       title = "Objava plezališča";
       description = `Ali res želiš objaviti plezališče `;
-      cascadeText = contributable.sectors.length
-        ? contributable.sectors.some((sector) => sector.routes.length)
-          ? "Objavi tudi vse sektorje in vse smeri v tem plezališču."
-          : "Objavi tudi vse sektorje v tem plezališču."
-        : null;
+
+      const crag = contributable;
+      if (
+        crag.sectors.length === 1 &&
+        crag.sectors[0].name === "" &&
+        crag.sectors[0].label === ""
+      ) {
+        // crag has a dummy sector
+        if (crag.sectors[0].routes.length) {
+          cascadeText = "Objavi tudi vse smeri v tem plezališču.";
+        }
+      } else {
+        if (crag.sectors.length) {
+          cascadeText = "Objavi tudi vse sektorje v tem plezališču.";
+        }
+        if (crag.sectors.some((sector) => sector.routes.length)) {
+          cascadeText =
+            "Objavi tudi vse sektorje in vse smeri v tem plezališču.";
+        }
+      }
+
       break;
   }
 
@@ -71,6 +87,22 @@ function PublishDialog({
         break;
       case "Crag":
         await updateCragAction(data);
+
+        // If this is a sectorless crag, crag has a dummy sector and it's publish status also needs to be updated (despite cascadePublishStatus flag being false)
+        const crag = contributable;
+        if (
+          !cascadePublish &&
+          crag.sectors.length === 1 &&
+          crag.sectors[0].name === "" &&
+          crag.sectors[0].label === ""
+        ) {
+          const updateSectorData = {
+            id: crag.sectors[0].id,
+            publishStatus: "published",
+          };
+          await updateSectorAction(updateSectorData);
+        }
+        break;
     }
 
     setIsOpen(false);

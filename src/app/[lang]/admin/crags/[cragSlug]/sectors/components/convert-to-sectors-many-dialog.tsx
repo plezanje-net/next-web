@@ -3,18 +3,21 @@ import TextField from "@/components/ui/text-field";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../server-actions/update-sector-action";
-import { Sector } from "@/graphql/generated";
+import { Crag, Sector } from "@/graphql/generated";
+import createSectorAction from "../server-actions/create-sector-action";
 
 type TConvertToSectorsManyDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  sector: Sector;
+  dummySector: Sector | null;
+  crag: Crag;
 };
 
 function ConvertToSectorsManyDialog({
   isOpen,
   setIsOpen,
-  sector,
+  dummySector,
+  crag,
 }: TConvertToSectorsManyDialogProps) {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -50,13 +53,26 @@ function ConvertToSectorsManyDialog({
       return;
     }
 
-    const updateSectorData = {
-      id: sector.id,
-      name: name,
-      label: "",
-    };
-
-    await updateSectorAction(updateSectorData);
+    // We have two cases here:
+    // 1. Crag has no sector -> a new sector has to be created.
+    // 2. Crag has a (nameless) dummy sector -> dummy sector just needs to be renamed.
+    if (dummySector === null) {
+      const newSectorData = {
+        name: name,
+        label: "",
+        cragId: crag.id,
+        position: 0,
+        publishStatus: "draft",
+      };
+      await createSectorAction(newSectorData);
+    } else {
+      const updateSectorData = {
+        id: dummySector.id,
+        name: name,
+        label: "",
+      };
+      await updateSectorAction(updateSectorData);
+    }
 
     // TODO: check for errors
 

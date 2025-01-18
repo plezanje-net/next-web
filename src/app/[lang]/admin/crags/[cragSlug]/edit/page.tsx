@@ -131,6 +131,8 @@ gql`
       }
       sectors {
         id
+        label
+        name
         routes {
           id
         }

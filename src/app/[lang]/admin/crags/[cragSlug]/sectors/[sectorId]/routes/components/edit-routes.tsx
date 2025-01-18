@@ -1,6 +1,6 @@
 "use client";
 
-import { Route, Sector } from "@/graphql/generated";
+import { Crag, Route, Sector } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card/route-card";
 import { useRouter } from "next/navigation";
@@ -27,17 +27,12 @@ import { useAuthContext } from "../../../../../../../../components/auth-context"
 
 type TEditRoutesProps = {
   routes: Route[];
-  cragSlug: string;
+  crag: Crag;
   sector: Sector;
   allSectors: Sector[];
 };
 
-function EditRoutes({
-  routes,
-  cragSlug,
-  sector,
-  allSectors,
-}: TEditRoutesProps) {
+function EditRoutes({ routes, crag, sector, allSectors }: TEditRoutesProps) {
   const { currentUser } = useAuthContext();
 
   const router = useRouter();
@@ -121,7 +116,7 @@ function EditRoutes({
       <EditRoutesActions
         allSectors={allSectors}
         sector={sector}
-        cragSlug={cragSlug}
+        crag={crag}
         checkedRoutes={sortedRoutes.filter((route) =>
           checkedRouteIds.includes(route.id)
         )}

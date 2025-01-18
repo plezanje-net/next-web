@@ -67,7 +67,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
               },
               {
                 label: "Sektorji in smeri",
-                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji/${sector.id}/smeri`,
+                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji`,
                 isActive: true,
                 icon: <IconRoutes />,
               },
@@ -79,7 +79,7 @@ async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
       <EditRoutes
         routes={sector.routes}
         sector={sector}
-        cragSlug={sector.crag.slug}
+        crag={sector.crag}
         allSectors={sector.crag.sectors}
       />
     </>
