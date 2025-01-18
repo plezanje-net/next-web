@@ -154,7 +154,12 @@ function RejectDialog({
 
         {cascadeText && (
           <div className="mt-4">
-            <Checkbox label={cascadeText} checked={true} disabled />
+            <Checkbox
+              label={cascadeText}
+              checked={true}
+              disabled
+              onChange={() => {}}
+            />
           </div>
         )}
       </div>
