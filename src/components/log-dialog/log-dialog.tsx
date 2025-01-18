@@ -219,7 +219,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
               label="Opombe"
               placeholder="Vnesi opombe k aktivnosti v plezališču."
               description="Opombe bodo vidne samo tebi."
-              isDisabled={loading}
+              disabled={loading}
             />
           </div>
 
