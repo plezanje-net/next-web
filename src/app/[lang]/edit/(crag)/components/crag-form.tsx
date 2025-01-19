@@ -30,8 +30,8 @@ import CoordinatesInput, {
 } from "@/components/ui/coordinates-input";
 import Checkbox from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
-import createCragAction from "../new-crag/server-actions/create-crag-action";
-import updateCragAction from "../[cragSlug]/server-actions/update-crag-action";
+import createCragAction from "../new-crag/lib/create-crag-action";
+import updateCragAction from "../[cragSlug]/lib/update-crag-action";
 
 type TCragFormProps = {
   formType: "edit" | "new";
