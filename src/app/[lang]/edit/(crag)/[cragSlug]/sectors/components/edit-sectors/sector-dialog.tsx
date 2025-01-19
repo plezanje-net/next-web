@@ -8,9 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
-import createSectorAction from "../../server-actions/create-sector-action";
+import createSectorAction from "../../lib/create-sector-action";
 import { useRouter } from "next/navigation";
-import updateSectorAction from "../../server-actions/update-sector-action";
+import updateSectorAction from "../../lib/update-sector-action";
 import { Sector } from "@/graphql/generated";
 
 type TSectorDialogBaseProps = {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "@/components/ui/button";
 import TextArea from "@/components/ui/text-area";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
-import createCommentAction from "./server-actions/create-comment-action";
+import createCommentAction from "./lib/create-comment-action";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
