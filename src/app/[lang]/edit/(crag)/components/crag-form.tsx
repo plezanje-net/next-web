@@ -369,7 +369,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                 label="Opis plezališča"
                 value={cragDescription}
                 onChange={setCragDescription}
-                isDisabled={loading}
+                disabled={loading}
               />
             </div>
 
@@ -518,7 +518,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                 label="Opis dostopa"
                 value={approachDescription}
                 onChange={setApproachDescription}
-                isDisabled={loading}
+                disabled={loading}
               />
             </div>
 
