@@ -5,9 +5,10 @@ import { ReactNode } from "react";
 type TDropdownMenuProps = {
   openTrigger: ReactNode;
   children: ReactNode[];
+  align: "left" | "right";
 };
 
-function DropdownMenu({ openTrigger, children }: TDropdownMenuProps) {
+function DropdownMenu({ openTrigger, align, children }: TDropdownMenuProps) {
   return (
     <Menu>
       <MenuButton as="div" className="inline-block">
@@ -15,7 +16,7 @@ function DropdownMenu({ openTrigger, children }: TDropdownMenuProps) {
       </MenuButton>
 
       <MenuItems
-        anchor="bottom start"
+        anchor={`bottom ${align === "left" ? "start" : "end"}`}
         className="bg-white shadow-lg rounded-lg border border-neutral-100 flex flex-col [--anchor-gap:8px] py-2 outline-none"
       >
         {children}
