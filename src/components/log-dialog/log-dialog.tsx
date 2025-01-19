@@ -5,9 +5,9 @@ import LogDate from "./log-date";
 import TextField from "../ui/text-field";
 import TextArea from "../ui/text-area";
 import LogRoutes from "./log-routes";
-import { useLogRoutesContext } from "./log-routes-context";
-import createActivityAction from "./server-actions/create-activity-action";
-import dryRunCreateActivityAction from "./server-actions/dry-run-create-activity-action";
+import { useLogRoutesContext } from "./lib/log-routes-context";
+import createActivityAction from "./lib/create-activity-action";
+import dryRunCreateActivityAction from "./lib/dry-run-create-activity-action";
 import {
   CreateActivityInput,
   CreateActivityRouteInput,
@@ -15,7 +15,7 @@ import {
 } from "@/graphql/generated";
 import dayjs from "dayjs";
 import IconArrowRight from "../ui/icons/arrow-right";
-import trAscentTypes from "@/utils/constants/tr-ascent-types";
+import trAscentTypes from "../../lib/constants/tr-ascent-types";
 import AscentType from "../ascent-type";
 import { useRouter } from "next/navigation";
 

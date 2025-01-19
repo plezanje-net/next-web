@@ -23,15 +23,15 @@ import {
   WallAngle,
 } from "@/graphql/generated";
 import { useRef, useState } from "react";
-import { gradingSystems } from "@/utils/grading-systems";
+import { gradingSystems } from "../../../../../lib/grading-systems";
 import CoordinatesInput, {
   formatCoordinates,
   validateCoordinates,
 } from "@/components/ui/coordinates-input";
 import Checkbox from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
-import createCragAction from "../new-crag/server-actions/create-crag-action";
-import updateCragAction from "../[cragSlug]/server-actions/update-crag-action";
+import createCragAction from "../new-crag/lib/create-crag-action";
+import updateCragAction from "../[cragSlug]/lib/update-crag-action";
 
 type TCragFormProps = {
   formType: "edit" | "new";

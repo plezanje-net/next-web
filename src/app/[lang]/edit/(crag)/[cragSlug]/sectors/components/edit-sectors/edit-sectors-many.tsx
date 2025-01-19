@@ -22,7 +22,7 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import updateSectorAction from "../../server-actions/update-sector-action";
+import updateSectorAction from "../../lib/update-sector-action";
 import { useRouter } from "next/navigation";
 
 type TEditCragSectorsManyProps = {

@@ -9,7 +9,7 @@
     "start": "next start -p 3003",
     "lint": "next lint",
     "codegen": "graphql-codegen",
-    "gengradsys": "node ./src/scripts/generate-grading-systems.mjs"
+    "gengradsys": "node ./scripts/generate-grading-systems.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
