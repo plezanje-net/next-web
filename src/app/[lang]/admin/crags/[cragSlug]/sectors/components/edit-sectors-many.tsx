@@ -27,7 +27,7 @@ import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 import { useAuthContext } from "../../../../../../components/auth-context";
-import { canEdit } from "@/utils/contributables-helpers";
+import { canEdit } from "@/lib/contributables-helpers";
 
 type TEditSectorsManyProps = {
   crag: Crag;

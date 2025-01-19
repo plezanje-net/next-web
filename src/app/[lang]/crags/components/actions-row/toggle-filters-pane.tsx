@@ -1,6 +1,6 @@
 import Button from "@/components/ui/button";
 import IconFilter from "@/components/ui/icons/filter";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function ToggleFiltersPane() {
   const {

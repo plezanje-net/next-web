@@ -11,9 +11,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { TDate } from "../ui/date-picker";
-import tickAscentTypes from "@/utils/constants/tick-ascent-types";
-import trTickAscentTypes from "@/utils/constants/tr-tick-ascent-types";
+import { TDateString } from "../../ui/date-picker";
+import tickAscentTypes from "@/lib/constants/tick-ascent-types";
+import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
 
 type TLogRoute = {
   id: string;
@@ -49,8 +49,8 @@ type TLogRoute = {
 
 type TLogRoutesContext = {
   crag: { id: string; name: string };
-  logDate: TDate;
-  setLogDate: Dispatch<SetStateAction<TDate>>;
+  logDate: TDateString;
+  setLogDate: Dispatch<SetStateAction<TDateString>>;
   logRoutes: TLogRoute[];
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
   setRouteAscentType: (id: string, key: string, at: AscentType | null) => void;
@@ -83,11 +83,7 @@ function LogRoutesProvider({
   showLogSavedToast,
   children,
 }: TLogRoutesProviderProps) {
-  const [logDate, setLogDate] = useState<TDate>({
-    day: "dd",
-    month: "mm",
-    year: "llll",
-  });
+  const [logDate, setLogDate] = useState<TDateString>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -289,7 +285,7 @@ function LogRoutesProvider({
   ]);
 
   const resetAll = () => {
-    setLogDate({ day: "dd", month: "mm", year: "llll" });
+    setLogDate(null);
     setLogRoutes([]);
   };
 
@@ -334,7 +330,7 @@ export type { TLogRoute };
 
 // For a single route, get a set of ascent types that are not possible, based on users previous ascents
 const calculateImpossibleAscentTypes = (
-  logDate: TDate,
+  logDate: TDateString,
   allLogRoutes: TLogRoute[],
   routeIndex: number
   // ascentTypesMap: TAscentTypesMap
@@ -345,13 +341,13 @@ const calculateImpossibleAscentTypes = (
   const impossibleAscentTypes = new Set<AscentType>();
 
   // If a date is not set, then everything is possible since we do not know where the ascent should be inserted
-  if (logDate.day != "dd" && logDate.month != "mm" && logDate.year != "llll") {
+  if (!logDate) {
     // Initially remove repeat, because repeat needs at least one tick ascent before it
     impossibleAscentTypes.add(AscentType.Repeat);
     impossibleAscentTypes.add(AscentType.TRepeat);
 
     dayjs.extend(isSameOrBefore);
-    const logDateJs = dayjs(`${logDate.year}-${logDate.month}-${logDate.day}`);
+    const logDateJs = dayjs(logDate);
 
     if (
       route.usersHistory.firstTryDate &&

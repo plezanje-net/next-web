@@ -1,6 +1,7 @@
 "use client";
 
 import { User } from "@/graphql/generated";
+import { useAuthContext } from "@/lib/auth/auth-context";
 import CommentActions from "./comment-actions";
 import { useAuthContext } from "../../../../../../components/auth-context";
 

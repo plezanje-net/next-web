@@ -1,7 +1,7 @@
 import { DifficultyVote, Route } from "@/graphql/generated";
-import displayDate from "@/utils/display-date";
+import displayDate from "../../../../../../../../../lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../../../../../../lib/text-helpers";
 
 interface Props {
   route: Route;

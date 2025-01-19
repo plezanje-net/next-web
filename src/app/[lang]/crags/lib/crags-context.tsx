@@ -8,9 +8,9 @@ import {
   Season,
   WallAngle,
 } from "@/graphql/generated";
-import { gradingSystems } from "@/utils/grading-systems";
-import { filterEntitiesBySearchTerm } from "@/utils/search-helpers";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { gradingSystems } from "@/lib/grading-systems";
+import { filterEntitiesBySearchTerm } from "@/lib/search-helpers";
+import { pluralizeNoun } from "@/lib/text-helpers";
 import {
   UseQueryStateReturn,
   parseAsArrayOf,

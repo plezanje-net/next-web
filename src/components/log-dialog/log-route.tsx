@@ -9,13 +9,13 @@ import IconDuplicate from "../ui/icons/duplicate";
 import IconDelete from "../ui/icons/delete";
 import IconCollapse from "../ui/icons/collapse";
 import IconExpand from "../ui/icons/expand";
-import { difficultyToGrade } from "@/utils/grade-helpers";
+import { difficultyToGrade } from "../../lib/grade-helpers";
 import StarRating from "../star-rating";
 import {
   TLogRoute,
   tickAscentTypes,
   useLogRoutesContext,
-} from "./log-routes-context";
+} from "./lib/log-routes-context";
 import { PublishType } from "@/graphql/generated";
 import TextArea from "../ui/text-area";
 

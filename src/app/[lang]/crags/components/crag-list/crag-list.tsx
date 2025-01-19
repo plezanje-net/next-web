@@ -4,7 +4,7 @@ import ActiveFilters from "./active-filters-row/active-filters";
 import CragListCards from "./crag-list-cards";
 import CragListTable from "./crag-list-table";
 import Link from "@/components/ui/link";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function CragList() {
   const { crags, columns } = useCragsContext();

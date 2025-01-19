@@ -6,7 +6,7 @@ import IconStarFull from "@/components/ui/icons/star-full";
 import IconComment from "@/components/ui/icons/comment";
 import IconCheck from "@/components/ui/icons/check";
 import { IconSize } from "@/components/ui/icons/icon-size";
-import { filterEntitiesBySearchTerm } from "@/utils/search-helpers";
+import { filterEntitiesBySearchTerm } from "../../../../../../../lib/search-helpers";
 
 interface Props {
   crag: Crag;

@@ -10,7 +10,7 @@ loadEnvConfig(process.cwd());
 
 const fullFilePath = path.join(
   process.cwd(),
-  "src/utils",
+  "src/lib",
   "grading-systems.ts"
 );
 
