@@ -164,12 +164,12 @@ function LogRoute({
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>
         <div>
           <TextArea
-            value={note}
+            value={note || ""}
             onChange={(n) => setRouteNote(route.key, n)}
             label="Opomba"
             placeholder="Vnesi opombo k vzponu."
             description="Opomba bo vidna samo tebi."
-            isDisabled={loading}
+            disabled={loading}
           />
         </div>
         <div className="pt-6 mt-6 border-t border-neutral-200"></div>

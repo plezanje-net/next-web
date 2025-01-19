@@ -50,16 +50,13 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
       logRoutes.every(
         (route) =>
           !!route.logFormData.ascentType && !!route.logFormData.publishType
-      ) &&
-      logDate.day != "dd" &&
-      logDate.month != "mm" &&
-      logDate.year != "llll"
+      ) && logDate
     );
   };
 
   const prepareCreateActivityData = () => {
     const activity = {
-      date: `${logDate.year}-${logDate.month}-${logDate.day}`,
+      date: logDate,
       partners: partners || null,
       notes: notes || null,
       type: "crag",
@@ -78,7 +75,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
       }
 
       routes.push({
-        date: `${logDate.year}-${logDate.month}-${logDate.day}`,
+        date: logDate,
         partner: partners || null,
         notes: route.logFormData.note || null,
         routeId: route.id,
@@ -100,14 +97,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
     const { activity, routes } = prepareCreateActivityData();
 
     // save log date to localstorage for 'quick access' on next log
-    localStorage.setItem(
-      "last-log-date",
-      JSON.stringify({
-        day: logDate.day,
-        month: logDate.month,
-        year: logDate.year,
-      })
-    );
+    localStorage.setItem("last-log-date", `${logDate}`);
 
     /**
      * 
@@ -219,7 +209,7 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
               label="Opombe"
               placeholder="Vnesi opombe k aktivnosti v plezališču."
               description="Opombe bodo vidne samo tebi."
-              isDisabled={loading}
+              disabled={loading}
             />
           </div>
 
