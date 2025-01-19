@@ -7,16 +7,16 @@ import IconDrag from "@/components/ui/icons/drag";
 import IconEdit from "@/components/ui/icons/edit";
 import IconPlus from "@/components/ui/icons/plus";
 import { Route } from "@/graphql/generated";
-import { difficultyToGrade } from "@/utils/grade-helpers";
+import { difficultyToGrade } from "@/lib/grade-helpers";
 import { useState } from "react";
 import RouteDialog from "./route-dialog";
 import DeleteRouteDialog from "./delete-route-dialog";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { genderizeVerb } from "@/utils/text-helpers";
+import { genderizeVerb } from "@/lib/text-helpers";
 import PublishStatusActions from "../../../../../../components/publish-status-actions";
-import { useAuthContext } from "../../../../../../../../../components/auth-context";
-import { canEdit, getBgStyle } from "@/utils/contributables-helpers";
+import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TRouteCardProps = {
   route: Route;

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
 import { Route, Sector } from "@/graphql/generated";
 import moveRoutesToSectorAction from "../lib/move-routes-to-sector-action";
-import { labelAndNameToString } from "@/utils/sector-helpers";
+import { labelAndNameToString } from "@/lib/sector-helpers";
 
 type TSwitchSectorDialogProps = {
   isOpen: boolean;

@@ -22,7 +22,7 @@ import {
   Season,
   WallAngle,
 } from "@/graphql/generated";
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { gradingSystems } from "../../../../../lib/grading-systems";
 import CoordinatesInput, {
   formatCoordinates,

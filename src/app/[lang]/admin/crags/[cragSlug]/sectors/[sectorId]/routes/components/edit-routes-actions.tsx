@@ -14,8 +14,8 @@ import DeleteRoutesDialog from "./delete-routes-dialog";
 import IconMergeRoutes from "@/components/ui/icons/merge-routes";
 import MergeRoutesDialog from "./merge-routes-dialog";
 import ConvertToSectorsManyDialog from "../../../components/convert-to-sectors-many-dialog";
-import { useAuthContext } from "../../../../../../../../components/auth-context";
-import { canEdit } from "@/utils/contributables-helpers";
+import { canEdit } from "@/lib/contributables-helpers";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditRoutesActionsProps = {
   crag: Crag;

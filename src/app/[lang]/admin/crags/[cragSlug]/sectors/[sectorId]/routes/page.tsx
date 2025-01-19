@@ -7,7 +7,7 @@ import { EditRoutesPageSectorDocument } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditRoutes from "./components/edit-routes";
-import { labelAndNameToString } from "@/utils/sector-helpers";
+import { labelAndNameToString } from "@/lib/sector-helpers";
 
 type TEditRoutesPageProps = {
   params: { sectorId: string };

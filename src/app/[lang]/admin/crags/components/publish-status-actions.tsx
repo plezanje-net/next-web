@@ -9,7 +9,7 @@ import IconClose from "@/components/ui/icons/close";
 import PublishDialog from "./publish-dialog";
 import SuggestPublishDialog from "./suggest-publish-dialog";
 import RejectDialog from "./reject-dialog";
-import { useAuthContext } from "../../../../components/auth-context";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TPublishStatusActionsProps = {
   contributable: Route | Sector | Crag;

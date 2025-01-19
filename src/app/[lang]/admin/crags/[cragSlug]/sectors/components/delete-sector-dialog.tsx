@@ -3,7 +3,7 @@ import { Sector } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
 import deleteSectorAction from "../lib/delete-sector-action";
 import { useRouter } from "next/navigation";
-import { labelAndNameToString } from "@/utils/sector-helpers";
+import { labelAndNameToString } from "@/lib/sector-helpers";
 
 type TDeleteSectorDialog = {
   isOpen: boolean;

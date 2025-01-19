@@ -3,8 +3,8 @@ import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Route } from "@/graphql/generated";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
-import { difficultyToGrade } from "@/utils/grade-helpers";
-import displayDate from "@/utils/display-date";
+import { difficultyToGrade } from "@/lib/grade-helpers";
+import displayDate from "@/lib/display-date";
 import mergeRoutesAction from "../lib/merge-routes-action";
 
 type TMergeRoutesDialogProps = {
@@ -96,7 +96,8 @@ function MergeRoutesDialog({
     >
       <form onSubmit={handleOnSubmit} ref={formRef}>
         <div>
-          Izberi 'glavno smer' v kateri se bodo združili podatki obeh smeri.
+          Izberi &#39;glavno smer&#39; v kateri se bodo združili podatki obeh
+          smeri.
         </div>
 
         <div className="mt-4">

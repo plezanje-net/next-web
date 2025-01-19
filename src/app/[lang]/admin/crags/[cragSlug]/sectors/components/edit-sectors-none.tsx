@@ -8,8 +8,8 @@ import { usePathname, useRouter } from "next/navigation";
 import ConvertToSectorsManyDialog from "./convert-to-sectors-many-dialog";
 import { useState } from "react";
 import createSectorAction from "../lib/create-sector-action";
-import { useAuthContext } from "../../../../../../components/auth-context";
-import { canEdit } from "@/utils/contributables-helpers";
+import { canEdit } from "@/lib/contributables-helpers";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditSectorsNoneProps = {
   crag: Crag;

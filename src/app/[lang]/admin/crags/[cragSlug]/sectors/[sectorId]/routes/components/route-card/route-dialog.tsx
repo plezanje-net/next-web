@@ -3,7 +3,7 @@ import TextField from "@/components/ui/text-field";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
-import { TGradingSystemId, gradingSystems } from "@/utils/grading-systems";
+import { TGradingSystemId, gradingSystems } from "@/lib/grading-systems";
 import Checkbox from "@/components/ui/checkbox";
 import TextArea from "@/components/ui/text-area";
 import createRouteAction from "../../lib/create-route-action";

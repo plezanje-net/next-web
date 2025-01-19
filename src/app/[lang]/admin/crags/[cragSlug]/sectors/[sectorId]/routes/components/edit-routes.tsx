@@ -23,7 +23,7 @@ import {
 import updateRouteAction from "../lib/update-route-action";
 import EditRoutesActions from "./edit-routes-actions";
 import NewFirstRouteButton from "./new-first-route-button";
-import { useAuthContext } from "../../../../../../../../components/auth-context";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditRoutesProps = {
   routes: Route[];

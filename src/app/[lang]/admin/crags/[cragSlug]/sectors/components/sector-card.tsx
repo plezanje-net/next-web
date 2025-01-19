@@ -7,14 +7,14 @@ import IconMore from "@/components/ui/icons/more";
 import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
 import { Sector } from "@/graphql/generated";
-import { genderizeVerb } from "@/utils/text-helpers";
+import { genderizeVerb } from "@/lib/text-helpers";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { usePathname, useRouter } from "next/navigation";
 import PublishStatusActions from "../../../components/publish-status-actions";
-import { labelAndNameToString } from "@/utils/sector-helpers";
-import { useAuthContext } from "../../../../../../components/auth-context";
-import { canEdit, getBgStyle } from "@/utils/contributables-helpers";
+import { labelAndNameToString } from "@/lib/sector-helpers";
+import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TSectorCardProps = {
   sector: Sector;
