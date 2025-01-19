@@ -1,10 +1,8 @@
-import dayjs from "dayjs";
 import ActionsRow from "./components/actions-row";
 import { gql } from "urql";
 import urqlServer from "@/graphql/urql-server";
 import { Activity, CalendarDailyActivitiesDocument } from "@/graphql/generated";
-import AddActivity from "./components/add-activity";
-import activityTypes from "@/utils/constants/activity-types";
+import AddActivity from "./components/add-activity/add-activity";
 import CalendarDayActivity from "./components/calendar-day-activity";
 
 type TCalendarDayPageProps = {
@@ -29,7 +27,7 @@ async function CalendarDayPage({ params }: TCalendarDayPageProps) {
           <CalendarDayActivity key={activity.id} activity={activity} />
         ))}
         <div className="border-t border-neutral-200 py-5">
-          <AddActivity />
+          <AddActivity date={params.date} />
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import Button from "@/components/ui/button";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { ActivityRoute } from "@/graphql/generated";
-import displayDate from "@/utils/display-date";
+import displayDate from "@/lib/display-date";
 import { useAscentsContext } from "../../lib/ascents-context";
 import CragLink from "@/components/crag-link";
 import RouteLink from "@/components/route-link";

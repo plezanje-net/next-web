@@ -1,8 +1,8 @@
 "use client";
 
 import { Crag } from "@/graphql/generated";
-import { useI18nPathname } from "@/utils/hooks/use-i18n-pathname";
-import TabMenu, { TabMenuItem } from "@/components/ui/tab-menu";
+import { useI18nPathname } from "@/hooks/use-i18n-pathname";
+import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 import IconCalendar from "@/components/ui/icons/calendar";
 import IconAscents from "@/components/ui/icons/ascents";
 import IconStatistics from "@/components/ui/icons/statistics";
@@ -10,7 +10,7 @@ import IconStatistics from "@/components/ui/icons/statistics";
 function ClimbingLogTabMenu() {
   const i18nPathname = useI18nPathname();
 
-  const menuItems: TabMenuItem[] = [
+  const menuItems: TTabMenuItem[] = [
     {
       label: "Koledar",
       link: `/plezalni-dnevnik/koledar`,

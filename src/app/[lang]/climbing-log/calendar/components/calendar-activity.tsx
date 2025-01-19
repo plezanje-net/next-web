@@ -1,9 +1,7 @@
+import ActivityType from "@/components/activity-type";
 import Grade from "@/components/grade";
-import IconDot from "@/components/ui/icons/dot";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import { Activity, ActivityRoute, Route } from "@/graphql/generated";
-import activityTypes from "@/utils/constants/activity-types";
-import { useMemo } from "react";
 
 type TCalendarActivityProps = {
   activity: Activity;
@@ -27,15 +25,13 @@ function CalendarActivity({ activity }: TCalendarActivityProps) {
     null
   );
 
-  const activityType = useMemo(() => activityTypes[activity.type], [activity]);
-
   return (
     <div className="flex">
-      <div className={`w-3 h-3 pt-0.5 flex items-center justify-center lg:w-5 lg:h-5 text-${activityType.color}`}>
-        <IconDot size={IconSize.small} />
+      <div className="w-3 h-3 pt-0.5 flex items-center justify-center lg:w-5 lg:h-5 text-${activityType.color}">
+        <ActivityType activityType={activity.type} variant="icon" iconSize={IconSize.small} />
       </div>
       <div className="hidden lg:block">
-        <div>{activityType.label}</div>
+        <div><ActivityType activityType={activity.type} variant="text" /></div>
         {activity.type == "crag" && activity.crag && (
           <div className="text-sm">
             <div>{activity.crag.name}</div>

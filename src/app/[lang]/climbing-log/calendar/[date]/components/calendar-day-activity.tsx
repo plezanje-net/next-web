@@ -1,19 +1,16 @@
+import ActivityType from "@/components/activity-type";
 import AscentType from "@/components/ascent-type";
 import Grade from "@/components/grade";
 import Button from "@/components/ui/button";
-import IconDot from "@/components/ui/icons/dot";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { Activity } from "@/graphql/generated";
-import activityTypes from "@/utils/constants/activity-types";
 
 type TCalendarDayPageProps = {
   activity: Activity;
 };
 
 function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
-  const activityType = activityTypes[activity.type];
-
   const metersClimbed = activity.routes.reduce(
     (acc, route) => acc + (route.route.length || 0),
     0
@@ -23,12 +20,12 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
     <div
       className={`border-t border-neutral-200 flex gap-2 ${activity.type === "crag" ? "py-3" : "py-5"}`}
     >
-      <div className={`text-${activityType.color} pt-1`}>
-        <IconDot size={IconSize.regular} />
+      <div className="pt-1">
+        <ActivityType activityType={activity.type} variant="icon" iconSize={IconSize.regular} />
       </div>
       <div className="grow">
         <div className="flex items-center">
-          <h4 className="grow">{activityType.label}</h4>
+          <h4 className="grow"><ActivityType activityType={activity.type} variant="text" /></h4>
           <Button variant="quaternary">
             <IconMore size={IconSize.regular} />
           </Button>
