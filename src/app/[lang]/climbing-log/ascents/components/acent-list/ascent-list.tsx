@@ -4,7 +4,7 @@ import Pagination from "@/components/ui/pagination";
 import { ActivityRoute, PaginationMeta } from "@/graphql/generated";
 import { useCallback, useState } from "react";
 import useResizeObserver from "@/hooks/useResizeObserver";
-import { useAscentsContext } from "../ascents-context";
+import { useAscentsContext } from "../../lib/ascents-context";
 import AscentListCards from "./ascent-list-cards";
 import AscentListTable from "./ascent-list-table";
 import useSearchParamsHandler from "@/hooks/useSearchParamsHandler";

@@ -6,7 +6,7 @@ import {
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import AscentList from "./components/acent-list/ascent-list";
-import { AscentsProvider } from "./components/ascents-context";
+import { AscentsProvider } from "./lib/ascents-context";
 import ActionsRow from "./components/actions-row/actions-row";
 import { TAscentListFilter } from "./components/actions-row/filter";
 

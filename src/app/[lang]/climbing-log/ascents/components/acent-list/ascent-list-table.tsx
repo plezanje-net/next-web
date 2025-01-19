@@ -1,6 +1,6 @@
 import { ActivityRoute } from "@/graphql/generated";
 import AscentRow from "./ascent-row";
-import { useAscentsContext } from "../ascents-context";
+import { useAscentsContext } from "../../lib/ascents-context";
 
 // Define the props type
 type TAscentListTableProps = {

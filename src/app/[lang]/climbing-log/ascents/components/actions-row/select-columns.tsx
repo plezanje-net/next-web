@@ -1,7 +1,7 @@
 import Button from "@/components/ui/button";
 import IconColumns from "@/components/ui/icons/columns";
 import { Select, Option } from "@/components/ui/select";
-import { useAscentsContext } from "../ascents-context";
+import { useAscentsContext } from "../../lib/ascents-context";
 
 function SelectColumns() {
   const { columns } = useAscentsContext();
