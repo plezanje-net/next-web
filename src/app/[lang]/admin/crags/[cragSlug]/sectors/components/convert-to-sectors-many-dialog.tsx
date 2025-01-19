@@ -2,9 +2,9 @@ import Dialog from "@/components/ui/dialog";
 import TextField from "@/components/ui/text-field";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import updateSectorAction from "../server-actions/update-sector-action";
+import updateSectorAction from "../lib/update-sector-action";
 import { Crag, Sector } from "@/graphql/generated";
-import createSectorAction from "../server-actions/create-sector-action";
+import createSectorAction from "../lib/create-sector-action";
 
 type TConvertToSectorsManyDialogProps = {
   isOpen: boolean;

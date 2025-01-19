@@ -1,7 +1,7 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import deleteRouteAction from "../../server-actions/delete-route-action";
+import deleteRouteAction from "../../lib/delete-route-action";
 import { Route } from "@/graphql/generated";
 
 type TDeleteRouteDialogProps = {

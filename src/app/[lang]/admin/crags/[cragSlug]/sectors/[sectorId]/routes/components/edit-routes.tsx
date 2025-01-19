@@ -20,7 +20,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import updateRouteAction from "../server-actions/update-route-action";
+import updateRouteAction from "../lib/update-route-action";
 import EditRoutesActions from "./edit-routes-actions";
 import NewFirstRouteButton from "./new-first-route-button";
 import { useAuthContext } from "../../../../../../../../components/auth-context";

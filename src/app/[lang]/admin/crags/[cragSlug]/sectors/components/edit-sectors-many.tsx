@@ -22,7 +22,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import updateSectorAction from "../server-actions/update-sector-action";
+import updateSectorAction from "../lib/update-sector-action";
 import { useRouter } from "next/navigation";
 import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";

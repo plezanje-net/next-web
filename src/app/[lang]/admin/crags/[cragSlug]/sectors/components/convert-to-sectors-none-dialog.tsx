@@ -1,7 +1,7 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import mergeSectorsIntoNoneAction from "../server-actions/merge-sectors-into-none-action";
+import mergeSectorsIntoNoneAction from "../lib/merge-sectors-into-none-action";
 
 type TConvertToSectorsNoneDialogProps = {
   isOpen: boolean;

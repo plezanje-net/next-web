@@ -3,7 +3,7 @@ import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
 import { Route } from "@/graphql/generated";
-import updateRoutesAction from "../server-actions/update-routes-action";
+import updateRoutesAction from "../lib/update-routes-action";
 
 type TMoveRoutesDialogProps = {
   isOpen: boolean;

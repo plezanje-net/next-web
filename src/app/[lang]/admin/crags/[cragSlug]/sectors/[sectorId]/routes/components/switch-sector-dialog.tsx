@@ -3,7 +3,7 @@ import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
 import { Route, Sector } from "@/graphql/generated";
-import moveRoutesToSectorAction from "../server-actions/move-routes-to-sector-action";
+import moveRoutesToSectorAction from "../lib/move-routes-to-sector-action";
 import { labelAndNameToString } from "@/utils/sector-helpers";
 
 type TSwitchSectorDialogProps = {

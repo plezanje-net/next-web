@@ -2,7 +2,7 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Route } from "@/graphql/generated";
-import deleteRoutesAction from "../server-actions/delete-routes-action";
+import deleteRoutesAction from "../lib/delete-routes-action";
 
 type TDeleteRoutesDialogProps = {
   isOpen: boolean;

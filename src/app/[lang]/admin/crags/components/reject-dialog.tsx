@@ -2,9 +2,9 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Crag, Route, Sector } from "@/graphql/generated";
-import updateRouteAction from "../[cragSlug]/sectors/[sectorId]/routes/server-actions/update-route-action";
-import updateSectorAction from "../[cragSlug]/sectors/server-actions/update-sector-action";
-import updateCragAction from "../[cragSlug]/edit/server-actions/update-crag-action";
+import updateRouteAction from "../[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
+import updateSectorAction from "../[cragSlug]/sectors/lib/update-sector-action";
+import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
 import Checkbox from "@/components/ui/checkbox";
 import TextArea from "@/components/ui/text-area";
 

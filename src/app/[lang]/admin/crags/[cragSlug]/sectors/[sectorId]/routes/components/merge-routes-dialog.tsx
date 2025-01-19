@@ -5,7 +5,7 @@ import { Route } from "@/graphql/generated";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import { difficultyToGrade } from "@/utils/grade-helpers";
 import displayDate from "@/utils/display-date";
-import mergeRoutesAction from "../server-actions/merge-routes-action";
+import mergeRoutesAction from "../lib/merge-routes-action";
 
 type TMergeRoutesDialogProps = {
   isOpen: boolean;
