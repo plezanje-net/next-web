@@ -4,7 +4,7 @@ import IconExpand from "@/components/ui/icons/expand";
 import Link from "@/components/ui/link";
 import RangeSlider from "@/components/ui/range-slider";
 import { Select, Option } from "@/components/ui/select";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../lib/text-helpers";
 import { ReactNode, useState } from "react";
 
 // TODO: rename this file name and/or split to files...

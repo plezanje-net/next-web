@@ -15,7 +15,7 @@ import {
 } from "@/graphql/generated";
 import dayjs from "dayjs";
 import IconArrowRight from "../ui/icons/arrow-right";
-import trAscentTypes from "@/utils/constants/tr-ascent-types";
+import trAscentTypes from "../../lib/constants/tr-ascent-types";
 import AscentType from "../ascent-type";
 import { useRouter } from "next/navigation";
 

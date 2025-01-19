@@ -9,7 +9,7 @@ import IconDuplicate from "../ui/icons/duplicate";
 import IconDelete from "../ui/icons/delete";
 import IconCollapse from "../ui/icons/collapse";
 import IconExpand from "../ui/icons/expand";
-import { difficultyToGrade } from "@/utils/grade-helpers";
+import { difficultyToGrade } from "../../lib/grade-helpers";
 import StarRating from "../star-rating";
 import {
   TLogRoute,
