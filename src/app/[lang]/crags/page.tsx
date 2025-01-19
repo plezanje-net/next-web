@@ -1,7 +1,7 @@
 import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import { AllCountriesDocument, AllCragsDocument } from "@/graphql/generated";
-import { CragsProvider } from "./components/crags-context";
+import { CragsProvider } from "./lib/crags-context";
 import Crags from "./components/crags";
 
 async function CragsPage() {
