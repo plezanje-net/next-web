@@ -10,10 +10,11 @@ function DropdownMenuPage() {
     <div className="m-8">
       <h3>Dropdown menu demo</h3>
       <div className="mt-14">
-        <h5>First menu</h5>
+        <h5>First menu aligned left</h5>
 
         <div className="mt-4">
           <DropdownMenu
+            align="left"
             openTrigger={
               <Button variant="quaternary">
                 <IconMore size={IconSize.regular} />
@@ -34,10 +35,11 @@ function DropdownMenuPage() {
         </div>
       </div>
 
-      <div className="mt-14">
-        <h5>Second menu</h5>
+      <div className="mt-14 text-right">
+        <h5>Second menu aligned right</h5>
         <div className="mt-4">
           <DropdownMenu
+            align="right"
             openTrigger={<Button variant="quaternary">Open menu</Button>}
           >
             <DropdownMenuItem
@@ -64,6 +66,10 @@ function DropdownMenuPage() {
             <li>
               In the example above, first item is a button, second item is
               disabled, third is a link, fourth is not wired.
+            </li>
+            <li>Pass in menu alignment based on trigger position</li>
+            <li className="text-red-500">
+              If there is a scrollbar it dissapears. Feature or bug?
             </li>
           </ul>
         </div>
