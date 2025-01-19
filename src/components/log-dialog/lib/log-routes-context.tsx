@@ -11,7 +11,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { TDateString } from "../ui/date-picker";
+import { TDateString } from "../../ui/date-picker";
 import tickAscentTypes from "@/lib/constants/tick-ascent-types";
 import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
 

@@ -1,5 +1,5 @@
 import LogRoute from "./log-route";
-import { TLogRoute, useLogRoutesContext } from "./log-routes-context";
+import { TLogRoute, useLogRoutesContext } from "./lib/log-routes-context";
 
 function LogRoutes() {
   const { logRoutes, setLogRoutes } = useLogRoutesContext();

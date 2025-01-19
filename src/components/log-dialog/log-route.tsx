@@ -15,7 +15,7 @@ import {
   TLogRoute,
   tickAscentTypes,
   useLogRoutesContext,
-} from "./log-routes-context";
+} from "./lib/log-routes-context";
 import { PublishType } from "@/graphql/generated";
 import TextArea from "../ui/text-area";
 

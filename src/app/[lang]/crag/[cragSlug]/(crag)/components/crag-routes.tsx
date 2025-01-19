@@ -23,7 +23,7 @@ import useResizeObserver from "@/hooks/useResizeObserver";
 import {
   LogRoutesProvider,
   TLogRoute,
-} from "@/components/log-dialog/log-routes-context";
+} from "@/components/log-dialog/lib/log-routes-context";
 import LogRoutesPopover from "./log-routes-popover";
 import dayjs from "dayjs";
 import Toast from "@/components/ui/toast";
