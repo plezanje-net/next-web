@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 type TDropdownMenuProps = {
   openTrigger: ReactNode;
-  children: ReactNode[];
+  children: ReactNode[] | ReactNode;
   align: "left" | "right";
 };
 
