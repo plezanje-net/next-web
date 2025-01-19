@@ -1,5 +1,5 @@
 import { Select, Option } from "./ui/select";
-import { TGradingSystemId, gradingSystems } from "@/utils/grading-systems";
+import { TGradingSystemId, gradingSystems } from "../lib/grading-systems";
 import IconPlus from "./ui/icons/plus";
 import Button from "./ui/button";
 import IconMinus from "./ui/icons/minus";

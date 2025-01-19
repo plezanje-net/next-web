@@ -10,7 +10,7 @@ import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
 import NrRoutes from "./nr-routes";
-import { useCragsContext } from "../../crags-context";
+import { useCragsContext } from "../../../lib/crags-context";
 
 type TCragCardProps = {
   crag: Crag;

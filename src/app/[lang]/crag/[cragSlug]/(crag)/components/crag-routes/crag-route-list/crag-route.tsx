@@ -8,7 +8,7 @@ import IconStarEmpty from "@/components/ui/icons/star-empty";
 import IconStarFull from "@/components/ui/icons/star-full";
 import Link from "@/components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../../../../../lib/text-helpers";
 import RouteGrade from "./crag-route/route-grade";
 import Checkbox from "@/components/ui/checkbox";
 

@@ -3,7 +3,6 @@ import urqlServer from "@/graphql/urql-server";
 import { Crag, CragCommentsDocument } from "@/graphql/generated";
 import Comment, { CommentType } from "./components/comment";
 import AddCommentForm from "./components/add-comment-form";
-import authStatus from "@/utils/auth/auth-status";
 
 interface Params {
   cragSlug: string;
@@ -14,12 +13,11 @@ async function CragComments({ params }: { params: Params }) {
     crag: params.cragSlug,
   });
   const crag = data.cragBySlug as Crag;
-  const currentUser = (await authStatus())?.user;
 
   return (
     <div className="mt-18 px-4 xs:px-8">
       <div className="mx-auto max-w-lg">
-        <AddCommentForm cragId={crag.id} currentUser={currentUser} />
+        <AddCommentForm cragId={crag.id} />
 
         <div className="mt-18">
           {crag.comments.map((comment) => (
@@ -34,7 +32,6 @@ async function CragComments({ params }: { params: Params }) {
                 content={comment.content}
                 type={comment.type as CommentType}
                 author={comment.user}
-                currentUser={currentUser}
               />
             </div>
           ))}

@@ -1,7 +1,7 @@
 import Button from "@/components/ui/button";
 import IconColumns from "@/components/ui/icons/columns";
 import { Select, Option } from "@/components/ui/select";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function SelectColumns() {
   const { columns } = useCragsContext();
