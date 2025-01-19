@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import Head from "next/head";
 import Header from "./components/header";
 import { Poppins } from "next/font/google";
-import { AuthProvider } from "./components/auth-context";
+import { AuthProvider } from "@/lib/auth/auth-context";
 import { ReactNode } from "react";
 import getCurrentUser from "../lib/auth/get-current-user";
 
