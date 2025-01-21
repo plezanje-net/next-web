@@ -7,14 +7,13 @@ import IconMore from "@/components/ui/icons/more";
 
 function DropdownMenuPage() {
   return (
-    <div className="m-8">
+    <div className="m-8 max-w-3xl">
       <h3>Dropdown menu demo</h3>
       <div className="mt-14">
-        <h5>First menu aligned left</h5>
+        <h5>First menu on the left side of the page</h5>
 
         <div className="mt-4">
           <DropdownMenu
-            align="left"
             openTrigger={
               <Button variant="quaternary">
                 <IconMore size={IconSize.regular} />
@@ -36,10 +35,9 @@ function DropdownMenuPage() {
       </div>
 
       <div className="mt-14 text-right">
-        <h5>Second menu aligned right</h5>
+        <h5>Second menu on the right side of the page</h5>
         <div className="mt-4">
           <DropdownMenu
-            align="right"
             openTrigger={<Button variant="quaternary">Open menu</Button>}
           >
             <DropdownMenuItem
@@ -67,9 +65,9 @@ function DropdownMenuPage() {
               In the example above, first item is a button, second item is
               disabled, third is a link, fourth is not wired.
             </li>
-            <li>Pass in menu alignment based on trigger position</li>
-            <li className="text-red-500">
-              If there is a scrollbar it dissapears. Feature or bug?
+            <li>
+              Menu will be aligned to the bottom left of a button and will be
+              pushed from the right if not enough space in viewport.
             </li>
           </ul>
         </div>
