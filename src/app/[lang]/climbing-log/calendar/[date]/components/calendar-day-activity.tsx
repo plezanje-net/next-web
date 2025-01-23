@@ -16,22 +16,39 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
     0
   );
 
+  const durationFormatted = activity.duration
+    ? [
+        activity.duration >= 60
+          ? `${Math.floor(activity.duration / 60)}h`
+          : null,
+        activity.duration % 60 > 0 ? `${activity.duration % 60}min` : null,
+      ]
+        .filter(Boolean)
+        .join(" ")
+    : "";
+
   return (
     <div
       className={`border-t border-neutral-200 flex gap-2 ${activity.type === "crag" ? "py-3" : "py-5"}`}
     >
       <div className="pt-1">
-        <ActivityType activityType={activity.type} variant="icon" iconSize={IconSize.regular} />
+        <ActivityType
+          activityType={activity.type}
+          variant="icon"
+          iconSize={IconSize.regular}
+        />
       </div>
       <div className="grow">
         <div className="flex items-center">
-          <h4 className="grow"><ActivityType activityType={activity.type} variant="text" /></h4>
+          <h4 className="grow">
+            <ActivityType activityType={activity.type} variant="text" />
+          </h4>
           <Button variant="quaternary">
             <IconMore size={IconSize.regular} />
           </Button>
         </div>
         <div className="pt-4">
-          {activity.type === "crag" && activity.crag && (
+          {activity.type === "crag" && activity.crag ? (
             <div className="grid grid-cols-[auto_1fr] gap-2 gap-y-1">
               <div>Plezališče:</div>
               <div>{activity.crag.name}</div>
@@ -68,18 +85,18 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
                       <div
                         className={`${index ? "border-t border-neutral-200" : ""} sm:pr-8 pt-2 sm:py-2`}
                       >
-                        <span className="sm:hidden flex justify-self-end"><AscentType type={route.ascentType} compact /></span>
-                        <span className="hidden sm:inline"><AscentType type={route.ascentType} /></span>
+                        <span className="sm:hidden flex justify-self-end">
+                          <AscentType type={route.ascentType} compact />
+                        </span>
+                        <span className="hidden sm:inline">
+                          <AscentType type={route.ascentType} />
+                        </span>
                       </div>
                       <div
-                        className={`${index ? "sm:border-t border-neutral-200" : ""}${route.notes ? '' : ' hidden'} sm:flex pr-8 sm:py-2 col-span-3 sm:col-auto flex gap-1 text-sm sm:text-base`}
+                        className={`${index ? "sm:border-t border-neutral-200" : ""}${route.notes ? "" : " hidden"} sm:flex pr-8 sm:py-2 col-span-3 sm:col-auto flex gap-1 text-sm sm:text-base`}
                       >
-                        <span className="sm:hidden">
-                          opomba:
-                        </span>
-                        <span>
-                        {route.notes}
-                        </span>
+                        <span className="sm:hidden">opomba:</span>
+                        <span>{route.notes}</span>
                       </div>
                       <div
                         className={`${index ? "sm:border-t border-neutral-200" : ""} pb-2 sm:py-2.5 text-neutral-400 text-sm flex col-span-3 sm:col-auto`}
@@ -90,6 +107,27 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
                   ))}
                 </div>
               </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-[auto_1fr] gap-2 gap-y-1">
+              {activity.name && (
+                <>
+                  <div>Lokacija:</div>
+                  <div>{activity.name}</div>
+                </>
+              )}
+              {activity.duration && (
+                <>
+                  <div>Trajanje:</div>
+                  <div>{durationFormatted}</div>
+                </>
+              )}
+              {activity.notes && (
+                <>
+                  <div>Opombe:</div>
+                  <div>{activity.notes}</div>
+                </>
+              )}
             </div>
           )}
         </div>

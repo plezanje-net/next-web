@@ -4,19 +4,21 @@ import Button from "@/components/ui/button";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import IconPlus from "@/components/ui/icons/plus";
 import ActivityDate from "./activity-date";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TDateString } from "@/components/ui/date-picker";
 import SelectActivityType from "./select-activity-type";
-import Combobox from "@/components/ui/combobox";
 import TextField from "@/components/ui/text-field";
 import ActivityDuration from "./activity-duration";
 import TextArea from "@/components/ui/text-area";
+import createActivityAction from "@/components/log-dialog/lib/create-activity-action";
+import { useRouter } from "next/navigation";
 
 type TAddActivityProps = {
   date: TDateString;
 };
 
 function AddActivity({ date }: TAddActivityProps) {
+  const router = useRouter();
   const [activityDate, setActivityDate] = useState(date);
   const [activityType, setActivityType] = useState("");
   const [activityCustomType, setActivityCustomType] = useState<string | null>(
@@ -29,6 +31,14 @@ function AddActivity({ date }: TAddActivityProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const isValid = useMemo(() => {
+    if (!activityDate) return false;
+    if (activityType == "" || activityType == "crag") return false;
+    if (activityType == "other" && !activityCustomType) return false;
+
+    return true;
+  }, [activityDate, activityType, activityCustomType]);
+
   function clearForm() {
     setActivityDate(date);
     setActivityType("");
@@ -36,14 +46,27 @@ function AddActivity({ date }: TAddActivityProps) {
     setActivityLocation("");
     setActivityDuration(null);
     setActivityNotes("");
+    setIsLoading(false);
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsOpen(false);
-    }, 3000);
+
+    await createActivityAction(
+      {
+        date: activityDate,
+        type: activityType,
+        customType: activityCustomType,
+        name: activityLocation,
+        duration: activityDuraton,
+        notes: activityNotes,
+      },
+      []
+    );
+
+    router.refresh();
+    setIsOpen(false);
+    clearForm();
   }
 
   return (
@@ -63,7 +86,7 @@ function AddActivity({ date }: TAddActivityProps) {
       confirm={{
         label: "Shrani",
         callback: handleConfirm,
-        disabled: isLoading,
+        disabled: isLoading || !isValid,
         loading: isLoading,
         dontCloseOnConfirm: true,
       }}
@@ -91,6 +114,7 @@ function AddActivity({ date }: TAddActivityProps) {
               placeholder="Kje"
               value={activityLocation}
               onChange={setActivityLocation}
+              disabled={isLoading}
             />
           </div>
           <div className="flex-1 flex gap-2">
@@ -105,6 +129,7 @@ function AddActivity({ date }: TAddActivityProps) {
             label="Opis aktivnosti"
             placeholder="Opombe ali dodaten opis, povzetek aktivnosti, treninga,. ..."
             value={activityNotes}
+            disabled={isLoading}
             onChange={setActivityNotes}
           />
         </div>

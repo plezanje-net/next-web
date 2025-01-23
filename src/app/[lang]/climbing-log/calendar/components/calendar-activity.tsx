@@ -26,12 +26,18 @@ function CalendarActivity({ activity }: TCalendarActivityProps) {
   );
 
   return (
-    <div className="flex">
+    <div className="flex lg:w-full">
       <div className="w-3 h-3 pt-0.5 flex items-center justify-center lg:w-5 lg:h-5 text-${activityType.color}">
-        <ActivityType activityType={activity.type} variant="icon" iconSize={IconSize.small} />
+        <ActivityType
+          activityType={activity.type}
+          variant="icon"
+          iconSize={IconSize.small}
+        />
       </div>
       <div className="hidden lg:block">
-        <div><ActivityType activityType={activity.type} variant="text" /></div>
+        <div>
+          <ActivityType activityType={activity.type} variant="text" />
+        </div>
         {activity.type == "crag" && activity.crag && (
           <div className="text-sm">
             <div>{activity.crag.name}</div>
