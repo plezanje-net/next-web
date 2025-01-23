@@ -24,6 +24,8 @@ import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
+import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import Button from "@/components/ui/button";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -172,7 +174,19 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
           </div>
 
           <div>
-            <IconMore size={IconSize.regular} />
+            <DropdownMenu
+              openTrigger={
+                <Button variant="quaternary">
+                  <IconMore size={IconSize.regular} />
+                </Button>
+              }
+            >
+              <DropdownMenuItem
+                href={`/urejanje/plezalisca/${crag.slug}/uredi`}
+              >
+                Uredi plezališče
+              </DropdownMenuItem>
+            </DropdownMenu>
           </div>
         </div>
 
