@@ -147,7 +147,8 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     defaultValues.parkingCoordinates !== parkingCoordinates ||
     defaultValues.rainproof !== rainproof ||
     defaultValues.seasons.toString() !== seasons.toString() ||
-    defaultValues.wallAngles.toString() !== wallAngles.toString();
+    defaultValues.wallAngles.toString() !== wallAngles.toString() ||
+    defaultValues.coverImage !== coverImage;
 
   const [loading, setLoading] = useState(false);
 

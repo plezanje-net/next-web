@@ -65,7 +65,14 @@ function CragCoverImageSelector({
             >
               {buttonImage ? (
                 <NextImage
-                  className="rounded-lg block w-15"
+                  draggable="false"
+                  className={`rounded-lg block`}
+                  style={{
+                    width:
+                      buttonImage.aspectRatio > 1
+                        ? `${60 * buttonImage.aspectRatio}px`
+                        : "60px",
+                  }}
                   src={`${process.env.NEXT_PUBLIC_IMAGES_BASEURL}/${buttonImage.path}.${buttonImage.extension}`}
                   alt={[crag.name, buttonImage.description]
                     .filter((part) => !!part)
@@ -75,7 +82,11 @@ function CragCoverImageSelector({
                     buttonImage.maxIntrinsicWidth / buttonImage.aspectRatio
                   }
                   quality={100}
-                  sizes="60px"
+                  sizes={
+                    buttonImage.aspectRatio > 1
+                      ? `${60 * buttonImage.aspectRatio}px`
+                      : "60px"
+                  }
                 />
               ) : (
                 <div className="w-15 h-20 border border-neutral-300 rounded-lg text-neutral-400 flex items-center justify-center ">
@@ -99,6 +110,7 @@ function CragCoverImageSelector({
                     {({ focus, checked, disabled }) => (
                       <>
                         <NextImage
+                          draggable={false}
                           className={`rounded-lg block ${focus ? "ring ring-blue-100" : ""} ${checked ? "opacity-100" : "opacity-50"}`}
                           key={image.id}
                           src={`${process.env.NEXT_PUBLIC_IMAGES_BASEURL}/${image.path}.${image.extension}`}
