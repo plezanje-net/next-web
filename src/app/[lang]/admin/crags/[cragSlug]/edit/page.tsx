@@ -124,6 +124,13 @@ gql`
         maxIntrinsicWidth
         aspectRatio
       }
+      images {
+        id
+        path
+        extension
+        maxIntrinsicWidth
+        aspectRatio
+      }
       publishStatus
       user {
         id

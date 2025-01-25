@@ -32,6 +32,7 @@ import Checkbox from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
 import createCragAction from "../add/lib/create-crag-action";
 import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
+import CragCoverImageSelector from "./crag-cover-image-selector";
 
 type TCragFormProps = {
   formType: "edit" | "new";
@@ -61,9 +62,11 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
       parkingCoordinates: "", // TODO
       approachTime: crag.approachTime !== null ? `${crag.approachTime}` : "",
       approachDescription: crag.access || "",
+      coverImage: crag.coverImage?.id || null,
       isHidden: crag.isHidden || false,
     };
   } else {
+    // form type = 'new'
     defaultValues = {
       name: "",
       country: countriesWithAreas.find((c) => c.slug == "slovenija")?.id || "",
@@ -79,6 +82,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
       parkingCoordinates: "",
       approachTime: "",
       approachDescription: "",
+      coverImage: null,
       isHidden: false,
     };
   }
@@ -124,6 +128,8 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
   const [approachDescription, setApproachDescription] = useState(
     defaultValues.approachDescription
   );
+
+  const [coverImage, setCoverImage] = useState(defaultValues.coverImage);
   const [isHidden, setIsHidden] = useState(defaultValues.isHidden);
 
   const formDirty =
@@ -246,7 +252,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
       // parkingLat, parkingLon // TODO:
       approachTime: +approachTime || null,
       access: approachDescription || null,
-      // coverImageId: null, //TODO:
+      coverImageId: coverImage || null,
       isHidden: isHidden,
     };
 
@@ -546,8 +552,12 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
 
             {/* Cover image */}
             <div className="col-span-2">
-              <div>Naslovna fotografija</div>
-              <div className="mt-2 h-[68px] w-[52px] border border-neutral-300 rounded-lg"></div>
+              <CragCoverImageSelector
+                crag={crag || null}
+                value={coverImage}
+                onChange={setCoverImage}
+                disabled={loading}
+              />
             </div>
             {/* Visibility */}
             <div className="col-span-2">
