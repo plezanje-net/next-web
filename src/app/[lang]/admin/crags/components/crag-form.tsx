@@ -33,6 +33,8 @@ import { useRouter } from "next/navigation";
 import createCragAction from "../add/lib/create-crag-action";
 import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
 import CragCoverImageSelector from "./crag-cover-image-selector";
+import IconDelete from "@/components/ui/icons/delete";
+import DeleteCragDialog from "./delete-crag-dialog";
 
 type TCragFormProps = {
   formType: "edit" | "new";
@@ -189,6 +191,11 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     setCragCoordinatesError("");
   };
 
+  const [deleteCragDialogIsOpen, setDeleteCragDialogIsOpen] = useState(false);
+  const handleDeleteCragClick = () => {
+    setDeleteCragDialogIsOpen(true);
+  };
+
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -282,307 +289,337 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
   };
 
   return (
-    <div className="flex justify-center px-4 xs:px-8 mt-7">
-      <div className="w-full max-w-2xl">
-        <form onSubmit={handleOnSubmit}>
-          {/* Main grid for inputs layout */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6">
-            {/* Crag name */}
-            <div className="col-span-2 sm:col-span-1" ref={nameRef}>
-              <TextField
-                value={name}
-                onChange={handleNameChange}
-                label="Ime plezališča&nbsp;*"
-                errorMessage={nameError ? nameError : undefined}
-                disabled={loading}
-              />
-            </div>
+    <>
+      <div className="flex justify-center px-4 xs:px-8 mt-7">
+        <div className="w-full max-w-2xl">
+          <form onSubmit={handleOnSubmit}>
+            {/* Main grid for inputs layout */}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6">
+              {/* Crag name */}
+              <div className="col-span-2 sm:col-span-1" ref={nameRef}>
+                <TextField
+                  value={name}
+                  onChange={handleNameChange}
+                  label="Ime plezališča&nbsp;*"
+                  errorMessage={nameError ? nameError : undefined}
+                  disabled={loading}
+                />
+              </div>
 
-            {/* Country */}
-            <div className="col-span-2 sm:col-span-1 sm:col-start-1">
-              <Select
-                label="Država&nbsp;*"
-                value={country}
-                onChange={handleCountryChange}
-                disabled={loading}
-              >
-                {countriesWithAreas.map((country) => (
-                  <Option key={country.slug} value={country.id}>
-                    {country.name}
+              {/* Country */}
+              <div className="col-span-2 sm:col-span-1 sm:col-start-1">
+                <Select
+                  label="Država&nbsp;*"
+                  value={country}
+                  onChange={handleCountryChange}
+                  disabled={loading}
+                >
+                  {countriesWithAreas.map((country) => (
+                    <Option key={country.slug} value={country.id}>
+                      {country.name}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              {/* Area */}
+              <div className="col-span-2 sm:col-span-1">
+                <Select
+                  label="Področje"
+                  value={area}
+                  onChange={setArea}
+                  disabled={!areas?.length || loading}
+                  description={
+                    !areas?.length
+                      ? "V izbrani državi še ni odprtih področij."
+                      : undefined
+                  }
+                >
+                  {areas?.length
+                    ? areas.map((area) => (
+                        <Option key={area.slug} value={area.id}>
+                          {area.name}
+                        </Option>
+                      ))
+                    : [1, 2].map((_) => (
+                        <Option key={1} value="">
+                          {" "}
+                        </Option>
+                      ))}
+                </Select>
+              </div>
+
+              {/* Crag type */}
+              <div className="col-span-2 sm:col-span-1">
+                <Select
+                  label="Vrsta plezanja&nbsp;*"
+                  value={cragType}
+                  onChange={handleCragTypeChange}
+                  disabled={loading}
+                >
+                  <Option value="sport">
+                    športno / balvani / dolge športne
                   </Option>
-                ))}
-              </Select>
-            </div>
-            {/* Area */}
-            <div className="col-span-2 sm:col-span-1">
-              <Select
-                label="Področje"
-                value={area}
-                onChange={setArea}
-                disabled={!areas?.length || loading}
-                description={
-                  !areas?.length
-                    ? "V izbrani državi še ni odprtih področij."
-                    : undefined
-                }
+                  <Option value="alpine">alpinizem</Option>
+                </Select>
+              </div>
+              {/* Default grading system */}
+              <div className="col-span-2 sm:col-span-1">
+                <Select
+                  label="Privzeti sistem ocenjevanja&nbsp;*"
+                  value={gradingSystem}
+                  onChange={setGradingSystem}
+                  disabled={loading}
+                >
+                  {availableGradingSystems.map((gs) => (
+                    <Option key={gs.id} value={gs.id}>
+                      {gs.name}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+
+              {/* Crag coordinates */}
+              <div
+                className="col-span-2 sm:col-span-1"
+                ref={cragCoordinatesRef}
               >
-                {areas?.length
-                  ? areas.map((area) => (
-                      <Option key={area.slug} value={area.id}>
-                        {area.name}
-                      </Option>
-                    ))
-                  : [1, 2].map((_) => (
-                      <Option key={1} value="">
-                        {" "}
-                      </Option>
-                    ))}
-              </Select>
-            </div>
+                <CoordinatesInput
+                  label="Koordinate plezališča"
+                  value={cragCoordinates}
+                  onChange={handleCragCoordinatesChange}
+                  placeholder="45,56801, 13,86413"
+                  errorMessage={cragCoordinatesError}
+                  dialogTitle="Lokacija plezališča"
+                  dialogDescription="Označi lokacijo plezališča na zemljevidu."
+                  disabled={loading}
+                  // TODO: make default center, center of the country/area selected if available, or if parking already placed, make that the default center
+                  mapDefaultCenter={[46.119944, 14.815333]}
+                  mapZoom={8}
+                  markerType="wall"
+                />
+              </div>
 
-            {/* Crag type */}
-            <div className="col-span-2 sm:col-span-1">
-              <Select
-                label="Vrsta plezanja&nbsp;*"
-                value={cragType}
-                onChange={handleCragTypeChange}
-                disabled={loading}
+              {/* Horizontal divider */}
+              <div className="h-px bg-neutral-200 col-span-2"></div>
+
+              {/* Crag description */}
+              <div className="col-span-2">
+                <TextArea
+                  label="Opis plezališča"
+                  value={cragDescription}
+                  onChange={setCragDescription}
+                  disabled={loading}
+                />
+              </div>
+
+              {/* Wall angles */}
+              <div className="col-span-2">
+                <Selector
+                  label="Naklon stene"
+                  value={wallAngles}
+                  onChange={setWallAngles}
+                  // disabled={loading}
+                >
+                  <SelectorOption value={WallAngle.Slab}>
+                    <div className="flex flex-col items-center">
+                      <IconSlab size={IconSize.large} />
+                      <span>plošče</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={WallAngle.Vertical}>
+                    <div className="flex flex-col items-center">
+                      <IconVertical size={IconSize.large} />
+                      <span>vertikale</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={WallAngle.Overhang}>
+                    <div className="flex flex-col items-center">
+                      <IconOverhang size={IconSize.large} />
+                      <span>previsi</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={WallAngle.Roof}>
+                    <div className="flex flex-col items-center">
+                      <IconRoof size={IconSize.large} />
+                      <span>strehe</span>
+                    </div>
+                  </SelectorOption>
+                </Selector>
+              </div>
+
+              {/* Rainproof */}
+              <div className="col-span-2">
+                <RadioGroup
+                  label="Plezanje v dežju"
+                  value={rainproof}
+                  onChange={setRainproof}
+                  disabled={loading}
+                >
+                  <Radio value={"yes"}>je možno</Radio>
+                  <Radio value={"no"}>ni možno</Radio>
+                  <Radio value={"unknown"}>ni znano</Radio>
+                </RadioGroup>
+              </div>
+
+              {/* Horizontal divider */}
+              <div className="h-px bg-neutral-200 col-span-2"></div>
+
+              {/* Orientations */}
+              <div className="col-span-2 sm:col-span-1">
+                <Select
+                  multi
+                  value={orientations}
+                  onChange={setOrientations}
+                  label="Usmerjenost"
+                  disabled={loading}
+                >
+                  <Option value={Orientation.North}>sever</Option>
+                  <Option value={Orientation.Northeast}>severovzhod</Option>
+                  <Option value={Orientation.East}>vzhod</Option>
+                  <Option value={Orientation.Southeast}>jugovzhod</Option>
+                  <Option value={Orientation.South}>jug</Option>
+                  <Option value={Orientation.Southwest}>jugozahod</Option>
+                  <Option value={Orientation.West}>zahod</Option>
+                  <Option value={Orientation.Northwest}>severozahod</Option>
+                </Select>
+              </div>
+
+              {/* Seasons */}
+              <div className="col-span-2">
+                <Selector
+                  label="Sezona"
+                  value={seasons}
+                  onChange={setSeasons}
+                  // disabled={loading}
+                >
+                  <SelectorOption value={Season.Spring}>
+                    <div className="flex flex-col items-center">
+                      <IconSpring size={IconSize.large} />
+                      <span>pomlad</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={Season.Summer}>
+                    <div className="flex flex-col items-center">
+                      <IconSummer size={IconSize.large} />
+                      <span>poletje</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={Season.Autumn}>
+                    <div className="flex flex-col items-center">
+                      <IconAutumn size={IconSize.large} />
+                      <span>jesen</span>
+                    </div>
+                  </SelectorOption>
+                  <SelectorOption value={Season.Winter}>
+                    <div className="flex flex-col items-center">
+                      <IconWinter size={IconSize.large} />
+                      <span>zima</span>
+                    </div>
+                  </SelectorOption>
+                </Selector>
+              </div>
+
+              {/* Parking coordinates */}
+              <div
+                className="col-span-2 sm:col-span-1"
+                ref={parkingCoordinatesRef}
               >
-                <Option value="sport">športno / balvani / dolge športne</Option>
-                <Option value="alpine">alpinizem</Option>
-              </Select>
-            </div>
-            {/* Default grading system */}
-            <div className="col-span-2 sm:col-span-1">
-              <Select
-                label="Privzeti sistem ocenjevanja&nbsp;*"
-                value={gradingSystem}
-                onChange={setGradingSystem}
-                disabled={loading}
-              >
-                {availableGradingSystems.map((gs) => (
-                  <Option key={gs.id} value={gs.id}>
-                    {gs.name}
-                  </Option>
-                ))}
-              </Select>
-            </div>
+                <CoordinatesInput
+                  label="Koordinate parkirišča"
+                  value={parkingCoordinates}
+                  onChange={setParkingCoordinates}
+                  placeholder="45,56719, 13,86265"
+                  errorMessage={parkingCoordinatesError}
+                  dialogTitle="Lokacija parkirišča"
+                  dialogDescription="Označi lokacijo parkirišča na zemljevidu."
+                  disabled={loading}
+                  // TODO: make default center, center of the country/area selected if available, or if crag coords already set, make that the default center
+                  mapDefaultCenter={[46.119944, 14.815333]}
+                  mapZoom={8}
+                  markerType="wall"
+                />
+              </div>
+              {/* Approach time */}
+              <div className="col-span-2 sm:col-span-1">
+                <TextField
+                  type="natural"
+                  label="Čas dostopa"
+                  value={approachTime}
+                  onChange={setApproachTime}
+                  suffix={<span>min</span>}
+                  disabled={loading}
+                />
+              </div>
 
-            {/* Crag coordinates */}
-            <div className="col-span-2 sm:col-span-1" ref={cragCoordinatesRef}>
-              <CoordinatesInput
-                label="Koordinate plezališča"
-                value={cragCoordinates}
-                onChange={handleCragCoordinatesChange}
-                placeholder="45,56801, 13,86413"
-                errorMessage={cragCoordinatesError}
-                dialogTitle="Lokacija plezališča"
-                dialogDescription="Označi lokacijo plezališča na zemljevidu."
-                disabled={loading}
-                // TODO: make default center, center of the country/area selected if available, or if parking already placed, make that the default center
-                mapDefaultCenter={[46.119944, 14.815333]}
-                mapZoom={8}
-                markerType="wall"
-              />
+              {/* Approach description */}
+              <div className="col-span-2">
+                <TextArea
+                  label="Opis dostopa"
+                  value={approachDescription}
+                  onChange={setApproachDescription}
+                  disabled={loading}
+                />
+              </div>
+
+              {/* Horizontal divider */}
+              <div className="h-px bg-neutral-200 col-span-2"></div>
+
+              {/* Cover image */}
+              <div className="col-span-2">
+                <CragCoverImageSelector
+                  crag={crag || null}
+                  value={coverImage}
+                  onChange={setCoverImage}
+                  disabled={loading}
+                />
+              </div>
+              {/* Visibility */}
+              <div className="col-span-2">
+                <div className="mb-2">Vidnost</div>
+                <Checkbox
+                  label="Prikaži samo prijavljenim uporabnikom"
+                  checked={isHidden}
+                  onChange={setIsHidden}
+                  disabled={loading}
+                />
+              </div>
+
+              {/* Horizontal divider */}
+              <div className="h-px bg-neutral-200 col-span-2"></div>
+
+              {/* Delete and save actions */}
+              <div className="col-span-2 flex flex-wrap justify-between items-center gap-4">
+                {formType == "edit" ? (
+                  <Button
+                    variant="quaternary"
+                    disabled={loading}
+                    onClick={handleDeleteCragClick}
+                  >
+                    <span className="flex">
+                      <IconDelete />
+                      <span className="ml-2">Izbriši</span>
+                    </span>
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
+                <Button type="submit" loading={loading} disabled={!formDirty}>
+                  Shrani
+                </Button>
+              </div>
             </div>
-
-            {/* Horizontal divider */}
-            <div className="h-px bg-neutral-200 col-span-2"></div>
-
-            {/* Crag description */}
-            <div className="col-span-2">
-              <TextArea
-                label="Opis plezališča"
-                value={cragDescription}
-                onChange={setCragDescription}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Wall angles */}
-            <div className="col-span-2">
-              <Selector
-                label="Naklon stene"
-                value={wallAngles}
-                onChange={setWallAngles}
-                // disabled={loading}
-              >
-                <SelectorOption value={WallAngle.Slab}>
-                  <div className="flex flex-col items-center">
-                    <IconSlab size={IconSize.large} />
-                    <span>plošče</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={WallAngle.Vertical}>
-                  <div className="flex flex-col items-center">
-                    <IconVertical size={IconSize.large} />
-                    <span>vertikale</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={WallAngle.Overhang}>
-                  <div className="flex flex-col items-center">
-                    <IconOverhang size={IconSize.large} />
-                    <span>previsi</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={WallAngle.Roof}>
-                  <div className="flex flex-col items-center">
-                    <IconRoof size={IconSize.large} />
-                    <span>strehe</span>
-                  </div>
-                </SelectorOption>
-              </Selector>
-            </div>
-
-            {/* Rainproof */}
-            <div className="col-span-2">
-              <RadioGroup
-                label="Plezanje v dežju"
-                value={rainproof}
-                onChange={setRainproof}
-                disabled={loading}
-              >
-                <Radio value={"yes"}>je možno</Radio>
-                <Radio value={"no"}>ni možno</Radio>
-                <Radio value={"unknown"}>ni znano</Radio>
-              </RadioGroup>
-            </div>
-
-            {/* Horizontal divider */}
-            <div className="h-px bg-neutral-200 col-span-2"></div>
-
-            {/* Orientations */}
-            <div className="col-span-2 sm:col-span-1">
-              <Select
-                multi
-                value={orientations}
-                onChange={setOrientations}
-                label="Usmerjenost"
-                disabled={loading}
-              >
-                <Option value={Orientation.North}>sever</Option>
-                <Option value={Orientation.Northeast}>severovzhod</Option>
-                <Option value={Orientation.East}>vzhod</Option>
-                <Option value={Orientation.Southeast}>jugovzhod</Option>
-                <Option value={Orientation.South}>jug</Option>
-                <Option value={Orientation.Southwest}>jugozahod</Option>
-                <Option value={Orientation.West}>zahod</Option>
-                <Option value={Orientation.Northwest}>severozahod</Option>
-              </Select>
-            </div>
-
-            {/* Seasons */}
-            <div className="col-span-2">
-              <Selector
-                label="Sezona"
-                value={seasons}
-                onChange={setSeasons}
-                // disabled={loading}
-              >
-                <SelectorOption value={Season.Spring}>
-                  <div className="flex flex-col items-center">
-                    <IconSpring size={IconSize.large} />
-                    <span>pomlad</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={Season.Summer}>
-                  <div className="flex flex-col items-center">
-                    <IconSummer size={IconSize.large} />
-                    <span>poletje</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={Season.Autumn}>
-                  <div className="flex flex-col items-center">
-                    <IconAutumn size={IconSize.large} />
-                    <span>jesen</span>
-                  </div>
-                </SelectorOption>
-                <SelectorOption value={Season.Winter}>
-                  <div className="flex flex-col items-center">
-                    <IconWinter size={IconSize.large} />
-                    <span>zima</span>
-                  </div>
-                </SelectorOption>
-              </Selector>
-            </div>
-
-            {/* Parking coordinates */}
-            <div
-              className="col-span-2 sm:col-span-1"
-              ref={parkingCoordinatesRef}
-            >
-              <CoordinatesInput
-                label="Koordinate parkirišča"
-                value={parkingCoordinates}
-                onChange={setParkingCoordinates}
-                placeholder="45,56719, 13,86265"
-                errorMessage={parkingCoordinatesError}
-                dialogTitle="Lokacija parkirišča"
-                dialogDescription="Označi lokacijo parkirišča na zemljevidu."
-                disabled={loading}
-                // TODO: make default center, center of the country/area selected if available, or if crag coords already set, make that the default center
-                mapDefaultCenter={[46.119944, 14.815333]}
-                mapZoom={8}
-                markerType="wall"
-              />
-            </div>
-            {/* Approach time */}
-            <div className="col-span-2 sm:col-span-1">
-              <TextField
-                type="natural"
-                label="Čas dostopa"
-                value={approachTime}
-                onChange={setApproachTime}
-                suffix={<span>min</span>}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Approach description */}
-            <div className="col-span-2">
-              <TextArea
-                label="Opis dostopa"
-                value={approachDescription}
-                onChange={setApproachDescription}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Horizontal divider */}
-            <div className="h-px bg-neutral-200 col-span-2"></div>
-
-            {/* Cover image */}
-            <div className="col-span-2">
-              <CragCoverImageSelector
-                crag={crag || null}
-                value={coverImage}
-                onChange={setCoverImage}
-                disabled={loading}
-              />
-            </div>
-            {/* Visibility */}
-            <div className="col-span-2">
-              <div className="mb-2">Vidnost</div>
-              <Checkbox
-                label="Prikaži samo prijavljenim uporabnikom"
-                checked={isHidden}
-                onChange={setIsHidden}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Horizontal divider */}
-            <div className="h-px bg-neutral-200 col-span-2"></div>
-
-            <div className="col-span-2 text-right flex flex-wrap justify-end gap-4">
-              <Button type="submit" loading={loading} disabled={!formDirty}>
-                Shrani
-              </Button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+
+      {crag && (
+        <DeleteCragDialog
+          isOpen={deleteCragDialogIsOpen}
+          setIsOpen={setDeleteCragDialogIsOpen}
+          crag={crag}
+        />
+      )}
+    </>
   );
 }
 
