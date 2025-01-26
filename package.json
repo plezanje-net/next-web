@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start -p 3003",
     "lint": "next lint",
-    "prettier": "prettier -l \"src/**/*.{ts,tsx}\"  --log-level=error",
+    "prettier-check": "prettier -c \"src/**/*.{ts,tsx}\"",
     "codegen": "graphql-codegen",
     "gengradsys": "node ./scripts/generate-grading-systems.mjs"
   },

@@ -22,11 +22,4 @@ jobs:
 
     - name: Check for unformatted files
       run: |
-        OUTPUT=$(npm run prettier)
-        if [ -n "$OUTPUT" ]; then
-          echo "Prettier found unformatted files:"
-          echo "$OUTPUT"
-          exit 1
-        else
-          echo "All files are formatted correctly."
-        fi
+        npm run prettier-check
