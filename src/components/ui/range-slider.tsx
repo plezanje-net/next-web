@@ -18,7 +18,6 @@ interface SliderProps extends AriaSliderProps {
 
 function RangeSlider(props: SliderProps) {
   let trackRef = useRef(null);
-  
 
   let numberFormatter = useNumberFormatter(props.formatOptions);
   let state = useSliderState({ ...props, numberFormatter });
