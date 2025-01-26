@@ -1,4 +1,4 @@
-import { gradingSystems, TGradingSystemId } from "@/utils/grading-systems";
+import { gradingSystems, TGradingSystemId } from "../lib/grading-systems";
 
 type Props = {
   difficulty: number;

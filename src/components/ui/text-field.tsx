@@ -1,12 +1,18 @@
 import useForwardedRef from "@/hooks/useForwardedRef";
 import { Description, Field, Input, Label } from "@headlessui/react";
-import { ForwardedRef, ReactElement, forwardRef } from "react";
+import {
+  ForwardedRef,
+  ReactElement,
+  forwardRef,
+  KeyboardEvent,
+  ChangeEvent,
+} from "react";
 import Button from "./button";
 
-type TInputProps = {
+type TTextFieldProps = {
   name?: string;
   value: string;
-  type?: string;
+  type?: "text" | "number" | "password" | "natural";
   onChange: (value: string) => void;
   label?: string;
   placeholder?: string;
@@ -16,6 +22,7 @@ type TInputProps = {
   prefix?: ReactElement;
   suffix?: ReactElement;
   onBlur?: () => void;
+  autoFocus?: boolean;
 };
 
 const TextField = forwardRef(function TextField(
@@ -32,9 +39,12 @@ const TextField = forwardRef(function TextField(
     prefix,
     suffix,
     onBlur,
-  }: TInputProps,
+    autoFocus,
+  }: TTextFieldProps,
   forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
+  const inputType = type == "natural" ? "number" : type;
+
   const inputRef = useForwardedRef(forwardedRef);
 
   const focusInput = () => {
@@ -43,6 +53,18 @@ const TextField = forwardRef(function TextField(
 
   const buttonPrefix = prefix?.type === Button;
   const buttonSuffix = suffix?.type === Button;
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (type == "natural") {
+      if (e.key == "." || e.key == "," || e.key == "-" || e.key == "e") {
+        e.preventDefault();
+      }
+    }
+  };
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
 
   return (
     <Field disabled={disabled}>
@@ -70,15 +92,18 @@ const TextField = forwardRef(function TextField(
         <Input
           ref={inputRef}
           onBlur={onBlur}
-          type={type}
+          type={inputType}
           name={name}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={`flex-1 outline-none min-w-0 rounded-lg w-full py-2 placeholder:text-neutral-400
             ${prefix ? (buttonPrefix ? "pl-1" : "pl-2") : "pl-4"}
             ${suffix ? (buttonSuffix ? "pr-1" : "pr-2") : "pr-4"}
-          `}
+            `}
+          min={type == "natural" ? "0" : undefined}
+          onChange={handleOnChange}
+          onKeyDown={handleKeyDown}
+          autoFocus={autoFocus}
         />
 
         {suffix && (
@@ -97,6 +122,7 @@ const TextField = forwardRef(function TextField(
 });
 
 export default TextField;
+export type { TTextFieldProps };
 
 /* 
 TODO:

@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import { CragRoutesContext } from "./crag-routes";
 import useIsVisible from "@/hooks/useIsVisible";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../../../lib/text-helpers";
 import Button from "@/components/ui/button";
 import LogDialog from "@/components/log-dialog/log-dialog";
 

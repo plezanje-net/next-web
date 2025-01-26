@@ -26,6 +26,9 @@ function IconsPage() {
         large: readFileSync(`./src/components/ui/icons/${file}`)
           .toString()
           .includes("IconSize.large"),
+        xl: readFileSync(`./src/components/ui/icons/${file}`)
+          .toString()
+          .includes("IconSize.xl"),
       },
     }));
 
@@ -33,10 +36,13 @@ function IconsPage() {
     <div className="m-8">
       <h3>Icons list</h3>
 
-      <div className="mt-14 grid grid-cols-3 gap-4">
+      <div className="mt-14 grid grid-cols-4 gap-4">
         {iconComponents.map((Icon, index) => (
           <>
-            {!Icon.sizes.small && !Icon.sizes.regular && !Icon.sizes.large ? (
+            {!Icon.sizes.small &&
+            !Icon.sizes.regular &&
+            !Icon.sizes.large &&
+            !Icon.sizes.xl ? (
               <>
                 <div></div>
                 <div
@@ -49,12 +55,13 @@ function IconsPage() {
                   <div>{Icon.name}</div>
                 </div>
                 <div></div>
+                <div></div>
               </>
             ) : (
               <>
                 {Icon.sizes.small ? (
                   <div
-                    key={index}
+                    key={`${index}-small`}
                     className="flex w-32 flex-col items-center pb-6 text-center"
                   >
                     <div className="inline-block">
@@ -68,7 +75,7 @@ function IconsPage() {
 
                 {Icon.sizes.regular ? (
                   <div
-                    key={index}
+                    key={`${index}-regular`}
                     className="flex w-32 flex-col items-center pb-6 text-center"
                   >
                     <div className="inline-block">
@@ -82,13 +89,27 @@ function IconsPage() {
 
                 {Icon.sizes.large ? (
                   <div
-                    key={index}
+                    key={`${index}-large`}
                     className="flex w-32 flex-col items-center pb-6 text-center"
                   >
                     <div className="inline-block">
                       <Icon.component size={IconSize.large} />
                     </div>
                     <div>{Icon.name}, large</div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+
+                {Icon.sizes.xl ? (
+                  <div
+                    key={`${index}-xl`}
+                    className="flex w-32 flex-col items-center pb-6 text-center"
+                  >
+                    <div className="inline-block">
+                      <Icon.component size={IconSize.xl} />
+                    </div>
+                    <div>{Icon.name}, xl</div>
                   </div>
                 ) : (
                   <div></div>
