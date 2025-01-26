@@ -115,15 +115,12 @@ function DatePicker({
   const monthInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
 
-  const value: TDate = useMemo(
-    () => {
-      const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
-      return inputValue
+  const value: TDate = useMemo(() => {
+    const [year, month, day] = inputValue?.split("-") ?? ["llll", "mm", "dd"];
+    return inputValue
       ? { day: +day, month: +month, year: +year }
-      : { day: "dd", month: "mm", year: "llll" }
-    },
-    [inputValue]
-  );
+      : { day: "dd", month: "mm", year: "llll" };
+  }, [inputValue]);
 
   const handleChange = (date: TDate) => {
     onChange(
@@ -131,7 +128,7 @@ function DatePicker({
         ? null
         : `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
     );
-  }
+  };
 
   const today = dayjs();
 
@@ -511,7 +508,7 @@ function DatePicker({
           </PopoverButton>
           <PopoverPanel
             anchor="bottom end"
-            className="[--anchor-offset:4px] [--anchor-gap:12px]"
+            className="[--anchor-offset:4px] [--anchor-gap:13px]"
             focus={true}
           >
             {({ close }) => (
