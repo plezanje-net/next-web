@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start -p 3003",
     "lint": "next lint",
+    "prettier-check": "prettier -c \"src/**/*.{ts,tsx}\"",
     "codegen": "graphql-codegen",
     "gengradsys": "node ./scripts/generate-grading-systems.mjs"
   },
@@ -53,7 +54,8 @@
     "autoprefixer": "^10.4.19",
     "cross-env": "^7.0.3",
     "postcss": "^8.4.38",
-    "prettier-plugin-tailwindcss": "^0.5.14",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.2.4"
   }
 }
