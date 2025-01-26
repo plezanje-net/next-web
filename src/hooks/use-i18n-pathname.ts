@@ -1,5 +1,5 @@
 import { usePathname, useParams } from "next/navigation";
-import * as rewrites from "../../rewrites.json";
+import * as rewrites from "../rewrites.json";
 
 interface I18nPathname {
   test: (urlPart: string[]) => boolean;

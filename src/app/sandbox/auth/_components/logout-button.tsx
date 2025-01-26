@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import logoutAction from "./logout-action";
 

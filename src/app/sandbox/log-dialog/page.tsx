@@ -3,7 +3,7 @@
 import {
   LogRoutesProvider,
   TLogRoute,
-} from "@/components/log-dialog/log-routes-context";
+} from "@/components/log-dialog/lib/log-routes-context";
 import LogDialog from "@/components/log-dialog/log-dialog";
 import Button from "@/components/ui/button";
 import { useState } from "react";

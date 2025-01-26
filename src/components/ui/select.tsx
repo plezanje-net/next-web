@@ -1,4 +1,6 @@
 import {
+  Description,
+  Field,
   Label,
   Listbox,
   ListboxButton,
@@ -45,6 +47,7 @@ type SelectProps = {
   children: ReactElement<OptionProps>[]; // all of the select's options
   label?: string;
   placeholder?: string;
+  description?: string;
   multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
@@ -57,6 +60,7 @@ function Select({
   children,
   label,
   placeholder,
+  description,
   multi,
   customTrigger,
   disabled,
@@ -111,6 +115,7 @@ function Select({
           disabled={disabled}
           value={value}
           placeholder={placeholder}
+          description={description}
           constructSelectedLabel={constructSelectedLabel}
           open={open}
           childrenValuesToIndexes={childrenValuesToIndexes}
@@ -137,6 +142,7 @@ function InnerListBox({
   disabled,
   value,
   placeholder,
+  description,
   constructSelectedLabel,
   open,
   childrenValuesToIndexes,
@@ -153,7 +159,7 @@ function InnerListBox({
   }, [open, childrenValuesToIndexes, initialScrollToValue, value]);
 
   return (
-    <>
+    <Field>
       {label && <Label>{label}</Label>}
       {customTrigger ? (
         <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
@@ -183,15 +189,19 @@ function InnerListBox({
         </ListboxButton>
       )}
 
+      {description && (
+        <Description className="text-sm mt-1">{description}</Description>
+      )}
+
       <ListboxOptions
         anchor="bottom start"
-        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100`}
+        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 z-10`}
       >
         <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
           {children}
         </div>
       </ListboxOptions>
-    </>
+    </Field>
   );
 }
 
