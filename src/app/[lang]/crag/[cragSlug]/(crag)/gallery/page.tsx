@@ -14,7 +14,7 @@ async function CragGalleryPage({ params }: { params: TCragGalleryPageParams }) {
   });
 
   const images = data.cragBySlug.images as Image[];
-  const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
+  const imagesBaseUrl = `${process.env.NEXT_PUBLIC_IMAGES_BASEURL}`;
 
   return (
     <div className="mx-auto mt-18 px-4 2xl:container xs:px-8">

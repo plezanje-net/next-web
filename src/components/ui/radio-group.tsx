@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { ReactNode } from "react";
 import {
   Description,
   Label,
@@ -9,12 +9,12 @@ import {
 type TRadioGroupProps = {
   name?: string;
   value?: string;
-  onChange?: Dispatch<SetStateAction<string | undefined>>;
+  onChange?: (value: string) => void;
   label?: string;
   description?: string;
   defaultValue?: string;
   disabled?: boolean;
-  error?: string;
+  errorMessage?: string;
   inline?: boolean;
   children: ReactNode[];
 };
@@ -27,7 +27,7 @@ function RadioGroup({
   description,
   defaultValue,
   disabled,
-  error,
+  errorMessage,
   inline,
   children,
 }: TRadioGroupProps) {
@@ -49,11 +49,13 @@ function RadioGroup({
         {children}
       </div>
 
-      {description && (
+      {description && !errorMessage && (
         <Description className="mt-1 text-sm">{description}</Description>
       )}
 
-      {error && <div className="mt-1 text-sm text-red-500">{error}</div>}
+      {errorMessage && (
+        <div className="mt-1 text-sm text-red-500">{errorMessage}</div>
+      )}
     </RadioGroupHUI>
   );
 }
@@ -78,38 +80,7 @@ function Radio({ value, disabled, children }: TRadioProps) {
             aria-hidden="true"
             className={`rounded-lg ${focus ? "ring ring-blue-100" : ""}`}
           >
-            {/* radio circle (outer) */}
-            <div
-              className={`flex h-4 w-4 items-center justify-center rounded-lg border 
-                          ${
-                            !disabled && !checked
-                              ? "border-neutral-400 group-active:border-neutral-500"
-                              : ""
-                          }             
-                          ${
-                            !disabled && checked
-                              ? "border-blue-500 group-active:border-blue-600"
-                              : ""
-                          }                                                 
-                          ${
-                            disabled && !checked
-                              ? "border-neutral-300 bg-neutral-100"
-                              : ""
-                          }
-                          ${disabled && checked ? "border-neutral-300" : ""}`}
-            >
-              {/* radio dot (inner) */}
-              {checked && (
-                <div
-                  className={`h-2 w-2 rounded
-                              ${
-                                !disabled
-                                  ? "bg-blue-500 group-active:bg-blue-600"
-                                  : "bg-neutral-300"
-                              } `}
-                ></div>
-              )}
-            </div>
+            <RadioCircle checked={checked} disabled={disabled} />
           </div>
 
           <span className={`ml-2 ${disabled ? "text-neutral-400" : ""}`}>
@@ -121,4 +92,44 @@ function Radio({ value, disabled, children }: TRadioProps) {
   );
 }
 
-export { RadioGroup, Radio };
+type TRadioCircleProps = {
+  checked: boolean;
+  disabled: boolean;
+};
+
+function RadioCircle({ checked, disabled }: TRadioCircleProps) {
+  return (
+    <div
+      // radio circle (outer)
+      className={`flex h-4 w-4 items-center justify-center rounded-lg border 
+               ${
+                 !disabled && !checked
+                   ? "border-neutral-400 group-active:border-neutral-500"
+                   : ""
+               }             
+               ${
+                 !disabled && checked
+                   ? "border-blue-500 group-active:border-blue-600"
+                   : ""
+               }                                                 
+               ${
+                 disabled && !checked ? "border-neutral-300 bg-neutral-100" : ""
+               }
+               ${disabled && checked ? "border-neutral-300" : ""}`}
+    >
+      {checked && (
+        <div
+          // radio dot (inner)
+          className={`h-2 w-2 rounded
+                   ${
+                     !disabled
+                       ? "bg-blue-500 group-active:bg-blue-600"
+                       : "bg-neutral-300"
+                   } `}
+        ></div>
+      )}
+    </div>
+  );
+}
+
+export { RadioGroup, Radio, RadioCircle };
