@@ -3,12 +3,14 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Fragment, ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import "./map.css";
+import MapMarker from "./map-marker";
+import { TLazyMapMarkerProps } from "./lazy-map-marker";
 
 type TLazyMapProps = {
   children?: ReactNode;
-  markers?: ReactElement[];
+  markersData?: TLazyMapMarkerProps[];
   className?: string;
   center?: [number, number];
   zoom?: number;
@@ -18,7 +20,7 @@ type TLazyMapProps = {
 
 function LazyMap({
   children,
-  markers,
+  markersData,
   className,
   center,
   zoom,
@@ -38,10 +40,9 @@ function LazyMap({
     boundsOptions?: FitBoundsOptions;
     zoom?: number;
   } = {};
-  if (autoBounds && markers) {
-    boundsOrCenterAndZoom.bounds = markers.map(
-      (marker) => marker.props.position
-    );
+
+  if (autoBounds && markersData) {
+    boundsOrCenterAndZoom.bounds = markersData.map(({ position }) => position);
     boundsOrCenterAndZoom.boundsOptions = { padding: [30, 60] };
   } else {
     boundsOrCenterAndZoom.center = center;
@@ -59,8 +60,13 @@ function LazyMap({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {markers?.map((marker, index) => (
-        <Fragment key={index}>{marker}</Fragment>
+      {markersData?.map(({ type, position, popupContent }, index) => (
+        <MapMarker
+          key={index}
+          type={type}
+          position={position}
+          popupContent={popupContent}
+        />
       ))}
 
       {children}

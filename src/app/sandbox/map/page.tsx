@@ -11,19 +11,17 @@ function MapPage() {
         className="rounded-lg"
         center={[45.567706816120364, 13.863458632993037]}
         zoom={17}
-        markers={[
-          <MapMarker
-            key={0}
-            type="parking"
-            position={[45.567196, 13.862597]}
-            popupContent={"Parkirišče Mišja peč"}
-          />,
-          <MapMarker
-            key={1}
-            type="wall"
-            position={[45.568112, 13.863984]}
-            popupContent="Plezališče Mišja peč"
-          />,
+        markersData={[
+          {
+            type: "parking",
+            position: [45.567196, 13.862597],
+            popupContent: "Parkirišče Mišja peč",
+          },
+          {
+            type: "wall",
+            position: [45.568112, 13.863984],
+            popupContent: "Plezališče Mišja peč",
+          },
         ]}
       >
         <MapEventDemo />

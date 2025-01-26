@@ -8,6 +8,7 @@ function MapEventDemo() {
   const [position, setPosition] = useState<[number, number] | undefined>();
   const map = useMapEvent("click", (e) => {
     setPosition([e.latlng.lat, e.latlng.lng]);
+    console.log(e.latlng);
   });
 
   return (
