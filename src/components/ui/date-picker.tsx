@@ -507,10 +507,8 @@ function DatePicker({
             <IconCalendar />
           </PopoverButton>
           <PopoverPanel
-            modal={false}
             anchor="bottom end"
             className="[--anchor-offset:4px] [--anchor-gap:13px]"
-            focus={true}
           >
             {({ close }) => (
               <div className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative">
