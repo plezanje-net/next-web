@@ -16,7 +16,6 @@ interface SliderProps extends AriaSliderProps {
   valueToLabelMap?: Map<number, string>;
 }
 
-
 function RangeSlider(props: SliderProps) {
   let trackRef = useRef(null);
 
