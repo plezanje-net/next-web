@@ -1,11 +1,10 @@
 "use client";
-import { useState } from "react";
+
 import Combobox from "@/components/ui/combobox";
 import populateCragsAction from "./server-actions/populate-crags-action";
 import populateRoutesAction from "./server-actions/populate-routes-action";
 
 function ComboboxPage() {
-
   async function populateCrags(text: string) {
     if (text === "") {
       return [];
@@ -28,7 +27,7 @@ function ComboboxPage() {
     }));
   }
 
-  function handleChange(a) {
+  function handleChange(a: string | null) {
     console.log("handleChange", a);
   }
 
