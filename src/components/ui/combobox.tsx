@@ -93,7 +93,7 @@ const Combobox = forwardRef(function Combobox(
           <ComboboxOptions
             modal={false}
             anchor="bottom start"
-            className="[--anchor-gap:8px] min-w-[calc(var(--input-width)+40px)] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100"
+            className="[--anchor-gap:9px] min-w-[calc(var(--input-width)+40px)] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100"
           >
             {options.map((option: TComboboxValue) => (
               <ComboboxOption
