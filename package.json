@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start -p 3003",
     "lint": "next lint",
+    "prettier": "npx prettier -l \"src/**/*.{ts,tsx}\"",
     "codegen": "graphql-codegen",
     "gengradsys": "node ./scripts/generate-grading-systems.mjs"
   },

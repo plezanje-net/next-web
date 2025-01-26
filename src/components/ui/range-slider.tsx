@@ -16,6 +16,7 @@ interface SliderProps extends AriaSliderProps {
   valueToLabelMap?: Map<number, string>;
 }
 
+
 function RangeSlider(props: SliderProps) {
   let trackRef = useRef(null);
 
@@ -128,8 +129,8 @@ function Thumb(props: SliderThumbProps) {
             state.isDisabled
               ? "bg-neutral-300"
               : isDragging
-              ? "bg-blue-600"
-              : "bg-blue-500"
+                ? "bg-blue-600"
+                : "bg-blue-500"
           }`}
       >
         <VisuallyHidden>
