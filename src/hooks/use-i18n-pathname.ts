@@ -3,6 +3,7 @@ import * as rewrites from "../rewrites.json";
 
 interface I18nPathname {
   test: (urlPart: string[]) => boolean;
+  pathname: string;
 }
 
 interface Rewrites {
@@ -41,5 +42,6 @@ export function useI18nPathname(): I18nPathname {
 
   return {
     test,
+    pathname,
   };
 }
