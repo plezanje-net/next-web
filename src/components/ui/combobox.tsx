@@ -21,7 +21,6 @@ type TComboboxProps = {
   description?: string;
   errorMessage?: string;
   disabled?: boolean;
-  onBlur?: () => void;
   populate: (text: string) => Promise<TComboboxValue[]>;
 };
 
@@ -31,14 +30,7 @@ type TComboboxValue = {
 };
 
 const Combobox = forwardRef(function Combobox(
-  {
-    value,
-    onChange,
-    label,
-    errorMessage,
-    disabled,
-    populate,
-  }: TComboboxProps,
+  { value, onChange, label, errorMessage, disabled, populate }: TComboboxProps,
   forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
   const inputRef = useForwardedRef(forwardedRef);
@@ -81,7 +73,7 @@ const Combobox = forwardRef(function Combobox(
           }
           ${
             disabled ? "border-neutral-300 bg-neutral-100 text-neutral-400" : ""
-          }${label ? " mt-2" : ""}`}
+          }`}
         >
           <ComboboxInput
             ref={inputRef}
@@ -99,8 +91,9 @@ const Combobox = forwardRef(function Combobox(
         </div>
         {options.length > 0 && (
           <ComboboxOptions
+            modal={false}
             anchor="bottom start"
-            className="[--anchor-gap:8px] min-w-[calc(var(--input-width)+40px)] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100"
+            className="[--anchor-gap:9px] min-w-[calc(var(--input-width)+40px)] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100"
           >
             {options.map((option: TComboboxValue) => (
               <ComboboxOption

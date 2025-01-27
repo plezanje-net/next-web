@@ -1,64 +1,49 @@
 "use client";
-import Combobox from "@/components/ui/combobox";
-import populateCragsAction from "./server-actions/populate-crags-action";
-import populateRoutesAction from "./server-actions/populate-routes-action";
 
-function ComboboxPage() {
-  async function populateCrags(text: string) {
-    if (text === "") {
-      return [];
-    }
-    const crags = await populateCragsAction(text);
-    return crags.map((crag) => ({
-      value: crag.id,
-      name: crag.name,
-    }));
-  }
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useState } from "react";
 
-  async function populateRoutes(text: string) {
-    if (text === "") {
-      return [];
-    }
-    const routes = await populateRoutesAction(text);
-    return routes.map((route) => ({
-      value: route.id,
-      name: `${route.name}, ${route.crag.name}`,
-    }));
-  }
-
-  function handleChange(a: string | null) {
-    console.log("handleChange", a);
-  }
+export default function PopoverTestPage() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="m-8">
-      <h3>Combobox demo</h3>
-
-      <div className="mt-14 w-80">
-        <h5>Crag finder</h5>
-        <div className="mt-4">
-          <Combobox
-            value={{
-              value: "2ab5496f-df5a-47ae-a0d4-ec53ec81c69f",
-              name: "Kotečnik",
-            }}
-            onChange={handleChange}
-            populate={populateCrags}
-          />
-        </div>
-      </div>
-      <div className="mt-14 w-80">
-        <h5>Route finder</h5>
-        <div className="mt-4">
-          <Combobox
-            value={null}
-            onChange={handleChange}
-            populate={populateRoutes}
-          />
-        </div>
+    <div>
+      <div className="mb-10">
+        For general hui popover testing. Can delete later...
       </div>
 
-      <div className="mt-14 w-80">
+      <Popover className="relative">
+        <PopoverButton
+          onClick={(e) => {
+            console.log("open it");
+            // e.preventDefault();
+            setIsOpen(!isOpen);
+          }}
+        >
+          Solutions
+        </PopoverButton>
+        {isOpen && (
+          <PopoverPanel
+            anchor="bottom"
+            className="flex flex-col focus:bg-blue-50"
+            // focus={true}
+            static
+          >
+            <a
+              className="focus:text-red-500 outline-none"
+              tabIndex={0}
+              href="/analytics"
+            >
+              Analytics
+            </a>
+            <a href="/engagement">Engagement</a>
+            <a href="/security">Security</a>
+            <a href="/integrations">Integrations</a>
+          </PopoverPanel>
+        )}
+      </Popover>
+
+      <div className="mt-14 w-80 mx-auto">
         Some ipsum to get scrollbar
         <br />
         Lorem ipsum odor amet, consectetuer adipiscing elit. Fames massa fames
@@ -100,5 +85,3 @@ function ComboboxPage() {
     </div>
   );
 }
-
-export default ComboboxPage;

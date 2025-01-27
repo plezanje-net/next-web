@@ -1,7 +1,7 @@
 "use server";
 
 import { gql } from "urql/core";
-import { ComboboxPopulateCragsDocument, ComboboxPopulateRoutesDocument, Route } from "@/graphql/generated";
+import { ComboboxPopulateRoutesDocument, Route } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 
 async function populateRoutesAction(query: string): Promise<Route[]> {

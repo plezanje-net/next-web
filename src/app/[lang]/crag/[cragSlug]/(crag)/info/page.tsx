@@ -23,7 +23,7 @@ import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
-import MapMarker from "@/components/map/map-marker";
+import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -132,25 +132,20 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     minimumFractionDigits: 5,
   });
 
-  // Construct array of all parkings and walls markers
-  const markers = Object.entries(parkings).map(
-    ([id, { lat, lon, sectors }]) => (
-      <MapMarker
-        key={id}
-        type="parking"
-        position={[lat, lon]}
-        popupContent={<ParkingMarkerPopupContent sectors={sectors} />}
-      />
-    )
+  // Construct array of all parkings and walls markers data
+  const markersData: TLazyMapMarkerProps[] = Object.entries(parkings).map(
+    ([_id, { lat, lon, sectors }]) => ({
+      type: "parking",
+      position: [lat, lon],
+      popupContent: <ParkingMarkerPopupContent sectors={sectors} />,
+    })
   );
   if (crag.lat && crag.lon) {
-    markers.push(
-      <MapMarker
-        type="wall"
-        position={[crag.lat, crag.lon]}
-        popupContent={<div>{`Plezališče ${crag.name}`}</div>}
-      />
-    );
+    markersData.push({
+      type: "wall",
+      position: [crag.lat, crag.lon],
+      popupContent: <div>{`Plezališče ${crag.name}`}</div>,
+    });
   }
 
   return (
@@ -331,8 +326,12 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
 
         {/* Map */}
         <div className="md:col-span-2">
-          {markers.length > 0 && (
-            <Map autoBounds markers={markers} className="xs:rounded-lg" />
+          {markersData.length > 0 && (
+            <Map
+              autoBounds
+              markersData={markersData}
+              className="xs:rounded-lg"
+            />
           )}
         </div>
       </div>
