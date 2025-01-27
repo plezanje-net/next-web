@@ -1,14 +1,6 @@
 "use client";
 import { useState } from "react";
 import Filter, { TAscentListFilter } from "./filter";
-// import Button from "@/components/ui/button";
-// import IconClose from "@/components/ui/icons/close";
-// import IconMore from "@/components/ui/icons/more";
-// import IconSearch from "@/components/ui/icons/search";
-// import TextField from "@/components/ui/text-field";
-// import { useRef, useState } from "react";
-// import ShowMap from "./show-map";
-// import ToggleFiltersPane from "./toggle-filters-pane";
 import SelectColumns from "./select-columns";
 import Sort from "./sort";
 

@@ -5,9 +5,9 @@
     "/{crag}/:cragSlug/{comments}",
     "/{crag}/:cragSlug/{gallery}",
     "/{crag}/:cragSlug*",
+    "/{climbing-log}",
     "/{climbing-log}/{calendar}",
     "/{climbing-log}/{calendar}/:date",
-    "/{climbing-log}/{ascents}",
     "/{climbing-log}/{statistics}"
   ],
   "translations": {
@@ -20,7 +20,6 @@
       "gallery": "galerija",
       "climbing-log": "plezalni-dnevnik",
       "calendar": "koledar",
-      "ascents": "vzponi",
       "statistics": "statistika"
     },
     "en": {
@@ -32,7 +31,6 @@
       "gallery": "gallery",
       "climbing-log": "climbing-log",
       "calendar": "calendar",
-      "ascents": "ascents",
       "statistics": "statistics"
     }
   },

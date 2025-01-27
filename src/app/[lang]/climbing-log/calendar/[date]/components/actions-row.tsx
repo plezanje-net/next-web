@@ -9,6 +9,7 @@ import locale from "dayjs/locale/sl";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { capitalizeFirstLetter } from "@/lib/text-helpers";
 
 type TActionsRowProps = {
   date: string;
@@ -29,10 +30,6 @@ function ActionsRow({ date }: TActionsRowProps) {
   function handlePrevDay() {
     const prevDay = dayjs(date).subtract(1, "day").format("YYYY-MM-DD");
     router.push(`/plezalni-dnevnik/koledar/${prevDay}`);
-  }
-
-  function capitalizeFirstLetter(text: string) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   dayjs.locale(locale);

@@ -31,7 +31,7 @@ function Header() {
     },
     {
       label: "Plezalni dnevnik",
-      href: "/plezalni-dnevnik/vzponi",
+      href: "/plezalni-dnevnik",
       isActive: false,
     },
   ];
