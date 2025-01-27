@@ -514,6 +514,7 @@ function DatePicker({
             <IconCalendar />
           </PopoverButton>
           <PopoverPanel
+            modal={false}
             anchor="bottom end"
             className="[--anchor-offset:4px] [--anchor-gap:13px]"
           >
