@@ -4,7 +4,10 @@ import { gql } from "urql/core";
 import { ComboboxPopulateRoutesDocument, Route } from "@/graphql/generated";
 import urqlServer from "@/graphql/urql-server";
 
-async function populateRoutesAction(query: string, cragId?: string): Promise<Route[]> {
+async function populateRoutesAction(
+  query: string,
+  cragId?: string
+): Promise<Route[]> {
   const result = await urqlServer().query(ComboboxPopulateRoutesDocument, {
     input: {
       query,

@@ -11,7 +11,12 @@ type TActivityTypeProps = {
   setCustomType: (v: string | null) => void;
 };
 
-function SelectActivityType({ type, setType, customType, setCustomType }: TActivityTypeProps) {
+function SelectActivityType({
+  type,
+  setType,
+  customType,
+  setCustomType,
+}: TActivityTypeProps) {
   const acitivtyTypes = [
     "crag",
     "climbingGym",
@@ -20,7 +25,7 @@ function SelectActivityType({ type, setType, customType, setCustomType }: TActiv
     // "iceFall",
     "other",
   ];
-  
+
   function handleTypeChange(value: string) {
     setType(value);
     if (value != "other") {
@@ -48,15 +53,27 @@ function SelectActivityType({ type, setType, customType, setCustomType }: TActiv
             <IconHint />
           </div>
           <div>
-          Za vnos aktivnosti v skali uporabi stran <Link variant="primary" href="/plezalisca">plezališča</Link>, kjer najprej
-          odkljukaš preplezane smeri. <br />
-          <br />
-          Če plezališča še ni v naši bazi, ga lahko <Link variant="primary" href="/plezalisca">plezališča</Link>.
+            Za vnos aktivnosti v skali uporabi stran{" "}
+            <Link variant="primary" href="/plezalisca">
+              plezališča
+            </Link>
+            , kjer najprej odkljukaš preplezane smeri. <br />
+            <br />
+            Če plezališča še ni v naši bazi, ga lahko{" "}
+            <Link variant="primary" href="/plezalisca">
+              plezališča
+            </Link>
+            .
           </div>
         </div>
       )}
       {type == "other" && (
-        <TextField value={customType ?? ""} placeholder="vnesi vrsto aktivnosti" onChange={setCustomType} description="Ob naslednjem vnosu bo možnost na voljo v spustnem seznamu." />
+        <TextField
+          value={customType ?? ""}
+          placeholder="vnesi vrsto aktivnosti"
+          onChange={setCustomType}
+          description="Ob naslednjem vnosu bo možnost na voljo v spustnem seznamu."
+        />
       )}
     </div>
   );

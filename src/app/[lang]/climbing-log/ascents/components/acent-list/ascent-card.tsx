@@ -43,7 +43,13 @@ function AscentCard({ ascent }: TAscentCardProps) {
           {showDifficulty && ascent.route.difficulty && (
             <Grade difficulty={ascent.route.difficulty} />
           )}
-          {showAscentType && <AscentType type={ascent.ascentType} compact={true} iconSize={IconSize.small} />}
+          {showAscentType && (
+            <AscentType
+              type={ascent.ascentType}
+              compact={true}
+              iconSize={IconSize.small}
+            />
+          )}
         </div>
       )}
       {showCrag && <div>{ascent.route.crag.name}</div>}

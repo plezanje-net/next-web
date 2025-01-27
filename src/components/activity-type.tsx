@@ -35,7 +35,11 @@ function ActivityType({ activityType, variant, iconSize }: TActivityTypeProps) {
     </>
   );
 
-  return variant == "full" ? <div className="flex items-center gap-1">{inner}</div> : inner;
+  return variant == "full" ? (
+    <div className="flex items-center gap-1">{inner}</div>
+  ) : (
+    inner
+  );
 }
 
 export default ActivityType;

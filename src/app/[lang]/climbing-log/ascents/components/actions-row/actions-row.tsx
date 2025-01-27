@@ -17,10 +17,8 @@ type TActionsRowProps = {
 };
 
 function ActionsRow({ filterValues }: TActionsRowProps) {
-
   const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState(false);
 
-  
   return (
     <>
       {/* Actions row */}
@@ -31,13 +29,14 @@ function ActionsRow({ filterValues }: TActionsRowProps) {
         for >=md: filter pane is always visible, filter icon dissapears
       */}
 
-      <div
-        className="x-auto mx-auto rotate-0 items-center border-b border-b-neutral-200 px-4 2xl:container xs:px-8 sm:justify-between md:border-b-0 flex justify-center"
-      >
+      <div className="x-auto mx-auto rotate-0 items-center border-b border-b-neutral-200 px-4 2xl:container xs:px-8 sm:justify-between md:border-b-0 flex justify-center">
         <div className="flex items-center justify-center py-4 sm:py-5">
-
           <div>
-            <Filter filterValues={filterValues} isOpen={isFiltersDialogOpen} setIsOpen={setIsFiltersDialogOpen} />
+            <Filter
+              filterValues={filterValues}
+              isOpen={isFiltersDialogOpen}
+              setIsOpen={setIsFiltersDialogOpen}
+            />
           </div>
 
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>

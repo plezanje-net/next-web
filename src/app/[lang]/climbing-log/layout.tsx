@@ -11,7 +11,6 @@ interface Props {
 }
 
 async function CragLayout({ children, params: { cragSlug } }: Props) {
-
   const crumbs = [
     {
       label: "Plezanje.net",

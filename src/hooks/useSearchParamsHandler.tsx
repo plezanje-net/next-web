@@ -11,7 +11,6 @@ function useSearchParamsHandler(): TAdvancedSearchParams {
   const router = useRouter();
   const pathname = usePathname();
 
-
   function updateSearchParams(updateParams: TSearchParams) {
     const newQuery: Record<string, string | string[] | undefined> = {};
 
@@ -27,9 +26,9 @@ function useSearchParamsHandler(): TAdvancedSearchParams {
         newQuery[param] = value;
       }
     });
-  
+
     const newParams: string[] = [];
-  
+
     Object.entries(newQuery).forEach(([param, values]) => {
       if (typeof values == "string") {
         newParams.push(`${param}=${values}`);

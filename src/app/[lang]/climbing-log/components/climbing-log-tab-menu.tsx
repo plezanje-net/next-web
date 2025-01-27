@@ -14,19 +14,19 @@ function ClimbingLogTabMenu() {
     {
       label: "Koledar",
       link: `/plezalni-dnevnik/koledar`,
-      isActive: i18nPathname.test(['/{climbing-log}/{calendar}']),
+      isActive: i18nPathname.test(["/{climbing-log}/{calendar}"]),
       icon: <IconCalendar />,
     },
     {
       label: "Vzponi",
       link: `/plezalni-dnevnik/vzponi`,
-      isActive: i18nPathname.test(['/{climbing-log}/{ascents}']),
+      isActive: i18nPathname.test(["/{climbing-log}/{ascents}"]),
       icon: <IconAscents />,
     },
     {
       label: "Statistika",
       link: `/plezalni-dnevnik/statistika`,
-      isActive: i18nPathname.test(['/{climbing-log}/{statistics}']),
+      isActive: i18nPathname.test(["/{climbing-log}/{statistics}"]),
       icon: <IconStatistics />,
     },
   ];

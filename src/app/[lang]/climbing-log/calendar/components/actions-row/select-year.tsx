@@ -10,17 +10,19 @@ type TSelectYearProps = {
 function SelectYear({ firstEntryYear, value, onChange }: TSelectYearProps) {
   const currentYear = dayjs().year();
 
-  function handleChange (value: string) {
+  function handleChange(value: string) {
     onChange(parseInt(value));
   }
 
-  return <Select value={`${value}`} onChange={handleChange}>
-    {Array.from({ length: currentYear - firstEntryYear + 1 }, (_, i) => (
-      <Option key={i} value={`${firstEntryYear + i}`}>
-        {`${firstEntryYear + i}`}
-      </Option>
-    ))}
-  </Select>;
+  return (
+    <Select value={`${value}`} onChange={handleChange}>
+      {Array.from({ length: currentYear - firstEntryYear + 1 }, (_, i) => (
+        <Option key={i} value={`${firstEntryYear + i}`}>
+          {`${firstEntryYear + i}`}
+        </Option>
+      ))}
+    </Select>
+  );
 }
 
 export default SelectYear;

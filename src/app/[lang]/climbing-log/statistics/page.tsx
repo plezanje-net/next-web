@@ -1,9 +1,5 @@
 function ClimbingLogPage() {
-  return (
-    <>
-      Statistics
-    </>
-  );
+  return <>Statistics</>;
 }
 
 export default ClimbingLogPage;

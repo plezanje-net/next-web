@@ -1,7 +1,12 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type TAscentListColumn = {
   name: string;
@@ -64,18 +69,18 @@ function AscentsProvider({ children }: TAscentsProviderProps) {
 
   return (
     <AscentsContext.Provider
-    value={{
-      columns: {
-        all: allColumns,
-        shown: shownColumns,
-        selectedState: columnsState,
-        setSelectedState: handleSelectedColumnsChange,
-      },
-    }}
-  >
-    {children}
-  </AscentsContext.Provider>
-  )
+      value={{
+        columns: {
+          all: allColumns,
+          shown: shownColumns,
+          selectedState: columnsState,
+          setSelectedState: handleSelectedColumnsChange,
+        },
+      }}
+    >
+      {children}
+    </AscentsContext.Provider>
+  );
 }
 
 function useAscentsContext() {

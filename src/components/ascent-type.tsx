@@ -15,7 +15,11 @@ type TAscentTypeProps = {
   iconSize?: IconSize.small | IconSize.regular;
 };
 
-function AscentType({ type, compact = false, iconSize = IconSize.regular }: TAscentTypeProps) {
+function AscentType({
+  type,
+  compact = false,
+  iconSize = IconSize.regular,
+}: TAscentTypeProps) {
   switch (type) {
     case AscentTypeEnum.Onsight:
       return (

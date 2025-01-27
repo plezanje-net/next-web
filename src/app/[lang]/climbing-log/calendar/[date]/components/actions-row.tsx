@@ -37,7 +37,6 @@ function ActionsRow({ date }: TActionsRowProps) {
 
   dayjs.locale(locale);
 
-
   const displayValue = useMemo(
     () =>
       capitalizeFirstLetter(dayjs(date).format("dddd, D. ")) +
@@ -75,7 +74,10 @@ function ActionsRow({ date }: TActionsRowProps) {
           <Button variant="quaternary" onClick={handlePrevDay}>
             <IconLeft />
           </Button>
-          <Link href={`/plezalni-dnevnik/koledar/${dayjs().format('YYYY-MM-DD')}`} className="flex gap-2">
+          <Link
+            href={`/plezalni-dnevnik/koledar/${dayjs().format("YYYY-MM-DD")}`}
+            className="flex gap-2"
+          >
             <IconCalendar />
             <span>Danes</span>
           </Link>

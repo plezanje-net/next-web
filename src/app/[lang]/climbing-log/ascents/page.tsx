@@ -174,21 +174,21 @@ gql`
 `;
 
 gql`
-query AscentListFiltersRoute($input: String!) {
-  route(id: $input) {
-    id
-    name
-    slug
-    crag {
+  query AscentListFiltersRoute($input: String!) {
+    route(id: $input) {
       id
       name
       slug
-      country {
+      crag {
+        id
+        name
         slug
+        country {
+          slug
+        }
       }
     }
   }
-}
 `;
 
 export default ClimbingLogPage;

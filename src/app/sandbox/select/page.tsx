@@ -266,11 +266,14 @@ function SelectPage() {
             </Option>
           ))}
         </Select>
-        <select>          {grades.map((grade) => (
-          <option key={grade.id} value={grade.name}>
-            {grade.name}
-          </option>
-        ))}</select>
+        <select>
+          {" "}
+          {grades.map((grade) => (
+            <option key={grade.id} value={grade.name}>
+              {grade.name}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

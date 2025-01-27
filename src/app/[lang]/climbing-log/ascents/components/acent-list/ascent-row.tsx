@@ -11,9 +11,9 @@ import RouteLink from "@/components/route-link";
 
 type TAscentRowProps = {
   ascent: ActivityRoute;
-}
+};
 
-function AscentRow ({ ascent }: TAscentRowProps) {
+function AscentRow({ ascent }: TAscentRowProps) {
   const { columns } = useAscentsContext();
 
   return (
@@ -22,7 +22,11 @@ function AscentRow ({ ascent }: TAscentRowProps) {
         let cellContent;
         switch (column.name) {
           case "date":
-            cellContent = <span className="whitespace-nowrap">{displayDate(ascent.date)}</span>;
+            cellContent = (
+              <span className="whitespace-nowrap">
+                {displayDate(ascent.date)}
+              </span>
+            );
             break;
 
           case "crag":
@@ -34,11 +38,19 @@ function AscentRow ({ ascent }: TAscentRowProps) {
             break;
 
           case "difficulty":
-            cellContent = ascent.route.difficulty && <Grade difficulty={ascent.route.difficulty}  />;
+            cellContent = ascent.route.difficulty && (
+              <Grade difficulty={ascent.route.difficulty} />
+            );
             break;
 
           case "ascentType":
-            cellContent = <AscentType type={ascent.ascentType} compact={false} iconSize={IconSize.regular} />;
+            cellContent = (
+              <AscentType
+                type={ascent.ascentType}
+                compact={false}
+                iconSize={IconSize.regular}
+              />
+            );
             break;
 
           case "notes":
@@ -46,11 +58,22 @@ function AscentRow ({ ascent }: TAscentRowProps) {
             break;
 
           case "visibility":
-            cellContent = ascent.publish == 'public' ? "javno" : ascent.publish == 'club' ? "klub in prijatelji" : "samo zame";
+            cellContent =
+              ascent.publish == "public"
+                ? "javno"
+                : ascent.publish == "club"
+                  ? "klub in prijatelji"
+                  : "samo zame";
             break;
 
           case "more":
-            cellContent = <Button variant="quaternary"><span className="-m-1"><IconMore size={IconSize.regular} /></span></Button>;
+            cellContent = (
+              <Button variant="quaternary">
+                <span className="-m-1">
+                  <IconMore size={IconSize.regular} />
+                </span>
+              </Button>
+            );
             break;
         }
 
