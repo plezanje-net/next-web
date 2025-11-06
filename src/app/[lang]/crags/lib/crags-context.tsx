@@ -18,7 +18,7 @@ import {
   parseAsInteger,
   parseAsString,
   useQueryState,
-} from "next-usequerystate";
+} from "@/hooks/use-query-state";
 import {
   Dispatch,
   ReactNode,
