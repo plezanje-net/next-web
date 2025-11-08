@@ -1,0 +1,101 @@
+query CragSectors(
+  $crag: String!
+  $firstTickArInput: FindActivityRoutesInput
+  $firstTryArInput: FindActivityRoutesInput
+  $firstTrTickArInput: FindActivityRoutesInput
+  $difficultyVotesInput: FindDifficultyVotesInput
+  $starRatingVotesInput: FindStarRatingVotesInput
+  $loggedIn: Boolean!
+) {
+  cragBySlug(slug: $crag) {
+    id
+    slug
+    name
+    sectors {
+      id
+      name
+      label
+      publishStatus
+      bouldersOnly
+      routes {
+        id
+        name
+        slug
+        difficulty
+        defaultGradingSystem {
+          id
+        }
+        isProject
+        length
+        routeType {
+          id
+        }
+        comments {
+          id
+        }
+        pitches {
+          id
+          difficulty
+          isProject
+          number
+          height
+        }
+        nrTicks
+        nrTries
+        nrClimbers
+        position
+        starRating
+        publishStatus
+        sector {
+          position
+          label
+          name
+        }
+
+        firstTry: activityRoutes(input: $firstTryArInput)
+          @include(if: $loggedIn) {
+          items {
+            id
+            date
+          }
+        }
+
+        firstTick: activityRoutes(input: $firstTickArInput)
+          @include(if: $loggedIn) {
+          items {
+            id
+            date
+          }
+        }
+
+        firstTrTick: activityRoutes(input: $firstTrTickArInput)
+          @include(if: $loggedIn) {
+          items {
+            id
+            date
+          }
+        }
+
+        difficultyVotes(input: $difficultyVotesInput) @include(if: $loggedIn) {
+          difficulty
+          updated
+        }
+
+        starRatingVotes(input: $starRatingVotesInput) @include(if: $loggedIn) {
+          stars
+          updated
+        }
+      }
+    }
+  }
+}
+
+query MyCragSummary($input: FindActivityRoutesInput) {
+  myCragSummary(input: $input) {
+    ascentType
+    route {
+      id
+      slug
+    }
+  }
+}
