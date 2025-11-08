@@ -1,0 +1,10 @@
+  query AuthContextProfile {
+    profile {
+      id
+      firstname
+      lastname
+      fullName
+      email
+      roles
+    }
+  }

@@ -13,7 +13,7 @@ interface FormData {
 
 async function loginAction(formData: FormData) {
   const { data } = await urqlServer().mutation(LoginDocument, formData);
-  return !!(data != null && cookies().set("token", data.login.token));
+  return !!(data != null && (await cookies()).set("token", data.login.token));
 }
 
 export default loginAction;
