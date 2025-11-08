@@ -19,6 +19,12 @@
   "embeddedLanguageFormatting": "auto",
   "vueIndentScriptAndStyle": false,
   "experimentalTernaries": false,
-  "filepath": "/Users/anze/Projects/Plezanje/next-web/src/hooks/useResizeObserver.tsx",
-  "parser": "typescript"
+  "overrides": [
+    {
+      "files": ["*.graphql", "*.gql"],
+      "options": {
+        "parser": "graphql"
+      }
+    }
+  ]
 }
