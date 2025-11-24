@@ -1,0 +1,26 @@
+query RouteDifficultyVotes($routeId: String!) {
+  route(id: $routeId) {
+    id
+    slug
+    difficulty
+    defaultGradingSystem {
+      id
+    }
+    name
+    length
+    difficultyVotes {
+      user {
+        id
+        fullName
+        firstname
+        lastname
+      }
+      id
+      difficulty
+      created
+      updated
+      isBase
+      includedInCalculation
+    }
+  }
+}

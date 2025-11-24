@@ -25,12 +25,18 @@ function CommentActions({ commentId, commentContent, commentType }: Props) {
 
   const handleConfirmEdit = async () => {
     // Comment has been edited. Update comment.
-    await updateCommentAction(
+    const result = await updateCommentAction(
       commentId,
       editedCommentContent,
       editedCommentType
     );
-    router.refresh();
+    
+    if (result.success) {
+      router.refresh();
+    } else {
+      // TODO: show error message in a toast or error UI
+      console.error(result.error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -40,8 +46,14 @@ function CommentActions({ commentId, commentContent, commentType }: Props) {
 
   const handleConfirmDelete = async () => {
     // Comment deletion has been confirmed. Delete the comment.
-    await deleteCommentAction(commentId);
-    router.refresh();
+    const result = await deleteCommentAction(commentId);
+    
+    if (result.success) {
+      router.refresh();
+    } else {
+      // TODO: show error message in a toast or error UI
+      console.error(result.error);
+    }
   };
 
   return (

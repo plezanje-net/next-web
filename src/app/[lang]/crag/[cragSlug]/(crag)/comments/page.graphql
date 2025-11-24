@@ -1,0 +1,17 @@
+query CragComments($crag: String!) {
+  cragBySlug(slug: $crag) {
+    id
+    slug
+    comments {
+      id
+      content
+      type
+      created
+      updated
+      user {
+        id
+        fullName
+      }
+    }
+  }
+}

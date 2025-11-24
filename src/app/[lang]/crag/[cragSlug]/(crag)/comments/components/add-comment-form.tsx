@@ -39,13 +39,17 @@ function AddCommentForm({ cragId }: Props) {
       return;
     }
 
-    await createCommentAction(formData);
+    const result = await createCommentAction(formData);
 
-    // clear form
-    setCommentContent("");
-    setCommentType(CommentType.COMMENT);
-
-    router.refresh();
+    if (result.success) {
+      // clear form
+      setCommentContent("");
+      setCommentType(CommentType.COMMENT);
+      router.refresh();
+    } else {
+      // TODO: show error message in a toast or error UI
+      console.error(result.error);
+    }
   };
 
   return (
@@ -76,6 +80,7 @@ function AddCommentForm({ cragId }: Props) {
           </div>
           <div className="ml-auto mt-4 w-fit">
             <Button
+              type="submit"
               disabled={!commentContent}
             >{`Objavi ${buttonLabel[commentType]}`}</Button>
           </div>

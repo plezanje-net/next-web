@@ -1,25 +1,20 @@
 "use server";
 
-import { gql } from "urql/core";
 import { DeleteCommentDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/graphql-client";
 
 async function deleteCommentAction(commentId: string) {
-  const result = await urqlServer().mutation(DeleteCommentDocument, {
-    id: commentId,
-  });
-
-  if (result.error) {
-    throw new Error("Pri brisanju komentarja je prišlo do napake.");
+  try {
+    await gqlRequest(DeleteCommentDocument, {
+      id: commentId,
+    });
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: "Pri brisanju komentarja je prišlo do napake.",
+    };
   }
-
-  return true;
 }
 
 export default deleteCommentAction;
-
-gql`
-  mutation DeleteComment($id: String!) {
-    deleteComment(id: $id)
-  }
-`;
