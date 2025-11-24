@@ -1,19 +1,19 @@
 import { CragGalleryDocument, Image } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import NextImage from "next/image";
-import { gql } from "urql/core";
 import ImageList from "./components/image-list";
+import { gqlRequest } from "@/lib/graphql-client";
 
 type TCragGalleryPageParams = {
   cragSlug: string;
 };
 
-async function CragGalleryPage({ params }: { params: TCragGalleryPageParams }) {
-  const { data } = await urqlServer().query(CragGalleryDocument, {
-    crag: params.cragSlug,
+async function CragGalleryPage({ params }: { params: Promise<TCragGalleryPageParams> }) {
+  const { cragSlug } = await params;
+
+  const { cragBySlug } = await gqlRequest(CragGalleryDocument, {
+    crag: cragSlug,
   });
 
-  const images = data.cragBySlug.images as Image[];
+  const images = cragBySlug.images as Image[];
   const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
 
   return (
@@ -22,26 +22,5 @@ async function CragGalleryPage({ params }: { params: TCragGalleryPageParams }) {
     </div>
   );
 }
-
-gql`
-  query CragGallery($crag: String!) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      images {
-        id
-        title
-        path
-        extension
-        aspectRatio
-        maxIntrinsicWidth
-        author
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
 
 export default CragGalleryPage;

@@ -4,31 +4,30 @@ import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 import {
+  Country,
+  Crag,
   EditCragPageCountriesDocument,
   EditCragPageCragDocument,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
 import EditCragForm from "./components/edit-crag-form";
+import { gqlRequest } from "@/lib/graphql-client";
 
 type TEditCragPageProps = {
-  params: { cragSlug: string };
+  params: Promise<{ cragSlug: string }>;
 };
 
-async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
-  const countriesDataPromise = urqlServer().query(
-    EditCragPageCountriesDocument,
-    {}
-  );
-  const cragDataPromise = urqlServer().query(EditCragPageCragDocument, {
+async function EditCragPage({ params }: TEditCragPageProps) {
+  const { cragSlug } = await params;
+  const countriesDataPromise = gqlRequest(EditCragPageCountriesDocument, {});
+  const cragDataPromise = gqlRequest(EditCragPageCragDocument, {
     cragSlug: cragSlug,
   });
-  const [{ data: countriesData }, { data: cragData }] = await Promise.all([
+  const [{ countries }, { cragBySlug }] = await Promise.all([
     countriesDataPromise,
     cragDataPromise,
   ]);
 
-  const crag = cragData.cragBySlug;
+  const crag = cragBySlug as Crag;
 
   const tabMenuItems: TTabMenuItem[] = [
     {
@@ -61,61 +60,9 @@ async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
         tabMenu={<TabMenu items={tabMenuItems} />}
       />
 
-      <EditCragForm countriesWithAreas={countriesData.countries} crag={crag} />
+      <EditCragForm countriesWithAreas={countries as Country[]} crag={crag} />
     </>
   );
 }
 
 export default EditCragPage;
-
-gql`
-  query EditCragPageCountries {
-    countries {
-      id
-      name
-      slug
-      areas {
-        id
-        name
-        slug
-      }
-    }
-  }
-`;
-
-gql`
-  query EditCragPageCrag($cragSlug: String!) {
-    cragBySlug(slug: $cragSlug) {
-      id
-      slug
-      name
-      country {
-        id
-      }
-      area {
-        id
-      }
-      type
-      defaultGradingSystem {
-        id
-      }
-      lat
-      lon
-      description
-      wallAngles
-      rainproof
-      orientations
-      seasons
-      approachTime
-      access
-      isHidden
-      coverImage {
-        id
-        path
-        extension
-        maxIntrinsicWidth
-        aspectRatio
-      }
-    }
-  }
-`;
