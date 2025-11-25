@@ -1,0 +1,12 @@
+query NewCragPageCountries {
+  countries {
+    id
+    name
+    slug
+    areas {
+      id
+      name
+      slug
+    }
+  }
+}

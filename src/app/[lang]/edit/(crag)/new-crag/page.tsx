@@ -1,21 +1,14 @@
-import { NewCragPageCountriesDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
+import { Country, NewCragPageCountriesDocument } from "@/graphql/generated";
 import NewCragForm from "./components/new-crag-form";
 import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import ContentHeader from "@/components/content-header";
 import Breadcrumbs from "@/components/breadcrumbs";
+import { gqlRequest } from "@/lib/graphql-client";
 
 async function NewCragPage() {
-  const countriesDataPromise = urqlServer().query(
-    NewCragPageCountriesDocument,
-    {}
-  );
-  const {
-    data: { countries },
-  } = await countriesDataPromise;
+  const { countries } = await gqlRequest(NewCragPageCountriesDocument, {});
 
   const tabMenuItems: TTabMenuItem[] = [
     {
@@ -48,24 +41,9 @@ async function NewCragPage() {
         }
         tabMenu={<TabMenu items={tabMenuItems} />}
       />
-      <NewCragForm countriesWithAreas={countries} />
+      <NewCragForm countriesWithAreas={countries as Country[]} />
     </>
   );
 }
 
 export default NewCragPage;
-
-gql`
-  query NewCragPageCountries {
-    countries {
-      id
-      name
-      slug
-      areas {
-        id
-        name
-        slug
-      }
-    }
-  }
-`;

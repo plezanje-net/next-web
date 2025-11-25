@@ -1,10 +1,8 @@
 "use server";
 
-import { gql } from "@urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/graphql-client";
 import { LoginDocument } from "@/graphql/generated";
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 
 interface FormData {
   email: string;
@@ -12,25 +10,14 @@ interface FormData {
 }
 
 async function loginAction(formData: FormData) {
-  const { data } = await urqlServer().mutation(LoginDocument, formData);
-  return !!(data != null && (await cookies()).set("token", data.login.token));
+  try {
+    const result = await gqlRequest(LoginDocument, formData);
+    (await cookies()).set("token", result.login.token);
+    return { success: true, data: result.login };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Prijava ni uspela." };
+  }
 }
 
 export default loginAction;
-
-gql`
-  mutation Login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
-      token
-      user {
-        id
-        email
-        fullName
-        firstname
-        lastname
-        gender
-        roles
-      }
-    }
-  }
-`;

@@ -1,25 +1,21 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/graphql-client";
 import { DeleteSectorDocument } from "@/graphql/generated";
 
 async function deleteSectorAction(sectorId: string) {
-  const result = await urqlServer().mutation(DeleteSectorDocument, {
-    id: sectorId,
-  });
-  if (result.error) {
-    console.error(result.error);
-    throw new Error("Pri brisanju sektorja je prišlo do napake.");
+  try {
+    const result = await gqlRequest(DeleteSectorDocument, {
+      id: sectorId,
+    });
+    return { success: true, data: result.deleteSector };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Pri brisanju sektorja je prišlo do napake.",
+    };
   }
-
-  return result.data.deleteSector;
 }
 
 export default deleteSectorAction;
-
-gql`
-  mutation DeleteSector($id: String!) {
-    deleteSector(id: $id)
-  }
-`;

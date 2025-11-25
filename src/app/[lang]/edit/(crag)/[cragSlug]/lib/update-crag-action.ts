@@ -11,7 +11,7 @@ async function updateCragAction(cragData: UpdateCragInput) {
     return { success: true, data: result.updateCrag };
   } catch (error) {
     console.error(error);
-    return { success: false, error: error };
+    return { success: false, error: "Pri shranjevanju plezališča je prišlo do napake." };
   }
 }
 

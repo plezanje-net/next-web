@@ -1,6 +1,5 @@
 "use server";
 
-import { gql } from "urql/core";
 import { gqlRequest } from "@/lib/graphql-client";
 import { CreateCragDocument, CreateCragInput } from "@/graphql/generated";
 
@@ -12,17 +11,11 @@ async function createCragAction(cragData: CreateCragInput) {
     return { success: true, data: result.createCrag };
   } catch (error) {
     console.error(error);
-    return { success: false, error: "Pri shranjevanju plezališča je prišlo do napake." };
+    return {
+      success: false,
+      error: "Pri shranjevanju plezališča je prišlo do napake.",
+    };
   }
 }
 
 export default createCragAction;
-
-gql`
-  mutation CreateCrag($input: CreateCragInput!) {
-    createCrag(input: $input) {
-      id
-      slug
-    }
-  }
-`;
