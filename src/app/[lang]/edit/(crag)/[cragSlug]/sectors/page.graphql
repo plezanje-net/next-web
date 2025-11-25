@@ -1,0 +1,14 @@
+#Dep: crag.label is deprecated. remove it after api is updated and labels migrated into name
+query EditSectorsPageCrag($cragSlug: String!) {
+  cragBySlug(slug: $cragSlug) {
+    id
+    slug
+    name
+    sectors {
+      id
+      name
+      label
+      position
+    }
+  }
+}

@@ -1,0 +1,45 @@
+query AllCrags {
+  crags(input: { type: "sport" }) {
+    id
+    slug
+    name
+    country {
+      id
+      name
+      slug
+    }
+    area {
+      id
+      name
+      slug
+      country {
+        slug
+      }
+    }
+    orientations
+    minDifficulty
+    maxDifficulty
+    seasons
+    rainproof
+    wallAngles
+    approachTime
+    nrRoutesByGrade
+    hasSport
+    hasBoulder
+    hasMultipitch
+    nrRoutes
+  }
+}
+
+query AllCountries {
+  countries {
+    name
+    slug
+    nrCrags
+    areas {
+      name
+      slug
+      nrCrags
+    }
+  }
+}

@@ -3,23 +3,20 @@ import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
-import { EditSectorsPageCragDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
+import { Crag, EditSectorsPageCragDocument } from "@/graphql/generated";
 import EditSectors from "./components/edit-sectors";
+import { gqlRequest } from "@/lib/graphql-client";
 
 type TEditSectorsPageProps = {
-  params: { cragSlug: string };
+  params: Promise<{ cragSlug: string }>;
 };
 
-async function EditSectorsPage({
-  params: { cragSlug },
-}: TEditSectorsPageProps) {
-  const cragDataPromise = urqlServer().query(EditSectorsPageCragDocument, {
-    cragSlug: cragSlug,
+async function EditSectorsPage({ params }: TEditSectorsPageProps) {
+  const { cragSlug } = await params;
+  const { cragBySlug } = await gqlRequest(EditSectorsPageCragDocument, {
+    cragSlug,
   });
-  const { data: cragData } = await cragDataPromise;
-  const crag = cragData.cragBySlug;
+  const crag = cragBySlug as Crag;
 
   const tabMenuItems: TTabMenuItem[] = [
     {
@@ -59,20 +56,3 @@ async function EditSectorsPage({
 }
 
 export default EditSectorsPage;
-
-// Dep: crag.label is deprecated. remove it after api is updated and labels migrated into name
-gql`
-  query EditSectorsPageCrag($cragSlug: String!) {
-    cragBySlug(slug: $cragSlug) {
-      id
-      slug
-      name
-      sectors {
-        id
-        name
-        label
-        position
-      }
-    }
-  }
-`;

@@ -1,0 +1,46 @@
+query EditCragPageCountries {
+  countries {
+    id
+    name
+    slug
+    areas {
+      id
+      name
+      slug
+    }
+  }
+}
+query EditCragPageCrag($cragSlug: String!) {
+  cragBySlug(slug: $cragSlug) {
+    id
+    slug
+    name
+    country {
+      id
+    }
+    area {
+      id
+    }
+    type
+    defaultGradingSystem {
+      id
+    }
+    lat
+    lon
+    description
+    wallAngles
+    rainproof
+    orientations
+    seasons
+    approachTime
+    access
+    isHidden
+    coverImage {
+      id
+      path
+      extension
+      maxIntrinsicWidth
+      aspectRatio
+    }
+  }
+}

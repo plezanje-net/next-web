@@ -232,7 +232,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
       isHidden: isHidden,
     };
 
-    let savedCrag;
+    let result;
     switch (formType) {
       case "new":
         const newCragData = {
@@ -240,7 +240,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
           publishStatus: "draft", // a new crag is initially always a draft
         };
 
-        savedCrag = await createCragAction(newCragData);
+        result = await createCragAction(newCragData);
         break;
       case "edit":
         const updateCragData = {
@@ -248,11 +248,17 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
           id: crag!.id,
         };
 
-        savedCrag = await updateCragAction(updateCragData);
+        result = await updateCragAction(updateCragData);
     }
 
-    router.push(savedCrag.slug);
     setLoading(false);
+
+    if (result.success && result.data) {
+      router.push(result.data.slug);
+    } else {
+      // TODO: show error message in a toast or error UI
+      console.error(result.error);
+    }
   };
 
   return (

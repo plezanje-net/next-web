@@ -1,0 +1,18 @@
+query CragGallery($crag: String!) {
+  cragBySlug(slug: $crag) {
+    id
+    slug
+    images {
+      id
+      title
+      path
+      extension
+      aspectRatio
+      maxIntrinsicWidth
+      author
+      user {
+        id
+      }
+    }
+  }
+}

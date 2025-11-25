@@ -1,11 +1,11 @@
 import { Activity, HomeLatestAscentsDocument } from "@/graphql/generated";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
 import LatestAscentsActivitySkeleton from "./latest-ascents/latest-ascents-activity-skeleton";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "@urql/core";
+import { gqlRequest } from "@/lib/graphql-client";
 
 async function LatestAscents() {
-  const { data } = await urqlServer().query(HomeLatestAscentsDocument, {
+
+  const { activities } = await gqlRequest(HomeLatestAscentsDocument, {
     activitiesInput: {
       type: ["crag"],
       hasRoutesWithPublish: ["public"],
@@ -18,16 +18,13 @@ async function LatestAscents() {
     },
   });
 
-  const activities: Activity[] =
-    data?.activities.items ?? Array.from(new Array(10));
-
   return (
     <>
       <h2>Zadnji vzponi</h2>
       <ul>
-        {activities.map((activity, index) =>
+        {activities?.items.map((activity, index) =>
           activity ? (
-            <LatestAscentsActivity key={activity.id} activity={activity} />
+            <LatestAscentsActivity key={activity.id} activity={activity as Activity} />
           ) : (
             <LatestAscentsActivitySkeleton key={index} />
           )
@@ -36,48 +33,5 @@ async function LatestAscents() {
     </>
   );
 }
-
-gql`
-  query HomeLatestAscents(
-    $activitiesInput: FindActivitiesInput
-    $activityRoutesInput: FindActivityRoutesInput
-  ) {
-    activities(input: $activitiesInput) {
-      items {
-        id
-        name
-        date
-        user {
-          id
-          fullName
-        }
-        routes(input: $activityRoutesInput) {
-          route {
-            id
-            name
-            slug
-            difficulty
-            defaultGradingSystem {
-              id
-            }
-            crag {
-              id
-              name
-              slug
-            }
-          }
-          id
-          ascentType
-        }
-      }
-      meta {
-        itemCount
-        pageCount
-        pageNumber
-        pageSize
-      }
-    }
-  }
-`;
 
 export default LatestAscents;

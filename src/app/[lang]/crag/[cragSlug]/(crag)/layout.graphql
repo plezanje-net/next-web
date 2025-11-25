@@ -1,0 +1,17 @@
+query CragHeader($crag: String!) {
+  cragBySlug(slug: $crag) {
+    id
+    slug
+    status
+    name
+    publishStatus
+    country {
+      id
+      name
+      slug
+    }
+    user {
+      id
+    }
+  }
+}

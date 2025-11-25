@@ -1,7 +1,6 @@
-import { gql } from "@urql/core";
+import { CragHeaderDocument, type Crag } from "@/graphql/generated";
+import { gqlRequest } from "@/lib/graphql-client";
 import CragHeader from "./components/crag-header";
-import { Crag, CragHeaderDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 
 interface Params {
   cragSlug: string;
@@ -9,15 +8,17 @@ interface Params {
 
 interface Props {
   children: React.ReactNode;
-  params: Params;
+  params: Promise<Params>;
 }
 
-async function CragLayout({ children, params: { cragSlug } }: Props) {
-  const { data } = await urqlServer().query(CragHeaderDocument, {
+async function CragLayout({ children, params }: Props) {
+  const { cragSlug } = await params;
+
+  const { cragBySlug } = await gqlRequest(CragHeaderDocument, {
     crag: cragSlug,
   });
 
-  const crag = data.cragBySlug as Crag;
+  const crag = cragBySlug as Crag;
 
   return (
     <>
@@ -28,23 +29,3 @@ async function CragLayout({ children, params: { cragSlug } }: Props) {
 }
 
 export default CragLayout;
-
-gql`
-  query CragHeader($crag: String!) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      status
-      name
-      publishStatus
-      country {
-        id
-        name
-        slug
-      }
-      user {
-        id
-      }
-    }
-  }
-`;

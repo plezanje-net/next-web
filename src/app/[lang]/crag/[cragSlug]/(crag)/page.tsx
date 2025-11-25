@@ -1,4 +1,6 @@
-import { gql } from "@urql/core";
+import tickAscentTypes from "@/lib/constants/tick-ascent-types";
+import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
+import getCurrentUser from "@/lib/auth/get-current-user";
 import {
   ActivityRoute,
   Crag,
@@ -6,18 +8,15 @@ import {
   MyCragSummaryDocument,
   User,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/graphql-client";
 import CragRoutes from "./components/crag-routes";
-import tickAscentTypes from "../../../../../lib/constants/tick-ascent-types";
-import trTickAscentTypes from "../../../../../lib/constants/tr-tick-ascent-types";
-import getCurrentUser from "../../../../../lib/auth/get-current-user";
 
 type Params = {
   cragSlug: string;
 };
 
 type Props = {
-  params: Params;
+  params: Promise<Params>;
 };
 
 async function getCragBySlug(
@@ -70,9 +69,7 @@ async function getCragBySlug(
     ? { userId: currentUser.id }
     : null;
 
-  const {
-    data: { cragBySlug },
-  } = await urqlServer().query(CragSectorsDocument, {
+  const { cragBySlug } = await gqlRequest(CragSectorsDocument, {
     crag,
     firstTryArInput,
     firstTickArInput,
@@ -82,11 +79,11 @@ async function getCragBySlug(
     loggedIn: !!currentUser,
   });
 
-  return cragBySlug;
+  return cragBySlug as Crag;
 }
 
 async function getMySummary(
-  crag: string,
+  cragId: string,
   currentUser: User | null
 ): Promise<ActivityRoute[]> {
   const loggedIn = !!currentUser;
@@ -95,22 +92,21 @@ async function getMySummary(
     return [];
   }
 
-  const {
-    data: { myCragSummary },
-  } = await urqlServer().query(MyCragSummaryDocument, {
-    crag,
-  });
+  const { myCragSummary } = await gqlRequest(MyCragSummaryDocument, {
+      input: {
+        cragId,
+      },
+    });
 
-  return myCragSummary;
+  return myCragSummary as ActivityRoute[];
 }
 
-async function CragPage({ params: { cragSlug } }: Props) {
+async function CragPage({ params }: Props) {
   const currentUser = await getCurrentUser();
+  const { cragSlug } = await params;
 
-  const [cragBySlug, myCragSummary] = await Promise.all([
-    getCragBySlug(cragSlug, currentUser),
-    getMySummary(cragSlug, currentUser),
-  ]);
+  const cragBySlug = await getCragBySlug(cragSlug, currentUser as User);
+  const myCragSummary = await getMySummary(cragBySlug.id, currentUser as User);
 
   return (
     <>
@@ -118,113 +114,5 @@ async function CragPage({ params: { cragSlug } }: Props) {
     </>
   );
 }
-
-gql`
-  query CragSectors(
-    $crag: String!
-    $firstTickArInput: FindActivityRoutesInput
-    $firstTryArInput: FindActivityRoutesInput
-    $firstTrTickArInput: FindActivityRoutesInput
-    $difficultyVotesInput: FindDifficultyVotesInput
-    $starRatingVotesInput: FindStarRatingVotesInput
-    $loggedIn: Boolean!
-  ) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      name
-      sectors {
-        id
-        name
-        label
-        publishStatus
-        bouldersOnly
-        routes {
-          id
-          name
-          slug
-          difficulty
-          defaultGradingSystem {
-            id
-          }
-          isProject
-          length
-          routeType {
-            id
-          }
-          comments {
-            id
-          }
-          pitches {
-            id
-            difficulty
-            isProject
-            number
-            height
-          }
-          nrTicks
-          nrTries
-          nrClimbers
-          position
-          starRating
-          publishStatus
-          sector {
-            position
-            label
-            name
-          }
-
-          firstTry: activityRoutes(input: $firstTryArInput)
-            @include(if: $loggedIn) {
-            items {
-              id
-              date
-            }
-          }
-
-          firstTick: activityRoutes(input: $firstTickArInput)
-            @include(if: $loggedIn) {
-            items {
-              id
-              date
-            }
-          }
-
-          firstTrTick: activityRoutes(input: $firstTrTickArInput)
-            @include(if: $loggedIn) {
-            items {
-              id
-              date
-            }
-          }
-
-          difficultyVotes(input: $difficultyVotesInput)
-            @include(if: $loggedIn) {
-            difficulty
-            updated
-          }
-
-          starRatingVotes(input: $starRatingVotesInput)
-            @include(if: $loggedIn) {
-            stars
-            updated
-          }
-        }
-      }
-    }
-  }
-`;
-
-gql`
-  query MyCragSummary($input: FindActivityRoutesInput) {
-    myCragSummary(input: $input) {
-      ascentType
-      route {
-        id
-        slug
-      }
-    }
-  }
-`;
 
 export default CragPage;

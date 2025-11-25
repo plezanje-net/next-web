@@ -1,37 +1,19 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
 import { AuthContextProfileDocument } from "@/graphql/generated";
 import getAuthToken from "./auth-token";
+import { gqlRequest } from "../graphql-client";
 
 async function getCurrentUser() {
-  // If there is no token, we already know that user is not authenticated and we can return early
-  const authToken = getAuthToken();
+  const authToken = await getAuthToken();
   if (!authToken) {
     return null;
   }
 
-  const result = await urqlServer().query(AuthContextProfileDocument);
-
-  if (result.error) {
-    throw new Error(
-      "Prišlo je do napake pri pridobivanju uporabnikovih podatkov."
-    );
+  // there could be a try catch here to clear the cookie if the request fails
+  const result = await gqlRequest(AuthContextProfileDocument);
+  if (!result?.profile) {
+    return null;
   }
-
-  return result.data.profile;
+  return result.profile;
 }
 
 export default getCurrentUser;
-
-gql`
-  query AuthContextProfile {
-    profile {
-      id
-      firstname
-      lastname
-      fullName
-      email
-      roles
-    }
-  }
-`;

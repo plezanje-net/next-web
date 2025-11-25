@@ -1,0 +1,6 @@
+mutation CreateCrag($input: CreateCragInput!) {
+  createCrag(input: $input) {
+    id
+    slug
+  }
+}

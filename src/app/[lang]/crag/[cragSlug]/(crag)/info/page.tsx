@@ -1,5 +1,3 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
 import { Crag, CragInfoDocument, Season, WallAngle } from "@/graphql/generated";
 import Image from "next/image";
 import IconWalk from "@/components/ui/icons/walk";
@@ -24,6 +22,7 @@ import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
+import { gqlRequest } from "@/lib/graphql-client";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -52,12 +51,17 @@ type TParkings = {
   [key: string]: { lat: number; lon: number; sectors: TSector[] };
 };
 
-async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
-  const response = await urqlServer().query(CragInfoDocument, {
-    crag: params.cragSlug,
+async function CragInfoPage({
+  params,
+}: {
+  params: Promise<TCragInfoPageParams>;
+}) {
+  const { cragSlug } = await params;
+
+  const { cragBySlug } = await gqlRequest(CragInfoDocument, {
+    crag: cragSlug,
   });
-  const data = response.data;
-  const crag: TCragInfo = data.cragBySlug;
+  const crag = cragBySlug as TCragInfo;
 
   // Find lenghts of shortest and longest route.
   const routeLengths = crag.sectors
@@ -552,48 +556,5 @@ function IconGroupDivider({ className }: { className?: string }) {
 
   return <div className={dividerClasses}></div>;
 }
-
-gql`
-  query CragInfo($crag: String!) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      name
-      sectors {
-        id
-        label
-        name
-        routes {
-          id
-          difficulty
-          length
-        }
-        parkings {
-          id
-          lat
-          lon
-        }
-      }
-      defaultGradingSystem {
-        id
-      }
-      activityByMonth
-      orientations
-      approachTime
-      wallAngles
-      seasons
-      rainproof
-      coverImage {
-        id
-        path
-        extension
-        maxIntrinsicWidth
-        aspectRatio
-      }
-      lat
-      lon
-    }
-  }
-`;
 
 export default CragInfoPage;

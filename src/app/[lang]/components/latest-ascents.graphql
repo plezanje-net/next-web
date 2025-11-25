@@ -1,0 +1,40 @@
+query HomeLatestAscents(
+  $activitiesInput: FindActivitiesInput
+  $activityRoutesInput: FindActivityRoutesInput
+) {
+  activities(input: $activitiesInput) {
+    items {
+      id
+      name
+      date
+      user {
+        id
+        fullName
+      }
+      routes(input: $activityRoutesInput) {
+        route {
+          id
+          name
+          slug
+          difficulty
+          defaultGradingSystem {
+            id
+          }
+          crag {
+            id
+            name
+            slug
+          }
+        }
+        id
+        ascentType
+      }
+    }
+    meta {
+      itemCount
+      pageCount
+      pageNumber
+      pageSize
+    }
+  }
+}

@@ -1,0 +1,40 @@
+query CragInfo($crag: String!) {
+  cragBySlug(slug: $crag) {
+    id
+    slug
+    name
+    sectors {
+      id
+      label
+      name
+      routes {
+        id
+        difficulty
+        length
+      }
+      parkings {
+        id
+        lat
+        lon
+      }
+    }
+    defaultGradingSystem {
+      id
+    }
+    activityByMonth
+    orientations
+    approachTime
+    wallAngles
+    seasons
+    rainproof
+    coverImage {
+      id
+      path
+      extension
+      maxIntrinsicWidth
+      aspectRatio
+    }
+    lat
+    lon
+  }
+}

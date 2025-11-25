@@ -1,21 +1,25 @@
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
-import { AllCountriesDocument, AllCragsDocument } from "@/graphql/generated";
+import {
+  AllCountriesDocument,
+  AllCragsDocument,
+  Country,
+  Crag,
+} from "@/graphql/generated";
 import { CragsProvider } from "./lib/crags-context";
 import Crags from "./components/crags";
+import { gqlRequest } from "@/lib/graphql-client";
 
 async function CragsPage() {
-  const cragsDataPromise = urqlServer().query(AllCragsDocument, {});
-  const countriesDataPromise = urqlServer().query(AllCountriesDocument, {});
-  const [{ data: cragsData }, { data: countriesData }] = await Promise.all([
+  const cragsDataPromise = gqlRequest(AllCragsDocument, {});
+  const countriesDataPromise = gqlRequest(AllCountriesDocument, {});
+  const [{ crags }, { countries }] = await Promise.all([
     cragsDataPromise,
     countriesDataPromise,
   ]);
 
   return (
     <CragsProvider
-      allCrags={cragsData.crags}
-      allCountries={countriesData.countries}
+      allCrags={crags as Crag[]}
+      allCountries={countries as Country[]}
     >
       <Crags />
     </CragsProvider>
@@ -23,53 +27,3 @@ async function CragsPage() {
 }
 
 export default CragsPage;
-
-gql`
-  query AllCrags {
-    crags(input: { type: "sport" }) {
-      id
-      slug
-      name
-      country {
-        id
-        name
-        slug
-      }
-      area {
-        id
-        name
-        slug
-        country {
-          slug
-        }
-      }
-      orientations
-      minDifficulty
-      maxDifficulty
-      seasons
-      rainproof
-      wallAngles
-      approachTime
-      nrRoutesByGrade
-      hasSport
-      hasBoulder
-      hasMultipitch
-      nrRoutes
-    }
-  }
-`;
-
-gql`
-  query AllCountries {
-    countries {
-      name
-      slug
-      nrCrags
-      areas {
-        name
-        slug
-        nrCrags
-      }
-    }
-  }
-`;
