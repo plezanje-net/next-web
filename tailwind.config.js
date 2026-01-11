@@ -2,9 +2,9 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/lib/**/*.{ts,tsx}",
   ],
   theme: {
     fontFamily: {
@@ -54,6 +54,9 @@ module.exports = {
         100: "#F0B3AA",
         500: "#d9422b",
       },
+      amber: {
+        25: "#FBF5EA",
+      },
       current: "currentColor",
 
       // ...
@@ -74,15 +77,21 @@ module.exports = {
       minWidth: {
         0.5: "0.125rem", // 2px
         8: "2rem", // 32px
+        10: "2.5rem", // 40px
+        12: "3rem", // 48px
         14: "3.5rem", // 56px
         16: "4rem", // 64px
         20: "5rem", // 80px
+        21: "5.25rem", // 84px
         22: "5.5rem", // 88px
         28: "7rem", // 112px
         30: "7.5rem", // 120px
         32: "8rem", // 128px
         34: "8.5rem", // 136px
         36: "9rem", // 144px
+      },
+      maxWidth: {
+        80: "20rem", // 320px
       },
       margin: {
         18: "4.5rem", // 72px
