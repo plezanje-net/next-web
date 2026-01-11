@@ -1,5 +1,5 @@
 import { Route, StarRatingVote } from "@/graphql/generated";
-import displayDate from "@/utils/display-date";
+import displayDate from "@/lib/display-date";
 import RouteStarRating from "./route-star-rating";
 import { IconSize } from "./ui/icons/icon-size";
 import StarRating from "./star-rating";

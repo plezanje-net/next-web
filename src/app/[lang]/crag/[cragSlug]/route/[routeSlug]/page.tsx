@@ -4,7 +4,6 @@ import { gql } from "urql";
 import RouteSection from "./components/route-section";
 import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
-import authStatus from "@/utils/auth/auth-status";
 import DifficultyVotes from "@/components/difficulty-votes";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
@@ -14,6 +13,7 @@ import RouteMyAscents from "./components/route-my-ascents";
 import StarRatingDistribution from "@/components/star-rating-distribution";
 import RouteImage from "./components/route-image";
 import ImageList from "@/components/image-list/image-list";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 type Params = {
   cragSlug: string;
@@ -21,7 +21,7 @@ type Params = {
 };
 
 async function RoutePage({ params }: { params: Params }) {
-  const { user } = await authStatus();
+  const user = await getCurrentUser();
   const { cragSlug, routeSlug } = params;
   const {
     data: { routeBySlug: route },

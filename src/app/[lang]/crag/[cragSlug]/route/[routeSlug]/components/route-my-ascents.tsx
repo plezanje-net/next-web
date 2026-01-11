@@ -1,6 +1,6 @@
 "use client";
 import { ActivityRoute } from "@/graphql/generated";
-import displayDate from "@/utils/display-date";
+import displayDate from "@/lib/display-date";
 import Link from "@/components/ui/link";
 import AscentType from "@/components/ascent-type";
 import { useEffect, useState } from "react";
