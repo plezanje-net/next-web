@@ -126,6 +126,8 @@ gql`
           id
           publishStatus
         }
+        author
+        description
       }
     }
   }

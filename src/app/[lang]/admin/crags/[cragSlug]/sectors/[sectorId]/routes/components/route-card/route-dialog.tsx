@@ -92,9 +92,9 @@ function RouteDialog({
   );
   const [difficulty, setDifficulty] = useState(defaultValues.difficulty);
   const [isProject, setIsProject] = useState(defaultValues.isProject);
-  const [length, setLength] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
+  const [length, setLength] = useState(defaultValues.length);
+  const [author, setAuthor] = useState(defaultValues.author);
+  const [description, setDescription] = useState(defaultValues.description);
   const [addAnother, setAddAnother] = useState(false);
 
   const [nameError, setNameError] = useState("");
@@ -194,7 +194,7 @@ function RouteDialog({
       isProject: isProject,
       length: +length || null,
       author: author || null,
-      // description: description || null,  // TODO: be support needed
+      description: description || null,
     };
 
     switch (formType) {

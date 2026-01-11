@@ -128,8 +128,8 @@ function Thumb(props: SliderThumbProps) {
             state.isDisabled
               ? "bg-neutral-300"
               : isDragging
-              ? "bg-blue-600"
-              : "bg-blue-500"
+                ? "bg-blue-600"
+                : "bg-blue-500"
           }`}
       >
         <VisuallyHidden>

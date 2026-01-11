@@ -1,44 +1,65 @@
 "use client";
 
-import DatePicker from "@/components/ui/date-picker";
-import { useState } from "react";
+import Combobox from "@/components/ui/combobox";
+import populateCragsAction from "./server-actions/populate-crags-action";
+import populateRoutesAction from "./server-actions/populate-routes-action";
 
-function DatePickerPage() {
-  const [value1, setValue1] = useState<string | null>(null);
-  const [value2, setValue2] = useState<string | null>("2024-05-19");
-  const [value3, setValue3] = useState<string | null>("2024-05-19");
+function ComboboxPage() {
+  async function populateCrags(text: string) {
+    if (text === "") {
+      return [];
+    }
+    const crags = await populateCragsAction(text);
+    return crags.map((crag) => ({
+      value: crag.id,
+      name: crag.name,
+    }));
+  }
 
-  function handleDateChange(value: string | null) {
-    console.log("Date changed", value);
-    setValue1(value);
+  async function populateRoutes(text: string) {
+    if (text === "") {
+      return [];
+    }
+    const routes = await populateRoutesAction(text);
+    return routes.map((route) => ({
+      value: route.id,
+      name: `${route.name}, ${route.crag.name}`,
+    }));
+  }
+
+  function handleChange(a: string | null) {
+    console.log("handleChange", a);
   }
 
   return (
-    <div>
-      <div className="relative mx-auto mt-8 w-80">
-        A regular datepicker
-        <div className="mt-2">
-          <DatePicker
-            value={value1}
-            onChange={handleDateChange}
-            label="Datepicker label"
+    <div className="m-8">
+      <h3>Combobox demo</h3>
+
+      <div className="mt-14 w-80">
+        <h5>Crag finder</h5>
+        <div className="mt-4">
+          <Combobox
+            value={{
+              value: "2ab5496f-df5a-47ae-a0d4-ec53ec81c69f",
+              name: "Kotečnik",
+            }}
+            onChange={handleChange}
+            populate={populateCrags}
           />
         </div>
       </div>
-      <div className="relative mx-auto mt-8 w-80">
-        A disabled date picker
-        <div className="mt-2">
-          <DatePicker value={value2} onChange={setValue2} disabled />
-        </div>
-      </div>
-      <div className="relative mx-auto mt-8 w-80">
-        A second regular datepicker to test overflow
-        <div className="mt-2">
-          <DatePicker value={value3} onChange={setValue3} />
+      <div className="mt-14 w-80">
+        <h5>Route finder</h5>
+        <div className="mt-4">
+          <Combobox
+            value={null}
+            onChange={handleChange}
+            populate={populateRoutes}
+          />
         </div>
       </div>
 
-      <div className="mt-14 w-80 mx-auto">
+      <div className="mt-14 w-80">
         Some ipsum to get scrollbar
         <br />
         Lorem ipsum odor amet, consectetuer adipiscing elit. Fames massa fames
@@ -81,4 +102,4 @@ function DatePickerPage() {
   );
 }
 
-export default DatePickerPage;
+export default ComboboxPage;
