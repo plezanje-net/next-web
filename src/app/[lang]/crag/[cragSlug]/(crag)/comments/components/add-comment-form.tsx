@@ -76,6 +76,7 @@ function AddCommentForm({ cragId }: Props) {
           </div>
           <div className="ml-auto mt-4 w-fit">
             <Button
+              type="submit"
               disabled={!commentContent}
             >{`Objavi ${buttonLabel[commentType]}`}</Button>
           </div>
