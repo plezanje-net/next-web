@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import { TLazyMapMarkerProps as TMapMarkerProps } from "./lazy-map-marker";
 
