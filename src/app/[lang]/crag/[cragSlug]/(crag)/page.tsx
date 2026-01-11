@@ -6,11 +6,10 @@ import {
   MyCragSummaryDocument,
   User,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
-import tickAscentTypes from "../../../../../lib/constants/tick-ascent-types";
-import trTickAscentTypes from "../../../../../lib/constants/tr-tick-ascent-types";
-import getCurrentUser from "../../../../../lib/auth/get-current-user";
+import tickAscentTypes from "@/lib/constants/tick-ascent-types";
+import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
+import getCurrentUser from "@/lib/auth/get-current-user";
 import { gqlRequest } from "@/lib/gql-request";
 
 type Params = {
