@@ -1,6 +1,6 @@
 "use client";
 
-import { Crag } from "@/graphql/generated";
+import { Crag, CragHeaderQuery } from "@/graphql/generated";
 import { useI18nPathname } from "@/hooks/use-i18n-pathname";
 import IconComment from "@/components/ui/icons/comment";
 import IconGallery from "@/components/ui/icons/gallery";
@@ -10,7 +10,7 @@ import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 import { IconSize } from "@/components/ui/icons/icon-size";
 
 interface Props {
-  crag: Crag;
+  crag: CragHeaderQuery["cragBySlug"];
 }
 
 function CragTabMenu({ crag }: Props) {

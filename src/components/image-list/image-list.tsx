@@ -6,8 +6,19 @@ import useWindowSize from "@/hooks/useWindowSize";
 import ImageListElement from "./image-list-element";
 import ImageListSlider from "./image-list-slider";
 
+type TImage = Pick<
+  Image,
+  | "id"
+  | "path"
+  | "extension"
+  | "maxIntrinsicWidth"
+  | "aspectRatio"
+  | "title"
+  | "author"
+>;
+
 type TImageListParams = {
-  images: Image[];
+  images: TImage[];
   baseUrl: string;
 };
 

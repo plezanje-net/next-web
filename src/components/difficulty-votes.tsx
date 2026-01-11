@@ -2,14 +2,20 @@ import { DifficultyVote, Route } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "@/lib/text-helpers";
-import { gradingSystems } from "@/lib/grading-systems";
 
-interface Props {
-  route: Route;
-  difficultyVotes: DifficultyVote[];
-}
+type TRoute = Pick<Route, "difficulty">;
+type TUser = { fullName: string };
+type TDifficultyVote = Pick<
+  DifficultyVote,
+  "difficulty" | "id" | "includedInCalculation" | "isBase" | "created"
+> & { user?: TUser };
 
-function DifficultyVotes({ route, difficultyVotes }: Props) {
+type TDifficultyVotesProps = {
+  route: TRoute;
+  difficultyVotes: TDifficultyVote[];
+};
+
+function DifficultyVotes({ route, difficultyVotes }: TDifficultyVotesProps) {
   const routeGradeDifficulty = route.difficulty
     ? diffToGrade(route.difficulty, "french", false).difficulty
     : null;

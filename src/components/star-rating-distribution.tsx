@@ -1,14 +1,12 @@
 import { Route, StarRatingVote } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
-import RouteStarRating from "./route-star-rating";
 import { IconSize } from "./ui/icons/icon-size";
-import StarRating from "./star-rating";
 import IconStarFull from "./ui/icons/star-full";
 import IconStarEmpty from "./ui/icons/star-empty";
 
 type TStarRatingDistributionProps = {
-  route: Route;
-  starRatingVotes: StarRatingVote[];
+  route: Pick<Route, "starRating">;
+  starRatingVotes: Pick<StarRatingVote, "id" | "stars" | "user" | "created">[];
 };
 
 function StarRatingDistribution({

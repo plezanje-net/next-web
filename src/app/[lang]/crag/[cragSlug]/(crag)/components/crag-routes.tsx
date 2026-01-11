@@ -4,6 +4,7 @@ import {
   ActivityRoute,
   AscentType,
   Crag,
+  CragSectorsQuery,
   Maybe,
   PaginatedActivityRoutes,
   PublishType,
@@ -25,7 +26,7 @@ import dayjs from "dayjs";
 import Toast from "@/components/ui/toast";
 
 interface Props {
-  crag: Crag;
+  crag: CragSectorsQuery["cragBySlug"];
   mySummary: ActivityRoute[];
 }
 

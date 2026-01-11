@@ -6,14 +6,14 @@ import {
 } from "react";
 import Spinner from "./spinner";
 
-interface ButtonProps {
+type TButtonProps = {
   children: ReactElement<any> | string;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   disabled?: boolean;
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "submit" | "reset" | "button";
-}
+};
 
 const Button = forwardRef(function Button(
   {
@@ -24,7 +24,7 @@ const Button = forwardRef(function Button(
     onClick,
     type = "button",
     ...rest
-  }: ButtonProps,
+  }: TButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
   let buttonStyles =

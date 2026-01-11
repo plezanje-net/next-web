@@ -4,7 +4,7 @@ import IconStarEmpty from "./ui/icons/star-empty";
 import IconStarFull from "./ui/icons/star-full";
 
 type TRouteStarRatingProps = {
-  route: Route;
+  route: Pick<Route, "starRating">;
   size: IconSize.small | IconSize.regular;
   showText?: boolean;
 };

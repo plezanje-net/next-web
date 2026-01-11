@@ -5,8 +5,19 @@ import useTapDetection from "@/hooks/useTapDetection";
 import NextImage from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+type TImage = Pick<
+  Image,
+  | "id"
+  | "path"
+  | "extension"
+  | "maxIntrinsicWidth"
+  | "aspectRatio"
+  | "title"
+  | "author"
+>;
+
 type TImageSlideParams = {
-  image: Image;
+  image: TImage;
   positionClass: string;
   baseUrl: string;
   isFullScreen: boolean;
@@ -46,7 +57,7 @@ function getImageDimensionsAccordingToContainer(
 }
 
 function calculateImageDimensions(
-  image: Image,
+  image: TImage,
   container: HTMLDivElement,
   captionHeight: number
 ) {
@@ -83,7 +94,7 @@ function ImageSlide({
 
   const recalculateAll = useCallback(
     (
-      image: Image,
+      image: TImage,
       container: HTMLDivElement,
       captionRef: HTMLDivElement | null
     ) => {

@@ -25,7 +25,7 @@ export enum DialogTitleSize {
   large = "h3",
 }
 
-interface DialogProps {
+type TDialogProps = {
   children: ReactElement<any>;
   title: string;
   openTrigger?: ReactElement<any>;
@@ -43,7 +43,7 @@ interface DialogProps {
   titleSize?: DialogTitleSize;
   isOpen?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
-}
+};
 
 function Dialog({
   children,
@@ -57,7 +57,7 @@ function Dialog({
   titleSize = DialogTitleSize.regular,
   isOpen,
   setIsOpen,
-}: DialogProps) {
+}: TDialogProps) {
   const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
   const isControlledIsOpen = isOpen !== undefined;
   const isOpenValue = isControlledIsOpen ? isOpen : uncontrolledIsOpen;

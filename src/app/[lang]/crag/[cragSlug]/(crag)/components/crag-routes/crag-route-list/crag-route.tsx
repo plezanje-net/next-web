@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Crag, Route } from "@/graphql/generated";
+import { Crag, CragSectorsQuery, Route } from "@/graphql/generated";
 import RouteLink from "@/components/route-link";
 import AscentIcon from "@/components/ui/ascent-icon";
 import { IconSize } from "@/components/ui/icons/icon-size";
@@ -14,8 +14,8 @@ import Checkbox from "@/components/ui/checkbox";
 import RouteStarRating from "@/components/route-star-rating";
 
 interface Props {
-  crag: Crag;
-  route: Route;
+  crag: CragSectorsQuery["cragBySlug"];
+  route: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"][number];
   ascent?: string | null;
 }
 
@@ -53,7 +53,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route difficulty */}
       {displayColumn("difficulty") && (
         <td className="p-4">
-          <RouteGrade route={route} crag={crag} />
+          {/* <RouteGrade route={route} crag={crag} /> */}
         </td>
       )}
 
@@ -85,7 +85,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route star rating */}
       {displayColumn("starRating") && (
         <td className="p-4">
-          <RouteStarRating route={route} size={IconSize.regular} />
+          {/* <RouteStarRating route={route} size={IconSize.regular} /> */}
         </td>
       )}
 
@@ -138,15 +138,15 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
-          {displayColumn("starRating") && (
-            <RouteStarRating route={route} size={IconSize.small} />
+          {displayColumn("starRating") && (<></>
+            // <RouteStarRating route={route} size={IconSize.small} />
           )}
         </div>
         <div className="flex items-center justify-between">
           <div className="flex">
             {displayColumn("difficulty") && (
               <div className="-m-1 pr-4">
-                <RouteGrade route={route} crag={crag} />
+                {/* <RouteGrade route={route} crag={crag} /> */}
               </div>
             )}
             {displayColumn("length") && !!route.length && (
@@ -177,8 +177,13 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
   );
 }
 
+type TRouteWithComments = {
+  id: string;
+  comments: { id: string }[];
+};
+
 interface RouteCommentsProps {
-  route: Route;
+  route: TRouteWithComments;
   size: IconSize.small | IconSize.regular;
 }
 

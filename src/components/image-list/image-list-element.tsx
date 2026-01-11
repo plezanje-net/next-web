@@ -3,8 +3,19 @@ import IconPhoto from "@/components/ui/icons/photo";
 import { Image } from "@/graphql/generated";
 import NextImage from "next/image";
 
+type TImage = Pick<
+  Image,
+  | "id"
+  | "path"
+  | "extension"
+  | "maxIntrinsicWidth"
+  | "aspectRatio"
+  | "title" 
+  | "author"
+>;
+
 type TImageListElementParams = {
-  image: Image;
+  image: TImage;
   baseUrl: string;
   onClick: () => void;
 };

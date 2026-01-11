@@ -1,5 +1,12 @@
-import { Crag } from "@/graphql/generated";
+import { Crag, Route } from "@/graphql/generated";
 import { TGradingSystemId, gradingSystems } from "../lib/grading-systems";
+
+type TRoute = Pick<Route, "difficulty">;
+type TCrag = Pick<Crag, "defaultGradingSystem"> & {
+  sectors: {
+    routes: TRoute[];
+  }[];
+};
 
 // TODO: we decided to keep half grades for voting and lose modifiers on calculated grades. this becomes much simpler now. move to Grade??
 function difficultyToGrade(difficulty: number, gradingSystemId: string) {
@@ -34,7 +41,7 @@ interface GradeSlot {
 }
 
 interface GradeDistributionProps {
-  crag: Crag;
+  crag: TCrag;
 }
 
 function GradeDistribution({ crag }: GradeDistributionProps) {

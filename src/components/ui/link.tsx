@@ -1,3 +1,4 @@
+//ts-todo
 "use client";
 import {
   ForwardedRef,
@@ -10,16 +11,16 @@ import NextLink from "next/link";
 import { AriaLinkOptions, useLink } from "react-aria";
 import useForwardedRef from "../../hooks/useForwardedRef";
 
-interface LinkProps extends AriaLinkOptions {
+type TLinkProps = Omit<AriaLinkOptions, "href"> & {
   href?: string | UrlObject;
   target?: HTMLAttributeAnchorTarget;
   variant?: "primary" | "secondary" | "tertiary";
   children: ReactNode;
   className?: string;
-}
+};
 
 const Link = forwardRef(function Link(
-  props: LinkProps,
+  props: TLinkProps,
   forwardedRef: ForwardedRef<HTMLAnchorElement>
 ) {
   const linkRef = useForwardedRef(forwardedRef);

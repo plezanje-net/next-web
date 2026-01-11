@@ -1,6 +1,6 @@
 import { gradingSystems, TGradingSystemId } from "../lib/grading-systems";
 
-type Props = {
+type TGradeProps = {
   difficulty: number;
   gradingSystemId?: string;
   displayModifier?: boolean;
@@ -20,7 +20,7 @@ function Grade({
   displayModifier = true,
   displayIntermediate = false,
   disabled = false,
-}: Props) {
+}: TGradeProps) {
   const gradeDisplay = diffToGrade(
     difficulty,
     gradingSystemId,
