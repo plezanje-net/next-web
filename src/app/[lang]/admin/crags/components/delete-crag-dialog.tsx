@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import deleteCragAction from "../lib/delete-crag-action";
 
-
 type TDeleteCragDialog = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
