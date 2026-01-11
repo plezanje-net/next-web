@@ -17,6 +17,10 @@ const breakpoints = Object.entries(fullConfig.theme.screens)
   .map(([bpName, bpSize]) => [bpName, `(min-width: ${bpSize})`]);
 
 const getCurrentBreakpoint = () => {
+  // Server does not have the matchMedia function
+  if (typeof window === "undefined") {
+    return "default";
+  }
   // Test breakpoints from largest to smallest and claim match when first one matches
   // (assuming all breakpoints are defined via 'min-width' media queries)
   for (let i = 0; i < breakpoints.length; i++) {

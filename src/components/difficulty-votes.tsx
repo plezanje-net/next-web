@@ -1,7 +1,8 @@
 import { DifficultyVote, Route } from "@/graphql/generated";
-import displayDate from "../../../../../../../../../lib/display-date";
+import displayDate from "@/lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
-import { pluralizeNoun } from "../../../../../../../../../lib/text-helpers";
+import { pluralizeNoun } from "@/lib/text-helpers";
+import { gradingSystems } from "@/lib/grading-systems";
 
 interface Props {
   route: Route;
@@ -99,7 +100,7 @@ function DifficultyVotes({ route, difficultyVotes }: Props) {
                   <td className="pr-4">
                     {vote.isBase ? "(bazna ocena)" : vote.user?.fullName}
                   </td>
-                  <td className="text-right">{displayDate(vote.created)}</td>
+                  <td>{displayDate(vote.created)}</td>
                 </tr>
               ))}
             </tbody>

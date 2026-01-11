@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run gengradsys && next dev -p 3003",
+    "dev": "npm run gengradsys && npm run codegen && next dev -p 3003",
     "prebuild": "npm run gengradsys",
     "build": "next build",
     "start": "next start -p 3003",
