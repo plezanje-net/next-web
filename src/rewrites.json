@@ -5,7 +5,10 @@
     "/{crag}/:cragSlug/{comments}",
     "/{crag}/:cragSlug/{gallery}",
     "/{crag}/:cragSlug*",
-
+    "/{climbing-log}",
+    "/{climbing-log}/{calendar}",
+    "/{climbing-log}/{calendar}/:date",
+    "/{climbing-log}/{statistics}",
     "/{admin}/{crags}/{add}",
     "/{admin}/{crags}/:cragSlug/{edit}",
     "/{admin}/{crags}/:cragSlug/{sectors}",
@@ -19,7 +22,9 @@
       "info": "info",
       "comments": "komentarji",
       "gallery": "galerija",
-
+      "climbing-log": "plezalni-dnevnik",
+      "calendar": "koledar",
+      "statistics": "statistika",
       "admin": "urejanje",
       "add": "dodaj",
       "edit": "uredi",
@@ -33,7 +38,9 @@
       "info": "info",
       "comments": "comments",
       "gallery": "gallery",
-
+      "climbing-log": "climbing-log",
+      "calendar": "calendar",
+      "statistics": "statistics",
       "admin": "admin",
       "add": "add",
       "edit": "edit",

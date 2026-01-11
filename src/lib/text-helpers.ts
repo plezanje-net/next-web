@@ -105,10 +105,13 @@ const pluralizeNoun = (
   }
 };
 
+const capitalizeFirstLetter = (text: string) =>
+  text.charAt(0).toUpperCase() + text.slice(1);
+
 const genderizeVerb = (verb: string, gender: string) => {
   if (gender == "F") return verb + "a";
   if (gender == "M") return verb;
   return verb + "/a";
 };
 
-export { pluralizeNoun, genderizeVerb };
+export { pluralizeNoun, genderizeVerb, capitalizeFirstLetter };

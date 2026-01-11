@@ -21,15 +21,16 @@ interface OptionProps {
   value: string; // the value for the option
   children: string | ReactElement; // the label for the option (can include an icon)
   disabled?: boolean;
+  separator?: boolean;
 }
 
-function Option({ value, children, disabled }: OptionProps) {
+function Option({ value, children, disabled, separator }: OptionProps) {
   return (
     <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
-      className="flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
+      className={`flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400 ${separator ? "border-neutral-200 border-t" : ""}`}
     >
       <span className="overflow-hidden text-ellipsis whitespace-nowrap">
         {children}

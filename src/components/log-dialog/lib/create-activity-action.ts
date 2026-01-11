@@ -17,6 +17,8 @@ async function createActivityAction(
     routes: routes,
   });
 
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+
   if (result.error) {
     console.error(result.error);
     throw new Error("Pri shranjevanju vzponov je prišlo do napake.");
