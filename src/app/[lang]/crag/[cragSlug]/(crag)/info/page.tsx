@@ -24,6 +24,8 @@ import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
+import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import Button from "@/components/ui/button";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -68,8 +70,6 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     routeLengths.length ? Math.min(...routeLengths) : null,
     routeLengths.length ? Math.max(...routeLengths) : null,
   ];
-
-  const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
 
   // Find out if any data depicted with icons is missing and if so, construct appropriate messages.
   const iconDataMissing: string[] = [];
@@ -172,7 +172,19 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
           </div>
 
           <div>
-            <IconMore size={IconSize.regular} />
+            <DropdownMenu
+              openTrigger={
+                <Button variant="quaternary">
+                  <IconMore size={IconSize.regular} />
+                </Button>
+              }
+            >
+              <DropdownMenuItem
+                href={`/urejanje/plezalisca/${crag.slug}/uredi`}
+              >
+                Uredi plezališče
+              </DropdownMenuItem>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -199,7 +211,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
       <div className="mx-auto mt-7 grid grid-cols-1 gap-x-7 gap-y-10 2xl:container xs:px-8 md:grid-cols-2">
         {crag.coverImage ? (
           <Image
-            src={`${imagesBaseUrl}/${crag.coverImage.path}.${crag.coverImage.extension}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGES_BASEURL}/${crag.coverImage.path}.${crag.coverImage.extension}`}
             width={crag.coverImage.maxIntrinsicWidth}
             height={
               crag.coverImage.maxIntrinsicWidth / crag.coverImage.aspectRatio

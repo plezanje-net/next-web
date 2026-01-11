@@ -4,33 +4,31 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
-  JSON: { input: any; output: any; }
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  DateTime: any;
+  JSON: any;
 };
 
 export type Activity = {
   __typename?: 'Activity';
   crag?: Maybe<Crag>;
-  customType?: Maybe<Scalars['String']['output']>;
-  date: Scalars['DateTime']['output'];
-  duration?: Maybe<Scalars['Int']['output']>;
+  customType?: Maybe<Scalars['String']>;
+  date: Scalars['DateTime'];
+  duration?: Maybe<Scalars['Int']>;
   iceFall?: Maybe<IceFall>;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  notes?: Maybe<Scalars['String']['output']>;
-  partners?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String'];
+  name: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+  partners?: Maybe<Scalars['String']>;
   peak?: Maybe<Peak>;
   routes: Array<ActivityRoute>;
-  type: Scalars['String']['output'];
+  type: Scalars['String'];
   user: User;
 };
 
@@ -43,16 +41,16 @@ export type ActivityRoute = {
   __typename?: 'ActivityRoute';
   activity?: Maybe<Activity>;
   ascentType: AscentType;
-  date?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['String']['output'];
-  notes?: Maybe<Scalars['String']['output']>;
-  orderScore: Scalars['Float']['output'];
-  partner?: Maybe<Scalars['String']['output']>;
+  date?: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+  orderScore: Scalars['Float'];
+  partner?: Maybe<Scalars['String']>;
   pitch?: Maybe<Pitch>;
   publish: PublishType;
-  rankingScore: Scalars['Float']['output'];
+  rankingScore: Scalars['Float'];
   route: Route;
-  routeId: Scalars['String']['output'];
+  routeId: Scalars['String'];
   user: User;
 };
 
@@ -62,15 +60,15 @@ export type Area = {
   areas: Array<Area>;
   country: Country;
   crags: Array<Crag>;
-  description?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']>;
   iceFalls: Array<IceFall>;
-  id: Scalars['String']['output'];
+  id: Scalars['String'];
   images: Array<Image>;
-  name: Scalars['String']['output'];
-  nrCrags: Scalars['Int']['output'];
+  name: Scalars['String'];
+  nrCrags: Scalars['Int'];
   peaks: Array<Peak>;
-  slug: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  slug: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export enum AscentType {
@@ -93,55 +91,55 @@ export enum AscentType {
 
 export type Club = {
   __typename?: 'Club';
-  created: Scalars['DateTime']['output'];
-  id: Scalars['String']['output'];
+  created: Scalars['DateTime'];
+  id: Scalars['String'];
   members: Array<ClubMember>;
-  name: Scalars['String']['output'];
-  nrMembers: Scalars['Float']['output'];
-  slug: Scalars['String']['output'];
-  updated: Scalars['DateTime']['output'];
+  name: Scalars['String'];
+  nrMembers: Scalars['Float'];
+  slug: Scalars['String'];
+  updated: Scalars['DateTime'];
 };
 
 export type ClubMember = {
   __typename?: 'ClubMember';
-  admin: Scalars['Boolean']['output'];
+  admin: Scalars['Boolean'];
   club: Club;
-  created: Scalars['DateTime']['output'];
-  id: Scalars['String']['output'];
-  legacy: Scalars['String']['output'];
-  status: Scalars['String']['output'];
-  updated: Scalars['DateTime']['output'];
+  created: Scalars['DateTime'];
+  id: Scalars['String'];
+  legacy: Scalars['String'];
+  status: Scalars['String'];
+  updated: Scalars['DateTime'];
   user: User;
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  content?: Maybe<Scalars['String']['output']>;
+  content?: Maybe<Scalars['String']>;
   crag?: Maybe<Crag>;
-  created: Scalars['DateTime']['output'];
-  exposedUntil?: Maybe<Scalars['DateTime']['output']>;
+  created: Scalars['DateTime'];
+  exposedUntil?: Maybe<Scalars['DateTime']>;
   iceFall: IceFall;
-  id: Scalars['String']['output'];
+  id: Scalars['String'];
   images: Array<Image>;
   peak: Peak;
   route?: Maybe<Route>;
-  type: Scalars['String']['output'];
-  updated: Scalars['DateTime']['output'];
+  type: Scalars['String'];
+  updated: Scalars['DateTime'];
   user?: Maybe<User>;
 };
 
 export type ConfirmInput = {
-  id: Scalars['String']['input'];
-  token: Scalars['String']['input'];
+  id: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export type Contribution = {
   __typename?: 'Contribution';
   crag?: Maybe<Crag>;
-  created: Scalars['DateTime']['output'];
-  entity: Scalars['String']['output'];
-  id: Scalars['String']['output'];
-  publishStatus: Scalars['String']['output'];
+  created: Scalars['DateTime'];
+  entity: Scalars['String'];
+  id: Scalars['String'];
+  publishStatus: Scalars['String'];
   route?: Maybe<Route>;
   sector?: Maybe<Sector>;
   user?: Maybe<User>;
@@ -150,21 +148,21 @@ export type Contribution = {
 export type Country = {
   __typename?: 'Country';
   areas: Array<Area>;
-  code: Scalars['String']['output'];
+  code: Scalars['String'];
   crags: Array<Crag>;
   iceFalls: Array<IceFall>;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  nrCrags: Scalars['Int']['output'];
-  nrIceFalls: Scalars['Float']['output'];
-  nrPeaks: Scalars['Float']['output'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  nrCrags: Scalars['Int'];
+  nrIceFalls: Scalars['Float'];
+  nrPeaks: Scalars['Float'];
   peaks: Array<Peak>;
-  slug: Scalars['String']['output'];
+  slug: Scalars['String'];
 };
 
 
 export type CountryAreasArgs = {
-  hasCrags?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCrags?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -174,270 +172,277 @@ export type CountryCragsArgs = {
 
 
 export type CountryIceFallsArgs = {
-  areaSlug?: InputMaybe<Scalars['String']['input']>;
+  areaSlug?: InputMaybe<Scalars['String']>;
 };
 
 
 export type CountryPeaksArgs = {
-  areaSlug?: InputMaybe<Scalars['String']['input']>;
+  areaSlug?: InputMaybe<Scalars['String']>;
 };
 
 export type Crag = {
   __typename?: 'Crag';
-  access?: Maybe<Scalars['String']['output']>;
-  activityByMonth: Array<Scalars['Int']['output']>;
-  approachTime?: Maybe<Scalars['Int']['output']>;
+  access?: Maybe<Scalars['String']>;
+  activityByMonth: Array<Scalars['Int']>;
+  approachTime?: Maybe<Scalars['Int']>;
   area?: Maybe<Area>;
   comments: Array<Comment>;
   country: Country;
   coverImage?: Maybe<Image>;
-  created: Scalars['DateTime']['output'];
+  created: Scalars['DateTime'];
   defaultGradingSystem?: Maybe<GradingSystem>;
-  description?: Maybe<Scalars['String']['output']>;
-  hasBoulder: Scalars['Boolean']['output'];
-  hasMultipitch: Scalars['Boolean']['output'];
-  hasSport: Scalars['Boolean']['output'];
-  id: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']>;
+  hasBoulder: Scalars['Boolean'];
+  hasMultipitch: Scalars['Boolean'];
+  hasSport: Scalars['Boolean'];
+  id: Scalars['String'];
   images: Array<Image>;
-  isHidden: Scalars['Boolean']['output'];
-  lat?: Maybe<Scalars['Float']['output']>;
-  lon?: Maybe<Scalars['Float']['output']>;
-  maxDifficulty?: Maybe<Scalars['Float']['output']>;
-  minDifficulty?: Maybe<Scalars['Float']['output']>;
-  name: Scalars['String']['output'];
-  nrRoutes: Scalars['Int']['output'];
-  nrRoutesByGrade?: Maybe<Scalars['JSON']['output']>;
-  orientation?: Maybe<Scalars['String']['output']>;
+  isHidden: Scalars['Boolean'];
+  lat?: Maybe<Scalars['Float']>;
+  lon?: Maybe<Scalars['Float']>;
+  maxDifficulty?: Maybe<Scalars['Float']>;
+  minDifficulty?: Maybe<Scalars['Float']>;
+  name: Scalars['String'];
+  nrRoutes: Scalars['Int'];
+  nrRoutesByGrade?: Maybe<Scalars['JSON']>;
+  orientation?: Maybe<Scalars['String']>;
   orientations?: Maybe<Array<Orientation>>;
   peak?: Maybe<Peak>;
   properties: Array<CragProperty>;
-  publishStatus: Scalars['String']['output'];
-  rainproof?: Maybe<Scalars['Boolean']['output']>;
+  publishStatus: Scalars['String'];
+  rainproof?: Maybe<Scalars['Boolean']>;
   routes: Array<Route>;
   seasons?: Maybe<Array<Season>>;
   sectors: Array<Sector>;
-  slug: Scalars['String']['output'];
-  status: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  slug: Scalars['String'];
+  status: Scalars['String'];
+  type: Scalars['String'];
   user?: Maybe<User>;
   wallAngles?: Maybe<Array<WallAngle>>;
 };
 
 export type CragProperty = {
   __typename?: 'CragProperty';
-  author?: Maybe<Scalars['String']['output']>;
+  author?: Maybe<Scalars['String']>;
   crag: Crag;
-  id: Scalars['String']['output'];
-  numValue?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['String'];
+  numValue?: Maybe<Scalars['Float']>;
   propertyType: PropertyType;
-  stringValue?: Maybe<Scalars['String']['output']>;
-  textValue?: Maybe<Scalars['String']['output']>;
+  stringValue?: Maybe<Scalars['String']>;
+  textValue?: Maybe<Scalars['String']>;
 };
 
 export type CreateActivityInput = {
-  cragId?: InputMaybe<Scalars['String']['input']>;
-  customType?: InputMaybe<Scalars['String']['input']>;
-  date: Scalars['DateTime']['input'];
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  iceFallId?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
-  notes?: InputMaybe<Scalars['String']['input']>;
-  partners?: InputMaybe<Scalars['String']['input']>;
-  peakId?: InputMaybe<Scalars['String']['input']>;
-  type: Scalars['String']['input'];
+  cragId?: InputMaybe<Scalars['String']>;
+  customType?: InputMaybe<Scalars['String']>;
+  date: Scalars['DateTime'];
+  duration?: InputMaybe<Scalars['Int']>;
+  iceFallId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  partners?: InputMaybe<Scalars['String']>;
+  peakId?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
 };
 
 export type CreateActivityRouteInput = {
-  ascentType: Scalars['String']['input'];
-  date: Scalars['DateTime']['input'];
-  notes?: InputMaybe<Scalars['String']['input']>;
-  partner?: InputMaybe<Scalars['String']['input']>;
-  position?: InputMaybe<Scalars['Int']['input']>;
-  publish: Scalars['String']['input'];
-  routeId: Scalars['String']['input'];
-  votedDifficulty?: InputMaybe<Scalars['Float']['input']>;
-  votedStarRating?: InputMaybe<Scalars['Int']['input']>;
+  ascentType: Scalars['String'];
+  date: Scalars['DateTime'];
+  notes?: InputMaybe<Scalars['String']>;
+  partner?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+  publish: Scalars['String'];
+  routeId: Scalars['String'];
+  votedDifficulty?: InputMaybe<Scalars['Float']>;
+  votedStarRating?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateAreaInput = {
-  countryId: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+  countryId: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type CreateClubInput = {
-  name: Scalars['String']['input'];
+  name: Scalars['String'];
 };
 
 export type CreateClubMemberByEmailInput = {
-  admin: Scalars['Boolean']['input'];
-  clubId: Scalars['String']['input'];
-  userEmail: Scalars['String']['input'];
+  admin: Scalars['Boolean'];
+  clubId: Scalars['String'];
+  userEmail: Scalars['String'];
 };
 
 export type CreateClubMemberInput = {
-  admin: Scalars['Boolean']['input'];
-  clubId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
+  admin: Scalars['Boolean'];
+  clubId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type CreateCommentInput = {
-  content: Scalars['String']['input'];
-  cragId?: InputMaybe<Scalars['String']['input']>;
-  exposedUntil?: InputMaybe<Scalars['DateTime']['input']>;
-  iceFallId?: InputMaybe<Scalars['String']['input']>;
-  peakId?: InputMaybe<Scalars['String']['input']>;
-  routeId?: InputMaybe<Scalars['String']['input']>;
-  type: Scalars['String']['input'];
+  content: Scalars['String'];
+  cragId?: InputMaybe<Scalars['String']>;
+  exposedUntil?: InputMaybe<Scalars['DateTime']>;
+  iceFallId?: InputMaybe<Scalars['String']>;
+  peakId?: InputMaybe<Scalars['String']>;
+  routeId?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
 };
 
 export type CreateCountryInput = {
-  code: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  slug: Scalars['String']['input'];
+  code: Scalars['String'];
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 export type CreateCragInput = {
-  access?: InputMaybe<Scalars['String']['input']>;
-  areaId?: InputMaybe<Scalars['String']['input']>;
-  countryId: Scalars['String']['input'];
-  defaultGradingSystemId: Scalars['String']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  isHidden: Scalars['Boolean']['input'];
-  lat?: InputMaybe<Scalars['Float']['input']>;
-  lon?: InputMaybe<Scalars['Float']['input']>;
-  name: Scalars['String']['input'];
-  orientation?: InputMaybe<Scalars['String']['input']>;
-  publishStatus: Scalars['String']['input'];
-  type: Scalars['String']['input'];
+  access?: InputMaybe<Scalars['String']>;
+  approachTime?: InputMaybe<Scalars['Int']>;
+  areaId?: InputMaybe<Scalars['String']>;
+  countryId: Scalars['String'];
+  coverImageId?: InputMaybe<Scalars['String']>;
+  defaultGradingSystemId: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  isHidden: Scalars['Boolean'];
+  lat?: InputMaybe<Scalars['Float']>;
+  lon?: InputMaybe<Scalars['Float']>;
+  name: Scalars['String'];
+  orientation?: InputMaybe<Scalars['String']>;
+  orientations?: InputMaybe<Array<Orientation>>;
+  publishStatus: Scalars['String'];
+  rainproof?: InputMaybe<Scalars['Boolean']>;
+  seasons?: InputMaybe<Array<Season>>;
+  type: Scalars['String'];
+  wallAngles?: InputMaybe<Array<WallAngle>>;
 };
 
 export type CreateRouteInput = {
-  author?: InputMaybe<Scalars['String']['input']>;
-  baseDifficulty?: InputMaybe<Scalars['Float']['input']>;
-  defaultGradingSystemId: Scalars['String']['input'];
-  isProject: Scalars['Boolean']['input'];
-  length?: InputMaybe<Scalars['Float']['input']>;
-  name: Scalars['String']['input'];
-  position: Scalars['Float']['input'];
-  publishStatus: Scalars['String']['input'];
-  routeTypeId: Scalars['String']['input'];
-  sectorId: Scalars['String']['input'];
+  author?: InputMaybe<Scalars['String']>;
+  baseDifficulty?: InputMaybe<Scalars['Float']>;
+  defaultGradingSystemId: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  isProject: Scalars['Boolean'];
+  length?: InputMaybe<Scalars['Float']>;
+  name: Scalars['String'];
+  position: Scalars['Float'];
+  publishStatus: Scalars['String'];
+  routeTypeId: Scalars['String'];
+  sectorId: Scalars['String'];
 };
 
 export type CreateSectorInput = {
-  cragId: Scalars['String']['input'];
-  label: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  position: Scalars['Float']['input'];
-  publishStatus: Scalars['String']['input'];
+  cragId: Scalars['String'];
+  label: Scalars['String'];
+  name: Scalars['String'];
+  position: Scalars['Float'];
+  publishStatus: Scalars['String'];
 };
 
 export type DifficultyVote = {
   __typename?: 'DifficultyVote';
-  created: Scalars['DateTime']['output'];
-  difficulty: Scalars['Float']['output'];
-  id: Scalars['String']['output'];
-  includedInCalculation: Scalars['Boolean']['output'];
-  isBase: Scalars['Boolean']['output'];
+  created: Scalars['DateTime'];
+  difficulty: Scalars['Float'];
+  id: Scalars['String'];
+  includedInCalculation: Scalars['Boolean'];
+  isBase: Scalars['Boolean'];
   route: Route;
-  updated: Scalars['DateTime']['output'];
+  updated: Scalars['DateTime'];
   user?: Maybe<User>;
 };
 
 export type FindActivitiesInput = {
-  activityTypes?: InputMaybe<Array<Scalars['String']['input']>>;
-  cragId?: InputMaybe<Scalars['String']['input']>;
-  dateFrom?: InputMaybe<Scalars['DateTime']['input']>;
-  dateTo?: InputMaybe<Scalars['DateTime']['input']>;
-  hasRoutesWithPublish?: InputMaybe<Array<Scalars['String']['input']>>;
+  activityTypes?: InputMaybe<Array<Scalars['String']>>;
+  cragId?: InputMaybe<Scalars['String']>;
+  dateFrom?: InputMaybe<Scalars['DateTime']>;
+  dateTo?: InputMaybe<Scalars['DateTime']>;
+  hasRoutesWithPublish?: InputMaybe<Array<Scalars['String']>>;
   orderBy?: InputMaybe<OrderByInput>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  type?: InputMaybe<Array<Scalars['String']['input']>>;
-  userId?: InputMaybe<Scalars['String']['input']>;
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<Array<Scalars['String']>>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type FindActivityRoutesInput = {
-  activityId?: InputMaybe<Scalars['String']['input']>;
-  ascentType?: InputMaybe<Array<Scalars['String']['input']>>;
-  clubId?: InputMaybe<Scalars['String']['input']>;
-  cragId?: InputMaybe<Scalars['String']['input']>;
-  dateFrom?: InputMaybe<Scalars['DateTime']['input']>;
-  dateTo?: InputMaybe<Scalars['DateTime']['input']>;
+  activityId?: InputMaybe<Scalars['String']>;
+  ascentType?: InputMaybe<Array<Scalars['String']>>;
+  clubId?: InputMaybe<Scalars['String']>;
+  cragId?: InputMaybe<Scalars['String']>;
+  dateFrom?: InputMaybe<Scalars['DateTime']>;
+  dateTo?: InputMaybe<Scalars['DateTime']>;
   orderBy?: InputMaybe<OrderByInput>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  publish?: InputMaybe<Array<Scalars['String']['input']>>;
-  routeId?: InputMaybe<Scalars['String']['input']>;
-  routeTypes?: InputMaybe<Array<Scalars['String']['input']>>;
-  userId?: InputMaybe<Scalars['String']['input']>;
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  publish?: InputMaybe<Array<Scalars['String']>>;
+  routeId?: InputMaybe<Scalars['String']>;
+  routeTypes?: InputMaybe<Array<Scalars['String']>>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type FindContributionsInput = {
   orderBy?: InputMaybe<OrderByInput>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
 };
 
 export type FindCountriesInput = {
-  hasCrags?: InputMaybe<Scalars['Boolean']['input']>;
-  hasIceFalls?: InputMaybe<Scalars['Boolean']['input']>;
-  hasPeaks?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCrags?: InputMaybe<Scalars['Boolean']>;
+  hasIceFalls?: InputMaybe<Scalars['Boolean']>;
+  hasPeaks?: InputMaybe<Scalars['Boolean']>;
   orderBy: OrderByInput;
 };
 
 export type FindCragsInput = {
-  allowEmpty?: InputMaybe<Scalars['Boolean']['input']>;
-  area?: InputMaybe<Scalars['String']['input']>;
-  areaSlug?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  peakId?: InputMaybe<Scalars['String']['input']>;
-  routeTypeId?: InputMaybe<Scalars['String']['input']>;
-  showPrivate?: InputMaybe<Scalars['Boolean']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  allowEmpty?: InputMaybe<Scalars['Boolean']>;
+  area?: InputMaybe<Scalars['String']>;
+  areaSlug?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  peakId?: InputMaybe<Scalars['String']>;
+  routeTypeId?: InputMaybe<Scalars['String']>;
+  showPrivate?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
 };
 
 export type FindCragsServiceInput = {
-  allowEmpty?: InputMaybe<Scalars['Boolean']['input']>;
-  area?: InputMaybe<Scalars['String']['input']>;
-  areaSlug?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  peakId?: InputMaybe<Scalars['String']['input']>;
-  routeTypeId?: InputMaybe<Scalars['String']['input']>;
-  showPrivate?: InputMaybe<Scalars['Boolean']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  allowEmpty?: InputMaybe<Scalars['Boolean']>;
+  area?: InputMaybe<Scalars['String']>;
+  areaSlug?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  peakId?: InputMaybe<Scalars['String']>;
+  routeTypeId?: InputMaybe<Scalars['String']>;
+  showPrivate?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
 };
 
 export type FindDifficultyVotesInput = {
-  userId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type FindRoutesTouchesInput = {
-  before: Scalars['DateTime']['input'];
-  routeIds: Array<Scalars['String']['input']>;
+  before: Scalars['DateTime'];
+  routeIds: Array<Scalars['String']>;
 };
 
 export type FindStarRatingVotesInput = {
-  userId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type Grade = {
   __typename?: 'Grade';
-  difficulty: Scalars['Float']['output'];
+  difficulty: Scalars['Float'];
   gradingSystem: GradingSystem;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  id: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type GradingSystem = {
   __typename?: 'GradingSystem';
   grades: Array<Grade>;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  id: Scalars['String'];
+  name: Scalars['String'];
   routeTypes: Array<RouteType>;
 };
 
@@ -447,81 +452,91 @@ export type IceFall = {
   comments: Array<Comment>;
   country: Country;
   defaultGradingSystem?: Maybe<GradingSystem>;
-  description?: Maybe<Scalars['String']['output']>;
-  difficulty?: Maybe<Scalars['Float']['output']>;
-  grade: Scalars['String']['output'];
-  height: Scalars['Float']['output'];
-  id: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']>;
+  difficulty?: Maybe<Scalars['Float']>;
+  grade: Scalars['String'];
+  height: Scalars['Float'];
+  id: Scalars['String'];
   images: Array<Image>;
-  name: Scalars['String']['output'];
+  name: Scalars['String'];
   properties: Array<IceFallProperty>;
-  slug: Scalars['String']['output'];
+  slug: Scalars['String'];
 };
 
 export type IceFallProperty = {
   __typename?: 'IceFallProperty';
-  author?: Maybe<Scalars['String']['output']>;
+  author?: Maybe<Scalars['String']>;
   iceFall: IceFall;
-  id: Scalars['String']['output'];
-  numValue?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['String'];
+  numValue?: Maybe<Scalars['Float']>;
   propertyType: PropertyType;
-  stringValue?: Maybe<Scalars['String']['output']>;
-  textValue?: Maybe<Scalars['String']['output']>;
+  stringValue?: Maybe<Scalars['String']>;
+  textValue?: Maybe<Scalars['String']>;
 };
 
 export type Image = {
   __typename?: 'Image';
   area?: Maybe<Area>;
-  aspectRatio: Scalars['Float']['output'];
-  author?: Maybe<Scalars['String']['output']>;
+  aspectRatio: Scalars['Float'];
+  author?: Maybe<Scalars['String']>;
   comment?: Maybe<Comment>;
   crag?: Maybe<Crag>;
-  description?: Maybe<Scalars['String']['output']>;
-  extension: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']>;
+  extension: Scalars['String'];
   iceFall?: Maybe<IceFall>;
-  id: Scalars['String']['output'];
-  maxIntrinsicWidth: Scalars['Int']['output'];
-  path: Scalars['String']['output'];
+  id: Scalars['String'];
+  maxIntrinsicWidth: Scalars['Int'];
+  path: Scalars['String'];
   peak?: Maybe<Peak>;
   route?: Maybe<Route>;
-  title?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
 };
 
 export type LatestCommentsInput = {
-  pageNumber?: InputMaybe<Scalars['Float']['input']>;
-  pageSize?: InputMaybe<Scalars['Float']['input']>;
+  pageNumber?: InputMaybe<Scalars['Float']>;
+  pageSize?: InputMaybe<Scalars['Float']>;
 };
 
 export type LatestDifficultyVotesInput = {
-  cragId?: InputMaybe<Scalars['String']['input']>;
-  forUserId?: InputMaybe<Scalars['String']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  routeId?: InputMaybe<Scalars['String']['input']>;
+  cragId?: InputMaybe<Scalars['String']>;
+  forUserId?: InputMaybe<Scalars['String']>;
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  routeId?: InputMaybe<Scalars['String']>;
 };
 
 export type LoginInput = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type LoginResponse = {
   __typename?: 'LoginResponse';
-  token: Scalars['String']['output'];
+  token: Scalars['String'];
   user: User;
 };
 
+export type MergeRoutesInput = {
+  sourceRouteId: Scalars['String'];
+  targetRouteId: Scalars['String'];
+};
+
 export type MoveRouteToSectorInput = {
-  id: Scalars['String']['input'];
-  primaryRoute?: InputMaybe<Scalars['String']['input']>;
-  sectorId: Scalars['String']['input'];
-  targetRouteId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String'];
+  primaryRoute?: InputMaybe<Scalars['String']>;
+  sectorId: Scalars['String'];
+  targetRouteId?: InputMaybe<Scalars['String']>;
+};
+
+export type MoveRoutesToSectorInput = {
+  ids: Array<Scalars['String']>;
+  sectorId: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  confirm: Scalars['Boolean']['output'];
+  confirm: Scalars['Boolean'];
   confirmClubMembership: Club;
   createActivity: Activity;
   createActivityRoutes: Array<ActivityRoute>;
@@ -534,25 +549,29 @@ export type Mutation = {
   createCrag: Crag;
   createRoute: Route;
   createSector: Sector;
-  deleteActivity: Scalars['Boolean']['output'];
-  deleteActivityRoute: Scalars['Boolean']['output'];
-  deleteArea: Scalars['Boolean']['output'];
-  deleteClub: Scalars['Boolean']['output'];
-  deleteClubMember: Scalars['Boolean']['output'];
-  deleteComment: Scalars['Boolean']['output'];
-  deleteCountry: Scalars['Boolean']['output'];
-  deleteCrag: Scalars['Boolean']['output'];
-  deleteImage: Scalars['Boolean']['output'];
-  deleteRoute: Scalars['Boolean']['output'];
-  deleteSector: Scalars['Boolean']['output'];
-  deleteUser: Scalars['Boolean']['output'];
+  deleteActivity: Scalars['Boolean'];
+  deleteActivityRoute: Scalars['Boolean'];
+  deleteArea: Scalars['Boolean'];
+  deleteClub: Scalars['Boolean'];
+  deleteClubMember: Scalars['Boolean'];
+  deleteComment: Scalars['Boolean'];
+  deleteCountry: Scalars['Boolean'];
+  deleteCrag: Scalars['Boolean'];
+  deleteImage: Scalars['Boolean'];
+  deleteRoute: Scalars['Boolean'];
+  deleteRoutes: Array<Scalars['Boolean']>;
+  deleteSector: Scalars['Boolean'];
+  deleteUser: Scalars['Boolean'];
   login: LoginResponse;
-  moveRouteToSector: Scalars['Boolean']['output'];
-  moveSectorToCrag: Scalars['Boolean']['output'];
-  processAllCrags: Scalars['Boolean']['output'];
-  recover: Scalars['Boolean']['output'];
-  register: Scalars['Boolean']['output'];
-  setPassword: Scalars['Boolean']['output'];
+  mergeAllSectors: Scalars['Boolean'];
+  mergeRoutes: Scalars['Boolean'];
+  moveRouteToSector: Scalars['Boolean'];
+  moveRoutesToSector: Scalars['Boolean'];
+  moveSectorToCrag: Scalars['Boolean'];
+  processAllCrags: Scalars['Boolean'];
+  recover: Scalars['Boolean'];
+  register: Scalars['Boolean'];
+  setPassword: Scalars['Boolean'];
   updateActivity: Activity;
   updateActivityRoute: ActivityRoute;
   updateArea: Area;
@@ -635,62 +654,67 @@ export type MutationCreateSectorArgs = {
 
 
 export type MutationDeleteActivityArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteActivityRouteArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteAreaArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteClubArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteClubMemberArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteCommentArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteCountryArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteCragArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteImageArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteRouteArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
+};
+
+
+export type MutationDeleteRoutesArgs = {
+  ids: Array<Scalars['String']>;
 };
 
 
 export type MutationDeleteSectorArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteUserArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
@@ -699,19 +723,34 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationMergeAllSectorsArgs = {
+  cragId: Scalars['String'];
+};
+
+
+export type MutationMergeRoutesArgs = {
+  input: MergeRoutesInput;
+};
+
+
 export type MutationMoveRouteToSectorArgs = {
   input: MoveRouteToSectorInput;
 };
 
 
+export type MutationMoveRoutesToSectorArgs = {
+  input: MoveRoutesToSectorInput;
+};
+
+
 export type MutationMoveSectorToCragArgs = {
-  cragId: Scalars['String']['input'];
-  id: Scalars['String']['input'];
+  cragId: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationRecoverArgs = {
-  email: Scalars['String']['input'];
+  email: Scalars['String'];
 };
 
 
@@ -786,8 +825,8 @@ export type MutationUpdateUserArgs = {
 };
 
 export type OrderByInput = {
-  direction?: InputMaybe<Scalars['String']['input']>;
-  field: Scalars['String']['input'];
+  direction?: InputMaybe<Scalars['String']>;
+  field: Scalars['String'];
 };
 
 export enum Orientation {
@@ -839,23 +878,23 @@ export type PaginatedRoutes = {
 
 export type PaginationMeta = {
   __typename?: 'PaginationMeta';
-  itemCount: Scalars['Float']['output'];
-  pageCount: Scalars['Float']['output'];
-  pageNumber: Scalars['Float']['output'];
-  pageSize: Scalars['Float']['output'];
+  itemCount: Scalars['Float'];
+  pageCount: Scalars['Float'];
+  pageNumber: Scalars['Float'];
+  pageSize: Scalars['Float'];
 };
 
 export type Parking = {
   __typename?: 'Parking';
-  id: Scalars['String']['output'];
-  lat: Scalars['Float']['output'];
-  lon: Scalars['Float']['output'];
+  id: Scalars['String'];
+  lat: Scalars['Float'];
+  lon: Scalars['Float'];
 };
 
 export type PasswordInput = {
-  id: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-  token: Scalars['String']['input'];
+  id: Scalars['String'];
+  password: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export type Peak = {
@@ -864,15 +903,15 @@ export type Peak = {
   comments: Array<Comment>;
   country: Country;
   crags: Array<Crag>;
-  description?: Maybe<Scalars['String']['output']>;
-  height?: Maybe<Scalars['Float']['output']>;
-  id: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']>;
+  height?: Maybe<Scalars['Float']>;
+  id: Scalars['String'];
   images: Array<Image>;
-  lat?: Maybe<Scalars['Float']['output']>;
-  lon?: Maybe<Scalars['Float']['output']>;
-  name: Scalars['String']['output'];
-  nrCrags: Scalars['Float']['output'];
-  slug: Scalars['String']['output'];
+  lat?: Maybe<Scalars['Float']>;
+  lon?: Maybe<Scalars['Float']>;
+  name: Scalars['String'];
+  nrCrags: Scalars['Float'];
+  slug: Scalars['String'];
 };
 
 
@@ -882,11 +921,11 @@ export type PeakCragsArgs = {
 
 export type Pitch = {
   __typename?: 'Pitch';
-  difficulty?: Maybe<Scalars['Float']['output']>;
-  height?: Maybe<Scalars['Float']['output']>;
-  id: Scalars['String']['output'];
-  isProject: Scalars['Boolean']['output'];
-  number: Scalars['Float']['output'];
+  difficulty?: Maybe<Scalars['Float']>;
+  height?: Maybe<Scalars['Float']>;
+  id: Scalars['String'];
+  isProject: Scalars['Boolean'];
+  number: Scalars['Float'];
   route: Route;
   user?: Maybe<User>;
 };
@@ -894,14 +933,14 @@ export type Pitch = {
 export type PopularCrag = {
   __typename?: 'PopularCrag';
   crag: Crag;
-  nrVisits: Scalars['Int']['output'];
+  nrVisits: Scalars['Int'];
 };
 
 export type PropertyType = {
   __typename?: 'PropertyType';
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  valueType: Scalars['String']['output'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  valueType: Scalars['String'];
 };
 
 export enum PublishType {
@@ -963,38 +1002,38 @@ export type QueryActivitiesArgs = {
 
 
 export type QueryActivityArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryActivityRouteArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryActivityRoutesByClubSlugArgs = {
-  clubSlug: Scalars['String']['input'];
+  clubSlug: Scalars['String'];
   input?: InputMaybe<FindActivityRoutesInput>;
 };
 
 
 export type QueryAreaBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
 export type QueryClubArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryClubBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
 export type QueryClubsArgs = {
-  userId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1009,17 +1048,17 @@ export type QueryCountriesArgs = {
 
 
 export type QueryCountryBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
 export type QueryCragArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryCragBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
@@ -1041,7 +1080,7 @@ export type QueryDryRunUpdateActivityArgs = {
 
 
 export type QueryIceFallBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
@@ -1056,13 +1095,13 @@ export type QueryLatestDifficultyVotesArgs = {
 
 
 export type QueryLatestImagesArgs = {
-  latest: Scalars['Int']['input'];
+  latest: Scalars['Int'];
 };
 
 
 export type QueryLatestTicksArgs = {
-  inLastNDays?: InputMaybe<Scalars['Int']['input']>;
-  latestN?: InputMaybe<Scalars['Int']['input']>;
+  inLastNDays?: InputMaybe<Scalars['Int']>;
+  latestN?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1092,24 +1131,24 @@ export type QueryMyRoutesStatisticsArgs = {
 
 
 export type QueryPeakArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
 export type QueryPopularCragsArgs = {
-  dateFrom?: InputMaybe<Scalars['String']['input']>;
-  top?: InputMaybe<Scalars['Int']['input']>;
+  dateFrom?: InputMaybe<Scalars['String']>;
+  top?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type QueryRouteArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryRouteBySlugArgs = {
-  cragSlug: Scalars['String']['input'];
-  routeSlug: Scalars['String']['input'];
+  cragSlug: Scalars['String'];
+  routeSlug: Scalars['String'];
 };
 
 
@@ -1119,7 +1158,7 @@ export type QueryRoutesTouchesArgs = {
 
 
 export type QuerySearchArgs = {
-  input?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1134,57 +1173,57 @@ export type QuerySearchRoutesArgs = {
 
 
 export type QuerySectorArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 };
 
 
 export type QueryStarRatingVotesArgs = {
-  routeIds: Array<Scalars['String']['input']>;
+  routeIds: Array<Scalars['String']>;
 };
 
 export type RegisterInput = {
-  email: Scalars['String']['input'];
-  firstname: Scalars['String']['input'];
-  gender?: InputMaybe<Scalars['String']['input']>;
-  lastname: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  email: Scalars['String'];
+  firstname: Scalars['String'];
+  gender?: InputMaybe<Scalars['String']>;
+  lastname: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Role = {
   __typename?: 'Role';
-  role: Scalars['String']['output'];
+  role: Scalars['String'];
 };
 
 export type Route = {
   __typename?: 'Route';
   activityRoutes: PaginatedActivityRoutes;
-  author?: Maybe<Scalars['String']['output']>;
+  author?: Maybe<Scalars['String']>;
   comments: Array<Comment>;
   crag: Crag;
-  created: Scalars['DateTime']['output'];
+  created: Scalars['DateTime'];
   defaultGradingSystem: GradingSystem;
-  description?: Maybe<Scalars['String']['output']>;
-  difficulty?: Maybe<Scalars['Float']['output']>;
+  description?: Maybe<Scalars['String']>;
+  difficulty?: Maybe<Scalars['Float']>;
   difficultyVotes: Array<DifficultyVote>;
-  id: Scalars['String']['output'];
+  id: Scalars['String'];
   images: Array<Image>;
-  isProject: Scalars['Boolean']['output'];
-  length?: Maybe<Scalars['Float']['output']>;
-  name: Scalars['String']['output'];
-  nrClimbers?: Maybe<Scalars['Float']['output']>;
-  nrTicks?: Maybe<Scalars['Float']['output']>;
-  nrTries?: Maybe<Scalars['Float']['output']>;
+  isProject: Scalars['Boolean'];
+  length?: Maybe<Scalars['Float']>;
+  name: Scalars['String'];
+  nrClimbers?: Maybe<Scalars['Float']>;
+  nrTicks?: Maybe<Scalars['Float']>;
+  nrTries?: Maybe<Scalars['Float']>;
   pitches: Array<Pitch>;
-  position: Scalars['Float']['output'];
+  position: Scalars['Float'];
   properties: Array<RouteProperty>;
-  publishStatus: Scalars['String']['output'];
+  publishStatus: Scalars['String'];
   routeEvents: Array<RouteEvent>;
   routeType: RouteType;
   sector: Sector;
-  slug: Scalars['String']['output'];
-  starRating?: Maybe<Scalars['Float']['output']>;
+  slug: Scalars['String'];
+  starRating?: Maybe<Scalars['Float']>;
   starRatingVotes: Array<StarRatingVote>;
-  status: Scalars['String']['output'];
+  status: Scalars['String'];
   user?: Maybe<User>;
 };
 
@@ -1205,29 +1244,29 @@ export type RouteStarRatingVotesArgs = {
 
 export type RouteEvent = {
   __typename?: 'RouteEvent';
-  author: Scalars['String']['output'];
-  eventDate?: Maybe<Scalars['DateTime']['output']>;
-  eventType?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  showFullDate?: Maybe<Scalars['Boolean']['output']>;
+  author: Scalars['String'];
+  eventDate?: Maybe<Scalars['DateTime']>;
+  eventType?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  showFullDate?: Maybe<Scalars['Boolean']>;
 };
 
 export type RouteProperty = {
   __typename?: 'RouteProperty';
-  author?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  numValue?: Maybe<Scalars['Float']['output']>;
+  author?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  numValue?: Maybe<Scalars['Float']>;
   propertyType: PropertyType;
   route: Route;
-  stringValue?: Maybe<Scalars['String']['output']>;
-  textValue?: Maybe<Scalars['String']['output']>;
+  stringValue?: Maybe<Scalars['String']>;
+  textValue?: Maybe<Scalars['String']>;
 };
 
 export type RouteType = {
   __typename?: 'RouteType';
   gradingSystems: Array<GradingSystem>;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  id: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type RoutesTouches = {
@@ -1239,9 +1278,9 @@ export type RoutesTouches = {
 
 export type SearchCragsInput = {
   orderBy?: InputMaybe<OrderByInput>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  query: Scalars['String']['input'];
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  query: Scalars['String'];
 };
 
 export type SearchResults = {
@@ -1254,11 +1293,11 @@ export type SearchResults = {
 };
 
 export type SearchRoutesInput = {
-  cragId?: InputMaybe<Scalars['String']['input']>;
+  cragId?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderByInput>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  query: Scalars['String']['input'];
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  query: Scalars['String'];
 };
 
 export enum Season {
@@ -1270,17 +1309,17 @@ export enum Season {
 
 export type Sector = {
   __typename?: 'Sector';
-  bouldersOnly: Scalars['Boolean']['output'];
+  bouldersOnly: Scalars['Boolean'];
   crag: Crag;
-  created: Scalars['DateTime']['output'];
-  id: Scalars['String']['output'];
-  label: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  created: Scalars['DateTime'];
+  id: Scalars['String'];
+  label: Scalars['String'];
+  name: Scalars['String'];
   parkings: Array<Parking>;
-  position: Scalars['Float']['output'];
-  publishStatus: Scalars['String']['output'];
+  position: Scalars['Float'];
+  publishStatus: Scalars['String'];
   routes: Array<Route>;
-  status: Scalars['String']['output'];
+  status: Scalars['String'];
   user?: Maybe<User>;
 };
 
@@ -1292,118 +1331,125 @@ export type SideEffect = {
 
 export type StarRatingVote = {
   __typename?: 'StarRatingVote';
-  created: Scalars['DateTime']['output'];
-  id: Scalars['String']['output'];
+  created: Scalars['DateTime'];
+  id: Scalars['String'];
   route: Route;
-  stars: Scalars['Float']['output'];
-  updated: Scalars['DateTime']['output'];
+  stars: Scalars['Float'];
+  updated: Scalars['DateTime'];
   user: User;
 };
 
 export type StatsActivities = {
   __typename?: 'StatsActivities';
-  nr_activities: Scalars['Int']['output'];
-  type: Scalars['String']['output'];
-  year: Scalars['Int']['output'];
+  nr_activities: Scalars['Int'];
+  type: Scalars['String'];
+  year: Scalars['Int'];
 };
 
 export type StatsRoutes = {
   __typename?: 'StatsRoutes';
-  ascent_type: Scalars['String']['output'];
-  difficulty: Scalars['Float']['output'];
-  nr_routes: Scalars['Int']['output'];
-  year: Scalars['Int']['output'];
+  ascent_type: Scalars['String'];
+  difficulty: Scalars['Float'];
+  nr_routes: Scalars['Int'];
+  year: Scalars['Int'];
 };
 
 export type UpdateActivityInput = {
-  date?: InputMaybe<Scalars['DateTime']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  id: Scalars['String']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  notes?: InputMaybe<Scalars['String']['input']>;
-  partners?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+  duration?: InputMaybe<Scalars['Int']>;
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
+  partners?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateActivityRouteInput = {
-  id: Scalars['String']['input'];
-  notes?: InputMaybe<Scalars['String']['input']>;
-  partner?: InputMaybe<Scalars['String']['input']>;
-  position?: InputMaybe<Scalars['Int']['input']>;
-  publish?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  partner?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+  publish?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateAreaInput = {
-  countryId: Scalars['String']['input'];
-  id: Scalars['String']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
+  countryId: Scalars['String'];
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateClubInput = {
-  id: Scalars['String']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateCommentInput = {
-  content: Scalars['String']['input'];
-  exposedUntil?: InputMaybe<Scalars['DateTime']['input']>;
-  id: Scalars['String']['input'];
+  content: Scalars['String'];
+  exposedUntil?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['String'];
 };
 
 export type UpdateCountryInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateCragInput = {
-  access?: InputMaybe<Scalars['String']['input']>;
-  areaId?: InputMaybe<Scalars['String']['input']>;
-  cascadePublishStatus?: InputMaybe<Scalars['Boolean']['input']>;
-  countryId?: InputMaybe<Scalars['String']['input']>;
-  defaultGradingSystemId?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  isHidden?: InputMaybe<Scalars['Boolean']['input']>;
-  lat?: InputMaybe<Scalars['Float']['input']>;
-  lon?: InputMaybe<Scalars['Float']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  orientation?: InputMaybe<Scalars['String']['input']>;
-  publishStatus?: InputMaybe<Scalars['String']['input']>;
-  rejectionMessage?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  access?: InputMaybe<Scalars['String']>;
+  approachTime?: InputMaybe<Scalars['Int']>;
+  areaId?: InputMaybe<Scalars['String']>;
+  cascadePublishStatus?: InputMaybe<Scalars['Boolean']>;
+  countryId?: InputMaybe<Scalars['String']>;
+  coverImageId?: InputMaybe<Scalars['String']>;
+  defaultGradingSystemId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  isHidden?: InputMaybe<Scalars['Boolean']>;
+  lat?: InputMaybe<Scalars['Float']>;
+  lon?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orientation?: InputMaybe<Scalars['String']>;
+  orientations?: InputMaybe<Array<Orientation>>;
+  publishStatus?: InputMaybe<Scalars['String']>;
+  rainproof?: InputMaybe<Scalars['Boolean']>;
+  rejectionMessage?: InputMaybe<Scalars['String']>;
+  seasons?: InputMaybe<Array<Season>>;
+  type?: InputMaybe<Scalars['String']>;
+  wallAngles?: InputMaybe<Array<WallAngle>>;
 };
 
 export type UpdateRouteInput = {
-  author?: InputMaybe<Scalars['String']['input']>;
-  baseDifficulty?: InputMaybe<Scalars['Float']['input']>;
-  defaultGradingSystemId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  isProject?: InputMaybe<Scalars['Boolean']['input']>;
-  label?: InputMaybe<Scalars['String']['input']>;
-  length?: InputMaybe<Scalars['Float']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  position?: InputMaybe<Scalars['Float']['input']>;
-  publishStatus?: InputMaybe<Scalars['String']['input']>;
-  rejectionMessage?: InputMaybe<Scalars['String']['input']>;
-  routeTypeId?: InputMaybe<Scalars['String']['input']>;
-  sectorId?: InputMaybe<Scalars['String']['input']>;
+  author?: InputMaybe<Scalars['String']>;
+  baseDifficulty?: InputMaybe<Scalars['Float']>;
+  defaultGradingSystemId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  isProject?: InputMaybe<Scalars['Boolean']>;
+  label?: InputMaybe<Scalars['String']>;
+  length?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Float']>;
+  publishStatus?: InputMaybe<Scalars['String']>;
+  rejectionMessage?: InputMaybe<Scalars['String']>;
+  routeTypeId?: InputMaybe<Scalars['String']>;
+  sectorId?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateSectorInput = {
-  cascadePublishStatus?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['String']['input'];
-  label?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  position?: InputMaybe<Scalars['Float']['input']>;
-  publishStatus?: InputMaybe<Scalars['String']['input']>;
-  rejectionMessage?: InputMaybe<Scalars['String']['input']>;
+  cascadePublishStatus?: InputMaybe<Scalars['Boolean']>;
+  id: Scalars['String'];
+  label?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Float']>;
+  publishStatus?: InputMaybe<Scalars['String']>;
+  rejectionMessage?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
-  firstname?: InputMaybe<Scalars['String']['input']>;
-  hasUnpublishedContributions?: InputMaybe<Scalars['Boolean']['input']>;
-  lastname?: InputMaybe<Scalars['String']['input']>;
+  firstname?: InputMaybe<Scalars['String']>;
+  hasUnpublishedContributions?: InputMaybe<Scalars['Boolean']>;
+  lastname?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -1413,20 +1459,20 @@ export type User = {
   comments: Array<Comment>;
   crags: Array<Crag>;
   difficultyVotes: Array<DifficultyVote>;
-  email?: Maybe<Scalars['String']['output']>;
-  firstname: Scalars['String']['output'];
-  fullName: Scalars['String']['output'];
-  gender?: Maybe<Scalars['String']['output']>;
-  hasUnpublishedContributions: Scalars['Boolean']['output'];
-  id: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']>;
+  firstname: Scalars['String'];
+  fullName: Scalars['String'];
+  gender?: Maybe<Scalars['String']>;
+  hasUnpublishedContributions: Scalars['Boolean'];
+  id: Scalars['String'];
   images: Array<Image>;
-  lastname: Scalars['String']['output'];
+  lastname: Scalars['String'];
   profileImage?: Maybe<Image>;
-  roles: Array<Scalars['String']['output']>;
+  roles: Array<Scalars['String']>;
   routeEvents: Array<RouteEvent>;
   routes: Array<Route>;
   sectors: Array<Sector>;
-  www?: Maybe<Scalars['String']['output']>;
+  www?: Maybe<Scalars['String']>;
 };
 
 export enum WallAngle {
@@ -1437,6 +1483,25 @@ export enum WallAngle {
 }
 
 
+export const UpdateCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateCragInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCrag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<UpdateCragMutation, UpdateCragMutationVariables>;
+export const EditCragPageCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditCragPageCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<EditCragPageCountriesQuery, EditCragPageCountriesQueryVariables>;
+export const EditCragPageCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditCragPageCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"area"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lon"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"wallAngles"}},{"kind":"Field","name":{"kind":"Name","value":"rainproof"}},{"kind":"Field","name":{"kind":"Name","value":"orientations"}},{"kind":"Field","name":{"kind":"Name","value":"seasons"}},{"kind":"Field","name":{"kind":"Name","value":"approachTime"}},{"kind":"Field","name":{"kind":"Name","value":"access"}},{"kind":"Field","name":{"kind":"Name","value":"isHidden"}},{"kind":"Field","name":{"kind":"Name","value":"coverImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"path"}},{"kind":"Field","name":{"kind":"Name","value":"extension"}},{"kind":"Field","name":{"kind":"Name","value":"maxIntrinsicWidth"}},{"kind":"Field","name":{"kind":"Name","value":"aspectRatio"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"path"}},{"kind":"Field","name":{"kind":"Name","value":"extension"}},{"kind":"Field","name":{"kind":"Name","value":"maxIntrinsicWidth"}},{"kind":"Field","name":{"kind":"Name","value":"aspectRatio"}}]}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sectors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"routes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<EditCragPageCragQuery, EditCragPageCragQueryVariables>;
+export const CreateRouteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateRoute"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateRouteInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRoute"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRouteMutation, CreateRouteMutationVariables>;
+export const DeleteRouteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteRoute"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteRoute"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteRouteMutation, DeleteRouteMutationVariables>;
+export const DeleteRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ids"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}]}}]} as unknown as DocumentNode<DeleteRoutesMutation, DeleteRoutesMutationVariables>;
+export const MergeRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MergeRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MergeRoutesInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mergeRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<MergeRoutesMutation, MergeRoutesMutationVariables>;
+export const MoveRoutesToSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MoveRoutesToSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MoveRoutesToSectorInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moveRoutesToSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<MoveRoutesToSectorMutation, MoveRoutesToSectorMutationVariables>;
+export const UpdateRouteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateRoute"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateRouteInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateRoute"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateRouteMutation, UpdateRouteMutationVariables>;
+export const UpdateRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateRouteInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateRoutesMutation, UpdateRoutesMutationVariables>;
+export const EditRoutesPageSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditRoutesPageSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sectors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"routes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"routeType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"position"}},{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sector"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}}]}},{"kind":"Field","name":{"kind":"Name","value":"author"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]}}]} as unknown as DocumentNode<EditRoutesPageSectorQuery, EditRoutesPageSectorQueryVariables>;
+export const CreateSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateSectorInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateSectorMutation, CreateSectorMutationVariables>;
+export const DeleteSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteSectorMutation, DeleteSectorMutationVariables>;
+export const MergeAllSectorsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MergeAllSectors"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cragId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mergeAllSectors"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"cragId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cragId"}}}]}]}}]} as unknown as DocumentNode<MergeAllSectorsMutation, MergeAllSectorsMutationVariables>;
+export const UpdateSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateSectorInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateSectorMutation, UpdateSectorMutationVariables>;
+export const EditSectorsPageCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditSectorsPageCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}},{"kind":"Field","name":{"kind":"Name","value":"sectors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"position"}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"routes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"publishStatus"}}]}}]}}]}}]}}]} as unknown as DocumentNode<EditSectorsPageCragQuery, EditSectorsPageCragQueryVariables>;
+export const CreateCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCragInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCrag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<CreateCragMutation, CreateCragMutationVariables>;
+export const NewCragPageCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"NewCragPageCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<NewCragPageCountriesQuery, NewCragPageCountriesQueryVariables>;
+export const DeleteCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCrag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteCragMutation, DeleteCragMutationVariables>;
 export const ComboboxPopulateCragsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ComboboxPopulateCrags"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchCragsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchCrags"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<ComboboxPopulateCragsQuery, ComboboxPopulateCragsQueryVariables>;
 export const ComboboxPopulateRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ComboboxPopulateRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchRoutesInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ComboboxPopulateRoutesQuery, ComboboxPopulateRoutesQueryVariables>;
 export const MyActivityRoutesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyActivityRoutes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FindActivityRoutesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"myActivityRoutes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"ascentType"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"partner"}},{"kind":"Field","name":{"kind":"Name","value":"publish"}},{"kind":"Field","name":{"kind":"Name","value":"activity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"crag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"isProject"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pitch"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"isProject"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"meta"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"itemCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageNumber"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]}}]}}]} as unknown as DocumentNode<MyActivityRoutesQuery, MyActivityRoutesQueryVariables>;
@@ -1459,15 +1524,6 @@ export const CragSectorsDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const MyCragSummaryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyCragSummary"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FindActivityRoutesInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"myCragSummary"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ascentType"}},{"kind":"Field","name":{"kind":"Name","value":"route"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<MyCragSummaryQuery, MyCragSummaryQueryVariables>;
 export const AllCragsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllCrags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"crags"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"StringValue","value":"sport","block":false}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"area"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"orientations"}},{"kind":"Field","name":{"kind":"Name","value":"minDifficulty"}},{"kind":"Field","name":{"kind":"Name","value":"maxDifficulty"}},{"kind":"Field","name":{"kind":"Name","value":"seasons"}},{"kind":"Field","name":{"kind":"Name","value":"rainproof"}},{"kind":"Field","name":{"kind":"Name","value":"wallAngles"}},{"kind":"Field","name":{"kind":"Name","value":"approachTime"}},{"kind":"Field","name":{"kind":"Name","value":"nrRoutesByGrade"}},{"kind":"Field","name":{"kind":"Name","value":"hasSport"}},{"kind":"Field","name":{"kind":"Name","value":"hasBoulder"}},{"kind":"Field","name":{"kind":"Name","value":"hasMultipitch"}},{"kind":"Field","name":{"kind":"Name","value":"nrRoutes"}}]}}]}}]} as unknown as DocumentNode<AllCragsQuery, AllCragsQueryVariables>;
 export const AllCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"nrCrags"}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"nrCrags"}}]}}]}}]}}]} as unknown as DocumentNode<AllCountriesQuery, AllCountriesQueryVariables>;
-export const UpdateCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateCragInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCrag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<UpdateCragMutation, UpdateCragMutationVariables>;
-export const EditCragPageCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditCragPageCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<EditCragPageCountriesQuery, EditCragPageCountriesQueryVariables>;
-export const EditCragPageCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditCragPageCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"area"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"lat"}},{"kind":"Field","name":{"kind":"Name","value":"lon"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"wallAngles"}},{"kind":"Field","name":{"kind":"Name","value":"rainproof"}},{"kind":"Field","name":{"kind":"Name","value":"orientations"}},{"kind":"Field","name":{"kind":"Name","value":"seasons"}},{"kind":"Field","name":{"kind":"Name","value":"approachTime"}},{"kind":"Field","name":{"kind":"Name","value":"access"}},{"kind":"Field","name":{"kind":"Name","value":"isHidden"}},{"kind":"Field","name":{"kind":"Name","value":"coverImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"path"}},{"kind":"Field","name":{"kind":"Name","value":"extension"}},{"kind":"Field","name":{"kind":"Name","value":"maxIntrinsicWidth"}},{"kind":"Field","name":{"kind":"Name","value":"aspectRatio"}}]}}]}}]}}]} as unknown as DocumentNode<EditCragPageCragQuery, EditCragPageCragQueryVariables>;
-export const CreateSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateSectorInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateSectorMutation, CreateSectorMutationVariables>;
-export const DeleteSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteSectorMutation, DeleteSectorMutationVariables>;
-export const UpdateSectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateSector"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateSectorInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateSector"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateSectorMutation, UpdateSectorMutationVariables>;
-export const EditSectorsPageCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EditSectorsPageCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cragSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sectors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"position"}}]}}]}}]}}]} as unknown as DocumentNode<EditSectorsPageCragQuery, EditSectorsPageCragQueryVariables>;
-export const CreateCragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCrag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCragInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCrag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<CreateCragMutation, CreateCragMutationVariables>;
-export const NewCragPageCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"NewCragPageCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"areas"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<NewCragPageCountriesQuery, NewCragPageCountriesQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const CragDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Crag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"crag"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"crag"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"sectors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"routes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"difficulty"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"defaultGradingSystem"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<CragQuery, CragQueryVariables>;
 export const CragActivitiesByMonthDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CragActivitiesByMonth"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"crag"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cragBySlug"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"crag"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"activityByMonth"}}]}}]}}]} as unknown as DocumentNode<CragActivitiesByMonthQuery, CragActivitiesByMonthQueryVariables>;
@@ -1476,6 +1532,11 @@ export const DryRunCreateActivityDocument = {"kind":"Document","definitions":[{"
 export const AuthContextProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AuthContextProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]} as unknown as DocumentNode<AuthContextProfileQuery, AuthContextProfileQueryVariables>;
 export const namedOperations = {
   Query: {
+    EditCragPageCountries: 'EditCragPageCountries',
+    EditCragPageCrag: 'EditCragPageCrag',
+    EditRoutesPageSector: 'EditRoutesPageSector',
+    EditSectorsPageCrag: 'EditSectorsPageCrag',
+    NewCragPageCountries: 'NewCragPageCountries',
     ComboboxPopulateCrags: 'ComboboxPopulateCrags',
     ComboboxPopulateRoutes: 'ComboboxPopulateRoutes',
     MyActivityRoutes: 'MyActivityRoutes',
@@ -1495,28 +1556,162 @@ export const namedOperations = {
     MyCragSummary: 'MyCragSummary',
     AllCrags: 'AllCrags',
     AllCountries: 'AllCountries',
-    EditCragPageCountries: 'EditCragPageCountries',
-    EditCragPageCrag: 'EditCragPageCrag',
-    EditSectorsPageCrag: 'EditSectorsPageCrag',
-    NewCragPageCountries: 'NewCragPageCountries',
     Crag: 'Crag',
     CragActivitiesByMonth: 'CragActivitiesByMonth',
     DryRunCreateActivity: 'DryRunCreateActivity',
     AuthContextProfile: 'AuthContextProfile'
   },
   Mutation: {
+    UpdateCrag: 'UpdateCrag',
+    CreateRoute: 'CreateRoute',
+    DeleteRoute: 'DeleteRoute',
+    DeleteRoutes: 'DeleteRoutes',
+    MergeRoutes: 'MergeRoutes',
+    MoveRoutesToSector: 'MoveRoutesToSector',
+    UpdateRoute: 'UpdateRoute',
+    UpdateRoutes: 'UpdateRoutes',
+    CreateSector: 'CreateSector',
+    DeleteSector: 'DeleteSector',
+    MergeAllSectors: 'MergeAllSectors',
+    UpdateSector: 'UpdateSector',
+    CreateCrag: 'CreateCrag',
+    DeleteCrag: 'DeleteCrag',
     CreateComment: 'CreateComment',
     DeleteComment: 'DeleteComment',
     UpdateComment: 'UpdateComment',
-    UpdateCrag: 'UpdateCrag',
-    CreateSector: 'CreateSector',
-    DeleteSector: 'DeleteSector',
-    UpdateSector: 'UpdateSector',
-    CreateCrag: 'CreateCrag',
     Login: 'Login',
     CreateActivity: 'CreateActivity'
   }
 }
+export type UpdateCragMutationVariables = Exact<{
+  input: UpdateCragInput;
+}>;
+
+
+export type UpdateCragMutation = { __typename?: 'Mutation', updateCrag: { __typename?: 'Crag', id: string, slug: string } };
+
+export type EditCragPageCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EditCragPageCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', id: string, name: string, slug: string, areas: Array<{ __typename?: 'Area', id: string, name: string, slug: string }> }> };
+
+export type EditCragPageCragQueryVariables = Exact<{
+  cragSlug: Scalars['String'];
+}>;
+
+
+export type EditCragPageCragQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, type: string, lat?: number | null, lon?: number | null, description?: string | null, wallAngles?: Array<WallAngle> | null, rainproof?: boolean | null, orientations?: Array<Orientation> | null, seasons?: Array<Season> | null, approachTime?: number | null, access?: string | null, isHidden: boolean, publishStatus: string, country: { __typename?: 'Country', id: string }, area?: { __typename?: 'Area', id: string } | null, defaultGradingSystem?: { __typename?: 'GradingSystem', id: string } | null, coverImage?: { __typename?: 'Image', id: string, path: string, extension: string, maxIntrinsicWidth: number, aspectRatio: number } | null, images: Array<{ __typename?: 'Image', id: string, path: string, extension: string, maxIntrinsicWidth: number, aspectRatio: number }>, user?: { __typename?: 'User', id: string, fullName: string } | null, sectors: Array<{ __typename?: 'Sector', id: string, label: string, name: string, routes: Array<{ __typename?: 'Route', id: string }> }> } };
+
+export type CreateRouteMutationVariables = Exact<{
+  input: CreateRouteInput;
+}>;
+
+
+export type CreateRouteMutation = { __typename?: 'Mutation', createRoute: { __typename?: 'Route', id: string } };
+
+export type DeleteRouteMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteRouteMutation = { __typename?: 'Mutation', deleteRoute: boolean };
+
+export type DeleteRoutesMutationVariables = Exact<{
+  ids: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type DeleteRoutesMutation = { __typename?: 'Mutation', deleteRoutes: Array<boolean> };
+
+export type MergeRoutesMutationVariables = Exact<{
+  input: MergeRoutesInput;
+}>;
+
+
+export type MergeRoutesMutation = { __typename?: 'Mutation', mergeRoutes: boolean };
+
+export type MoveRoutesToSectorMutationVariables = Exact<{
+  input: MoveRoutesToSectorInput;
+}>;
+
+
+export type MoveRoutesToSectorMutation = { __typename?: 'Mutation', moveRoutesToSector: boolean };
+
+export type UpdateRouteMutationVariables = Exact<{
+  input: UpdateRouteInput;
+}>;
+
+
+export type UpdateRouteMutation = { __typename?: 'Mutation', updateRoute: { __typename?: 'Route', id: string } };
+
+export type UpdateRoutesMutationVariables = Exact<{
+  input: Array<UpdateRouteInput> | UpdateRouteInput;
+}>;
+
+
+export type UpdateRoutesMutation = { __typename?: 'Mutation', updateRoutes: Array<{ __typename?: 'Route', id: string }> };
+
+export type EditRoutesPageSectorQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type EditRoutesPageSectorQuery = { __typename?: 'Query', sector: { __typename?: 'Sector', id: string, label: string, name: string, crag: { __typename?: 'Crag', id: string, slug: string, name: string, sectors: Array<{ __typename?: 'Sector', id: string, label: string, name: string }> }, routes: Array<{ __typename?: 'Route', id: string, name: string, difficulty?: number | null, length?: number | null, position: number, created: any, publishStatus: string, author?: string | null, description?: string | null, routeType: { __typename?: 'RouteType', id: string }, defaultGradingSystem: { __typename?: 'GradingSystem', id: string }, user?: { __typename?: 'User', id: string, fullName: string } | null, sector: { __typename?: 'Sector', id: string, publishStatus: string } }> } };
+
+export type CreateSectorMutationVariables = Exact<{
+  input: CreateSectorInput;
+}>;
+
+
+export type CreateSectorMutation = { __typename?: 'Mutation', createSector: { __typename?: 'Sector', id: string } };
+
+export type DeleteSectorMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteSectorMutation = { __typename?: 'Mutation', deleteSector: boolean };
+
+export type MergeAllSectorsMutationVariables = Exact<{
+  cragId: Scalars['String'];
+}>;
+
+
+export type MergeAllSectorsMutation = { __typename?: 'Mutation', mergeAllSectors: boolean };
+
+export type UpdateSectorMutationVariables = Exact<{
+  input: UpdateSectorInput;
+}>;
+
+
+export type UpdateSectorMutation = { __typename?: 'Mutation', updateSector: { __typename?: 'Sector', id: string } };
+
+export type EditSectorsPageCragQueryVariables = Exact<{
+  cragSlug: Scalars['String'];
+}>;
+
+
+export type EditSectorsPageCragQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, publishStatus: string, sectors: Array<{ __typename: 'Sector', id: string, name: string, label: string, position: number, publishStatus: string, user?: { __typename?: 'User', id: string, fullName: string } | null, routes: Array<{ __typename?: 'Route', id: string }>, crag: { __typename?: 'Crag', id: string, publishStatus: string } }> } };
+
+export type CreateCragMutationVariables = Exact<{
+  input: CreateCragInput;
+}>;
+
+
+export type CreateCragMutation = { __typename?: 'Mutation', createCrag: { __typename?: 'Crag', id: string, slug: string } };
+
+export type NewCragPageCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewCragPageCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', id: string, name: string, slug: string, areas: Array<{ __typename?: 'Area', id: string, name: string, slug: string }> }> };
+
+export type DeleteCragMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteCragMutation = { __typename?: 'Mutation', deleteCrag: boolean };
+
 export type ComboboxPopulateCragsQueryVariables = Exact<{
   input: SearchCragsInput;
 }>;
@@ -1539,14 +1734,14 @@ export type MyActivityRoutesQueryVariables = Exact<{
 export type MyActivityRoutesQuery = { __typename?: 'Query', myActivityRoutes: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null, ascentType: AscentType, notes?: string | null, partner?: string | null, publish: PublishType, activity?: { __typename?: 'Activity', id: string } | null, route: { __typename?: 'Route', isProject: boolean, difficulty?: number | null, name: string, slug: string, id: string, crag: { __typename?: 'Crag', id: string, name: string, slug: string, country: { __typename?: 'Country', slug: string } }, defaultGradingSystem: { __typename?: 'GradingSystem', id: string } }, pitch?: { __typename?: 'Pitch', number: number, isProject: boolean, difficulty?: number | null } | null }>, meta: { __typename?: 'PaginationMeta', itemCount: number, pageCount: number, pageNumber: number, pageSize: number } } };
 
 export type AscentListFiltersCragQueryVariables = Exact<{
-  input: Scalars['String']['input'];
+  input: Scalars['String'];
 }>;
 
 
 export type AscentListFiltersCragQuery = { __typename?: 'Query', crag: { __typename?: 'Crag', id: string, name: string, slug: string, country: { __typename?: 'Country', slug: string } } };
 
 export type AscentListFiltersRouteQueryVariables = Exact<{
-  input: Scalars['String']['input'];
+  input: Scalars['String'];
 }>;
 
 
@@ -1596,7 +1791,7 @@ export type CreateCommentMutationVariables = Exact<{
 export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string } };
 
 export type DeleteCommentMutationVariables = Exact<{
-  id: Scalars['String']['input'];
+  id: Scalars['String'];
 }>;
 
 
@@ -1610,52 +1805,52 @@ export type UpdateCommentMutationVariables = Exact<{
 export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment: { __typename?: 'Comment', id: string, content?: string | null } };
 
 export type CragCommentsQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 
 export type CragCommentsQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, comments: Array<{ __typename?: 'Comment', id: string, content?: string | null, type: string, created: any, updated: any, user?: { __typename?: 'User', id: string, fullName: string } | null }> } };
 
 export type RouteDifficultyVotesQueryVariables = Exact<{
-  routeId: Scalars['String']['input'];
+  routeId: Scalars['String'];
 }>;
 
 
 export type RouteDifficultyVotesQuery = { __typename?: 'Query', route: { __typename?: 'Route', id: string, slug: string, difficulty?: number | null, name: string, length?: number | null, defaultGradingSystem: { __typename?: 'GradingSystem', id: string }, difficultyVotes: Array<{ __typename?: 'DifficultyVote', id: string, difficulty: number, created: any, updated: any, isBase: boolean, includedInCalculation: boolean, user?: { __typename?: 'User', id: string, fullName: string, firstname: string, lastname: string } | null }> } };
 
 export type CragGalleryQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 
 export type CragGalleryQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, images: Array<{ __typename?: 'Image', id: string, title?: string | null, path: string, extension: string, aspectRatio: number, maxIntrinsicWidth: number, author?: string | null, user?: { __typename?: 'User', id: string } | null }> } };
 
 export type CragInfoQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 
 export type CragInfoQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, activityByMonth: Array<number>, orientations?: Array<Orientation> | null, approachTime?: number | null, wallAngles?: Array<WallAngle> | null, seasons?: Array<Season> | null, rainproof?: boolean | null, lat?: number | null, lon?: number | null, sectors: Array<{ __typename?: 'Sector', id: string, label: string, name: string, routes: Array<{ __typename?: 'Route', id: string, difficulty?: number | null, length?: number | null }>, parkings: Array<{ __typename?: 'Parking', id: string, lat: number, lon: number }> }>, defaultGradingSystem?: { __typename?: 'GradingSystem', id: string } | null, coverImage?: { __typename?: 'Image', id: string, path: string, extension: string, maxIntrinsicWidth: number, aspectRatio: number } | null } };
 
 export type CragHeaderQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 
 export type CragHeaderQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, status: string, name: string, publishStatus: string, country: { __typename?: 'Country', id: string, name: string, slug: string }, user?: { __typename?: 'User', id: string } | null } };
 
 export type CragSectorsQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
   firstTickArInput?: InputMaybe<FindActivityRoutesInput>;
   firstTryArInput?: InputMaybe<FindActivityRoutesInput>;
   firstTrTickArInput?: InputMaybe<FindActivityRoutesInput>;
   difficultyVotesInput?: InputMaybe<FindDifficultyVotesInput>;
   starRatingVotesInput?: InputMaybe<FindStarRatingVotesInput>;
-  loggedIn: Scalars['Boolean']['input'];
+  loggedIn: Scalars['Boolean'];
 }>;
 
 
-export type CragSectorsQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, sectors: Array<{ __typename?: 'Sector', id: string, name: string, label: string, publishStatus: string, bouldersOnly: boolean, routes: Array<{ __typename?: 'Route', id: string, name: string, slug: string, difficulty?: number | null, isProject: boolean, length?: number | null, nrTicks?: number | null, nrTries?: number | null, nrClimbers?: number | null, position: number, starRating?: number | null, publishStatus: string, defaultGradingSystem: { __typename?: 'GradingSystem', id: string }, routeType: { __typename?: 'RouteType', id: string }, comments: Array<{ __typename?: 'Comment', id: string }>, pitches: Array<{ __typename?: 'Pitch', id: string, difficulty?: number | null, isProject: boolean, number: number, height?: number | null }>, sector: { __typename?: 'Sector', position: number, label: string, name: string }, firstTry?: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, firstTick?: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, firstTrTick?: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, difficultyVotes?: Array<{ __typename?: 'DifficultyVote', difficulty: number, updated: any }>, starRatingVotes?: Array<{ __typename?: 'StarRatingVote', stars: number, updated: any }> }> }> } };
+export type CragSectorsQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, sectors: Array<{ __typename?: 'Sector', id: string, name: string, label: string, publishStatus: string, bouldersOnly: boolean, routes: Array<{ __typename?: 'Route', id: string, name: string, slug: string, difficulty?: number | null, isProject: boolean, length?: number | null, nrTicks?: number | null, nrTries?: number | null, nrClimbers?: number | null, position: number, starRating?: number | null, publishStatus: string, defaultGradingSystem: { __typename?: 'GradingSystem', id: string }, routeType: { __typename?: 'RouteType', id: string }, comments: Array<{ __typename?: 'Comment', id: string }>, pitches: Array<{ __typename?: 'Pitch', id: string, difficulty?: number | null, isProject: boolean, number: number, height?: number | null }>, sector: { __typename?: 'Sector', position: number, label: string, name: string }, firstTry: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, firstTick: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, firstTrTick: { __typename?: 'PaginatedActivityRoutes', items: Array<{ __typename?: 'ActivityRoute', id: string, date?: any | null }> }, difficultyVotes?: Array<{ __typename?: 'DifficultyVote', difficulty: number, updated: any }>, starRatingVotes?: Array<{ __typename?: 'StarRatingVote', stars: number, updated: any }> }> }> } };
 
 export type MyCragSummaryQueryVariables = Exact<{
   input?: InputMaybe<FindActivityRoutesInput>;
@@ -1674,82 +1869,23 @@ export type AllCountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', name: string, slug: string, nrCrags: number, areas: Array<{ __typename?: 'Area', name: string, slug: string, nrCrags: number }> }> };
 
-export type UpdateCragMutationVariables = Exact<{
-  input: UpdateCragInput;
-}>;
-
-
-export type UpdateCragMutation = { __typename?: 'Mutation', updateCrag: { __typename?: 'Crag', id: string, slug: string } };
-
-export type EditCragPageCountriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EditCragPageCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', id: string, name: string, slug: string, areas: Array<{ __typename?: 'Area', id: string, name: string, slug: string }> }> };
-
-export type EditCragPageCragQueryVariables = Exact<{
-  cragSlug: Scalars['String']['input'];
-}>;
-
-
-export type EditCragPageCragQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, type: string, lat?: number | null, lon?: number | null, description?: string | null, wallAngles?: Array<WallAngle> | null, rainproof?: boolean | null, orientations?: Array<Orientation> | null, seasons?: Array<Season> | null, approachTime?: number | null, access?: string | null, isHidden: boolean, country: { __typename?: 'Country', id: string }, area?: { __typename?: 'Area', id: string } | null, defaultGradingSystem?: { __typename?: 'GradingSystem', id: string } | null, coverImage?: { __typename?: 'Image', id: string, path: string, extension: string, maxIntrinsicWidth: number, aspectRatio: number } | null } };
-
-export type CreateSectorMutationVariables = Exact<{
-  input: CreateSectorInput;
-}>;
-
-
-export type CreateSectorMutation = { __typename?: 'Mutation', createSector: { __typename?: 'Sector', id: string } };
-
-export type DeleteSectorMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type DeleteSectorMutation = { __typename?: 'Mutation', deleteSector: boolean };
-
-export type UpdateSectorMutationVariables = Exact<{
-  input: UpdateSectorInput;
-}>;
-
-
-export type UpdateSectorMutation = { __typename?: 'Mutation', updateSector: { __typename?: 'Sector', id: string } };
-
-export type EditSectorsPageCragQueryVariables = Exact<{
-  cragSlug: Scalars['String']['input'];
-}>;
-
-
-export type EditSectorsPageCragQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, name: string, sectors: Array<{ __typename?: 'Sector', id: string, name: string, label: string, position: number }> } };
-
-export type CreateCragMutationVariables = Exact<{
-  input: CreateCragInput;
-}>;
-
-
-export type CreateCragMutation = { __typename?: 'Mutation', createCrag: { __typename?: 'Crag', id: string, slug: string } };
-
-export type NewCragPageCountriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NewCragPageCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', id: string, name: string, slug: string, areas: Array<{ __typename?: 'Area', id: string, name: string, slug: string }> }> };
-
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', token: string, user: { __typename?: 'User', id: string, email?: string | null, fullName: string, firstname: string, lastname: string, gender?: string | null, roles: Array<string> } } };
 
 export type CragQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 
 export type CragQuery = { __typename?: 'Query', cragBySlug: { __typename?: 'Crag', id: string, slug: string, sectors: Array<{ __typename?: 'Sector', id: string, routes: Array<{ __typename?: 'Route', id: string, difficulty?: number | null }> }>, defaultGradingSystem?: { __typename?: 'GradingSystem', id: string } | null } };
 
 export type CragActivitiesByMonthQueryVariables = Exact<{
-  crag: Scalars['String']['input'];
+  crag: Scalars['String'];
 }>;
 
 

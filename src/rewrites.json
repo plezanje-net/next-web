@@ -8,7 +8,11 @@
     "/{climbing-log}",
     "/{climbing-log}/{calendar}",
     "/{climbing-log}/{calendar}/:date",
-    "/{climbing-log}/{statistics}"
+    "/{climbing-log}/{statistics}",
+    "/{admin}/{crags}/{add}",
+    "/{admin}/{crags}/:cragSlug/{edit}",
+    "/{admin}/{crags}/:cragSlug/{sectors}",
+    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}"
   ],
   "translations": {
     "sl": {
@@ -20,7 +24,12 @@
       "gallery": "galerija",
       "climbing-log": "plezalni-dnevnik",
       "calendar": "koledar",
-      "statistics": "statistika"
+      "statistics": "statistika",
+      "admin": "urejanje",
+      "add": "dodaj",
+      "edit": "uredi",
+      "sectors": "sektorji",
+      "routes": "smeri"
     },
     "en": {
       "crags": "crags",
@@ -31,7 +40,12 @@
       "gallery": "gallery",
       "climbing-log": "climbing-log",
       "calendar": "calendar",
-      "statistics": "statistics"
+      "statistics": "statistics",
+      "admin": "admin",
+      "add": "add",
+      "edit": "edit",
+      "sectors": "sectors",
+      "routes": "routes"
     }
   },
   "defaultLanguage": "sl"

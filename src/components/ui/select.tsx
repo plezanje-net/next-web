@@ -49,6 +49,7 @@ type SelectProps = {
   label?: string;
   placeholder?: string;
   description?: string;
+  errorMessage?: string;
   multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
@@ -62,6 +63,7 @@ function Select({
   label,
   placeholder,
   description,
+  errorMessage,
   multi,
   customTrigger,
   disabled,
@@ -117,6 +119,7 @@ function Select({
           value={value}
           placeholder={placeholder}
           description={description}
+          errorMessage={errorMessage}
           constructSelectedLabel={constructSelectedLabel}
           open={open}
           childrenValuesToIndexes={childrenValuesToIndexes}
@@ -144,6 +147,7 @@ function InnerListBox({
   value,
   placeholder,
   description,
+  errorMessage,
   constructSelectedLabel,
   open,
   childrenValuesToIndexes,
@@ -166,13 +170,20 @@ function InnerListBox({
         <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
       ) : (
         <ListboxButton
-          className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
-            label ? "mt-2" : ""
-          } ${
-            disabled
-              ? "border-neutral-300 bg-neutral-100 text-neutral-400"
-              : "border-neutral-400"
-          }`}
+          className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring
+            ${label ? "mt-2" : ""}
+            ${!disabled && !errorMessage ? "border-neutral-400" : ""}
+            ${open ? (errorMessage ? "ring ring-red-100" : "ring ring-blue-100") : ""}
+            ${
+              errorMessage
+                ? "border-red-500 focus-visible:ring-red-100"
+                : "focus-visible:ring-blue-100"
+            }
+            ${
+              disabled
+                ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+                : ""
+            }`}
         >
           {!!value?.length ? (
             <span className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -190,8 +201,11 @@ function InnerListBox({
         </ListboxButton>
       )}
 
-      {description && (
+      {description && !errorMessage && (
         <Description className="text-sm mt-1">{description}</Description>
+      )}
+      {errorMessage && (
+        <div className="text-sm mt-1 text-red-500">{errorMessage}</div>
       )}
 
       <ListboxOptions
