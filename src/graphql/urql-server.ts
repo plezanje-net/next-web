@@ -7,7 +7,7 @@ const makeClient = () => {
     url: `${process.env.NEXT_PUBLIC_API_URL}`,
     exchanges: [cacheExchange, fetchExchange],
     fetchOptions: () => {
-      const token = getAuthToken();
+      const token = null;
       if (!token) return {};
       return {
         headers: {
