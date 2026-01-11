@@ -13,10 +13,16 @@ import EditCragForm from "./components/edit-crag-form";
 import CragPublishStatusCard from "./components/crag-publish-status-card";
 
 type TEditCragPageProps = {
-  params: { cragSlug: string };
+  params: Promise<{ cragSlug: string }>;
 };
 
-async function EditCragPage({ params: { cragSlug } }: TEditCragPageProps) {
+async function EditCragPage(props: TEditCragPageProps) {
+  const params = await props.params;
+
+  const {
+    cragSlug
+  } = params;
+
   const countriesDataPromise = urqlServer().query(
     EditCragPageCountriesDocument,
     {}

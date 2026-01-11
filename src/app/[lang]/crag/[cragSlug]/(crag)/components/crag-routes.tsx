@@ -18,7 +18,7 @@ import {
   parseAsArrayOf,
   parseAsInteger,
   useQueryState,
-} from "next-usequerystate";
+} from "nuqs";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import {
   LogRoutesProvider,

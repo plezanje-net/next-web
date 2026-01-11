@@ -1,12 +1,14 @@
-"use client";
+"use client";;
+import { use } from "react";
 
 import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 
 type TTabMenuPageParams = {
-  params: { selectedTab?: string };
+  params: Promise<{ selectedTab?: string }>;
 };
 
-function TabMenuPage({ params }: TTabMenuPageParams) {
+function TabMenuPage(props: TTabMenuPageParams) {
+  const params = use(props.params);
   const menuItems: TTabMenuItem[] = [
     {
       label: "Informacije",

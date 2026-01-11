@@ -10,10 +10,16 @@ import EditRoutes from "./components/edit-routes";
 import { labelAndNameToString } from "@/lib/sector-helpers";
 
 type TEditRoutesPageProps = {
-  params: { sectorId: string };
+  params: Promise<{ sectorId: string }>;
 };
 
-async function EditRoutesPage({ params: { sectorId } }: TEditRoutesPageProps) {
+async function EditRoutesPage(props: TEditRoutesPageProps) {
+  const params = await props.params;
+
+  const {
+    sectorId
+  } = params;
+
   const sectorDataPromise = urqlServer().query(EditRoutesPageSectorDocument, {
     id: sectorId,
   });

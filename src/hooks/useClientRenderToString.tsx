@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 type TUseClientRenderToString = (
-  input: React.ReactElement | React.ReactElement[],
+  input: React.ReactElement<any> | React.ReactElement<any>[],
   deps?: any[]
 ) => string[];
 
-const clientRenderToString = (element: React.ReactElement): Promise<string> =>
+const clientRenderToString = (element: React.ReactElement<any>): Promise<string> =>
   new Promise((resolve) => {
     const container = document.createElement("div");
     const renderCallback = () => {

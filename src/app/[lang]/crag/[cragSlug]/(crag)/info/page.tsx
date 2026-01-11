@@ -54,7 +54,8 @@ type TParkings = {
   [key: string]: { lat: number; lon: number; sectors: TSector[] };
 };
 
-async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
+async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
+  const params = await props.params;
   const response = await urqlServer().query(CragInfoDocument, {
     crag: params.cragSlug,
   });

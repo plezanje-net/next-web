@@ -19,7 +19,7 @@ import IconExpand from "./icons/expand";
 
 interface OptionProps {
   value: string; // the value for the option
-  children: string | ReactElement; // the label for the option (can include an icon)
+  children: string | ReactElement<any>; // the label for the option (can include an icon)
   disabled?: boolean;
   separator?: boolean;
 }
@@ -51,7 +51,7 @@ type SelectProps = {
   description?: string;
   errorMessage?: string;
   multi?: boolean;
-  customTrigger?: ReactElement;
+  customTrigger?: ReactElement<any>;
   disabled?: boolean;
   initialScrollToValue?: string;
 };
@@ -72,7 +72,7 @@ function Select({
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let childrenValuesToLabels: {
     [key: string]: {
-      label: string | ReactElement;
+      label: string | ReactElement<any>;
     };
   } = {};
 
@@ -135,7 +135,7 @@ function Select({
 type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
   constructSelectedLabel: (
     selected: string | string[]
-  ) => string | ReactElement | ReactElement[];
+  ) => string | ReactElement<any> | ReactElement<any>[];
   open: boolean;
   childrenValuesToIndexes: Record<string, number>;
 };

@@ -66,7 +66,7 @@ function Selector({
 
 type TSelectorOptionProps = {
   value: string;
-  children: ReactElement | string;
+  children: ReactElement<any> | string;
 };
 
 function SelectorOption({

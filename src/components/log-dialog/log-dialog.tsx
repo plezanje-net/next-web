@@ -20,7 +20,7 @@ import AscentType from "../ascent-type";
 import { useRouter } from "next/navigation";
 
 type TLogDialogProps = {
-  openTrigger: ReactElement;
+  openTrigger: ReactElement<any>;
 };
 
 function LogDialog({ openTrigger }: TLogDialogProps) {

@@ -104,7 +104,13 @@ async function getMySummary(
   return myCragSummary;
 }
 
-async function CragPage({ params: { cragSlug } }: Props) {
+async function CragPage(props: Props) {
+  const params = await props.params;
+
+  const {
+    cragSlug
+  } = params;
+
   const currentUser = await getCurrentUser();
 
   const [cragBySlug, myCragSummary] = await Promise.all([

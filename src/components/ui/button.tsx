@@ -7,7 +7,7 @@ import {
 import Spinner from "./spinner";
 
 interface ButtonProps {
-  children: ReactElement | string;
+  children: ReactElement<any> | string;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   disabled?: boolean;
   loading?: boolean;

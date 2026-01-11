@@ -9,12 +9,16 @@ import { gql } from "urql";
 import EditSectors from "./components/edit-sectors";
 
 type TEditSectorsPageProps = {
-  params: { cragSlug: string };
+  params: Promise<{ cragSlug: string }>;
 };
 
-async function EditSectorsPage({
-  params: { cragSlug },
-}: TEditSectorsPageProps) {
+async function EditSectorsPage(props: TEditSectorsPageProps) {
+  const params = await props.params;
+
+  const {
+    cragSlug
+  } = params;
+
   const cragDataPromise = urqlServer().query(EditSectorsPageCragDocument, {
     cragSlug: cragSlug,
   });

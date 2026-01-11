@@ -6,10 +6,11 @@ import AddActivity from "./components/add-activity/add-activity";
 import CalendarDayActivity from "./components/calendar-day-activity";
 
 type TCalendarDayPageProps = {
-  params: { date: string };
+  params: Promise<{ date: string }>;
 };
 
-async function CalendarDayPage({ params }: TCalendarDayPageProps) {
+async function CalendarDayPage(props: TCalendarDayPageProps) {
+  const params = await props.params;
   const {
     data: { myActivities },
   } = await urqlServer().query(CalendarDailyActivitiesDocument, {

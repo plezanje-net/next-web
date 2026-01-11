@@ -8,7 +8,8 @@ interface Params {
   cragSlug: string;
 }
 
-async function CragComments({ params }: { params: Params }) {
+async function CragComments(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const { data } = await urqlServer().query(CragCommentsDocument, {
     crag: params.cragSlug,
   });

@@ -26,9 +26,9 @@ export enum DialogTitleSize {
 }
 
 interface DialogProps {
-  children: ReactElement;
+  children: ReactElement<any>;
   title: string;
-  openTrigger?: ReactElement;
+  openTrigger?: ReactElement<any>;
   confirm?: {
     label: string;
     callback?: () => void;

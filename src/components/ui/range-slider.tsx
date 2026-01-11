@@ -99,7 +99,7 @@ function RangeSlider(props: SliderProps) {
 
 interface SliderThumbProps {
   state: SliderState;
-  trackRef: RefObject<Element>;
+  trackRef: RefObject<Element | null>;
   index: number;
 }
 

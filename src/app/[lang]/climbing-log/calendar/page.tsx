@@ -20,7 +20,8 @@ type TCalendarPageProps = {
   searchParams: TSearchParams;
 };
 
-async function CalendarPage({ searchParams }: TCalendarPageProps) {
+async function CalendarPage(props: TCalendarPageProps) {
+  const searchParams = await props.searchParams;
   const {
     data: { myActivities: myFirstActivities },
   } = await urqlServer().query(CalendarFirstEntryDocument, {

@@ -26,7 +26,8 @@ type TClimbingLogPageProps = {
   searchParams: TSearchParams;
 };
 
-async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
+async function ClimbingLogPage(props: TClimbingLogPageProps) {
+  const searchParams = await props.searchParams;
   const pageNumber = parseInt(searchParams.page) || 1;
 
   const [sortField, sortDirection] = (searchParams.sort || "date,desc").split(

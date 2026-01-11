@@ -20,7 +20,8 @@ type Params = {
   routeSlug: string;
 };
 
-async function RoutePage({ params }: { params: Params }) {
+async function RoutePage(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const user = await getCurrentUser();
   const { cragSlug, routeSlug } = params;
   const {

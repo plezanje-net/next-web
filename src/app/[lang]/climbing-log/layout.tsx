@@ -8,10 +8,20 @@ interface Params {
 
 interface Props {
   children: React.ReactNode;
-  params: Params;
+  params: Promise<Params>;
 }
 
-async function ClimbingLogLayout({ children, params: { cragSlug } }: Props) {
+async function ClimbingLogLayout(props: Props) {
+  const params = await props.params;
+
+  const {
+    cragSlug
+  } = params;
+
+  const {
+    children
+  } = props;
+
   return (
     <>
       <div className="bg-neutral-100">

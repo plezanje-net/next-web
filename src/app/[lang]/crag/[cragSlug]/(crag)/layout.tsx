@@ -9,10 +9,20 @@ interface Params {
 
 interface Props {
   children: React.ReactNode;
-  params: Params;
+  params: Promise<Params>;
 }
 
-async function CragLayout({ children, params: { cragSlug } }: Props) {
+async function CragLayout(props: Props) {
+  const params = await props.params;
+
+  const {
+    cragSlug
+  } = params;
+
+  const {
+    children
+  } = props;
+
   const { data } = await urqlServer().query(CragHeaderDocument, {
     crag: cragSlug,
   });
