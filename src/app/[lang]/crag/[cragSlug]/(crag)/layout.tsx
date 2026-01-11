@@ -1,7 +1,7 @@
 import { gql } from "@urql/core";
 import CragHeader from "./components/crag-header";
 import { Crag, CragHeaderDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
 
 interface Params {
   cragSlug: string;
@@ -19,7 +19,7 @@ async function CragLayout(props: Props) {
 
   const { children } = props;
 
-  const { data } = await urqlServer().query(CragHeaderDocument, {
+  const { data } = await gqlRequest(CragHeaderDocument, {
     crag: cragSlug,
   });
 

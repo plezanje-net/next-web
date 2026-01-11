@@ -11,6 +11,7 @@ import CragRoutes from "./components/crag-routes";
 import tickAscentTypes from "../../../../../lib/constants/tick-ascent-types";
 import trTickAscentTypes from "../../../../../lib/constants/tr-tick-ascent-types";
 import getCurrentUser from "../../../../../lib/auth/get-current-user";
+import { gqlRequest } from "@/lib/gql-request";
 
 type Params = {
   cragSlug: string;
@@ -72,7 +73,7 @@ async function getCragBySlug(
 
   const {
     data: { cragBySlug },
-  } = await urqlServer().query(CragSectorsDocument, {
+  } = await gqlRequest(CragSectorsDocument, {
     crag,
     firstTryArInput,
     firstTickArInput,
@@ -82,11 +83,11 @@ async function getCragBySlug(
     loggedIn: !!currentUser,
   });
 
-  return cragBySlug;
+  return cragBySlug as Crag;
 }
 
 async function getMySummary(
-  crag: string,
+  cragId: string,
   currentUser: User | null
 ): Promise<ActivityRoute[]> {
   const loggedIn = !!currentUser;
@@ -97,11 +98,13 @@ async function getMySummary(
 
   const {
     data: { myCragSummary },
-  } = await urqlServer().query(MyCragSummaryDocument, {
-    crag,
+  } = await gqlRequest(MyCragSummaryDocument, {
+    input: {
+      cragId,
+    },
   });
 
-  return myCragSummary;
+  return myCragSummary as ActivityRoute[];
 }
 
 async function CragPage(props: Props) {
@@ -111,10 +114,8 @@ async function CragPage(props: Props) {
 
   const currentUser = await getCurrentUser();
 
-  const [cragBySlug, myCragSummary] = await Promise.all([
-    getCragBySlug(cragSlug, currentUser),
-    getMySummary(cragSlug, currentUser),
-  ]);
+  const cragBySlug = await getCragBySlug(cragSlug, currentUser);
+  const myCragSummary = await getMySummary(cragBySlug.id, currentUser);
 
   return (
     <>
