@@ -5,7 +5,7 @@ import { Poppins } from "next/font/google";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { ReactNode } from "react";
 import getCurrentUser from "../lib/auth/get-current-user";
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const poppins = Poppins({
   weight: ["400", "500"],
@@ -51,8 +51,9 @@ async function RootLayout({ children }: RootLayoutProps) {
       <body className={`text-neutral-900 ${poppins.className}`}>
         <AuthProvider currentUser={await getCurrentUser()}>
           <Header />
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <main>{children}</main>
+          <NuqsAdapter>
+            <main>{children}</main>
+          </NuqsAdapter>
         </AuthProvider>
       </body>
     </html>
