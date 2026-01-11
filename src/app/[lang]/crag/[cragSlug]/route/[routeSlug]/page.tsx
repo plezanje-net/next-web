@@ -12,7 +12,6 @@ import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
 import StarRatingDistribution from "@/components/star-rating-distribution";
-import Comments from "@/components/comments/comments";
 import RouteImage from "./components/route-image";
 import ImageList from "@/components/image-list/image-list";
 
@@ -133,7 +132,7 @@ async function RoutePage({ params }: { params: Params }) {
           )}
         </RouteSection>
         <RouteSection label="Komentarji">
-          <Comments comments={route.comments} route={route} />
+          ... merge of hell: reuse comments from crag ...
         </RouteSection>
       </div>
     </>
