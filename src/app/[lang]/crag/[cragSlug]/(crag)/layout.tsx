@@ -15,13 +15,9 @@ interface Props {
 async function CragLayout(props: Props) {
   const params = await props.params;
 
-  const {
-    cragSlug
-  } = params;
+  const { cragSlug } = params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   const { data } = await urqlServer().query(CragHeaderDocument, {
     crag: cragSlug,

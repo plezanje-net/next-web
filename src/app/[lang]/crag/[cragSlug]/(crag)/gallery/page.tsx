@@ -7,7 +7,9 @@ type TCragGalleryPageParams = {
   cragSlug: string;
 };
 
-async function CragGalleryPage(props: { params: Promise<TCragGalleryPageParams> }) {
+async function CragGalleryPage(props: {
+  params: Promise<TCragGalleryPageParams>;
+}) {
   const params = await props.params;
   const { data } = await urqlServer().query(CragGalleryDocument, {
     crag: params.cragSlug,

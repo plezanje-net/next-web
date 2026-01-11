@@ -15,9 +15,7 @@ type TEditSectorsPageProps = {
 async function EditSectorsPage(props: TEditSectorsPageProps) {
   const params = await props.params;
 
-  const {
-    cragSlug
-  } = params;
+  const { cragSlug } = params;
 
   const cragDataPromise = urqlServer().query(EditSectorsPageCragDocument, {
     cragSlug: cragSlug,

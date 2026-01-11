@@ -14,11 +14,7 @@ import { createContext, useCallback, useLayoutEffect, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
 import CragSector from "./crag-routes/crag-sector";
 import CragRoutesActions from "./crag-routes/crag-routes-actions";
-import {
-  parseAsArrayOf,
-  parseAsInteger,
-  useQueryState,
-} from "nuqs";
+import { parseAsArrayOf, parseAsInteger, useQueryState } from "nuqs";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import {
   LogRoutesProvider,

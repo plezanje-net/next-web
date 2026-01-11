@@ -107,9 +107,7 @@ async function getMySummary(
 async function CragPage(props: Props) {
   const params = await props.params;
 
-  const {
-    cragSlug
-  } = params;
+  const { cragSlug } = params;
 
   const currentUser = await getCurrentUser();
 

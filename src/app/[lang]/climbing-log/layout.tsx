@@ -14,13 +14,9 @@ interface Props {
 async function ClimbingLogLayout(props: Props) {
   const params = await props.params;
 
-  const {
-    cragSlug
-  } = params;
+  const { cragSlug } = params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   return (
     <>

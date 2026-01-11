@@ -16,9 +16,7 @@ type TEditRoutesPageProps = {
 async function EditRoutesPage(props: TEditRoutesPageProps) {
   const params = await props.params;
 
-  const {
-    sectorId
-  } = params;
+  const { sectorId } = params;
 
   const sectorDataPromise = urqlServer().query(EditRoutesPageSectorDocument, {
     id: sectorId,

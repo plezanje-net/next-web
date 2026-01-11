@@ -6,7 +6,9 @@ type TUseClientRenderToString = (
   deps?: any[]
 ) => string[];
 
-const clientRenderToString = (element: React.ReactElement<any>): Promise<string> =>
+const clientRenderToString = (
+  element: React.ReactElement<any>
+): Promise<string> =>
   new Promise((resolve) => {
     const container = document.createElement("div");
     const renderCallback = () => {

@@ -19,9 +19,7 @@ type TEditCragPageProps = {
 async function EditCragPage(props: TEditCragPageProps) {
   const params = await props.params;
 
-  const {
-    cragSlug
-  } = params;
+  const { cragSlug } = params;
 
   const countriesDataPromise = urqlServer().query(
     EditCragPageCountriesDocument,

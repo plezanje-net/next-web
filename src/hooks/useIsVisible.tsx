@@ -1,6 +1,9 @@
 import { RefObject, useEffect, useState } from "react";
 
-function useIsVisible(ref: RefObject<HTMLElement | null>, defaultValue = false) {
+function useIsVisible(
+  ref: RefObject<HTMLElement | null>,
+  defaultValue = false
+) {
   const [isIntersecting, setIntersecting] = useState(defaultValue);
 
   useEffect(() => {
