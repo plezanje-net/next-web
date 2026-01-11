@@ -1,42 +1,47 @@
 "use client";
 
-import DatePicker from "@/components/ui/date-picker";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useState } from "react";
 
-function DatePickerPage() {
-  const [value1, setValue1] = useState<string | null>(null);
-  const [value2, setValue2] = useState<string | null>("2024-05-19");
-  const [value3, setValue3] = useState<string | null>("2024-05-19");
-
-  function handleDateChange(value: string | null) {
-    console.log("Date changed", value);
-    setValue1(value);
-  }
+export default function PopoverTestPage() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
-      <div className="relative mx-auto mt-8 w-80">
-        A regular datepicker
-        <div className="mt-2">
-          <DatePicker
-            value={value1}
-            onChange={handleDateChange}
-            label="Datepicker label"
-          />
-        </div>
+      <div className="mb-10">
+        For general hui popover testing. Can delete later...
       </div>
-      <div className="relative mx-auto mt-8 w-80">
-        A disabled date picker
-        <div className="mt-2">
-          <DatePicker value={value2} onChange={setValue2} disabled />
-        </div>
-      </div>
-      <div className="relative mx-auto mt-8 w-80">
-        A second regular datepicker to test overflow
-        <div className="mt-2">
-          <DatePicker value={value3} onChange={setValue3} />
-        </div>
-      </div>
+
+      <Popover className="relative">
+        <PopoverButton
+          onClick={(e) => {
+            console.log("open it");
+            // e.preventDefault();
+            setIsOpen(!isOpen);
+          }}
+        >
+          Solutions
+        </PopoverButton>
+        {isOpen && (
+          <PopoverPanel
+            anchor="bottom"
+            className="flex flex-col focus:bg-blue-50"
+            // focus={true}
+            static
+          >
+            <a
+              className="focus:text-red-500 outline-none"
+              tabIndex={0}
+              href="/analytics"
+            >
+              Analytics
+            </a>
+            <a href="/engagement">Engagement</a>
+            <a href="/security">Security</a>
+            <a href="/integrations">Integrations</a>
+          </PopoverPanel>
+        )}
+      </Popover>
 
       <div className="mt-14 w-80 mx-auto">
         Some ipsum to get scrollbar
@@ -80,5 +85,3 @@ function DatePickerPage() {
     </div>
   );
 }
-
-export default DatePickerPage;
