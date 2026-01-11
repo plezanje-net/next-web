@@ -44,7 +44,7 @@ function RouteAscents({
     setAllAscents(value === "all");
     setPageNumber(1);
   }
-  
+
   return (
     <div className="@container">
       <div className="pb-1 ">
@@ -67,7 +67,10 @@ function RouteAscents({
                 </td>
               )}
               <td className="pb-1">
-                <AscentType type={ascentType} compact={['default', 'xs', 'md', 'lg'].includes(breakpoint)} />
+                <AscentType
+                  type={ascentType}
+                  compact={["default", "xs", "md", "lg"].includes(breakpoint)}
+                />
               </td>
             </tr>
           ))}
