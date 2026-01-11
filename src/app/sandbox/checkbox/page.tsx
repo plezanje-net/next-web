@@ -5,37 +5,83 @@ import { useState } from "react";
 
 function CheckboxPage() {
   const [checked, setChecked] = useState(false);
+  const [checkedA, setCheckedA] = useState(false);
+  const [checkedB, setCheckedB] = useState(true);
 
   return (
     <div className="m-8">
       <h1 className="text-xl">Checkbox demo</h1>
 
-      {/* hui */}
       <div className="mt-10">
-        <Checkbox label="Check me out" />
-      </div>
-
-      <div className="mt-1">
-        <Checkbox label="Uncheck me" checked />
-      </div>
-
-      <div className="mt-1">
-        <Checkbox label="Cannot check me" disabled />
-      </div>
-      <div className="mt-1">
-        <Checkbox label="Cannot uncheck me" disabled checked />
-      </div>
-
-      <div className="mt-1">
+        A regular checkbox
         <Checkbox
-          label="Check and control me"
-          onChange={(value) => setChecked(value)}
+          label="Check me out"
           checked={checked}
+          onChange={setChecked}
         />
       </div>
+
       <div className="mt-1">
-        State of last checkbox is:{" "}
-        {checked ? <span>checked</span> : <span>not checked</span>}
+        Checkbox is: {checked ? <span>checked</span> : <span>not checked</span>}
+      </div>
+
+      <div className="mt-4">
+        Indeterminate checkbox
+        <Checkbox
+          label="All Checked"
+          checked={checkedA && checkedB}
+          indeterminate={checkedA != checkedB}
+          onChange={() => {
+            if (checkedA && checkedB) {
+              setCheckedA(false);
+              setCheckedB(false);
+            } else {
+              setCheckedA(true);
+              setCheckedB(true);
+            }
+          }}
+        />
+        <Checkbox
+          label="Checkbox A"
+          checked={checkedA}
+          onChange={setCheckedA}
+        />
+        <Checkbox
+          label="Checkbox B"
+          checked={checkedB}
+          onChange={setCheckedB}
+        />
+      </div>
+
+      <div className="mt-4">
+        A disabled unchecked checkbox
+        <Checkbox
+          label="Cannot check me"
+          disabled
+          checked={false}
+          onChange={() => {}}
+        />
+      </div>
+
+      <div className="mt-4">
+        A disabled checked checkbox
+        <Checkbox
+          label="Cannot uncheck me"
+          disabled
+          checked
+          onChange={() => {}}
+        />
+      </div>
+
+      <div className="mt-4">
+        A disabled indeterminate checkbox
+        <Checkbox
+          label="Cannot determine me"
+          indeterminate
+          disabled
+          checked
+          onChange={() => {}}
+        />
       </div>
 
       <div className="mt-16">
@@ -43,14 +89,11 @@ function CheckboxPage() {
         <div className="pl-4">
           <ul className="mt-2 list-outside list-disc">
             <li>Click area for checkbox is expanded with negative margins</li>
-            <li>
-              Indeterminate and error states are not defined (designed). They
-              will be added if/when needed.
-            </li>
           </ul>
         </div>
       </div>
     </div>
   );
 }
+
 export default CheckboxPage;

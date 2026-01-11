@@ -1,12 +1,6 @@
 import { gql } from "urql/core";
 import urqlServer from "@/graphql/urql-server";
-import {
-  Crag,
-  CragInfoDocument,
-  Orientation,
-  Season,
-  WallAngle,
-} from "@/graphql/generated";
+import { Crag, CragInfoDocument, Season, WallAngle } from "@/graphql/generated";
 import Image from "next/image";
 import IconWalk from "@/components/ui/icons/walk";
 import IconHeight from "@/components/ui/icons/height";
@@ -25,27 +19,24 @@ import IconOrientation from "@/components/ui/icons/orientation";
 import GradeDistribution from "@/components/grade-distribution";
 import VisitsDistribution from "@/components/visits-distribution";
 import Map from "@/components/map/map";
-import Button from "@/components/ui/button";
 import IconMissing from "@/components/ui/icons/missing";
 import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
-import { TMarker } from "@/components/map/map-marker";
+import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
+import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import Button from "@/components/ui/button";
 
 type TCragInfoPageParams = {
   cragSlug: string;
 };
 
 /*
-TODO:
--- fill with real data:  
-
--- enable button
--- enable links
--- make coordinates links
--- many parkings, many walls -> numbers next to icons?...
-
--- what if cover image to small? test, but maybe no need to resolve as cover images will have to be manually chosen by editors
+TODO: enable more button
+TODO: enable links
+TODO: make coordinates links
+TODO: many parkings, many walls -> numbers next to icons?...
+TODO: what if cover image to small? test, but maybe no need to resolve as cover images will have to be manually chosen by editors
 */
 
 type TCragInfo = Crag & {
@@ -63,10 +54,6 @@ type TParkings = {
   [key: string]: { lat: number; lon: number; sectors: TSector[] };
 };
 
-// TODO: after this page's layout is tested remove this dummy filler
-const DUMMY_DATA = true;
-// const DUMMY_DATA = false;
-
 async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
   const response = await urqlServer().query(CragInfoDocument, {
     crag: params.cragSlug,
@@ -83,43 +70,6 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     routeLengths.length ? Math.min(...routeLengths) : null,
     routeLengths.length ? Math.max(...routeLengths) : null,
   ];
-
-  const imagesBaseUrl = `${process.env.IMAGES_PROTOCOL}://${process.env.IMAGES_HOSTNAME}${process.env.IMAGES_PATHNAME}`;
-
-  // TODO: remove dummy logic after tested
-  if (DUMMY_DATA) {
-    crag.orientations = [Orientation.North];
-    crag.approachTime = 10;
-    crag.minRouteLength = 10;
-    crag.maxRouteLength = 15;
-    crag.wallAngles = [WallAngle.Slab, WallAngle.Overhang];
-    crag.seasons = [Season.Summer, Season.Spring];
-    crag.rainproof = true;
-
-    crag.coverImage = {
-      id: "",
-      path: "1040/crags/mislinja",
-      extension: "jpg",
-      maxIntrinsicWidth: 1200,
-      aspectRatio: 0.75,
-    };
-
-    crag.description =
-      "Plezališče je oktobra 2015 opremila skupina 9 francoskih plezalcev (http://www.ffcam.fr/croatie-excellence-equipement.html) na pobudo domačina z Brača Iva Ljubetića-Šteke, vse težje smeri (do 8c) je prvi preplezal Mathieu Bouyoud. Smeri so večinoma dolge (do 50 m) in navpične do zmerno previsne. <br /> Levo od glavnega sektorja je 5 nekoliko krajših smeri neznanega avtorja (ocene srednjih treh so zelo približne). Prva (Shiva) in zadnja (San) imata ime napisano na vstopu. Skala še ni očiščena, čelada zelo priporočljiva. Stena je obrnjena na SZ. Plezanje je možno celo leto, tudi ob toplih, suhih zimah, čeprav je stena cel dan v senci.";
-
-    crag.activityByMonth = [0, 2, 3, 4, 6, 3, 2, 0, 1, 0, 0, 1];
-
-    crag.access =
-      "Plezališče se nahaja v Kamniški Bistrici: Parkiraš na parkirišču za slap Orglice, po potki hodiš do reke. Nadaljuješ po gozdni cesti ob reki 5 min. Nato boš na levi videl velik možic, tam zaviješ in slediš poti do plezališča. Pot gre mimo velikih balvanov. Od parkirišča do plezališča 10 min.";
-
-    crag.sectors[0].parkings = [
-      {
-        id: "a1",
-        lat: 45.567241935747305,
-        lon: 13.862603368337682,
-      },
-    ];
-  }
 
   // Find out if any data depicted with icons is missing and if so, construct appropriate messages.
   const iconDataMissing: string[] = [];
@@ -182,8 +132,8 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     minimumFractionDigits: 5,
   });
 
-  // Construct array of all parkings and walls markers
-  const markers: TMarker[] = Object.entries(parkings).map(
+  // Construct array of all parkings and walls markers data
+  const markersData: TLazyMapMarkerProps[] = Object.entries(parkings).map(
     ([_id, { lat, lon, sectors }]) => ({
       type: "parking",
       position: [lat, lon],
@@ -191,7 +141,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
     })
   );
   if (crag.lat && crag.lon) {
-    markers.push({
+    markersData.push({
       type: "wall",
       position: [crag.lat, crag.lon],
       popupContent: <div>{`Plezališče ${crag.name}`}</div>,
@@ -222,7 +172,19 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
           </div>
 
           <div>
-            <IconMore size={IconSize.regular} />
+            <DropdownMenu
+              openTrigger={
+                <Button variant="quaternary">
+                  <IconMore size={IconSize.regular} />
+                </Button>
+              }
+            >
+              <DropdownMenuItem
+                href={`/urejanje/plezalisca/${crag.slug}/uredi`}
+              >
+                Uredi plezališče
+              </DropdownMenuItem>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -249,7 +211,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
       <div className="mx-auto mt-7 grid grid-cols-1 gap-x-7 gap-y-10 2xl:container xs:px-8 md:grid-cols-2">
         {crag.coverImage ? (
           <Image
-            src={`${imagesBaseUrl}/${crag.coverImage.path}.${crag.coverImage.extension}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGES_BASEURL}/${crag.coverImage.path}.${crag.coverImage.extension}`}
             width={crag.coverImage.maxIntrinsicWidth}
             height={
               crag.coverImage.maxIntrinsicWidth / crag.coverImage.aspectRatio
@@ -376,7 +338,13 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
 
         {/* Map */}
         <div className="md:col-span-2">
-          {markers.length > 0 && <Map autoBounds markers={markers} />}
+          {markersData.length > 0 && (
+            <Map
+              autoBounds
+              markersData={markersData}
+              className="xs:rounded-lg"
+            />
+          )}
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import { Crag, DifficultyVote, Route } from "@/graphql/generated";
 import Grade from "@/components/grade";
 import useIsVisible from "@/hooks/useIsVisible";
 import { useEffect, useRef, useState } from "react";
-import difficultyVotesAction from "./server-actions/difficulty-votes-action";
+import difficultyVotesAction from "./lib/difficulty-votes-action";
 import Button from "@/components/ui/button";
 
 interface RouteGradeProps {

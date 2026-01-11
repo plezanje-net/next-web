@@ -1,7 +1,7 @@
 import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
 import { Select, Option } from "@/components/ui/select";
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../../lib/text-helpers";
 import { useState } from "react";
 
 type TDifficultyFilterProps = {

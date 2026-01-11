@@ -8,7 +8,7 @@ import ShowMap from "./show-map";
 import ToggleFiltersPane from "./toggle-filters-pane";
 import SelectColumns from "./select-columns";
 import Sort from "./sort";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 import { IconSize } from "@/components/ui/icons/icon-size";
 
 function ActionsRow() {
@@ -82,14 +82,14 @@ function ActionsRow() {
             placeholder="Poišči po imenu"
             aria-label="Poišči po imenu"
             suffix={
-              search.query && (
+              search.query ? (
                 <Button
                   variant="quaternary"
                   onClick={() => search.setQuery("")}
                 >
                   <IconClose />
                 </Button>
-              )
+              ) : undefined
             }
           />
         </div>

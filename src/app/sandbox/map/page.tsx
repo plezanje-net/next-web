@@ -1,13 +1,17 @@
+"use client";
+
 import Map from "@/components/map/map";
 import MapEventDemo from "./map-event-demo";
+import MapMarker from "@/components/map/map-marker";
 
 function MapPage() {
   return (
     <div className="mx-auto mt-8 px-8">
       <Map
+        className="rounded-lg"
         center={[45.567706816120364, 13.863458632993037]}
         zoom={17}
-        markers={[
+        markersData={[
           {
             type: "parking",
             position: [45.567196, 13.862597],

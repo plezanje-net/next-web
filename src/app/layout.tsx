@@ -2,8 +2,9 @@ import "../styles/globals.css";
 import Head from "next/head";
 import Header from "./components/header";
 import { Poppins } from "next/font/google";
-import authStatus from "@/utils/auth/auth-status";
-import ClientProviders from "./components/client-providers";
+import { AuthProvider } from "@/lib/auth/auth-context";
+import { ReactNode } from "react";
+import getCurrentUser from "../lib/auth/get-current-user";
 
 const poppins = Poppins({
   weight: ["400", "500"],
@@ -11,11 +12,11 @@ const poppins = Poppins({
   display: "swap",
 });
 
-interface Props {
-  children: React.ReactNode;
-}
+type RootLayoutProps = {
+  children: ReactNode;
+};
 
-async function RootLayout({ children }: Props) {
+async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html>
       <Head>
@@ -45,11 +46,12 @@ async function RootLayout({ children }: Props) {
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
+
       <body className={`text-neutral-900 ${poppins.className}`}>
-        <ClientProviders>
-          <Header authStatus={await authStatus()} />
+        <AuthProvider currentUser={await getCurrentUser()}>
+          <Header />
           <main>{children}</main>
-        </ClientProviders>
+        </AuthProvider>
       </body>
     </html>
   );

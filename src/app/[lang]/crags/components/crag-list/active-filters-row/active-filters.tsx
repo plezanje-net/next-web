@@ -1,4 +1,4 @@
-import { useCragsContext } from "../../crags-context";
+import { useCragsContext } from "../../../lib/crags-context";
 import FilterChip from "./filter-chip";
 
 function ActiveFilters() {

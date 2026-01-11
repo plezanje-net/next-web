@@ -1,10 +1,8 @@
 import RangeSlider from "./range-slider";
-import { gradingSystems } from "@/utils/grading-systems";
+import { gradingSystems } from "../../lib/grading-systems";
 
 // TODO: french is hardcoded for now. where/how to get the chosen system? majority of routes in this crag? user choice? majority of currently filtered routes?
-const gradingSystem = gradingSystems.find(
-  (gradingSystem) => gradingSystem.id === "french"
-);
+const gradingSystem = gradingSystems.french;
 const sliderValueToDifficultyMap = new Map(
   gradingSystem?.grades.map((grade, index) => [index, grade.difficulty])
 );

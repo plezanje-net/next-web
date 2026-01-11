@@ -8,7 +8,7 @@ import {
   TDifficultyFilter,
   TMultiFilter,
   useCragsContext,
-} from "../crags-context";
+} from "../../lib/crags-context";
 import MultiFilter from "./multi-filter";
 import DifficultyFilter from "./difficulty-filter";
 import ApproachTimeFilter from "./approach-time-filter";

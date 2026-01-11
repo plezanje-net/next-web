@@ -1,4 +1,4 @@
-import { difficultyToGrade } from "@/utils/grade-helpers";
+import { difficultyToGrade } from "../../../../../../lib/grade-helpers";
 
 type TGradeFromToProps = {
   minDifficulty: number;

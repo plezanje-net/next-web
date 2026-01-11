@@ -4,7 +4,15 @@
     "/{crag}/:cragSlug/{route}/:routeSlug*",
     "/{crag}/:cragSlug/{comments}",
     "/{crag}/:cragSlug/{gallery}",
-    "/{crag}/:cragSlug*"
+    "/{crag}/:cragSlug*",
+    "/{climbing-log}",
+    "/{climbing-log}/{calendar}",
+    "/{climbing-log}/{calendar}/:date",
+    "/{climbing-log}/{statistics}",
+    "/{admin}/{crags}/{add}",
+    "/{admin}/{crags}/:cragSlug/{edit}",
+    "/{admin}/{crags}/:cragSlug/{sectors}",
+    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}"
   ],
   "translations": {
     "sl": {
@@ -13,7 +21,15 @@
       "route": "smer",
       "info": "info",
       "comments": "komentarji",
-      "gallery": "galerija"
+      "gallery": "galerija",
+      "climbing-log": "plezalni-dnevnik",
+      "calendar": "koledar",
+      "statistics": "statistika",
+      "admin": "urejanje",
+      "add": "dodaj",
+      "edit": "uredi",
+      "sectors": "sektorji",
+      "routes": "smeri"
     },
     "en": {
       "crags": "crags",
@@ -21,7 +37,15 @@
       "route": "route",
       "info": "info",
       "comments": "comments",
-      "gallery": "gallery"
+      "gallery": "gallery",
+      "climbing-log": "climbing-log",
+      "calendar": "calendar",
+      "statistics": "statistics",
+      "admin": "admin",
+      "add": "add",
+      "edit": "edit",
+      "sectors": "sectors",
+      "routes": "routes"
     }
   },
   "defaultLanguage": "sl"

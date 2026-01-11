@@ -1,94 +1,131 @@
-import { ForwardedRef, ReactNode, forwardRef, useState } from "react";
-import { useTextField, useFocus, AriaTextFieldOptions } from "react-aria";
-import useForwardedRef from "../../hooks/useForwardedRef";
+import useForwardedRef from "@/hooks/useForwardedRef";
+import { Description, Field, Input, Label } from "@headlessui/react";
+import {
+  ForwardedRef,
+  ReactElement,
+  forwardRef,
+  KeyboardEvent,
+  ChangeEvent,
+} from "react";
+import Button from "./button";
 
-type TextFieldProps = {
+type TTextFieldProps = {
+  name?: string;
+  value: string;
+  type?: "text" | "number" | "password" | "natural";
+  onChange: (value: string) => void;
   label?: string;
+  placeholder?: string;
   description?: string;
   errorMessage?: string;
-  isDisabled?: boolean;
-  prefix?: ReactNode;
-  suffix?: ReactNode;
+  disabled?: boolean;
+  prefix?: ReactElement;
+  suffix?: ReactElement;
   onBlur?: () => void;
-} & AriaTextFieldOptions<"input">;
+  autoFocus?: boolean;
+};
 
 const TextField = forwardRef(function TextField(
-  props: TextFieldProps,
-  forwardedRef: ForwardedRef<HTMLInputElement>
-) {
-  const {
-    isDisabled,
+  {
+    name,
+    value,
+    type = "text",
+    onChange,
     label,
+    placeholder,
     description,
     errorMessage,
+    disabled,
     prefix,
     suffix,
     onBlur,
-  } = props;
+    autoFocus,
+  }: TTextFieldProps,
+  forwardedRef: ForwardedRef<HTMLInputElement>
+) {
+  const inputType = type == "natural" ? "number" : type;
 
   const inputRef = useForwardedRef(forwardedRef);
-  const [isFocused, setIsFocused] = useState(false);
 
-  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-    useTextField(props, inputRef);
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
 
-  const { focusProps } = useFocus({
-    onFocusChange: (isFocused) => setIsFocused(isFocused),
-    onBlur: onBlur,
-  });
+  const buttonPrefix = prefix?.type === Button;
+  const buttonSuffix = suffix?.type === Button;
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (type == "natural") {
+      if (e.key == "." || e.key == "," || e.key == "-" || e.key == "e") {
+        e.preventDefault();
+      }
+    }
+  };
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
 
   return (
-    <div>
-      {label && (
-        <label {...labelProps} className="block">
-          {label}
-        </label>
-      )}
-      <div
-        className={`flex items-center rounded-lg border focus:ring focus:ring-blue-100
-                    ${
-                      isDisabled
-                        ? "border-neutral-300 bg-neutral-100 text-neutral-400"
-                        : "border-neutral-400"
-                    }
-                    ${
-                      isFocused
-                        ? "ring" +
-                          (errorMessage ? " ring-red-100" : " ring-blue-100")
-                        : ""
-                    }
-                    ${label ? "mt-2" : ""}
-                    ${errorMessage ? "border-red-500 focus:ring-red-100" : ""}
-                  `}
-      >
-        {prefix && <div className="mx-2">{prefix}</div>}
+    <Field disabled={disabled}>
+      {label && <Label className="mb-2 block">{label}</Label>}
 
-        <input
-          {...inputProps}
-          {...focusProps}
+      <div
+        onClick={focusInput}
+        className={`focus-within:ring flex items-center rounded-lg border
+          ${!disabled && !errorMessage ? "border-neutral-400" : ""}
+          ${
+            errorMessage
+              ? "border-red-500 focus-within:ring-red-100"
+              : "focus-within:ring-blue-100"
+          }
+          ${
+            disabled ? "border-neutral-300 bg-neutral-100 text-neutral-400" : ""
+          }`}
+      >
+        {prefix && (
+          <div className={`${buttonPrefix ? "pl-1 relative z-10" : "pl-2"}`}>
+            {prefix}
+          </div>
+        )}
+
+        <Input
           ref={inputRef}
-          className={`min-w-0 flex-1 rounded-lg py-2 placeholder:text-neutral-400 focus:outline-none
-                      ${!prefix ? "pl-4" : ""}
-                      ${!suffix ? "pr-4" : ""}
-                    `}
+          onBlur={onBlur}
+          type={inputType}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          className={`flex-1 outline-none min-w-0 rounded-lg w-full py-2 placeholder:text-neutral-400
+            ${prefix ? (buttonPrefix ? "pl-1" : "pl-2") : "pl-4"}
+            ${suffix ? (buttonSuffix ? "pr-1" : "pr-2") : "pr-4"}
+            `}
+          min={type == "natural" ? "0" : undefined}
+          onChange={handleOnChange}
+          onKeyDown={handleKeyDown}
+          autoFocus={autoFocus}
         />
 
-        {suffix && <div className="mx-1">{suffix}</div>}
+        {suffix && (
+          <div className={`${buttonSuffix ? "pr-1" : "pr-2"}`}>{suffix}</div>
+        )}
       </div>
 
       {description && !errorMessage && (
-        <div {...descriptionProps} className="mt-1 text-sm">
-          {description}
-        </div>
+        <Description className="text-sm mt-1">{description}</Description>
       )}
-
       {errorMessage && (
-        <div {...errorMessageProps} className="mt-1 text-sm text-red-500">
-          {props.errorMessage}
-        </div>
+        <div className="text-sm mt-1 text-red-500">{errorMessage}</div>
       )}
-    </div>
+    </Field>
   );
 });
 
 export default TextField;
+export type { TTextFieldProps };
+
+/* 
+TODO:
+prefix and suffix could also be immlemented as an absolute positioned icon and increased padding, but then the width od them should be fixed. leaving this here in case focus, blur, icon click will give trouble and will have to refactor
+  <div className="relative">
+        <div className="absolute left-2 top-2 pointer-events-none"> */
