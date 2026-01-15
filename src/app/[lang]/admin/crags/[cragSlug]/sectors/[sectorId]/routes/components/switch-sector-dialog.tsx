@@ -2,15 +2,15 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
-import { Route, Sector } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import moveRoutesToSectorAction from "../lib/move-routes-to-sector-action";
 import { labelAndNameToString } from "@/lib/sector-helpers";
 
 type TSwitchSectorDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  routes: Route[];
-  targetSectors: Sector[];
+  routes: EditRoutesPageSectorQuery["sector"]["routes"];
+  targetSectors: EditRoutesPageSectorQuery["sector"]["crag"]["sectors"];
 };
 
 function SwitchSectorDialog({

@@ -1,6 +1,6 @@
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import { NewCragPageCountriesDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
 import NewCragForm from "./components/new-crag-form";
 import TabMenu from "@/components/ui/tab-menu";
 import IconInfo from "@/components/ui/icons/info";
@@ -9,10 +9,7 @@ import ContentHeader from "@/components/content-header";
 import Breadcrumbs from "@/components/breadcrumbs";
 
 async function NewCragPage() {
-  const countriesDataPromise = urqlServer().query(
-    NewCragPageCountriesDocument,
-    {}
-  );
+  const countriesDataPromise = gqlRequest(NewCragPageCountriesDocument, {});
   const {
     data: { countries },
   } = await countriesDataPromise;

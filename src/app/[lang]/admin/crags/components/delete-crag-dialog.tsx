@@ -1,5 +1,5 @@
 import Dialog from "@/components/ui/dialog";
-import { Crag } from "@/graphql/generated";
+import { EditCragPageCragQuery } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import deleteCragAction from "../lib/delete-crag-action";
@@ -7,7 +7,7 @@ import deleteCragAction from "../lib/delete-crag-action";
 type TDeleteCragDialog = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  crag: Crag;
+  crag: EditCragPageCragQuery["cragBySlug"];
 };
 
 function DeleteCragDialog({ isOpen, setIsOpen, crag }: TDeleteCragDialog) {

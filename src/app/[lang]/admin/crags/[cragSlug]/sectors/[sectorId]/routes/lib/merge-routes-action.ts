@@ -1,11 +1,11 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import { MergeRoutesDocument, MergeRoutesInput } from "@/graphql/generated";
 
 async function mergeRoutesAction(mergeRoutesData: MergeRoutesInput) {
-  const result = await urqlServer().mutation(MergeRoutesDocument, {
+  const result = await gqlRequest(MergeRoutesDocument, {
     input: mergeRoutesData,
   });
 

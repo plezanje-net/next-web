@@ -2,7 +2,11 @@
 
 import Button from "@/components/ui/button";
 import IconPublish from "@/components/ui/icons/publish";
-import { Crag, Route, Sector } from "@/graphql/generated";
+import {
+  EditCragPageCragQuery,
+  EditRoutesPageSectorQuery,
+  Sector,
+} from "@/graphql/generated";
 import { useState } from "react";
 import IconCheck from "@/components/ui/icons/check";
 import IconClose from "@/components/ui/icons/close";
@@ -12,7 +16,10 @@ import RejectDialog from "./reject-dialog";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TPublishStatusActionsProps = {
-  contributable: Route | Sector | Crag;
+  contributable:
+    | EditRoutesPageSectorQuery["sector"]["routes"][number]
+    | Sector
+    | EditCragPageCragQuery["cragBySlug"];
   disabled: boolean;
 };
 

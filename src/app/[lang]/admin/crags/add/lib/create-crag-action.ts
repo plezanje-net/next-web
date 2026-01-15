@@ -1,13 +1,11 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import { CreateCragDocument, CreateCragInput } from "@/graphql/generated";
 
 async function createCragAction(cragData: CreateCragInput) {
-  const result = await urqlServer().mutation(CreateCragDocument, {
-    input: cragData,
-  });
+  const result = await gqlRequest(CreateCragDocument, { input: cragData });
   if (result.error) {
     console.error(result.error);
     throw new Error("Pri shranjevanju plezališča je prišlo do napake.");

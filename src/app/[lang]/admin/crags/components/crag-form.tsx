@@ -16,8 +16,8 @@ import { Selector, SelectorOption } from "@/components/ui/selector";
 import TextArea from "@/components/ui/text-area";
 import TextField from "@/components/ui/text-field";
 import {
-  Country,
-  Crag,
+  EditCragPageCragQuery,
+  NewCragPageCountriesQuery,
   Orientation,
   Season,
   WallAngle,
@@ -38,8 +38,8 @@ import DeleteCragDialog from "./delete-crag-dialog";
 
 type TCragFormProps = {
   formType: "edit" | "new";
-  countriesWithAreas: Country[];
-  crag?: Crag;
+  countriesWithAreas: NewCragPageCountriesQuery["countries"];
+  crag?: EditCragPageCragQuery["cragBySlug"];
 };
 
 function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {

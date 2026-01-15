@@ -1,7 +1,11 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Crag, Route, Sector } from "@/graphql/generated";
+import {
+  EditCragPageCragQuery,
+  EditRoutesPageSectorQuery,
+  Sector,
+} from "@/graphql/generated";
 import updateRouteAction from "../[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
 import updateSectorAction from "../[cragSlug]/sectors/lib/update-sector-action";
 import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
@@ -11,7 +15,10 @@ import TextArea from "@/components/ui/text-area";
 type TRejectDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  contributable: Route | Sector | Crag;
+  contributable:
+    | EditRoutesPageSectorQuery["sector"]["routes"][number]
+    | Sector
+    | EditCragPageCragQuery["cragBySlug"];
 };
 
 function RejectDialog({

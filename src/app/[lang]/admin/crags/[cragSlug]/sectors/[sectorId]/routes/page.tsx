@@ -4,10 +4,10 @@ import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu from "@/components/ui/tab-menu";
 import { EditRoutesPageSectorDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditRoutes from "./components/edit-routes";
 import { labelAndNameToString } from "@/lib/sector-helpers";
+import { gqlRequest } from "@/lib/gql-request";
 
 type TEditRoutesPageProps = {
   params: Promise<{ sectorId: string }>;
@@ -18,7 +18,7 @@ async function EditRoutesPage(props: TEditRoutesPageProps) {
 
   const { sectorId } = params;
 
-  const sectorDataPromise = urqlServer().query(EditRoutesPageSectorDocument, {
+  const sectorDataPromise = gqlRequest(EditRoutesPageSectorDocument, {
     id: sectorId,
   });
   const { data: sectorData } = await sectorDataPromise;
@@ -102,6 +102,7 @@ gql`
         id
         slug
         name
+        publishStatus
         sectors {
           id
           label
@@ -115,6 +116,7 @@ gql`
           id
         }
         difficulty
+        isProject
         defaultGradingSystem {
           id
         }

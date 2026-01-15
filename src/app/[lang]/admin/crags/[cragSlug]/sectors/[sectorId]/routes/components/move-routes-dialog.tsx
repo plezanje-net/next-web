@@ -2,14 +2,14 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Option, Select } from "@/components/ui/select";
-import { Route } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import updateRoutesAction from "../lib/update-routes-action";
 
 type TMoveRoutesDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  routes: Route[];
-  targetRoutes: Route[];
+  routes: EditRoutesPageSectorQuery["sector"]["routes"];
+  targetRoutes: EditRoutesPageSectorQuery["sector"]["routes"];
 };
 
 function MoveRoutesDialog({

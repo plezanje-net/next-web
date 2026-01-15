@@ -1,12 +1,13 @@
+import { gql } from "graphql-request";
+import urqlServer from "@/graphql/urql-server";
 import Breadcrumbs from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu from "@/components/ui/tab-menu";
-import { EditSectorsPageCragDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
+import { Crag, EditSectorsPageCragDocument } from "@/graphql/generated";
 import EditSectors from "./components/edit-sectors";
+import { gqlRequest } from "@/lib/gql-request";
 
 type TEditSectorsPageProps = {
   params: Promise<{ cragSlug: string }>;
@@ -17,11 +18,11 @@ async function EditSectorsPage(props: TEditSectorsPageProps) {
 
   const { cragSlug } = params;
 
-  const cragDataPromise = urqlServer().query(EditSectorsPageCragDocument, {
+  const cragDataPromise = gqlRequest(EditSectorsPageCragDocument, {
     cragSlug: cragSlug,
   });
   const { data: cragData } = await cragDataPromise;
-  const crag = cragData.cragBySlug;
+  const crag = cragData.cragBySlug as Crag;
 
   return (
     <>

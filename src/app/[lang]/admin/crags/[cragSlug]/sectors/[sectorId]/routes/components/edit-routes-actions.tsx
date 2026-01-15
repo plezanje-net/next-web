@@ -1,5 +1,5 @@
 import IconMoveRoutes from "@/components/ui/icons/move-routes";
-import { Crag, Route, Sector } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import { useRef, useState } from "react";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
@@ -18,11 +18,11 @@ import { canEdit } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditRoutesActionsProps = {
-  crag: Crag;
-  sector: Sector;
-  checkedRoutes: Route[];
-  allSectors: Sector[];
-  allRoutes: Route[];
+  crag: EditRoutesPageSectorQuery["sector"]["crag"];
+  sector: EditRoutesPageSectorQuery["sector"];
+  checkedRoutes: EditRoutesPageSectorQuery["sector"]["routes"];
+  allSectors: EditRoutesPageSectorQuery["sector"]["crag"]["sectors"];
+  allRoutes: EditRoutesPageSectorQuery["sector"]["routes"];
   onCheckAll: () => void;
 };
 
