@@ -1,4 +1,4 @@
-import { Crag } from "@/graphql/generated";
+import { CragInfoQuery } from "@/graphql/generated";
 import { TGradingSystemId, gradingSystems } from "../lib/grading-systems";
 
 // TODO: we decided to keep half grades for voting and lose modifiers on calculated grades. this becomes much simpler now. move to Grade??
@@ -26,18 +26,18 @@ function difficultyToGrade(difficulty: number, gradingSystemId: string) {
   }
 }
 
-interface GradeSlot {
+type TGradeSlot = {
   label: string;
   grades: string[];
   count: number;
   colorClass: string;
-}
+};
 
-interface GradeDistributionProps {
-  crag: Crag;
-}
+type TGradeDistributionProps = {
+  crag: CragInfoQuery["cragBySlug"];
+};
 
-function GradeDistribution({ crag }: GradeDistributionProps) {
+function GradeDistribution({ crag }: TGradeDistributionProps) {
   // TODO: get this from crag!
   // TODO: what to do when mixed grades inside one crag??:
   //          many distros
@@ -351,12 +351,12 @@ function GradeDistribution({ crag }: GradeDistributionProps) {
   );
 }
 
-interface BarProps {
-  gradeSlot: GradeSlot;
+type TBarProps = {
+  gradeSlot: TGradeSlot;
   maxCount: number;
-}
+};
 
-function Bar({ gradeSlot, maxCount }: BarProps) {
+function Bar({ gradeSlot, maxCount }: TBarProps) {
   return (
     <div className="flex w-5 flex-col items-center @md:w-6 @xl:w-8 @3xl:w-10 @4xl:w-13">
       <div className="flex h-48 w-full flex-col items-center @md:h-[300px]">

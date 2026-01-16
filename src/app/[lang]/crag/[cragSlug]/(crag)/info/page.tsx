@@ -1,6 +1,11 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
-import { Crag, CragInfoDocument, Season, WallAngle } from "@/graphql/generated";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import {
+  CragInfoDocument,
+  CragInfoQuery,
+  Season,
+  WallAngle,
+} from "@/graphql/generated";
 import Image from "next/image";
 import IconWalk from "@/components/ui/icons/walk";
 import IconHeight from "@/components/ui/icons/height";
@@ -39,7 +44,7 @@ TODO: many parkings, many walls -> numbers next to icons?...
 TODO: what if cover image to small? test, but maybe no need to resolve as cover images will have to be manually chosen by editors
 */
 
-type TCragInfo = Crag & {
+type TCragInfo = CragInfoQuery["cragBySlug"] & {
   minRouteLength: number | null;
   maxRouteLength: number | null;
 };
@@ -56,11 +61,15 @@ type TParkings = {
 
 async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
   const params = await props.params;
-  const response = await urqlServer().query(CragInfoDocument, {
+  const response = await gqlRequest(CragInfoDocument, {
     crag: params.cragSlug,
   });
   const data = response.data;
-  const crag: TCragInfo = data.cragBySlug;
+  const crag: TCragInfo = {
+    ...data.cragBySlug,
+    minRouteLength: null,
+    maxRouteLength: null,
+  };
 
   // Find lenghts of shortest and longest route.
   const routeLengths = crag.sectors
@@ -572,6 +581,8 @@ gql`
       id
       slug
       name
+      description
+      access
       sectors {
         id
         label

@@ -1,6 +1,6 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
-import { Crag, CragCommentsDocument } from "@/graphql/generated";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import { CragCommentsDocument } from "@/graphql/generated";
 import Comment, { CommentType } from "./components/comment";
 import AddCommentForm from "./components/add-comment-form";
 
@@ -10,10 +10,10 @@ interface Params {
 
 async function CragComments(props: { params: Promise<Params> }) {
   const params = await props.params;
-  const { data } = await urqlServer().query(CragCommentsDocument, {
+  const { data } = await gqlRequest(CragCommentsDocument, {
     crag: params.cragSlug,
   });
-  const crag = data.cragBySlug as Crag;
+  const crag = data.cragBySlug;
 
   return (
     <div className="mt-18 px-4 xs:px-8">
