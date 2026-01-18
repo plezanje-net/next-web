@@ -1,30 +1,29 @@
 import { gql } from "urql";
 import {
-  Activity,
   CalendarFirstEntryDocument,
   CalendarMonthlyActivitiesDocument,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import locale from "dayjs/locale/sl";
 import localeData from "dayjs/plugin/localeData";
 import ActionsRow from "./components/actions-row/actions-row";
 import CalendarDay, { TCalendarDay } from "./components/calendar-day";
+import { gqlRequest } from "@/lib/gql-request";
 
 type TSearchParams = {
   date: string;
 };
 
 type TCalendarPageProps = {
-  searchParams: TSearchParams;
+  searchParams: Promise<TSearchParams>;
 };
 
 async function CalendarPage(props: TCalendarPageProps) {
   const searchParams = await props.searchParams;
   const {
     data: { myActivities: myFirstActivities },
-  } = await urqlServer().query(CalendarFirstEntryDocument, {
+  } = await gqlRequest(CalendarFirstEntryDocument, {
     input: {
       pageSize: 1,
       orderBy: {
@@ -46,7 +45,7 @@ async function CalendarPage(props: TCalendarPageProps) {
 
   const {
     data: { myActivities },
-  } = await urqlServer().query(CalendarMonthlyActivitiesDocument, {
+  } = await gqlRequest(CalendarMonthlyActivitiesDocument, {
     input: {
       dateFrom: date,
       dateTo: dayjs(date).endOf("month").format("YYYY-MM-DD"),
@@ -72,7 +71,7 @@ async function CalendarPage(props: TCalendarPageProps) {
       dayNumber: currentDay.date(),
       isCurrentMonth: currentDay.month() === dayjs(date).month(),
       isToday: currentDay.isSame(dayjs(), "day"),
-      activities: myActivities.items.filter((activity: Activity) =>
+      activities: myActivities.items.filter((activity) =>
         dayjs(activity.date).isSame(currentDay, "day")
       ),
       borderClass: `${currentDay.weekday() > 0 ? " border-l" : ""}${!firstWeek ? " border-t" : ""}`,

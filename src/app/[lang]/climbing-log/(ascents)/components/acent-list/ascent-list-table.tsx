@@ -1,10 +1,10 @@
-import { ActivityRoute } from "@/graphql/generated";
+import { MyActivityRoutesQuery } from "@/graphql/generated";
 import AscentRow from "./ascent-row";
 import { useAscentsContext } from "../../lib/ascents-context";
 
 // Define the props type
 type TAscentListTableProps = {
-  ascents: ActivityRoute[];
+  ascents: MyActivityRoutesQuery["myActivityRoutes"]["items"];
 };
 
 function AscentListTable({ ascents }: TAscentListTableProps) {

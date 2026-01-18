@@ -2,10 +2,10 @@
 
 import { gql } from "urql/core";
 import { ComboboxPopulateCragsDocument, Crag } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
 
-async function populateCragsAction(query: string): Promise<Crag[]> {
-  const result = await urqlServer().query(ComboboxPopulateCragsDocument, {
+async function populateCragsAction(query: string) {
+  const result = await gqlRequest(ComboboxPopulateCragsDocument, {
     input: {
       query,
       pageSize: 10,

@@ -3,14 +3,14 @@ import Grade from "@/components/grade";
 import Button from "@/components/ui/button";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
-import { ActivityRoute } from "@/graphql/generated";
+import { MyActivityRoutesQuery } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
 import { useAscentsContext } from "../../lib/ascents-context";
 import CragLink from "@/components/crag-link";
 import RouteLink from "@/components/route-link";
 
 type TAscentRowProps = {
-  ascent: ActivityRoute;
+  ascent: MyActivityRoutesQuery["myActivityRoutes"]["items"][number];
 };
 
 function AscentRow({ ascent }: TAscentRowProps) {

@@ -1,13 +1,14 @@
+import { Fragment } from "react";
 import ActivityType from "@/components/activity-type";
 import AscentType from "@/components/ascent-type";
 import Grade from "@/components/grade";
 import Button from "@/components/ui/button";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
-import { Activity } from "@/graphql/generated";
+import { CalendarDailyActivitiesQuery } from "@/graphql/generated";
 
 type TCalendarDayPageProps = {
-  activity: Activity;
+  activity: CalendarDailyActivitiesQuery["myActivities"]["items"][0];
 };
 
 function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
@@ -64,7 +65,7 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
               <div className="pt-1 col-span-2 sm:col-auto">
                 <div className="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[auto_auto_auto_1fr_auto]">
                   {activity.routes.map((route, index) => (
-                    <>
+                    <Fragment key={route.id || index}>
                       <div
                         className={`${index ? "border-t border-neutral-200" : ""} pr-4 sm:pr-8 pt-2 sm:py-2`}
                       >
@@ -103,7 +104,7 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
                       >
                         vidno samo meni
                       </div>
-                    </>
+                    </Fragment>
                   ))}
                 </div>
               </div>
