@@ -10,7 +10,7 @@ type TImage = Pick<
   | "extension"
   | "maxIntrinsicWidth"
   | "aspectRatio"
-  | "title" 
+  | "title"
   | "author"
 >;
 

@@ -138,7 +138,8 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
       <div className="w-full pr-4">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
-          {displayColumn("starRating") && (<></>
+          {displayColumn("starRating") && (
+            <></>
             // <RouteStarRating route={route} size={IconSize.small} />
           )}
         </div>
