@@ -1,11 +1,11 @@
-import { Crag } from "@/graphql/generated";
+import { EditCragPageCragQuery } from "@/graphql/generated";
 import PublishStatusActions from "../../../components/publish-status-actions";
 import { genderizeVerb } from "@/lib/text-helpers";
 import getCurrentUser from "@/lib/auth/get-current-user";
 import { getBgStyle } from "@/lib/contributables-helpers";
 
 type TCragPublishStatusCard = {
-  crag: Crag;
+  crag: EditCragPageCragQuery["cragBySlug"];
 };
 
 async function CragPublishStatusCard({ crag }: TCragPublishStatusCard) {

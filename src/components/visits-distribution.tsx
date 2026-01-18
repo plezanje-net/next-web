@@ -1,8 +1,8 @@
 import { Fragment } from "react";
-import { Crag } from "@/graphql/generated";
+import { CragInfoQuery } from "@/graphql/generated";
 
 type TVisitsDistributionProps = {
-  crag: Pick<Crag, "activityByMonth">;
+  crag: CragInfoQuery["cragBySlug"];
 };
 
 function VisitsDistribution({ crag }: TVisitsDistributionProps) {

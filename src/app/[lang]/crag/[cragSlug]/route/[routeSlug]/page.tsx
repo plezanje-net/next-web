@@ -1,6 +1,6 @@
 import { RouteBySlugDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import RouteSection from "./components/route-section";
 import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
@@ -26,7 +26,7 @@ async function RoutePage(props: { params: Promise<Params> }) {
   const { cragSlug, routeSlug } = params;
   const {
     data: { routeBySlug: route },
-  } = await urqlServer().query(RouteBySlugDocument, {
+  } = await gqlRequest(RouteBySlugDocument, {
     cragSlug,
     routeSlug,
     includeMyAscents: !!user,
@@ -99,8 +99,8 @@ async function RoutePage(props: { params: Promise<Params> }) {
             <RouteMyAscents
               routeId={route.id}
               userId={user.id}
-              activityRoutes={route.myAscents.items}
-              pageCount={route.myAscents.meta.pageCount}
+              activityRoutes={route.myAscents?.items || []}
+              pageCount={route.myAscents?.meta.pageCount || 0}
             ></RouteMyAscents>
           ) : (
             "Za ogled svojih vzponov se prijavi."

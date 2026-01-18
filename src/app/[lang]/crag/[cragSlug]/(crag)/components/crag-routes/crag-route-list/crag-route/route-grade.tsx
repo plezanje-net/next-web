@@ -1,6 +1,6 @@
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import DifficultyVotes from "./difficulty-votes";
-import { Crag, DifficultyVote, Route } from "@/graphql/generated";
+import { Crag, Route, RouteDifficultyVotesQuery } from "@/graphql/generated";
 import Grade from "@/components/grade";
 import useIsVisible from "@/hooks/useIsVisible";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +15,9 @@ interface RouteGradeProps {
 function RouteGrade({ route, crag }: RouteGradeProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const visible = useIsVisible(ref);
-  const [difficultyVotes, setDifficultyVotes] = useState<DifficultyVote[]>([]);
+  const [difficultyVotes, setDifficultyVotes] = useState<
+    RouteDifficultyVotesQuery["route"]["difficultyVotes"]
+  >([]);
 
   useEffect(() => {
     if (visible) {

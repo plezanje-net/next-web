@@ -1,18 +1,11 @@
-import { DifficultyVote, Route } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "@/lib/text-helpers";
 
-type TRoute = Pick<Route, "difficulty">;
-type TUser = { fullName: string };
-type TDifficultyVote = Pick<
-  DifficultyVote,
-  "difficulty" | "id" | "includedInCalculation" | "isBase" | "created"
-> & { user?: TUser };
-
 type TDifficultyVotesProps = {
-  route: TRoute;
-  difficultyVotes: TDifficultyVote[];
+  route: RouteBySlugQuery["routeBySlug"];
+  difficultyVotes: RouteBySlugQuery["routeBySlug"]["difficultyVotes"];
 };
 
 function DifficultyVotes({ route, difficultyVotes }: TDifficultyVotesProps) {

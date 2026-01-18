@@ -1,12 +1,12 @@
-import { Route, StarRatingVote } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
 import { IconSize } from "./ui/icons/icon-size";
 import IconStarFull from "./ui/icons/star-full";
 import IconStarEmpty from "./ui/icons/star-empty";
 
 type TStarRatingDistributionProps = {
-  route: Pick<Route, "starRating">;
-  starRatingVotes: Pick<StarRatingVote, "id" | "stars" | "user" | "created">[];
+  route: RouteBySlugQuery["routeBySlug"];
+  starRatingVotes: RouteBySlugQuery["routeBySlug"]["starRatingVotes"];
 };
 
 function StarRatingDistribution({

@@ -1,9 +1,12 @@
-import { Country, Crag } from "@/graphql/generated";
+import {
+  EditCragPageCountriesQuery,
+  EditCragPageCragQuery,
+} from "@/graphql/generated";
 import CragForm from "../../../components/crag-form";
 
 type TEditCragForm = {
-  countriesWithAreas: Country[];
-  crag: Crag;
+  countriesWithAreas: EditCragPageCountriesQuery["countries"];
+  crag: EditCragPageCragQuery["cragBySlug"];
 };
 
 function EditCragForm({ countriesWithAreas, crag }: TEditCragForm) {

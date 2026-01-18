@@ -1,11 +1,11 @@
-import { DifficultyVote, Route } from "@/graphql/generated";
+import { Route, RouteDifficultyVotesQuery } from "@/graphql/generated";
 import displayDate from "../../../../../../../../../lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "../../../../../../../../../lib/text-helpers";
 
 interface Props {
   route: Route;
-  difficultyVotes: DifficultyVote[];
+  difficultyVotes: RouteDifficultyVotesQuery["route"]["difficultyVotes"];
 }
 
 function DifficultyVotes({ route, difficultyVotes }: Props) {

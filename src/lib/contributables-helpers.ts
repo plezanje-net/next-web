@@ -1,8 +1,6 @@
-import { Crag, Route, Sector, User } from "@/graphql/generated";
+import { User } from "@/graphql/generated";
 
-type TContributable = Pick<Route, "publishStatus"> | Pick<Sector, "publishStatus"> | Pick<Crag, "publishStatus">;
-
-function canEdit(user: User | null, contributable: TContributable): boolean {
+function canEdit(user: User | null, contributable: { publishStatus: string }) {
   if (user?.roles?.includes("admin")) return true; // An editor has all permissions
   if (contributable.publishStatus === "draft") {
     return true;

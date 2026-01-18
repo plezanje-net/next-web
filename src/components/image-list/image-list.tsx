@@ -1,7 +1,7 @@
 "use client";
 
 import { Image } from "@/graphql/generated";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useWindowSize from "@/hooks/useWindowSize";
 import ImageListElement from "./image-list-element";
 import ImageListSlider from "./image-list-slider";
@@ -25,11 +25,12 @@ type TImageListParams = {
 function ImageList({ images, baseUrl }: TImageListParams) {
   const [columns, setColumns] = useState<number>(0);
   const [openImage, setOpenImage] = useState<string | null>(null);
+  const [sortedImages, setSortedImages] = useState<Image[]>([]);
 
   useEffect(() => {
     const sortedImages =
       columns > 0
-        ? images.reduce((acc: Image[][], image, index) => {
+        ? images.reduce((acc: TImage[][], image, index) => {
             const column = index % columns;
             if (!acc[column]) {
               acc[column] = [];
@@ -41,8 +42,6 @@ function ImageList({ images, baseUrl }: TImageListParams) {
 
     setSortedImages(sortedImages.flat());
   }, [columns, images]);
-
-  const [sortedImages, setSortedImages] = useState<Image[]>([]);
 
   const columnClasses = [
     "",

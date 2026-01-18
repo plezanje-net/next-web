@@ -2,12 +2,12 @@ import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import deleteRouteAction from "../../lib/delete-route-action";
-import { Route } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 
 type TDeleteRouteDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  route: Route;
+  route: EditRoutesPageSectorQuery["sector"]["routes"][number];
 };
 
 function DeleteRouteDialog({

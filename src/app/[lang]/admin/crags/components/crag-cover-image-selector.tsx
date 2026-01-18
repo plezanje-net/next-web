@@ -1,15 +1,15 @@
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import IconImage from "@/components/ui/icons/image";
 import { RadioCircle } from "@/components/ui/radio-group";
-import { Crag, Image } from "@/graphql/generated";
+import { EditCragPageCragQuery, Image } from "@/graphql/generated";
 import { Radio, RadioGroup } from "@headlessui/react";
 import NextImage from "next/image";
 import { useState } from "react";
 
 type TCragCoverImageSelectorProps = {
-  crag: Crag | null;
+  crag: EditCragPageCragQuery["cragBySlug"] | null;
   value: string | null;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
   disabled: boolean;
 };
 

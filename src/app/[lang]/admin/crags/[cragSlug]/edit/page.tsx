@@ -7,25 +7,19 @@ import {
   EditCragPageCountriesDocument,
   EditCragPageCragDocument,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import { gql } from "urql";
 import EditCragForm from "./components/edit-crag-form";
 import CragPublishStatusCard from "./components/crag-publish-status-card";
+import { gqlRequest } from "@/lib/gql-request";
 
-type TEditCragPageProps = {
-  params: Promise<{ cragSlug: string }>;
-};
+type TEditCragPageProps = { params: Promise<{ cragSlug: string }> };
 
 async function EditCragPage(props: TEditCragPageProps) {
   const params = await props.params;
-
   const { cragSlug } = params;
 
-  const countriesDataPromise = urqlServer().query(
-    EditCragPageCountriesDocument,
-    {}
-  );
-  const cragDataPromise = urqlServer().query(EditCragPageCragDocument, {
+  const countriesDataPromise = gqlRequest(EditCragPageCountriesDocument);
+  const cragDataPromise = gqlRequest(EditCragPageCragDocument, {
     cragSlug: cragSlug,
   });
   const [{ data: countriesData }, { data: cragData }] = await Promise.all([
@@ -134,6 +128,7 @@ gql`
         extension
         maxIntrinsicWidth
         aspectRatio
+        description
       }
       publishStatus
       user {

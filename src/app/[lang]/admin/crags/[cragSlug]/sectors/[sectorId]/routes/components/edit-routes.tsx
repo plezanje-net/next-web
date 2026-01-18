@@ -1,6 +1,6 @@
 "use client";
 
-import { Crag, Route, Sector } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import { Fragment, useEffect, useState } from "react";
 import RouteCard from "./route-card/route-card";
 import { useRouter } from "next/navigation";
@@ -26,10 +26,10 @@ import NewFirstRouteButton from "./new-first-route-button";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditRoutesProps = {
-  routes: Route[];
-  crag: Crag;
-  sector: Sector;
-  allSectors: Sector[];
+  routes: EditRoutesPageSectorQuery["sector"]["routes"];
+  crag: EditRoutesPageSectorQuery["sector"]["crag"];
+  sector: EditRoutesPageSectorQuery["sector"];
+  allSectors: EditRoutesPageSectorQuery["sector"]["crag"]["sectors"];
 };
 
 function EditRoutes({ routes, crag, sector, allSectors }: TEditRoutesProps) {

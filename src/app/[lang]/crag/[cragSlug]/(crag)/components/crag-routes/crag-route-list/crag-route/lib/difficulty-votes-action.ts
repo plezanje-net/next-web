@@ -1,16 +1,11 @@
 "use server";
 
-import { gql } from "urql/core";
-import {
-  DifficultyVote,
-  RouteDifficultyVotesDocument,
-} from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import { RouteDifficultyVotesDocument } from "@/graphql/generated";
 
-async function difficultyVotesAction(
-  routeId: string
-): Promise<DifficultyVote[]> {
-  const result = await urqlServer().query(RouteDifficultyVotesDocument, {
+async function difficultyVotesAction(routeId: string) {
+  const result = await gqlRequest(RouteDifficultyVotesDocument, {
     routeId,
   });
 

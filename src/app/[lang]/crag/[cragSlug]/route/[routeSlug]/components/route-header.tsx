@@ -1,8 +1,8 @@
 import Breadcrumbs from "@/components/breadcrumbs";
-import { Route } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 
 type TRouteHeaderProps = {
-  route: Route;
+  route: RouteBySlugQuery["routeBySlug"];
 };
 
 type Crumb = {

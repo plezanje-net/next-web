@@ -3,10 +3,7 @@ import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { CombinedError } from "@urql/core";
 import getAuthToken from "./auth/auth-token";
 
-type GqlRequestResult<TResult> = {
-  data: TResult;
-  error?: CombinedError;
-};
+type GqlRequestResult<TResult> = { data: TResult; error?: CombinedError };
 
 export async function gqlRequest<
   TResult,
