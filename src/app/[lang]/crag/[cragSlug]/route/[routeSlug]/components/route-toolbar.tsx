@@ -2,14 +2,15 @@
 
 import Button from "@/components/ui/button";
 import IconAdd from "@/components/ui/icons/add";
+import { IconSize } from "@/components/ui/icons/icon-size";
 import IconLeft from "@/components/ui/icons/left";
 import IconMore from "@/components/ui/icons/more";
 import IconRight from "@/components/ui/icons/right";
-import { Route } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import { useRouter } from "next/navigation";
 
 type TRouteToolbarProps = {
-  route: Route;
+  route: RouteBySlugQuery["routeBySlug"];
 };
 
 function RouteToolbar({ route }: TRouteToolbarProps) {
@@ -32,7 +33,7 @@ function RouteToolbar({ route }: TRouteToolbarProps) {
           </Button>
           <div className="ml-3 h-6 border-l border-neutral-300 pr-3"></div>
           <Button variant="quaternary">
-            <IconMore />
+            <IconMore size={IconSize.regular} />
           </Button>
         </div>
         <div className="flex items-center">

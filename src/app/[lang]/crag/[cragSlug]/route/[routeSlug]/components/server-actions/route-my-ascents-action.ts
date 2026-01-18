@@ -1,19 +1,16 @@
 "use server";
 
-import { gql } from "urql/core";
-import {
-  PaginatedActivityRoutes,
-  RouteMyAscentsDocument,
-} from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import { RouteMyAscentsDocument } from "@/graphql/generated";
 
 async function routeMyAscentsAction(
   routeId: string,
   userId: string,
   pageNumber: number,
   allTypes: boolean = false
-): Promise<PaginatedActivityRoutes> {
-  const result = await urqlServer().query(RouteMyAscentsDocument, {
+) {
+  const result = await gqlRequest(RouteMyAscentsDocument, {
     routeId,
     pageNumber,
     pageSize: 10,

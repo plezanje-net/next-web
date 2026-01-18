@@ -1,8 +1,8 @@
-import { Image } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import NextImage from "next/image";
 
 type TRouteImageProps = {
-  image: Image;
+  image: RouteBySlugQuery["routeBySlug"]["images"][number];
   className?: string;
 };
 
