@@ -1,15 +1,15 @@
 import Link from "./ui/link";
 
-type Crumb = {
+type TCrumb = {
   label: string;
   link: string | null;
 };
 
-type BreadcrumbsProps = {
-  crumbs: Crumb[];
+type TBreadcrumbsProps = {
+  crumbs: TCrumb[];
 };
 
-function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
+function Breadcrumbs({ crumbs }: TBreadcrumbsProps) {
   return (
     <nav>
       <ol className="flex flex-wrap">

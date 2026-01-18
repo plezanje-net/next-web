@@ -1,10 +1,10 @@
-import { Crag } from "@/graphql/generated";
+import { CragHeaderQuery } from "@/graphql/generated";
 import CragTabMenu from "./crag-header/crag-tab-menu";
 import ContentHeader from "@/components/content-header";
 import Breadcrumbs from "@/components/breadcrumbs";
 
 type CragHeaderProps = {
-  crag: Crag;
+  crag: CragHeaderQuery["cragBySlug"];
 };
 
 function CragHeader({ crag }: CragHeaderProps) {

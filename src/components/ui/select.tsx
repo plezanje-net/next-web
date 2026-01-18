@@ -1,3 +1,4 @@
+//ts-todo
 import {
   Description,
   Field,
@@ -17,14 +18,14 @@ import React, {
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
-interface OptionProps {
+type TOptionProps = {
   value: string; // the value for the option
   children: string | ReactElement<any>; // the label for the option (can include an icon)
   disabled?: boolean;
   separator?: boolean;
-}
+};
 
-function Option({ value, children, disabled, separator }: OptionProps) {
+function Option({ value, children, disabled, separator }: TOptionProps) {
   return (
     <ListboxOption
       key={value}
@@ -42,10 +43,10 @@ function Option({ value, children, disabled, separator }: OptionProps) {
   );
 }
 
-type SelectProps = {
+type TSelectProps = {
   value: string | string[];
   onChange: ((value: string) => void) | ((value: string[]) => void);
-  children: ReactElement<OptionProps>[]; // all of the select's options
+  children: ReactElement<TOptionProps>[]; // all of the select's options
   label?: string;
   placeholder?: string;
   description?: string;
@@ -68,7 +69,7 @@ function Select({
   customTrigger,
   disabled,
   initialScrollToValue,
-}: SelectProps) {
+}: TSelectProps) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let childrenValuesToLabels: {
     [key: string]: {
@@ -132,7 +133,7 @@ function Select({
   );
 }
 
-type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
+type InnerListBoxProps = Omit<TSelectProps, "onChange"> & {
   constructSelectedLabel: (
     selected: string | string[]
   ) => string | ReactElement<any> | ReactElement<any>[];

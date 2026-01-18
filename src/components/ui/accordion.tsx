@@ -1,16 +1,15 @@
-import Link from "next/link";
 import { ReactNode } from "react";
 import IconCollapse from "./icons/collapse";
 import IconExpand from "./icons/expand";
 
-interface AccordionProps {
+type TAccordionProps = {
   label: string;
   isOpen: boolean;
   children: ReactNode;
   onClick: () => void;
   first?: boolean;
   last?: boolean;
-}
+};
 
 function Accordion({
   label,
@@ -19,7 +18,7 @@ function Accordion({
   onClick,
   first,
   last,
-}: AccordionProps) {
+}: TAccordionProps) {
   return (
     <div
       className={`overflow-hidden ${first ? "xs:rounded-t-lg" : ""}

@@ -1,13 +1,16 @@
 import { Crag, Route } from "@/graphql/generated";
 import Link from "./ui/link";
 
-type Props = {
-  route: Route;
-  crag?: Crag;
+type TCrag = Pick<Crag, "slug">;
+type TRoute = Pick<Route, "slug" | "name"> & { crag: TCrag };
+
+type TRouteLinkProps = {
+  route: TRoute;
+  crag?: TCrag;
   className?: string;
 };
 
-function RouteLink({ route, crag, className }: Props) {
+function RouteLink({ route, crag, className }: TRouteLinkProps) {
   const routeCrag = crag ?? route.crag;
   return (
     <Link

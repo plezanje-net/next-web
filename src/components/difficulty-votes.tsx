@@ -3,12 +3,12 @@ import displayDate from "@/lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "@/lib/text-helpers";
 
-interface Props {
+type TDifficultyVotesProps = {
   route: RouteBySlugQuery["routeBySlug"];
   difficultyVotes: RouteBySlugQuery["routeBySlug"]["difficultyVotes"];
-}
+};
 
-function DifficultyVotes({ route, difficultyVotes }: Props) {
+function DifficultyVotes({ route, difficultyVotes }: TDifficultyVotesProps) {
   const routeGradeDifficulty = route.difficulty
     ? diffToGrade(route.difficulty, "french", false).difficulty
     : null;

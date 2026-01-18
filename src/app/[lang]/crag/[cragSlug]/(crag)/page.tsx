@@ -1,8 +1,8 @@
 import { gql } from "@urql/core";
 import {
   ActivityRoute,
-  Crag,
   CragSectorsDocument,
+  CragSectorsQuery,
   MyCragSummaryDocument,
   User,
 } from "@/graphql/generated";
@@ -23,7 +23,7 @@ type Props = {
 async function getCragBySlug(
   crag: string,
   currentUser: User | null
-): Promise<Crag> {
+): Promise<CragSectorsQuery["cragBySlug"]> {
   const firstTryArInput = !!currentUser
     ? {
         pageSize: 1,
@@ -82,7 +82,7 @@ async function getCragBySlug(
     loggedIn: !!currentUser,
   });
 
-  return cragBySlug as Crag;
+  return cragBySlug;
 }
 
 async function getMySummary(

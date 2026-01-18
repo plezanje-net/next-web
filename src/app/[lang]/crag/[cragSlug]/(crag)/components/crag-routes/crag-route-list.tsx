@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Crag, Route } from "@/graphql/generated";
+import { Crag, CragSectorsQuery, Route } from "@/graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
 import IconStarFull from "@/components/ui/icons/star-full";
@@ -9,7 +9,7 @@ import { IconSize } from "@/components/ui/icons/icon-size";
 import { filterEntitiesBySearchTerm } from "../../../../../../../lib/search-helpers";
 
 interface Props {
-  crag: Crag;
+  crag: CragSectorsQuery["cragBySlug"];
   routes: Route[];
   ascents: Map<string, string>;
 }

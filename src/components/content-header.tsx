@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 
-type ContentHeaderProps = {
+type TContentHeaderProps = {
   heading: string;
   breadcrumbs: ReactNode;
   tabMenu?: ReactNode;
 };
 
-function ContentHeader({ heading, breadcrumbs, tabMenu }: ContentHeaderProps) {
+function ContentHeader({ heading, breadcrumbs, tabMenu }: TContentHeaderProps) {
   return (
     <>
       <div className="bg-neutral-100">
