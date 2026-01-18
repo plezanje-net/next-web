@@ -2,7 +2,14 @@ import Button from "@/components/ui/button";
 import IconFilter from "@/components/ui/icons/filter";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import Checkbox from "@/components/ui/checkbox";
-import { AscentListFiltersCragQuery, AscentListFiltersRouteQuery, AscentType, Crag, PublishType, Route } from "@/graphql/generated";
+import {
+  AscentListFiltersCragQuery,
+  AscentListFiltersRouteQuery,
+  AscentType,
+  Crag,
+  PublishType,
+  Route,
+} from "@/graphql/generated";
 import DatePicker, { TDateString } from "@/components/ui/date-picker";
 import { Dispatch, FormEvent, SetStateAction, useMemo, useState } from "react";
 import Combobox from "@/components/ui/combobox";
