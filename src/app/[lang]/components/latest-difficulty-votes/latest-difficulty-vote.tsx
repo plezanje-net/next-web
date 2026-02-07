@@ -1,16 +1,13 @@
 "use client";
-import { useState } from "react";
-import { Activity, DifficultyVote } from "@/graphql/generated";
+import { HomeLatestDifficultyVotesQuery } from "@/graphql/generated";
 import displayDate from "../../../../lib/display-date";
 import CragLink from "@/components/crag-link";
 import Grade from "@/components/grade";
 import RouteLink from "@/components/route-link";
-import IconCollapse from "@/components/ui/icons/collapse";
-import IconExpand from "@/components/ui/icons/expand";
 import IconRight from "@/components/ui/icons/right";
 
 type Params = {
-  difficultyVote: DifficultyVote;
+  difficultyVote: HomeLatestDifficultyVotesQuery["latestDifficultyVotes"]["items"][number];
 };
 
 function LatestDifficultyVote({ difficultyVote }: Params) {
