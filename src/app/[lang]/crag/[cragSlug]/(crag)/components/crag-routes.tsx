@@ -361,7 +361,10 @@ function CragRoutes({ crag, mySummary }: Props) {
             <CragRouteList
               crag={crag}
               routes={crag.sectors.reduce(
-                (acc: Route[], sector) => [...acc, ...sector.routes],
+                (
+                  acc: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"],
+                  sector
+                ) => [...acc, ...sector.routes],
                 []
               )}
               ascents={ascents}

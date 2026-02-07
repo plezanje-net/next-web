@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Crag, CragSectorsQuery, Route } from "@/graphql/generated";
+import { CragSectorsQuery, Route } from "@/graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
 import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
 import IconStarFull from "@/components/ui/icons/star-full";
@@ -10,15 +10,15 @@ import { filterEntitiesBySearchTerm } from "../../../../../../../lib/search-help
 
 interface Props {
   crag: CragSectorsQuery["cragBySlug"];
-  routes: Route[];
+  routes: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"];
   ascents: Map<string, string>;
 }
 
 function filterRoutesByFilter(
-  routes: Route[],
+  routes: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"],
   ascents: Map<string, string>,
   { routesTouches, difficulty, starRating }: FilterOptions = {}
-): Route[] {
+): CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"] {
   if (routesTouches) {
     switch (routesTouches) {
       case "ticked":
@@ -73,13 +73,13 @@ function filterRoutesByFilter(
 }
 
 function sortRoutes(
-  routes: Route[],
+  routes: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"],
   ascents: Map<string, string>,
   sort: SortOptions = {
     column: "select",
     direction: "asc",
   }
-): Route[] {
+): CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"] {
   const collator = new Intl.Collator("sl");
 
   routes.sort((r1, r2) => {
