@@ -1,4 +1,3 @@
-import { gql } from "@urql/core";
 import {
   ActivityRoute,
   CragSectorsDocument,
@@ -11,6 +10,7 @@ import tickAscentTypes from "@/lib/constants/tick-ascent-types";
 import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
 import getCurrentUser from "@/lib/auth/get-current-user";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type Params = {
   cragSlug: string;
