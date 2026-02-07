@@ -281,13 +281,7 @@ function CragRoutes({ crag, mySummary }: Props) {
   const [checkedRoutes, setCheckedRoutes] = useState<TLogRoute[]>([]);
 
   const setCheckedRoute = (routeId: string, checked: boolean) => {
-    const allRoutes: Array<
-      Route & {
-        firstTry?: Maybe<PaginatedActivityRoutes>;
-        firstTick?: Maybe<PaginatedActivityRoutes>;
-        firstTrTick?: Maybe<PaginatedActivityRoutes>;
-      }
-    > = crag.sectors.flatMap((sector) => sector.routes);
+    const allRoutes = crag.sectors.flatMap((sector) => sector.routes);
 
     if (checked) {
       setCheckedRoutes([
@@ -304,21 +298,21 @@ function CragRoutes({ crag, mySummary }: Props) {
               | "uiaa"
               | "yds", // TODO: type
             usersHistory: {
-              ...(r.difficultyVotes.length > 0 && {
+              ...(r.difficultyVotes?.[0] && {
                 lastDifficultyVote: {
                   difficulty: r.difficultyVotes[0].difficulty,
                   date: dayjs(r.difficultyVotes[0].updated).format("D.M.YYYY"),
                 },
               }),
-              ...(r.starRatingVotes.length > 0 && {
+              ...(r.starRatingVotes?.[0] && {
                 lastStarRatingVote: {
                   starRating: r.starRatingVotes[0].stars,
                   date: dayjs(r.starRatingVotes[0].updated).format("D.M.YYYY"),
                 },
               }),
-              firstTryDate: r.firstTry?.items[0]?.date || null,
-              firstTickDate: r.firstTick?.items[0]?.date || null,
-              firstTrTickDate: r.firstTrTick?.items[0]?.date || null,
+              firstTryDate: r.firstTry?.items[0]?.date ?? null,
+              firstTickDate: r.firstTick?.items[0]?.date ?? null,
+              firstTrTickDate: r.firstTrTick?.items[0]?.date ?? null,
             },
             logFormData: {
               publishType: PublishType.Public,

@@ -177,6 +177,9 @@ gql`
             label
             name
           }
+          crag {
+            slug
+          }
 
           firstTry: activityRoutes(input: $firstTryArInput)
             @include(if: $loggedIn) {

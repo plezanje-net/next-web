@@ -1,17 +1,13 @@
 import { useContext } from "react";
-import { Crag, CragSectorsQuery, Route } from "@/graphql/generated";
+import { CragSectorsQuery } from "@/graphql/generated";
 import RouteLink from "@/components/route-link";
 import AscentIcon from "@/components/ui/ascent-icon";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconComment from "@/components/ui/icons/comment";
-import IconStarEmpty from "@/components/ui/icons/star-empty";
-import IconStarFull from "@/components/ui/icons/star-full";
 import Link from "@/components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../../lib/text-helpers";
-import RouteGrade from "./crag-route/route-grade";
 import Checkbox from "@/components/ui/checkbox";
-import RouteStarRating from "@/components/route-star-rating";
 
 interface Props {
   crag: CragSectorsQuery["cragBySlug"];
