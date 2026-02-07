@@ -1,8 +1,8 @@
 "use server";
 
-import { gql } from "urql/core";
 import { ComboboxPopulateCragsDocument, Crag } from "@/graphql/generated";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function populateCragsAction(query: string) {
   const result = await gqlRequest(ComboboxPopulateCragsDocument, {

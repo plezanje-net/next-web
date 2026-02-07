@@ -1,4 +1,3 @@
-import { gql } from "urql";
 import {
   CalendarFirstEntryDocument,
   CalendarMonthlyActivitiesDocument,
@@ -10,6 +9,7 @@ import localeData from "dayjs/plugin/localeData";
 import ActionsRow from "./components/actions-row/actions-row";
 import CalendarDay, { TCalendarDay } from "./components/calendar-day";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TSearchParams = {
   date: string;

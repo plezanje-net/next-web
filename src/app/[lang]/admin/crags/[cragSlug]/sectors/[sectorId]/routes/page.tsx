@@ -4,10 +4,10 @@ import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu from "@/components/ui/tab-menu";
 import { EditRoutesPageSectorDocument } from "@/graphql/generated";
-import { gql } from "urql";
 import EditRoutes from "./components/edit-routes";
 import { labelAndNameToString } from "@/lib/sector-helpers";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TEditRoutesPageProps = {
   params: Promise<{ sectorId: string }>;

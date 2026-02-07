@@ -7,10 +7,10 @@ import {
   EditCragPageCountriesDocument,
   EditCragPageCragDocument,
 } from "@/graphql/generated";
-import { gql } from "urql";
 import EditCragForm from "./components/edit-crag-form";
 import CragPublishStatusCard from "./components/crag-publish-status-card";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TEditCragPageProps = { params: Promise<{ cragSlug: string }> };
 

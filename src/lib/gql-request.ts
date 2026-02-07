@@ -1,9 +1,20 @@
-import { GraphQLClient, RequestDocument, Variables } from "graphql-request";
+import { GraphQLClient } from "graphql-request";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
-import { CombinedError } from "@urql/core";
 import getAuthToken from "./auth/auth-token";
 
-type GqlRequestResult<TResult> = { data: TResult; error?: CombinedError };
+export class GqlError extends Error {
+  networkError?: Error;
+  graphQLErrors?: any[];
+
+  constructor(options: { networkError?: Error; graphQLErrors?: any[] }) {
+    super(options.networkError?.message || "GraphQL request failed");
+    this.name = "GqlError";
+    this.networkError = options.networkError;
+    this.graphQLErrors = options.graphQLErrors;
+  }
+}
+
+type GqlRequestResult<TResult> = { data: TResult; error?: GqlError };
 
 export async function gqlRequest<
   TResult,
@@ -42,13 +53,13 @@ export async function gqlRequest<
     const data = await client.request<TResult>(query, variables || {});
     return { data };
   } catch (error) {
-    const combinedError =
-      error instanceof CombinedError
+    const gqlError =
+      error instanceof GqlError
         ? error
-        : new CombinedError({
+        : new GqlError({
             networkError:
               error instanceof Error ? error : new Error(String(error)),
           });
-    return { data: {} as TResult, error: combinedError };
+    return { data: {} as TResult, error: gqlError };
   }
 }

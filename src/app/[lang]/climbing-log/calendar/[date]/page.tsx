@@ -1,9 +1,9 @@
 import ActionsRow from "./components/actions-row";
-import { gql } from "urql";
 import { CalendarDailyActivitiesDocument } from "@/graphql/generated";
 import AddActivity from "./components/add-activity/add-activity";
 import CalendarDayActivity from "./components/calendar-day-activity";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TCalendarDayPageProps = {
   params: Promise<{ date: string }>;

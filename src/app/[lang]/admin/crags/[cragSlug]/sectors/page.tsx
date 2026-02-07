@@ -1,5 +1,4 @@
 import { gql } from "graphql-request";
-import urqlServer from "@/graphql/urql-server";
 import Breadcrumbs from "@/components/breadcrumbs";
 import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";

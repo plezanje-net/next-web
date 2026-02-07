@@ -1,18 +1,18 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
 import {
   CreateActivityInput,
   CreateActivityRouteInput,
   DryRunCreateActivityDocument,
 } from "@/graphql/generated";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function dryRunCreateActivityAction(
   activity: CreateActivityInput,
   routes: CreateActivityRouteInput[]
 ) {
-  const result = await urqlServer().query(DryRunCreateActivityDocument, {
+  const result = await gqlRequest(DryRunCreateActivityDocument, {
     input: activity,
     routes: routes,
   });

@@ -3,12 +3,12 @@ import {
   AscentListFiltersRouteDocument,
   MyActivityRoutesDocument,
 } from "@/graphql/generated";
-import { gql } from "urql";
 import AscentList from "./components/acent-list/ascent-list";
 import { AscentsProvider } from "./lib/ascents-context";
 import ActionsRow from "./components/actions-row/actions-row";
 import { TAscentListFilter } from "./components/actions-row/filter";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TSearchParams = {
   page: string;
