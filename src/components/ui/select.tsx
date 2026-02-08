@@ -1,4 +1,3 @@
-//ts-todo
 import {
   Description,
   Field,
@@ -8,13 +7,20 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { Children, Fragment, ReactElement, useEffect, useRef } from "react";
+import {
+  Children,
+  Fragment,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+} from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
 type TOptionProps = {
   value: string; // the value for the option
-  children: string | ReactElement<any>; // the label for the option (can include an icon)
+  children: ReactNode; // the label for the option (can include an icon)
   disabled?: boolean;
   separator?: boolean;
 };
@@ -46,7 +52,7 @@ type TSelectProps<M extends boolean = false> = {
   placeholder?: string;
   description?: string;
   errorMessage?: string;
-  customTrigger?: ReactElement<any>;
+  customTrigger?: ReactElement;
   disabled?: boolean;
   initialScrollToValue?: string;
 };
@@ -67,7 +73,7 @@ function Select<M extends boolean = false>({
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let childrenValuesToLabels: {
     [key: string]: {
-      label: string | ReactElement<any>;
+      label: ReactNode;
     };
   } = {};
 
@@ -82,7 +88,7 @@ function Select<M extends boolean = false>({
   });
 
   const constructSelectedLabel = (selected: string | string[]) => {
-    // the selected value is either a single value or an array (if this is a mutliselect)
+    // the selected value is either a single value (sting) or an array (of strings) (if this is a mutliselect)
     if (multi) {
       return (selected as string[]).map((value: string, index) => {
         return (
@@ -134,7 +140,7 @@ type InnerListBoxProps<M extends boolean> = Omit<
 > & {
   constructSelectedLabel: (
     selected: M extends true ? string[] : string
-  ) => string | ReactElement<any> | ReactElement<any>[];
+  ) => ReactNode;
   open: boolean;
   childrenValuesToIndexes: Record<string, number>;
 };
