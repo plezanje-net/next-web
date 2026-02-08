@@ -12,7 +12,7 @@ import dryRunCreateActivityAction from "./lib/dry-run-create-activity-action";
 import {
   CreateActivityInput,
   CreateActivityRouteInput,
-  SideEffect,
+  DryRunCreateActivityQuery,
 } from "@/graphql/generated";
 import dayjs from "dayjs";
 import IconArrowRight from "../ui/icons/arrow-right";
@@ -159,7 +159,9 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
 
   const [logDialogIsOpen, setLogDialogIsOpen] = useState(false);
   const [confirmDialogIsOpen, setConfirmDialogIsOpen] = useState(false);
-  const [confirmDialogData, setConfirmDialogData] = useState<SideEffect[]>([]);
+  const [confirmDialogData, setConfirmDialogData] = useState<
+    DryRunCreateActivityQuery["dryRunCreateActivity"]
+  >([]);
 
   return (
     <>
