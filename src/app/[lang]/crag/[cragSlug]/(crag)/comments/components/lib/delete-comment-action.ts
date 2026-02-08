@@ -1,11 +1,11 @@
 "use server";
 
-import { gql } from "urql/core";
 import { DeleteCommentDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function deleteCommentAction(commentId: string) {
-  const result = await urqlServer().mutation(DeleteCommentDocument, {
+  const result = await gqlRequest(DeleteCommentDocument, {
     id: commentId,
   });
 

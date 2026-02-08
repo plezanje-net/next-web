@@ -1,16 +1,16 @@
 "use server";
 
-import { gql } from "urql/core";
 import { UpdateCommentDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import { CommentType } from "../comment";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function updateCommentAction(
   commentId: string,
   commentContent: string,
   commentType: CommentType
 ) {
-  const result = await urqlServer().mutation(UpdateCommentDocument, {
+  const result = await gqlRequest(UpdateCommentDocument, {
     input: {
       id: commentId,
       content: commentContent,

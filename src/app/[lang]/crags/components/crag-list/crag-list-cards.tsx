@@ -7,7 +7,7 @@ function CragListCards() {
 
   return (
     <div>
-      {crags.map((crag: Crag) => (
+      {crags.map((crag) => (
         <CragCard key={crag.id} crag={crag} />
       ))}
     </div>

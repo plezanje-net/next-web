@@ -33,7 +33,7 @@ function CragListTable() {
       </thead>
 
       <tbody>
-        {crags.map((crag: Crag, index) => (
+        {crags.map((crag, index) => (
           <CragRow key={index} crag={crag} />
         ))}
       </tbody>

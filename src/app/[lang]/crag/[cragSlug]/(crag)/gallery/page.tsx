@@ -1,7 +1,7 @@
-import { gql } from "urql/core";
 import { gqlRequest } from "@/lib/gql-request";
 import ImageList from "@/components/image-list/image-list";
 import { CragGalleryDocument, Image } from "@/graphql/generated";
+import { gql } from "graphql-request";
 
 type TCragGalleryPageParams = {
   cragSlug: string;

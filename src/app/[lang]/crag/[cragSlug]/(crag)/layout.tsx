@@ -1,7 +1,7 @@
-import { gql } from "@urql/core";
 import CragHeader from "./components/crag-header";
 import { CragHeaderDocument } from "@/graphql/generated";
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 interface Params {
   cragSlug: string;
