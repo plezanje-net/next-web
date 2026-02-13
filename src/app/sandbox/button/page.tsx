@@ -1,4 +1,5 @@
 "use client";
+
 import IconColumns from "@/components/ui/icons/columns";
 import Button from "@/components/ui/button";
 
@@ -141,6 +142,54 @@ function ButtonPage() {
                 <span className="ml-2">Button</span>
               </span>
             </span>
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Primary button</h5>
+        <div className="mt-4">
+          <Button variant="asLinkPrimary">Button</Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Primary button disabled</h5>
+        <div className="mt-4">
+          <Button variant="asLinkPrimary" disabled>
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Secondary button</h5>
+        <div className="mt-4">
+          <Button variant="asLinkSecondary">Button</Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Secondary button disabled</h5>
+        <div className="mt-4">
+          <Button variant="asLinkSecondary" disabled>
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Tertiary button</h5>
+        <div className="mt-4">
+          <Button variant="asLinkTertiary">Button</Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>As Link Tertiary button disabled</h5>
+        <div className="mt-4">
+          <Button variant="asLinkTertiary" disabled>
+            Button
           </Button>
         </div>
       </div>

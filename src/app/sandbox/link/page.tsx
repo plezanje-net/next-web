@@ -43,7 +43,7 @@ function LinkPage() {
       <div className="mt-14 w-80">
         <h5>A disabled link</h5>
         <div className="mt-4">
-          <Link href="" isDisabled>
+          <Link href="" disabled>
             This is a link.
           </Link>
         </div>
@@ -52,7 +52,7 @@ function LinkPage() {
       <div className="mt-14 w-80">
         <h5>A client handled link</h5>
         <div className="mt-4">
-          <Link onPress={() => alert("link was clicked")}>This is a link.</Link>
+          <Link onClick={() => alert("link was clicked")}>This is a link.</Link>
         </div>
       </div>
 

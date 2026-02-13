@@ -2,11 +2,11 @@
 
 import { ActivityRoute } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
-import Link from "@/components/ui/link";
 import AscentType from "@/components/ascent-type";
 import { useState } from "react";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import routeMyAscentsAction from "./server-actions/route-my-ascents-action";
+import Button from "@/components/ui/button";
 
 type TRouteAscentsProps = {
   routeId: string;
@@ -76,9 +76,9 @@ function RouteMyAscents({
       </table>
       {pageCount > pageNumber && (
         <div>
-          <Link href="" onPress={loadMore}>
+          <Button variant="asLinkPrimary" onClick={loadMore}>
             Prikaži več
-          </Link>
+          </Button>
         </div>
       )}
     </div>

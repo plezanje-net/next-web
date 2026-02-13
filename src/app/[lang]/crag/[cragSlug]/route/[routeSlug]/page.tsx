@@ -6,7 +6,6 @@ import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
 import DifficultyVotes from "@/components/difficulty-votes";
 import IconMissing from "@/components/ui/icons/missing";
-import Link from "@/components/ui/link";
 import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
@@ -14,6 +13,7 @@ import StarRatingDistribution from "@/components/star-rating-distribution";
 import RouteImage from "./components/route-image";
 import ImageList from "@/components/image-list/image-list";
 import getCurrentUser from "@/lib/auth/get-current-user";
+import Button from "@/components/ui/button";
 
 type Params = {
   cragSlug: string;
@@ -69,7 +69,8 @@ async function RoutePage(props: { params: Promise<Params> }) {
                 <IconMissing />
               </div>
               <span className="ml-2">
-                Smer nima opisa. <Link href="">Dodaj opis.</Link>
+                Smer nima opisa.{" "}
+                <Button variant="asLinkPrimary">Dodaj opis.</Button>
               </span>
             </span>
           )}
@@ -125,7 +126,8 @@ async function RoutePage(props: { params: Promise<Params> }) {
                 <IconMissing />
               </div>
               <span className="ml-2">
-                Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
+                Smer nima fotografij.{" "}
+                <Button variant="asLinkPrimary">Dodaj fotografijo.</Button>
               </span>
             </span>
           ) : (

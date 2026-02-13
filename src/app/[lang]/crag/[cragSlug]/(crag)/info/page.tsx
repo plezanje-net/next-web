@@ -25,7 +25,6 @@ import GradeDistribution from "@/components/grade-distribution";
 import VisitsDistribution from "@/components/visits-distribution";
 import Map from "@/components/map/map";
 import IconMissing from "@/components/ui/icons/missing";
-import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
@@ -211,7 +210,9 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
             </div>
             <div className="ml-2">
               {iconDataMissingMsg}{" "}
-              <Link href="">{iconDataMissingActionLinkMsg}</Link>
+              <Button variant="asLinkPrimary">
+                {iconDataMissingActionLinkMsg}
+              </Button>
             </div>
           </div>
         )}
@@ -240,7 +241,9 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
               </div>
               <div className="ml-2">
                 Plezališče nima naslovne fotografije.{" "}
-                <Link href="">Dodaj naslovno fotografijo.</Link>
+                <Button variant="asLinkPrimary">
+                  Dodaj naslovno fotografijo.
+                </Button>
               </div>
             </div>
           </div>
@@ -253,7 +256,9 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
                 <IconMissing />
                 <div className="ml-2">
                   Plezališče nima opisa.{" "}
-                  <Link href="">Dodaj opis plezališča.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj opis plezališča.
+                  </Button>
                 </div>
               </div>
             )}
@@ -296,7 +301,7 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
                 </div>
                 <span className="ml-2">
                   Plezališče nima opisa dostopa.{" "}
-                  <Link href="">Dodaj opis dostopa.</Link>
+                  <Button variant="asLinkPrimary">Dodaj opis dostopa.</Button>
                 </span>
               </span>
             )}
@@ -320,7 +325,9 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
                 </div>
                 <div className="ml-2">
                   Plezališče nima podatka o koordinatah parkirišča.{" "}
-                  <Link href="">Dodaj koordinate parkirišča.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj koordinate parkirišča.
+                  </Button>
                 </div>
               </div>
             )}
@@ -339,7 +346,9 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
                 </div>
                 <div className="ml-2">
                   Plezališče nima podatka o koordinatah stene.{" "}
-                  <Link href="">Dodaj koordinate stene.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj koordinate stene.
+                  </Button>
                 </div>
               </div>
             )}

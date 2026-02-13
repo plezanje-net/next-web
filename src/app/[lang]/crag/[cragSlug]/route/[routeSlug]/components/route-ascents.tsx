@@ -1,13 +1,13 @@
 "use client";
 
-import { ActivityRoute, RouteBySlugQuery } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
-import Link from "@/components/ui/link";
 import AscentType from "@/components/ascent-type";
 import { useState } from "react";
 import routeAscentsAction from "./server-actions/route-ascents-action";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import Button from "@/components/ui/button";
 
 type TRouteAscentsProps = {
   routeId: string;
@@ -81,9 +81,9 @@ function RouteAscents({
       </table>
       {pageCount > pageNumber && (
         <div>
-          <Link href="" onPress={loadMore}>
+          <Button variant="asLinkPrimary" onClick={loadMore}>
             Prikaži več
-          </Link>
+          </Button>
         </div>
       )}
     </div>
