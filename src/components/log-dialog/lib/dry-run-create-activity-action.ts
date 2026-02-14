@@ -4,6 +4,7 @@ import {
   CreateActivityInput,
   CreateActivityRouteInput,
   DryRunCreateActivityDocument,
+  DryRunCreateActivityQuery,
 } from "@/graphql/generated";
 import { gqlRequest } from "@/lib/gql-request";
 import { gql } from "graphql-request";
@@ -11,7 +12,7 @@ import { gql } from "graphql-request";
 async function dryRunCreateActivityAction(
   activity: CreateActivityInput,
   routes: CreateActivityRouteInput[]
-) {
+): Promise<DryRunCreateActivityQuery> {
   const result = await gqlRequest(DryRunCreateActivityDocument, {
     input: activity,
     routes: routes,

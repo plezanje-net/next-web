@@ -1,4 +1,3 @@
-import { Crag } from "@/graphql/generated";
 import CragCard from "./single-crag/crag-card";
 import { useCragsContext } from "../../lib/crags-context";
 
