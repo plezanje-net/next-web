@@ -480,6 +480,7 @@ function CragsProvider({
   useEffect(() => {
     const columns = localStorage.getItem("crags-columns");
     if (columns) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedColumnsState(JSON.parse(columns));
     }
   }, []);

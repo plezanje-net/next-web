@@ -51,6 +51,7 @@ function SectorDialog({
   // set appropriate default
   useEffect(() => {
     if (formType === "edit") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setName(sector.name);
     } else {
       setName("");
