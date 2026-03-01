@@ -3,7 +3,7 @@ import IconPhoto from "@/components/ui/icons/photo";
 import { Image } from "@/graphql/generated";
 import useTapDetection from "@/hooks/useTapDetection";
 import NextImage from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 type TImage = Pick<
   Image,
@@ -92,32 +92,27 @@ function ImageSlide({
     height: 0,
   });
 
-  const recalculateAll = useCallback(
-    (
-      image: TImage,
-      container: HTMLDivElement,
-      captionRef: HTMLDivElement | null
-    ) => {
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+
+    const recalculateAll = () => {
+      if (!containerRef.current) return;
+
       const newImageDimensions = calculateImageDimensions(
         image,
-        container,
-        captionRef?.clientHeight ?? 0
+        containerRef.current,
+        captionRef.current?.clientHeight ?? 0
       );
       setImageDimensions(newImageDimensions);
       setCaptionWidth(newImageDimensions.width);
-    },
-    []
-  );
+    };
 
-  useEffect(() => {
-    recalculateAll(image, containerRef.current!, captionRef.current);
+    recalculateAll();
 
-    const resizeObserver = new ResizeObserver(([{ target }]) =>
-      recalculateAll(image, containerRef.current!, captionRef.current)
-    );
-    resizeObserver.observe(containerRef.current!);
+    const resizeObserver = new ResizeObserver(recalculateAll);
+    resizeObserver.observe(containerRef.current);
     return () => resizeObserver.disconnect();
-  }, [image, recalculateAll, isFullScreen]);
+  }, [image, isFullScreen]);
 
   const { handleTouchStart, handleTouchEnd } =
     useTapDetection(toggleFullScreen);
