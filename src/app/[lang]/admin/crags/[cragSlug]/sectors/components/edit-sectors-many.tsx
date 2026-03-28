@@ -45,6 +45,7 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
   const [sector, setSector] = useState<Sector>(crag.sectors[0]);
   const [sortedSectors, setSortedSectors] = useState(crag.sectors);
   useEffect(() => {
+    //eslint-disable-next-line react-hooks/set-state-in-effect
     setSortedSectors(crag.sectors);
   }, [crag.sectors]);
 
