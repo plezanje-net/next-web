@@ -1,7 +1,7 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 import {
   CreateActivityDocument,
   CreateActivityInput,
@@ -12,7 +12,7 @@ async function createActivityAction(
   activity: CreateActivityInput,
   routes: CreateActivityRouteInput[]
 ) {
-  const result = await urqlServer().mutation(CreateActivityDocument, {
+  const result = await gqlRequest(CreateActivityDocument, {
     input: activity,
     routes: routes,
   });

@@ -8,6 +8,7 @@ function useForwardedRef<T>(ref: ForwardedRef<T>) {
     if (typeof ref === "function") {
       ref(innerRef.current);
     } else {
+      // eslint-disable-next-line
       ref.current = innerRef.current;
     }
   });

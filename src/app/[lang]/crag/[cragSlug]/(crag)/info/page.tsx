@@ -1,6 +1,11 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
-import { Crag, CragInfoDocument, Season, WallAngle } from "@/graphql/generated";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import {
+  CragInfoDocument,
+  CragInfoQuery,
+  Season,
+  WallAngle,
+} from "@/graphql/generated";
 import Image from "next/image";
 import IconWalk from "@/components/ui/icons/walk";
 import IconHeight from "@/components/ui/icons/height";
@@ -20,7 +25,6 @@ import GradeDistribution from "@/components/grade-distribution";
 import VisitsDistribution from "@/components/visits-distribution";
 import Map from "@/components/map/map";
 import IconMissing from "@/components/ui/icons/missing";
-import Link from "@/components/ui/link";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
@@ -39,7 +43,7 @@ TODO: many parkings, many walls -> numbers next to icons?...
 TODO: what if cover image to small? test, but maybe no need to resolve as cover images will have to be manually chosen by editors
 */
 
-type TCragInfo = Crag & {
+type TCragInfo = CragInfoQuery["cragBySlug"] & {
   minRouteLength: number | null;
   maxRouteLength: number | null;
 };
@@ -54,12 +58,17 @@ type TParkings = {
   [key: string]: { lat: number; lon: number; sectors: TSector[] };
 };
 
-async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
-  const response = await urqlServer().query(CragInfoDocument, {
+async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
+  const params = await props.params;
+  const response = await gqlRequest(CragInfoDocument, {
     crag: params.cragSlug,
   });
   const data = response.data;
-  const crag: TCragInfo = data.cragBySlug;
+  const crag: TCragInfo = {
+    ...data.cragBySlug,
+    minRouteLength: null,
+    maxRouteLength: null,
+  };
 
   // Find lenghts of shortest and longest route.
   const routeLengths = crag.sectors
@@ -201,7 +210,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
             </div>
             <div className="ml-2">
               {iconDataMissingMsg}{" "}
-              <Link href="">{iconDataMissingActionLinkMsg}</Link>
+              <Button variant="asLinkPrimary">
+                {iconDataMissingActionLinkMsg}
+              </Button>
             </div>
           </div>
         )}
@@ -230,7 +241,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
               </div>
               <div className="ml-2">
                 Plezališče nima naslovne fotografije.{" "}
-                <Link href="">Dodaj naslovno fotografijo.</Link>
+                <Button variant="asLinkPrimary">
+                  Dodaj naslovno fotografijo.
+                </Button>
               </div>
             </div>
           </div>
@@ -243,7 +256,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
                 <IconMissing />
                 <div className="ml-2">
                   Plezališče nima opisa.{" "}
-                  <Link href="">Dodaj opis plezališča.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj opis plezališča.
+                  </Button>
                 </div>
               </div>
             )}
@@ -286,7 +301,7 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
                 </div>
                 <span className="ml-2">
                   Plezališče nima opisa dostopa.{" "}
-                  <Link href="">Dodaj opis dostopa.</Link>
+                  <Button variant="asLinkPrimary">Dodaj opis dostopa.</Button>
                 </span>
               </span>
             )}
@@ -310,7 +325,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
                 </div>
                 <div className="ml-2">
                   Plezališče nima podatka o koordinatah parkirišča.{" "}
-                  <Link href="">Dodaj koordinate parkirišča.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj koordinate parkirišča.
+                  </Button>
                 </div>
               </div>
             )}
@@ -329,7 +346,9 @@ async function CragInfoPage({ params }: { params: TCragInfoPageParams }) {
                 </div>
                 <div className="ml-2">
                   Plezališče nima podatka o koordinatah stene.{" "}
-                  <Link href="">Dodaj koordinate stene.</Link>
+                  <Button variant="asLinkPrimary">
+                    Dodaj koordinate stene.
+                  </Button>
                 </div>
               </div>
             )}
@@ -571,6 +590,8 @@ gql`
       id
       slug
       name
+      description
+      access
       sectors {
         id
         label

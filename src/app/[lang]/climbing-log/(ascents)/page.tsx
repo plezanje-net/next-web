@@ -3,12 +3,12 @@ import {
   AscentListFiltersRouteDocument,
   MyActivityRoutesDocument,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
 import AscentList from "./components/acent-list/ascent-list";
 import { AscentsProvider } from "./lib/ascents-context";
 import ActionsRow from "./components/actions-row/actions-row";
 import { TAscentListFilter } from "./components/actions-row/filter";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TSearchParams = {
   page: string;
@@ -23,10 +23,11 @@ type TSearchParams = {
 };
 
 type TClimbingLogPageProps = {
-  searchParams: TSearchParams;
+  searchParams: Promise<TSearchParams>;
 };
 
-async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
+async function ClimbingLogPage(props: TClimbingLogPageProps) {
+  const searchParams = await props.searchParams;
   const pageNumber = parseInt(searchParams.page) || 1;
 
   const [sortField, sortDirection] = (searchParams.sort || "date,desc").split(
@@ -35,7 +36,7 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
 
   const {
     data: { myActivityRoutes },
-  } = await urqlServer().query(MyActivityRoutesDocument, {
+  } = await gqlRequest(MyActivityRoutesDocument, {
     input: {
       pageSize: 8,
       pageNumber,
@@ -47,9 +48,18 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
       routeId: searchParams.route,
       dateFrom: searchParams.dateFrom,
       dateTo: searchParams.dateTo,
-      ascentType: searchParams.ascentType,
-      routeTypes: searchParams.routeType,
-      publish: searchParams.visibility,
+      ascentType:
+        typeof searchParams.ascentType === "string"
+          ? [searchParams.ascentType]
+          : searchParams.ascentType,
+      routeTypes:
+        typeof searchParams.routeType === "string"
+          ? [searchParams.routeType]
+          : searchParams.routeType,
+      publish:
+        typeof searchParams.visibility === "string"
+          ? [searchParams.visibility]
+          : searchParams.visibility,
     },
   });
 
@@ -58,7 +68,7 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
   if (searchParams.crag) {
     const {
       data: { crag },
-    } = await urqlServer().query(AscentListFiltersCragDocument, {
+    } = await gqlRequest(AscentListFiltersCragDocument, {
       input: searchParams.crag,
     });
     filterValues.crag = crag;
@@ -67,7 +77,7 @@ async function ClimbingLogPage({ searchParams }: TClimbingLogPageProps) {
   if (searchParams.route) {
     const {
       data: { route },
-    } = await urqlServer().query(AscentListFiltersRouteDocument, {
+    } = await gqlRequest(AscentListFiltersRouteDocument, {
       input: searchParams.route,
     });
     filterValues.route = route;

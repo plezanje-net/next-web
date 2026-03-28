@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  AllCountriesQuery,
+  AllCragsQuery,
   Area,
   Country,
   Crag,
@@ -18,7 +20,7 @@ import {
   parseAsInteger,
   parseAsString,
   useQueryState,
-} from "next-usequerystate";
+} from "nuqs";
 import {
   Dispatch,
   ReactNode,
@@ -28,6 +30,9 @@ import {
   useEffect,
   useState,
 } from "react";
+
+type TCountry = Pick<Country, "slug" | "name" | "nrCrags"> & { areas: TArea[] };
+type TArea = Pick<Area, "slug" | "name" | "nrCrags">;
 
 type TFilter = {
   type: string;
@@ -70,7 +75,7 @@ type TCragListColumn = {
 };
 
 type TCragsContext = {
-  crags: Crag[];
+  crags: AllCragsQuery["crags"];
   filters: { filters: TFilter[]; resetAll: () => void };
   filtersPane: {
     open: boolean;
@@ -94,8 +99,8 @@ type TCragsContext = {
 const CragsContext = createContext<TCragsContext | undefined>(undefined);
 
 type TCragsProviderProps = {
-  allCrags: Crag[];
-  allCountries: Country[];
+  allCrags: AllCragsQuery["crags"];
+  allCountries: AllCountriesQuery["countries"];
   children: ReactNode;
 };
 
@@ -174,7 +179,7 @@ function CragsProvider({
 
   // Filter crags based on filters states
   let crags = allCrags.filter(
-    (crag: Crag) =>
+    (crag) =>
       //
       // country
       (countryFilterState.includes(crag.country.slug) ||
@@ -475,6 +480,7 @@ function CragsProvider({
   useEffect(() => {
     const columns = localStorage.getItem("crags-columns");
     if (columns) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedColumnsState(JSON.parse(columns));
     }
   }, []);
@@ -591,14 +597,14 @@ export type {
 //
 
 // A list of countries with at least 1 crag, sorted
-const getShownCountries = (allCountries: Country[]) => {
+const getShownCountries = (allCountries: TCountry[]) => {
   return allCountries
     .filter((c) => c.nrCrags > 0)
     .sort((c1, c2) => c1.name.localeCompare(c2.name));
 };
 
 // A list of areas belonging to any of the passed in countries with at least 1 crag, sorted
-const getShownAreas = (selectedCountries: Country[]) => {
+const getShownAreas = (selectedCountries: TCountry[]) => {
   return selectedCountries
     .flatMap((c) => c.areas)
     .filter((a) => a.nrCrags > 0)
@@ -606,11 +612,14 @@ const getShownAreas = (selectedCountries: Country[]) => {
 };
 
 // From an array of 'full' entities construct a slug:name map object
-const getSlugToNameMap = <T extends Area | Country>(entities: T[]) => {
-  return entities.reduce((acc: Record<string, string>, obj: Area | Country) => {
-    acc[obj.slug] = obj.name;
-    return acc;
-  }, {});
+const getSlugToNameMap = <T extends TArea | TCountry>(entities: T[]) => {
+  return entities.reduce(
+    (acc: Record<string, string>, obj: TArea | TCountry) => {
+      acc[obj.slug] = obj.name;
+      return acc;
+    },
+    {}
+  );
 };
 
 const getMinMaxDifficulty = () => {
@@ -632,7 +641,7 @@ const getDifficultyGradeMap = () => {
   }, {});
 };
 
-const getMinMaxApproachTime = (crags: Crag[]) => {
+const getMinMaxApproachTime = (crags: AllCragsQuery["crags"]) => {
   const maxApproachTime = crags.reduce(
     (max, crag) =>
       crag.approachTime && crag.approachTime > max ? crag.approachTime : max,

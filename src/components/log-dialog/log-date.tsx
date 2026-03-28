@@ -20,6 +20,7 @@ function LogDate({ value, setValue, disabled = false }: TLogDateProps) {
   useEffect(() => {
     const lld = localStorage.getItem("last-log-date");
     if (lld) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLastLogDate(lld);
     }
   }, []);

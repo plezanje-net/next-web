@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Activity } from "@/graphql/generated";
+import { HomeLatestAscentsQuery } from "@/graphql/generated";
 import displayDate from "../../../../lib/display-date";
 import CragLink from "@/components/crag-link";
 import Grade from "@/components/grade";
@@ -9,7 +9,7 @@ import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
 
 type Params = {
-  activity: Activity;
+  activity: HomeLatestAscentsQuery["activities"]["items"][number];
 };
 
 function LatestAscentsActivity({ activity }: Params) {

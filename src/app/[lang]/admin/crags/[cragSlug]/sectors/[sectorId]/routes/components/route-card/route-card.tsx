@@ -6,7 +6,7 @@ import IconDelete from "@/components/ui/icons/delete";
 import IconDrag from "@/components/ui/icons/drag";
 import IconEdit from "@/components/ui/icons/edit";
 import IconPlus from "@/components/ui/icons/plus";
-import { Route } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import { difficultyToGrade } from "@/lib/grade-helpers";
 import { useState } from "react";
 import RouteDialog from "./route-dialog";
@@ -19,7 +19,7 @@ import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TRouteCardProps = {
-  route: Route;
+  route: EditRoutesPageSectorQuery["sector"]["routes"][number];
   sectorId: string;
   checked: boolean;
   onCheckedChange: (checked: boolean, routeId: string) => void;

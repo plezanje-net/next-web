@@ -1,17 +1,13 @@
-import Breadcrumbs from "@/components/breadcrumbs";
 import ClimbingLogTabMenu from "./components/climbing-log-tab-menu";
 import ClimbingLogBreadcrumbs from "./components/climbing-log-breadcrumbs";
 
-interface Params {
-  cragSlug: string;
-}
-
-interface Props {
+type TClimbingLogLayoutProps = {
   children: React.ReactNode;
-  params: Params;
-}
+};
 
-async function ClimbingLogLayout({ children, params: { cragSlug } }: Props) {
+async function ClimbingLogLayout(props: TClimbingLogLayoutProps) {
+  const { children } = props;
+
   return (
     <>
       <div className="bg-neutral-100">

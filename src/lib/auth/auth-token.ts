@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 
-function getAuthToken(): string | null {
-  return cookies().get("token")?.value ?? null;
+async function getAuthToken(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get("token")?.value ?? null;
 }
 
 export default getAuthToken;

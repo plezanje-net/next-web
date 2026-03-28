@@ -1,7 +1,7 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Route } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import { difficultyToGrade } from "@/lib/grade-helpers";
 import displayDate from "@/lib/display-date";
@@ -10,7 +10,7 @@ import mergeRoutesAction from "../lib/merge-routes-action";
 type TMergeRoutesDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  routes: Route[];
+  routes: EditRoutesPageSectorQuery["sector"]["routes"];
 };
 
 function MergeRoutesDialog({

@@ -2,11 +2,11 @@
 import { Crag } from "@/graphql/generated";
 import Link from "./ui/link";
 
-type Props = {
-  crag: Crag;
+type TCragLinkProps = {
+  crag: Pick<Crag, "slug" | "name">;
 };
 
-function CragLink({ crag }: Props) {
+function CragLink({ crag }: TCragLinkProps) {
   return (
     <Link href={`/plezalisce/${crag.slug}`} variant="secondary">
       {crag.name}

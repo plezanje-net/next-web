@@ -19,8 +19,8 @@ type TTextFieldProps = {
   description?: string;
   errorMessage?: string;
   disabled?: boolean;
-  prefix?: ReactElement;
-  suffix?: ReactElement;
+  prefix?: ReactElement<any>;
+  suffix?: ReactElement<any>;
   onBlur?: () => void;
   autoFocus?: boolean;
 };

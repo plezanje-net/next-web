@@ -1,7 +1,7 @@
+import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
-import Link from "@/components/ui/link";
 import { useState } from "react";
 
 type TMultiFilterProps = {
@@ -72,9 +72,9 @@ function MultiFilter({
             ))}
           {nrShown !== "all" && (
             <div className="mt-1">
-              <Link onPress={handleToggleShowAll}>
+              <Button variant="asLinkPrimary" onClick={handleToggleShowAll}>
                 {showAll ? "Prikaži manj" : "Prikaži vse"}
-              </Link>
+              </Button>
             </div>
           )}
         </div>

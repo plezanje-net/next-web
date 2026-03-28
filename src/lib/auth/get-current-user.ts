@@ -1,16 +1,16 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
-import { AuthContextProfileDocument } from "@/graphql/generated";
+import { gql } from "graphql-request";
+import { AuthContextProfileDocument, User } from "@/graphql/generated";
 import getAuthToken from "./auth-token";
+import { gqlRequest } from "../gql-request";
 
 async function getCurrentUser() {
   // If there is no token, we already know that user is not authenticated and we can return early
-  const authToken = getAuthToken();
+  const authToken = await getAuthToken();
   if (!authToken) {
     return null;
   }
 
-  const result = await urqlServer().query(AuthContextProfileDocument);
+  const result = await gqlRequest(AuthContextProfileDocument);
 
   if (result.error) {
     throw new Error(
@@ -18,7 +18,7 @@ async function getCurrentUser() {
     );
   }
 
-  return result.data.profile;
+  return result.data.profile as User;
 }
 
 export default getCurrentUser;

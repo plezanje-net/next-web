@@ -1,6 +1,7 @@
 "use client";
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function PopoverTestPage() {
@@ -29,16 +30,16 @@ export default function PopoverTestPage() {
             // focus={true}
             static
           >
-            <a
+            <Link
               className="focus:text-red-500 outline-none"
               tabIndex={0}
               href="/analytics"
             >
               Analytics
-            </a>
-            <a href="/engagement">Engagement</a>
-            <a href="/security">Security</a>
-            <a href="/integrations">Integrations</a>
+            </Link>
+            <Link href="/engagement">Engagement</Link>
+            <Link href="/security">Security</Link>
+            <Link href="/integrations">Integrations</Link>
           </PopoverPanel>
         )}
       </Popover>

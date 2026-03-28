@@ -1,10 +1,10 @@
-import { Route } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import { IconSize } from "./ui/icons/icon-size";
 import IconStarEmpty from "./ui/icons/star-empty";
 import IconStarFull from "./ui/icons/star-full";
 
 type TRouteStarRatingProps = {
-  route: Route;
+  route: RouteBySlugQuery["routeBySlug"];
   size: IconSize.small | IconSize.regular;
   showText?: boolean;
 };

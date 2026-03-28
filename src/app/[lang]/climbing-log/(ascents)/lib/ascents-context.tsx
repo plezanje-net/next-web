@@ -56,6 +56,7 @@ function AscentsProvider({ children }: TAscentsProviderProps) {
   useEffect(() => {
     const columns = localStorage.getItem("ascents-columns");
     if (columns) {
+      //eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedColumnsState(JSON.parse(columns));
     }
   }, []);

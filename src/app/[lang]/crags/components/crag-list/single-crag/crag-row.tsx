@@ -1,4 +1,4 @@
-import { Crag } from "@/graphql/generated";
+import { AllCragsQuery, Crag } from "@/graphql/generated";
 import Seasons from "./seasons";
 import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
@@ -8,7 +8,7 @@ import Link from "@/components/ui/link";
 import { useCragsContext } from "../../../lib/crags-context";
 
 type TCragRowProps = {
-  crag: Crag;
+  crag: AllCragsQuery["crags"][number];
 };
 
 function CragRow({ crag }: TCragRowProps) {

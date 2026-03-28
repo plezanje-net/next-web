@@ -3,7 +3,7 @@ import IconOrientation from "@/components/ui/icons/orientation";
 import IconRainproof from "@/components/ui/icons/rainproof";
 import IconWalk from "@/components/ui/icons/walk";
 import Link from "@/components/ui/link";
-import { Crag } from "@/graphql/generated";
+import { AllCragsQuery, Crag } from "@/graphql/generated";
 import Seasons from "./seasons";
 import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
@@ -13,7 +13,7 @@ import NrRoutes from "./nr-routes";
 import { useCragsContext } from "../../../lib/crags-context";
 
 type TCragCardProps = {
-  crag: Crag;
+  crag: AllCragsQuery["crags"][number];
 };
 
 function CragCard({ crag }: TCragCardProps) {

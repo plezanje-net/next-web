@@ -1,16 +1,16 @@
-import { gql } from "@urql/core";
 import {
   ActivityRoute,
-  Crag,
   CragSectorsDocument,
+  CragSectorsQuery,
   MyCragSummaryDocument,
   User,
 } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
 import CragRoutes from "./components/crag-routes";
-import tickAscentTypes from "../../../../../lib/constants/tick-ascent-types";
-import trTickAscentTypes from "../../../../../lib/constants/tr-tick-ascent-types";
-import getCurrentUser from "../../../../../lib/auth/get-current-user";
+import tickAscentTypes from "@/lib/constants/tick-ascent-types";
+import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
+import getCurrentUser from "@/lib/auth/get-current-user";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type Params = {
   cragSlug: string;
@@ -23,7 +23,7 @@ type Props = {
 async function getCragBySlug(
   crag: string,
   currentUser: User | null
-): Promise<Crag> {
+): Promise<CragSectorsQuery["cragBySlug"]> {
   const firstTryArInput = !!currentUser
     ? {
         pageSize: 1,
@@ -72,7 +72,7 @@ async function getCragBySlug(
 
   const {
     data: { cragBySlug },
-  } = await urqlServer().query(CragSectorsDocument, {
+  } = await gqlRequest(CragSectorsDocument, {
     crag,
     firstTryArInput,
     firstTickArInput,
@@ -86,7 +86,7 @@ async function getCragBySlug(
 }
 
 async function getMySummary(
-  crag: string,
+  cragId: string,
   currentUser: User | null
 ): Promise<ActivityRoute[]> {
   const loggedIn = !!currentUser;
@@ -97,20 +97,24 @@ async function getMySummary(
 
   const {
     data: { myCragSummary },
-  } = await urqlServer().query(MyCragSummaryDocument, {
-    crag,
+  } = await gqlRequest(MyCragSummaryDocument, {
+    input: {
+      cragId,
+    },
   });
 
-  return myCragSummary;
+  return myCragSummary as ActivityRoute[];
 }
 
-async function CragPage({ params: { cragSlug } }: Props) {
+async function CragPage(props: Props) {
+  const params = await props.params;
+
+  const { cragSlug } = params;
+
   const currentUser = await getCurrentUser();
 
-  const [cragBySlug, myCragSummary] = await Promise.all([
-    getCragBySlug(cragSlug, currentUser),
-    getMySummary(cragSlug, currentUser),
-  ]);
+  const cragBySlug = await getCragBySlug(cragSlug, currentUser);
+  const myCragSummary = await getMySummary(cragBySlug.id, currentUser);
 
   return (
     <>
@@ -172,6 +176,9 @@ gql`
             position
             label
             name
+          }
+          crag {
+            slug
           }
 
           firstTry: activityRoutes(input: $firstTryArInput)

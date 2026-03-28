@@ -1,8 +1,8 @@
-import { ActivityRoute } from "@/graphql/generated";
+import { MyActivityRoutesQuery } from "@/graphql/generated";
 import AscentCard from "./ascent-card";
 
 type TAscentListCardsProps = {
-  ascents: ActivityRoute[];
+  ascents: MyActivityRoutesQuery["myActivityRoutes"]["items"];
 };
 
 function AscentListCards({ ascents }: TAscentListCardsProps) {

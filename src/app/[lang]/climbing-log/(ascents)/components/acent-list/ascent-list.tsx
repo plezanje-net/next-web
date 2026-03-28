@@ -1,7 +1,7 @@
 "use client";
 
 import Pagination from "@/components/ui/pagination";
-import { ActivityRoute, PaginationMeta } from "@/graphql/generated";
+import { MyActivityRoutesQuery, PaginationMeta } from "@/graphql/generated";
 import { useCallback, useState } from "react";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { useAscentsContext } from "../../lib/ascents-context";
@@ -10,7 +10,7 @@ import AscentListTable from "./ascent-list-table";
 import useSearchParamsHandler from "@/hooks/useSearchParamsHandler";
 
 type TAscentListProps = {
-  ascents: ActivityRoute[];
+  ascents: MyActivityRoutesQuery["myActivityRoutes"]["items"];
   paginationMeta: PaginationMeta;
 };
 

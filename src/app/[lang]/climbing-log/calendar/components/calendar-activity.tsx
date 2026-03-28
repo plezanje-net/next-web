@@ -1,29 +1,26 @@
 import ActivityType from "@/components/activity-type";
 import Grade from "@/components/grade";
 import { IconSize } from "@/components/ui/icons/icon-size";
-import { Activity, ActivityRoute, Route } from "@/graphql/generated";
+import { CalendarMonthlyActivitiesQuery } from "@/graphql/generated";
 
 type TCalendarActivityProps = {
-  activity: Activity;
+  activity: CalendarMonthlyActivitiesQuery["myActivities"]["items"][0];
 };
 
 function CalendarActivity({ activity }: TCalendarActivityProps) {
-  const hardestRoute = activity.routes.reduce(
-    (acc: ActivityRoute | null, route: ActivityRoute) => {
-      if (route.route.difficulty == null) return acc;
-      if (
-        !["redpoint", "flash", "onsight", "repeat"].includes(route.ascentType)
-      )
-        return acc;
-      if (acc == null) return route;
+  const hardestRoute = activity.routes.reduce<
+    | CalendarMonthlyActivitiesQuery["myActivities"]["items"][0]["routes"][0]
+    | null
+  >((acc, route) => {
+    if (route.route.difficulty == null) return acc;
+    if (!["redpoint", "flash", "onsight", "repeat"].includes(route.ascentType))
+      return acc;
+    if (acc == null) return route;
 
-      return acc.route.difficulty &&
-        route.route.difficulty < acc.route.difficulty
-        ? acc
-        : route;
-    },
-    null
-  );
+    return acc.route.difficulty && route.route.difficulty < acc.route.difficulty
+      ? acc
+      : route;
+  }, null);
 
   return (
     <div className="flex lg:w-full">

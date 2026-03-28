@@ -1,8 +1,8 @@
-import { Country } from "@/graphql/generated";
+import { NewCragPageCountriesQuery } from "@/graphql/generated";
 import CragForm from "../../components/crag-form";
 
 type TNewCragFormProps = {
-  countriesWithAreas: Country[];
+  countriesWithAreas: NewCragPageCountriesQuery["countries"];
 };
 
 function NewCragForm({ countriesWithAreas }: TNewCragFormProps) {

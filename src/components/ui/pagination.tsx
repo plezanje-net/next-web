@@ -7,11 +7,11 @@ import IconLeft from "./icons/left";
 import IconRight from "./icons/right";
 import { Option, Select } from "./select";
 
-interface TPaginationProps {
+type TPaginationProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-}
+};
 
 const Pagination = ({
   currentPage,

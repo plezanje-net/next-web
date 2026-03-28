@@ -1,4 +1,4 @@
-import { AscentType, Crag, PublishType } from "@/graphql/generated";
+import { AscentType, CragSectorsQuery, PublishType } from "@/graphql/generated";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import {
@@ -71,7 +71,7 @@ const LogRoutesContext = createContext<TLogRoutesContext | undefined>(
 type TLogRoutesProviderProps = {
   logRoutes: TLogRoute[];
   setLogRoutes: Dispatch<SetStateAction<TLogRoute[]>>;
-  crag: Crag;
+  crag: CragSectorsQuery["cragBySlug"];
   showLogSavedToast: () => void;
   children: ReactNode;
 };

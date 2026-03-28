@@ -1,15 +1,15 @@
 "use server";
 
-import { gql } from "urql/core";
 import { CreateCommentDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function createCommentAction(formData: FormData) {
-  const result = await urqlServer().mutation(CreateCommentDocument, {
+  const result = await gqlRequest(CreateCommentDocument, {
     input: {
-      cragId: formData.get("cragId"),
-      content: formData.get("commentContent"),
-      type: formData.get("commentType"),
+      cragId: formData.get("cragId") as string,
+      content: formData.get("commentContent") as string,
+      type: formData.get("commentType") as string,
     },
   });
 

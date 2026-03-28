@@ -1,12 +1,13 @@
-import { gql } from "urql/core";
 import GradeDistribution from "@/components/grade-distribution";
-import { Crag, CragDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { CragInfoDocument, CragInfoQuery } from "@/graphql/generated";
+import { gqlRequest } from "@/lib/gql-request";
 
-async function getCragBySlug(crag: string): Promise<Crag> {
+async function getCragBySlug(
+  crag: string
+): Promise<CragInfoQuery["cragBySlug"]> {
   const {
     data: { cragBySlug },
-  } = await urqlServer().query(CragDocument, {
+  } = await gqlRequest(CragInfoDocument, {
     crag,
   });
   return cragBySlug;
@@ -54,25 +55,5 @@ async function GradeDistributionPage() {
     </div>
   );
 }
-
-gql`
-  query Crag($crag: String!) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      sectors {
-        id
-        routes {
-          id
-
-          difficulty
-        }
-      }
-      defaultGradingSystem {
-        id
-      }
-    }
-  }
-`;
 
 export default GradeDistributionPage;

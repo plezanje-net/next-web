@@ -1,14 +1,11 @@
 "use server";
 
-import { gql } from "urql/core";
 import { ComboboxPopulateRoutesDocument, Route } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
-async function populateRoutesAction(
-  query: string,
-  cragId?: string
-): Promise<Route[]> {
-  const result = await urqlServer().query(ComboboxPopulateRoutesDocument, {
+async function populateRoutesAction(query: string, cragId?: string) {
+  const result = await gqlRequest(ComboboxPopulateRoutesDocument, {
     input: {
       query,
       cragId,

@@ -3,13 +3,13 @@ import TextField from "@/components/ui/text-field";
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../lib/update-sector-action";
-import { Crag, Sector } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import createSectorAction from "../lib/create-sector-action";
 
 type TConvertToSectorsManyDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  crag: Crag;
+  crag: EditRoutesPageSectorQuery["sector"]["crag"];
 };
 
 function ConvertToSectorsManyDialog({

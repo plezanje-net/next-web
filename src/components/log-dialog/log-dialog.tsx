@@ -11,7 +11,7 @@ import dryRunCreateActivityAction from "./lib/dry-run-create-activity-action";
 import {
   CreateActivityInput,
   CreateActivityRouteInput,
-  SideEffect,
+  DryRunCreateActivityQuery,
 } from "@/graphql/generated";
 import dayjs from "dayjs";
 import IconArrowRight from "../ui/icons/arrow-right";
@@ -20,7 +20,7 @@ import AscentType from "../ascent-type";
 import { useRouter } from "next/navigation";
 
 type TLogDialogProps = {
-  openTrigger: ReactElement;
+  openTrigger: ReactElement<any>;
 };
 
 function LogDialog({ openTrigger }: TLogDialogProps) {
@@ -158,7 +158,9 @@ function LogDialog({ openTrigger }: TLogDialogProps) {
 
   const [logDialogIsOpen, setLogDialogIsOpen] = useState(false);
   const [confirmDialogIsOpen, setConfirmDialogIsOpen] = useState(false);
-  const [confirmDialogData, setConfirmDialogData] = useState<SideEffect[]>([]);
+  const [confirmDialogData, setConfirmDialogData] = useState<
+    DryRunCreateActivityQuery["dryRunCreateActivity"]
+  >([]);
 
   return (
     <>

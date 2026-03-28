@@ -1,4 +1,4 @@
-import { Activity } from "@/graphql/generated";
+import { Activity, CalendarMonthlyActivitiesQuery } from "@/graphql/generated";
 import CalendarActivity from "./calendar-activity";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ export type TCalendarDay = {
   dayNumber: number;
   isCurrentMonth: boolean;
   isToday: boolean;
-  activities: Activity[];
+  activities: CalendarMonthlyActivitiesQuery["myActivities"]["items"];
   borderClass: string;
 };
 

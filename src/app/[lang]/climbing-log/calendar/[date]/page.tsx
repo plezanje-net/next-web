@@ -1,18 +1,19 @@
 import ActionsRow from "./components/actions-row";
-import { gql } from "urql";
-import urqlServer from "@/graphql/urql-server";
-import { Activity, CalendarDailyActivitiesDocument } from "@/graphql/generated";
+import { CalendarDailyActivitiesDocument } from "@/graphql/generated";
 import AddActivity from "./components/add-activity/add-activity";
 import CalendarDayActivity from "./components/calendar-day-activity";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 type TCalendarDayPageProps = {
-  params: { date: string };
+  params: Promise<{ date: string }>;
 };
 
-async function CalendarDayPage({ params }: TCalendarDayPageProps) {
+async function CalendarDayPage(props: TCalendarDayPageProps) {
+  const params = await props.params;
   const {
     data: { myActivities },
-  } = await urqlServer().query(CalendarDailyActivitiesDocument, {
+  } = await gqlRequest(CalendarDailyActivitiesDocument, {
     input: {
       dateFrom: params.date,
       dateTo: params.date,
@@ -23,7 +24,7 @@ async function CalendarDayPage({ params }: TCalendarDayPageProps) {
     <>
       <ActionsRow date={params.date} />
       <div className="x-auto mx-auto rotate-0 px-4 2xl:container xs:px-8">
-        {myActivities.items.map((activity: Activity) => (
+        {myActivities.items.map((activity) => (
           <CalendarDayActivity key={activity.id} activity={activity} />
         ))}
         <div className="border-t border-neutral-200 py-5">

@@ -1,13 +1,14 @@
 import Checkbox from "@/components/ui/checkbox";
 import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
-import Link from "@/components/ui/link";
 import RangeSlider from "@/components/ui/range-slider";
 import { Select, Option } from "@/components/ui/select";
 import { pluralizeNoun } from "../../../../lib/text-helpers";
 import { ReactNode, useState } from "react";
+import Button from "@/components/ui/button";
 
 // TODO: rename this file name and/or split to files...
+// TODO: check if this is even used still, seems like a temp file...
 
 abstract class Filter {
   readonly label: string;
@@ -270,9 +271,9 @@ function CheckboxesFilterGroup({
             ))}
           {nrShown !== "all" && (
             <div className="mt-1">
-              <Link onPress={handleToggleShowAll}>
-                {showAll ? "Prikaži manj" : "Prikaži vse"}
-              </Link>
+              <Button variant="asLinkPrimary" onClick={handleToggleShowAll}>
+                {showAll ? "Prikaži manj" : "Prikaži vseb"}
+              </Button>
             </div>
           )}
         </div>

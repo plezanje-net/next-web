@@ -1,12 +1,10 @@
 import {
   Fragment,
-  useEffect,
   useRef,
   useState,
   KeyboardEvent as ReactKeyboardEvent,
   useLayoutEffect,
   useMemo,
-  ReactElement,
 } from "react";
 import Button from "./button";
 import IconCalendar from "./icons/calendar";
@@ -701,17 +699,17 @@ function Month({ value, onChange, year }: TMonthProps) {
   );
 }
 
-interface MontOrYearOptionProps {
+type TMonthOrYearOptionProps = {
   value: number;
   children: string | number;
   disabled?: boolean;
-}
+};
 
 function MontOrYearOption({
   value,
   children,
   disabled,
-}: MontOrYearOptionProps) {
+}: TMonthOrYearOptionProps) {
   return (
     <ListboxOption
       key={value}

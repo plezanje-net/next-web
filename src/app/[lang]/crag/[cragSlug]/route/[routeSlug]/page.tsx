@@ -1,12 +1,11 @@
 import { RouteBySlugDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import RouteSection from "./components/route-section";
 import RouteInfo from "./components/route-info";
 import RouteAscents from "./components/route-ascents";
 import DifficultyVotes from "@/components/difficulty-votes";
 import IconMissing from "@/components/ui/icons/missing";
-import Link from "@/components/ui/link";
 import RouteToolbar from "./components/route-toolbar";
 import RouteHeader from "./components/route-header";
 import RouteMyAscents from "./components/route-my-ascents";
@@ -14,18 +13,20 @@ import StarRatingDistribution from "@/components/star-rating-distribution";
 import RouteImage from "./components/route-image";
 import ImageList from "@/components/image-list/image-list";
 import getCurrentUser from "@/lib/auth/get-current-user";
+import Button from "@/components/ui/button";
 
 type Params = {
   cragSlug: string;
   routeSlug: string;
 };
 
-async function RoutePage({ params }: { params: Params }) {
+async function RoutePage(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const user = await getCurrentUser();
   const { cragSlug, routeSlug } = params;
   const {
     data: { routeBySlug: route },
-  } = await urqlServer().query(RouteBySlugDocument, {
+  } = await gqlRequest(RouteBySlugDocument, {
     cragSlug,
     routeSlug,
     includeMyAscents: !!user,
@@ -68,7 +69,8 @@ async function RoutePage({ params }: { params: Params }) {
                 <IconMissing />
               </div>
               <span className="ml-2">
-                Smer nima opisa. <Link href="">Dodaj opis.</Link>
+                Smer nima opisa.{" "}
+                <Button variant="asLinkPrimary">Dodaj opis.</Button>
               </span>
             </span>
           )}
@@ -98,8 +100,8 @@ async function RoutePage({ params }: { params: Params }) {
             <RouteMyAscents
               routeId={route.id}
               userId={user.id}
-              activityRoutes={route.myAscents.items}
-              pageCount={route.myAscents.meta.pageCount}
+              activityRoutes={route.myAscents?.items || []}
+              pageCount={route.myAscents?.meta.pageCount || 0}
             ></RouteMyAscents>
           ) : (
             "Za ogled svojih vzponov se prijavi."
@@ -124,7 +126,8 @@ async function RoutePage({ params }: { params: Params }) {
                 <IconMissing />
               </div>
               <span className="ml-2">
-                Smer še nima fotografij. <Link href="">Dodaj fotografijo.</Link>
+                Smer nima fotografij.{" "}
+                <Button variant="asLinkPrimary">Dodaj fotografijo.</Button>
               </span>
             </span>
           ) : (

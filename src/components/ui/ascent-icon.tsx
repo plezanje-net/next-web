@@ -7,12 +7,12 @@ import IconOnsight from "./icons/onsight";
 import IconRedPoint from "./icons/red-point";
 import IconRepeat from "./icons/repeat";
 
-interface Props {
+type TAscentIconProps = {
   ascent: string;
   size: IconSize.small | IconSize.regular;
-}
+};
 
-function AscentIcon({ ascent, size }: Props) {
+function AscentIcon({ ascent, size }: TAscentIconProps) {
   switch (ascent) {
     case "onsight":
       return <IconOnsight size={size} />;

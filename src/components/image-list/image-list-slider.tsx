@@ -14,8 +14,19 @@ import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import useKeyDown from "@/hooks/useKeyDown";
 import Button from "@/components/ui/button";
 
+type TImage = Pick<
+  Image,
+  | "id"
+  | "path"
+  | "extension"
+  | "maxIntrinsicWidth"
+  | "aspectRatio"
+  | "title"
+  | "author"
+>;
+
 type TImageListLightboxParams = {
-  images: Image[];
+  images: TImage[];
   baseUrl: string;
   id: string;
   onClose: () => void;

@@ -1,14 +1,17 @@
+import { gqlRequest } from "@/lib/gql-request";
 import ImageList from "@/components/image-list/image-list";
 import { CragGalleryDocument, Image } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "urql/core";
+import { gql } from "graphql-request";
 
 type TCragGalleryPageParams = {
   cragSlug: string;
 };
 
-async function CragGalleryPage({ params }: { params: TCragGalleryPageParams }) {
-  const { data } = await urqlServer().query(CragGalleryDocument, {
+async function CragGalleryPage(props: {
+  params: Promise<TCragGalleryPageParams>;
+}) {
+  const params = await props.params;
+  const { data } = await gqlRequest(CragGalleryDocument, {
     crag: params.cragSlug,
   });
 

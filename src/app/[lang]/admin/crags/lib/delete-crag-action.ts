@@ -1,12 +1,12 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 import { DeleteCragDocument } from "@/graphql/generated";
 import { revalidatePath } from "next/cache";
 
 async function deleteCragAction(cragId: string) {
-  const result = await urqlServer().mutation(DeleteCragDocument, {
+  const result = await gqlRequest(DeleteCragDocument, {
     id: cragId,
   });
 

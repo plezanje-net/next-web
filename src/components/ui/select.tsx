@@ -7,24 +7,25 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import React, {
+import {
   Children,
   Fragment,
   ReactElement,
+  ReactNode,
   useEffect,
   useRef,
 } from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
-interface OptionProps {
+type TOptionProps = {
   value: string; // the value for the option
-  children: string | ReactElement; // the label for the option (can include an icon)
+  children: ReactNode; // the label for the option (can include an icon)
   disabled?: boolean;
   separator?: boolean;
-}
+};
 
-function Option({ value, children, disabled, separator }: OptionProps) {
+function Option({ value, children, disabled, separator }: TOptionProps) {
   return (
     <ListboxOption
       key={value}
@@ -42,21 +43,22 @@ function Option({ value, children, disabled, separator }: OptionProps) {
   );
 }
 
-type SelectProps = {
-  value: string | string[];
-  onChange: ((value: string) => void) | ((value: string[]) => void);
-  children: ReactElement<OptionProps>[]; // all of the select's options
+type TSelectProps<M extends boolean = false> = {
+  multi?: M;
+  value: M extends true ? string[] : string;
+  onChange: (value: M extends true ? string[] : string) => void;
+  children: ReactElement<TOptionProps>[]; // all of the select's options
   label?: string;
   placeholder?: string;
   description?: string;
   errorMessage?: string;
-  multi?: boolean;
   customTrigger?: ReactElement;
   disabled?: boolean;
   initialScrollToValue?: string;
 };
 
-function Select({
+function Select<M extends boolean = false>({
+  multi,
   value,
   onChange,
   children,
@@ -64,15 +66,14 @@ function Select({
   placeholder,
   description,
   errorMessage,
-  multi,
   customTrigger,
   disabled,
   initialScrollToValue,
-}: SelectProps) {
+}: TSelectProps<M>) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let childrenValuesToLabels: {
     [key: string]: {
-      label: string | ReactElement;
+      label: ReactNode;
     };
   } = {};
 
@@ -87,7 +88,7 @@ function Select({
   });
 
   const constructSelectedLabel = (selected: string | string[]) => {
-    // the selected value is either a single value or an array (if this is a mutliselect)
+    // the selected value is either a single value (sting) or an array (of strings) (if this is a mutliselect)
     if (multi) {
       return (selected as string[]).map((value: string, index) => {
         return (
@@ -124,6 +125,7 @@ function Select({
           open={open}
           childrenValuesToIndexes={childrenValuesToIndexes}
           initialScrollToValue={initialScrollToValue}
+          multi={multi}
         >
           {children}
         </InnerListBox>
@@ -132,15 +134,18 @@ function Select({
   );
 }
 
-type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
+type InnerListBoxProps<M extends boolean> = Omit<
+  TSelectProps<M>,
+  "onChange"
+> & {
   constructSelectedLabel: (
-    selected: string | string[]
-  ) => string | ReactElement | ReactElement[];
+    selected: M extends true ? string[] : string
+  ) => ReactNode;
   open: boolean;
   childrenValuesToIndexes: Record<string, number>;
 };
 
-function InnerListBox({
+function InnerListBox<M extends boolean>({
   label,
   customTrigger,
   disabled,
@@ -153,7 +158,7 @@ function InnerListBox({
   childrenValuesToIndexes,
   initialScrollToValue,
   children,
-}: InnerListBoxProps) {
+}: InnerListBoxProps<M>) {
   const listboxOptionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

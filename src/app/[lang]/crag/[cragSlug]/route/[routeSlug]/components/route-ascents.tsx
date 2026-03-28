@@ -1,16 +1,17 @@
 "use client";
-import { ActivityRoute } from "@/graphql/generated";
+
+import { RouteBySlugQuery } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
-import Link from "@/components/ui/link";
 import AscentType from "@/components/ascent-type";
 import { useState } from "react";
 import routeAscentsAction from "./server-actions/route-ascents-action";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import Button from "@/components/ui/button";
 
 type TRouteAscentsProps = {
   routeId: string;
-  activityRoutes: ActivityRoute[];
+  activityRoutes: RouteBySlugQuery["routeBySlug"]["activityRoutes"]["items"];
   pageCount: number;
   myAscents?: boolean;
 };
@@ -21,7 +22,9 @@ function RouteAscents({
   pageCount: initialPageCount,
   myAscents = false,
 }: TRouteAscentsProps) {
-  const [ascents, setAscents] = useState<ActivityRoute[]>([...activityRoutes]);
+  const [ascents, setAscents] = useState<
+    RouteBySlugQuery["routeBySlug"]["activityRoutes"]["items"]
+  >([...activityRoutes]);
   const [pageNumber, setPageNumber] = useState(1);
   const [allAscents, setAllAscents] = useState(false);
   const [pageCount, setPageCount] = useState(initialPageCount);
@@ -78,9 +81,9 @@ function RouteAscents({
       </table>
       {pageCount > pageNumber && (
         <div>
-          <Link href="" onPress={loadMore}>
+          <Button variant="asLinkPrimary" onClick={loadMore}>
             Prikaži več
-          </Link>
+          </Button>
         </div>
       )}
     </div>

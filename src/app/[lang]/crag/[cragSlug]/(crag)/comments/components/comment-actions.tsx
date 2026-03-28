@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
-import Link from "@/components/ui/link";
 import updateCommentAction from "./lib/update-comment-action";
 import deleteCommentAction from "./lib/delete-comment-action";
 import TextArea from "@/components/ui/text-area";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { CommentType } from "./comment";
+import Button from "@/components/ui/button";
 
 interface Props {
   commentId: string;
@@ -50,9 +50,9 @@ function CommentActions({ commentId, commentContent, commentType }: Props) {
       <Dialog
         title="Uredi komentar"
         openTrigger={
-          <Link variant="tertiary" className="ml-2 text-sm">
+          <Button variant="asLinkTertiary" className="ml-2 text-sm">
             uredi
-          </Link>
+          </Button>
         }
         confirm={{ label: "Shrani", callback: handleConfirmEdit }}
         cancel={{ label: "Prekliči", callback: handleCancelEdit }}
@@ -84,9 +84,9 @@ function CommentActions({ commentId, commentContent, commentType }: Props) {
       <Dialog
         title="Izbriši komentar?"
         openTrigger={
-          <Link variant="tertiary" className="ml-2 text-sm">
+          <Button variant="asLinkTertiary" className="ml-2 text-sm">
             izbriši
-          </Link>
+          </Button>
         }
         confirm={{ label: "Izbriši", callback: handleConfirmDelete }}
         cancel={{ label: "Prekliči" }}

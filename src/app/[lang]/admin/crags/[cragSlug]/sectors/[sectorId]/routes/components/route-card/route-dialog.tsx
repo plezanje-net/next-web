@@ -7,7 +7,7 @@ import { TGradingSystemId, gradingSystems } from "@/lib/grading-systems";
 import Checkbox from "@/components/ui/checkbox";
 import TextArea from "@/components/ui/text-area";
 import createRouteAction from "../../lib/create-route-action";
-import { Route } from "@/graphql/generated";
+import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import updateRouteAction from "../../lib/update-route-action";
 
 type TRouteDialogBaseProps = {
@@ -26,7 +26,7 @@ type TNewRouteDialogProps = TRouteDialogBaseProps & {
 
 type TEditRouteDialogProps = TRouteDialogBaseProps & {
   formType: "edit";
-  route: Route;
+  route: EditRoutesPageSectorQuery["sector"]["routes"][number];
 
   position?: never;
   sectorId?: never;

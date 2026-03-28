@@ -1,11 +1,11 @@
 import Grade from "@/components/grade";
-import { Route } from "@/graphql/generated";
+import { RouteBySlugQuery } from "@/graphql/generated";
 import RouteInfoRow from "./route-info/route-info-row";
 import RouteStarRating from "@/components/route-star-rating";
 import { IconSize } from "@/components/ui/icons/icon-size";
 
 type TRouteInfoProps = {
-  route: Route;
+  route: RouteBySlugQuery["routeBySlug"];
 };
 
 function RouteInfo({ route }: TRouteInfoProps) {

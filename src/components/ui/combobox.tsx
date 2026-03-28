@@ -50,7 +50,7 @@ const Combobox = forwardRef(function Combobox(
     });
   }, [query, populate]);
 
-  function handleChange(newValue: TComboboxValue) {
+  function handleChange(newValue: TComboboxValue | null) {
     setSelectedValue(newValue);
     onChange(newValue?.value || null);
   }

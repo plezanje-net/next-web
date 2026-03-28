@@ -1,14 +1,14 @@
 "use server";
 
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
 import {
   MoveRoutesToSectorDocument,
   MoveRoutesToSectorInput,
 } from "@/graphql/generated";
 
 async function moveRoutesToSectorAction(routesData: MoveRoutesToSectorInput) {
-  const result = await urqlServer().mutation(MoveRoutesToSectorDocument, {
+  const result = await gqlRequest(MoveRoutesToSectorDocument, {
     input: routesData,
   });
 
