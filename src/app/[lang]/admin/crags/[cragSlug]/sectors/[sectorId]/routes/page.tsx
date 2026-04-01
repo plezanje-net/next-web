@@ -116,6 +116,11 @@ gql`
           id
         }
         difficulty
+        difficultyVotes {
+          id
+          difficulty
+          isBase
+        }
         isProject
         defaultGradingSystem {
           id

@@ -9,6 +9,7 @@ import TextArea from "@/components/ui/text-area";
 import createRouteAction from "../../lib/create-route-action";
 import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import updateRouteAction from "../../lib/update-route-action";
+import { diffToGrade } from "@/components/grade";
 
 type TRouteDialogBaseProps = {
   formType: "new" | "edit";
@@ -47,7 +48,7 @@ function RouteDialog({
     name: string;
     type: string;
     gradingSystemId: string;
-    difficulty: string;
+    baseDifficulty: string;
     isProject: boolean;
     length: string;
     author: string;
@@ -60,7 +61,7 @@ function RouteDialog({
         name: "",
         type: "sport",
         gradingSystemId: getPossibleGradingSystems("sport")[0].id,
-        difficulty: "",
+        baseDifficulty: "",
         isProject: false,
         length: "",
         author: "",
@@ -72,9 +73,12 @@ function RouteDialog({
         name: route.name,
         type: route.routeType.id,
         gradingSystemId: route.defaultGradingSystem.id,
-        difficulty: `${route.difficulty}` || "",
+        baseDifficulty:
+          route?.difficultyVotes
+            .find((vote) => vote.isBase)
+            ?.difficulty?.toString() ?? "",
         isProject: route.isProject,
-        length: `${route.length}` || "",
+        length: `${route.length}`,
         author: route.author || "",
         description: route.description || "",
       };
@@ -90,7 +94,9 @@ function RouteDialog({
   const [gradingSystemId, setGradingSystemId] = useState(
     defaultValues.gradingSystemId
   );
-  const [difficulty, setDifficulty] = useState(defaultValues.difficulty);
+  const [baseDifficulty, setBaseDifficulty] = useState(
+    defaultValues.baseDifficulty
+  );
   const [isProject, setIsProject] = useState(defaultValues.isProject);
   const [length, setLength] = useState(defaultValues.length);
   const [author, setAuthor] = useState(defaultValues.author);
@@ -99,7 +105,7 @@ function RouteDialog({
 
   const [nameError, setNameError] = useState("");
   const nameRef = useRef<HTMLDivElement>(null);
-  const [difficultyError, setDifficultyError] = useState("");
+  const [baseDifficultyError, setBaseDifficultyError] = useState("");
   const difficultyRef = useRef<HTMLDivElement>(null);
 
   const handleNameChange = (name: string) => {
@@ -110,40 +116,68 @@ function RouteDialog({
   const handleTypeChange = (type: string) => {
     // when type changes set grading system to first possible with the new type
     setGradingSystemId(getPossibleGradingSystems(type)[0].id);
-    setDifficulty("");
+    setBaseDifficulty("");
     setType(type);
   };
 
   const handleGradingSystemIdChange = (gradingSystemId: string) => {
-    setDifficulty("");
+    setBaseDifficulty("");
     setGradingSystemId(gradingSystemId);
   };
 
-  const handleDifficultyChange = (difficulty: string) => {
-    setDifficultyError("");
-    setDifficulty(difficulty);
+  const handleBaseDifficultyChange = (difficulty: string) => {
+    setBaseDifficultyError("");
+    setBaseDifficulty(difficulty);
   };
 
   const handleIsProjectChange = (isProject: boolean) => {
     if (isProject) {
-      setDifficultyError("");
-      setDifficulty("");
+      setBaseDifficultyError("");
+      setBaseDifficulty("");
     }
     setIsProject(isProject);
   };
 
   const possibleGradingSystems = getPossibleGradingSystems(type);
 
-  const possibleGrades = gradingSystemId
+  let possibleGrades = gradingSystemId
     ? gradingSystems[gradingSystemId as TGradingSystemId].grades
     : [];
+
+  // If base difficulty for the route is an 'inbetween' grade (legacy), we should extend the possible grades with that inbetween grade, so that it can be properly displayed inside the grade select input
+  // for now this is only done for french grades (since now we are also displaying inbetween grades only for french grading system)
+  // TODO: extend this logic for all grading systems where inbetween legacy grades exist
+  if (
+    gradingSystemId == "french" &&
+    defaultValues.baseDifficulty &&
+    +defaultValues.baseDifficulty % 50 != 0
+  ) {
+    const indexOfFirstHigherGrade = possibleGrades.findIndex(
+      (grade) => grade.difficulty > +defaultValues.baseDifficulty
+    );
+
+    // TODO: DRY diffToGrade and use the one from gradeHelpers
+    possibleGrades = [
+      ...possibleGrades.slice(0, indexOfFirstHigherGrade),
+      {
+        id: "inbetween",
+        name: diffToGrade(+defaultValues.baseDifficulty, gradingSystemId, true)
+          .name,
+        difficulty: +defaultValues.baseDifficulty,
+        __typename: "Grade",
+      },
+      ...possibleGrades.slice(indexOfFirstHigherGrade),
+    ];
+  }
+
+
 
   const resetForm = () => {
     // reset fields
     setName(defaultValues.name);
     setType(defaultValues.type);
     setGradingSystemId(defaultValues.gradingSystemId);
-    setDifficulty(defaultValues.difficulty);
+    setBaseDifficulty(defaultValues.baseDifficulty);
     setIsProject(defaultValues.isProject);
     setLength(defaultValues.length);
     setAuthor(defaultValues.author);
@@ -151,7 +185,7 @@ function RouteDialog({
 
     // clear errors
     setNameError("");
-    setDifficultyError("");
+    setBaseDifficultyError("");
   };
 
   const handleCancel = () => {
@@ -175,8 +209,8 @@ function RouteDialog({
     }
 
     //    - difficulty is required if not a project
-    if (!isProject && !difficulty) {
-      setDifficultyError("Težavnost smeri je obvezen podatek.");
+    if (!isProject && !baseDifficulty) {
+      setBaseDifficultyError("Težavnost smeri je obvezen podatek.");
       errorRefs.push(difficultyRef);
     }
 
@@ -190,7 +224,7 @@ function RouteDialog({
       name: name,
       routeTypeId: type,
       defaultGradingSystemId: gradingSystemId,
-      baseDifficulty: +difficulty || null,
+      baseDifficulty: +baseDifficulty || null,
       isProject: isProject,
       length: +length || null,
       author: author || null,
@@ -289,11 +323,11 @@ function RouteDialog({
 
         <div className="mt-6" ref={difficultyRef}>
           <Select
-            value={difficulty}
-            onChange={handleDifficultyChange}
+            value={`${baseDifficulty}`}
+            onChange={handleBaseDifficultyChange}
             label="Bazna ocena"
             disabled={!possibleGrades.length || isProject || loading}
-            errorMessage={difficultyError}
+            errorMessage={baseDifficultyError}
           >
             {possibleGrades.map((grade) => (
               <Option key={grade.id} value={`${grade.difficulty}`}>
