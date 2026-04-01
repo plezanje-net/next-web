@@ -170,8 +170,6 @@ function RouteDialog({
     ];
   }
 
-
-
   const resetForm = () => {
     // reset fields
     setName(defaultValues.name);
@@ -326,8 +324,18 @@ function RouteDialog({
             value={`${baseDifficulty}`}
             onChange={handleBaseDifficultyChange}
             label="Bazna ocena"
-            disabled={!possibleGrades.length || isProject || loading}
+            disabled={
+              !possibleGrades.length ||
+              isProject ||
+              loading ||
+              route?.difficultyVotes?.some((vote) => !vote.isBase)
+            }
             errorMessage={baseDifficultyError}
+            description={
+              route?.difficultyVotes?.some((vote) => !vote.isBase)
+                ? "Smer že ima glasove o težavnosti, zato bazne ocene ni mogoče spremeniti."
+                : undefined
+            }
           >
             {possibleGrades.map((grade) => (
               <Option key={grade.id} value={`${grade.difficulty}`}>
