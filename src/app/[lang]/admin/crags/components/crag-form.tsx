@@ -536,7 +536,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                   // TODO: make default center, center of the country/area selected if available, or if crag coords already set, make that the default center
                   mapDefaultCenter={[46.119944, 14.815333]}
                   mapZoom={8}
-                  markerType="wall"
+                  markerType="parking"
                 />
               </div>
               {/* Approach time */}
