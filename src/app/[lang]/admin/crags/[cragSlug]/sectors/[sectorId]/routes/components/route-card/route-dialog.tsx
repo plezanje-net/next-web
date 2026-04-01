@@ -190,6 +190,10 @@ function RouteDialog({
     resetForm();
   };
 
+  const handleClose = () => {
+    resetForm();
+  };
+
   const handleConfirm = async () => {
     formRef.current?.requestSubmit();
   };
@@ -275,6 +279,7 @@ function RouteDialog({
         disabled: loading,
         dontCloseOnConfirm: true,
       }}
+      closeCallback={handleClose}
     >
       <form onSubmit={handleFormAction} ref={formRef}>
         <div ref={nameRef}>
