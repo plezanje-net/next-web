@@ -1,10 +1,13 @@
-import { Route, RouteDifficultyVotesQuery } from "@/graphql/generated";
+import {
+  CragSectorsQuery,
+  RouteDifficultyVotesQuery,
+} from "@/graphql/generated";
 import displayDate from "../../../../../../../../../lib/display-date";
 import Grade, { diffToGrade } from "@/components/grade";
 import { pluralizeNoun } from "../../../../../../../../../lib/text-helpers";
 
 interface Props {
-  route: Route;
+  route: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"][number];
   difficultyVotes: RouteDifficultyVotesQuery["route"]["difficultyVotes"];
 }
 

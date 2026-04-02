@@ -8,6 +8,8 @@ import Link from "@/components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../../lib/text-helpers";
 import Checkbox from "@/components/ui/checkbox";
+import RouteGrade from "./crag-route/route-grade";
+import RouteStarRating from "@/components/route-star-rating";
 
 interface Props {
   crag: CragSectorsQuery["cragBySlug"];
@@ -49,7 +51,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route difficulty */}
       {displayColumn("difficulty") && (
         <td className="p-4">
-          {/* <RouteGrade route={route} crag={crag} /> */}
+          <RouteGrade route={route} />
         </td>
       )}
 
@@ -81,7 +83,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route star rating */}
       {displayColumn("starRating") && (
         <td className="p-4">
-          {/* <RouteStarRating route={route} size={IconSize.regular} /> */}
+          <RouteStarRating route={route} size={IconSize.regular} />
         </td>
       )}
 
@@ -135,15 +137,14 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
           {displayColumn("starRating") && (
-            <></>
-            // <RouteStarRating route={route} size={IconSize.small} />
+            <RouteStarRating route={route} size={IconSize.small} />
           )}
         </div>
         <div className="flex items-center justify-between">
           <div className="flex">
             {displayColumn("difficulty") && (
               <div className="-m-1 pr-4">
-                {/* <RouteGrade route={route} crag={crag} /> */}
+                <RouteGrade route={route} />
               </div>
             )}
             {displayColumn("length") && !!route.length && (
