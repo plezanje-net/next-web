@@ -9,7 +9,7 @@ import TextArea from "@/components/ui/text-area";
 import createRouteAction from "../../lib/create-route-action";
 import { EditRoutesPageSectorQuery } from "@/graphql/generated";
 import updateRouteAction from "../../lib/update-route-action";
-import { diffToGrade } from "@/components/grade";
+import { difficultyToGrade } from "@/lib/grade-helpers";
 
 type TRouteDialogBaseProps = {
   formType: "new" | "edit";
@@ -156,13 +156,16 @@ function RouteDialog({
       (grade) => grade.difficulty > +defaultValues.baseDifficulty
     );
 
-    // TODO: DRY diffToGrade and use the one from gradeHelpers
     possibleGrades = [
       ...possibleGrades.slice(0, indexOfFirstHigherGrade),
       {
         id: "inbetween",
-        name: diffToGrade(+defaultValues.baseDifficulty, gradingSystemId, true)
-          .name,
+        name:
+          difficultyToGrade(
+            +defaultValues.baseDifficulty,
+            gradingSystemId,
+            true
+          )?.name ?? "",
         difficulty: +defaultValues.baseDifficulty,
         __typename: "Grade",
       },

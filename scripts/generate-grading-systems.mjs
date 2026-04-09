@@ -8,11 +8,7 @@ console.log("Fetching all grading systems from server...");
 
 loadEnvConfig(process.cwd());
 
-const fullFilePath = path.join(
-  process.cwd(),
-  "src/lib",
-  "grading-systems.ts"
-);
+const fullFilePath = path.join(process.cwd(), "src/lib", "grading-systems.ts");
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -59,7 +55,7 @@ data.data.gradingSystems.forEach((gradingSystem) => {
 fs.writeFileSync(
   fullFilePath,
   `/* This is an auto-generated file. */
-export type TGradingSystemId = ${gradingSystemIdsAsStrings.join(' | ')};
+export type TGradingSystemId = ${gradingSystemIdsAsStrings.join(" | ")};
 
   type TGradingSystem = {
   __typename?: 'GradingSystem';
@@ -69,7 +65,7 @@ export type TGradingSystemId = ${gradingSystemIdsAsStrings.join(' | ')};
   routeTypes: TRouteType[];
 };
 
-  type TGrade = {
+  export type TGrade = {
   __typename?: 'Grade';
   difficulty: number;
   id: string;
@@ -84,7 +80,8 @@ export type TGradingSystemId = ${gradingSystemIdsAsStrings.join(' | ')};
 
 export type TGradingSystems = Record<TGradingSystemId, TGradingSystem>;
 
-export const gradingSystems =  ${JSON.stringify(gradingSystemsAsObject, null, 4)}
-`);
+export const gradingSystems: TGradingSystems =  ${JSON.stringify(gradingSystemsAsObject, null, 4)}
+`
+);
 
 console.log("All grading systems stored into " + fullFilePath);
