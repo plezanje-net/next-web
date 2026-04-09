@@ -1,5 +1,5 @@
 import Dialog, { DialogSize } from "@/components/ui/dialog";
-import DifficultyVotes from "./difficulty-votes";
+import DifficultyVotes from "@/components/difficulty-votes";
 import {
   CragSectorsQuery,
   RouteDifficultyVotesQuery,
