@@ -196,6 +196,12 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     setDeleteCragDialogIsOpen(true);
   };
 
+  const handleCancelClick = () => {
+    if (formType == "edit" && crag) {
+      router.push(`/plezalisce/${crag.slug}/info`);
+    }
+  };
+
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -594,7 +600,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                     Shrani
                   </Button>
                   {formType == "edit" && (
-                    <Button variant="secondary" disabled={!formDirty}>
+                    <Button variant="secondary" onClick={handleCancelClick}>
                       Prekliči
                     </Button>
                   )}
