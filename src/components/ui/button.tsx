@@ -10,9 +10,12 @@ type TButtonProps = {
   children: ReactElement<any> | string;
   variant?:
     | "primary"
+    | "primary-destructive"
     | "secondary"
     | "tertiary"
+    | "tertiary-destructive"
     | "quaternary"
+    | "quaternary-destructive"
     | "asLinkPrimary"
     | "asLinkSecondary"
     | "asLinkTertiary";
@@ -47,6 +50,12 @@ const Button = forwardRef(function Button(
       buttonStyles += " flex focus-visible:ring focus-visible:ring-blue-100";
       break;
 
+    case "primary-destructive":
+    case "tertiary-destructive":
+    case "quaternary-destructive":
+      buttonStyles += " flex focus-visible:ring focus-visible:ring-red-100";
+      break;
+
     case "asLinkPrimary":
     case "asLinkSecondary":
     case "asLinkTertiary":
@@ -63,6 +72,13 @@ const Button = forwardRef(function Button(
         : " bg-blue-500 hover:bg-blue-600 active:bg-blue-700";
       break;
 
+    case "primary-destructive":
+      buttonStyles += " rounded-lg py-2 px-7 font-medium text-white";
+      buttonStyles += disabled
+        ? " bg-red-100 cursor-default"
+        : " bg-red-500 hover:bg-red-600 active:bg-red-700";
+      break;
+
     case "secondary":
       buttonStyles += " rounded-lg py-2 px-7 font-medium";
       buttonStyles += disabled
@@ -77,11 +93,25 @@ const Button = forwardRef(function Button(
         : " text-blue-500 hover:text-blue-600 active:text-blue-700";
       break;
 
+    case "tertiary-destructive":
+      buttonStyles += " rounded p-1";
+      buttonStyles += disabled
+        ? " text-red-100 cursor-default"
+        : " text-red-500 hover:text-red-600 active:text-red-700";
+      break;
+
     case "quaternary":
       buttonStyles += " rounded p-1";
       buttonStyles += disabled
         ? " text-neutral-400 cursor-default"
         : " hover:text-blue-500 active:text-blue-600";
+      break;
+
+    case "quaternary-destructive":
+      buttonStyles += " rounded p-1";
+      buttonStyles += disabled
+        ? " text-neutral-400 cursor-default"
+        : " hover:text-red-500 active:text-red-600";
       break;
 
     case "asLinkPrimary":

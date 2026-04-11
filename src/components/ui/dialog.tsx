@@ -35,6 +35,7 @@ type TDialogProps = {
     disabled?: boolean;
     loading?: boolean;
     dontCloseOnConfirm?: boolean;
+    destructive?: boolean;
   };
   cancel?: { label: string; callback?: () => void; disabled?: boolean };
   dialogSize?: DialogSize;
@@ -130,6 +131,9 @@ function Dialog({
                   onClick={handleConfirm}
                   disabled={confirm.disabled}
                   loading={confirm.loading}
+                  variant={
+                    confirm.destructive ? "primary-destructive" : "primary"
+                  }
                 >
                   {confirm.label}
                 </Button>

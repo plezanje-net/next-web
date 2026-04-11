@@ -587,11 +587,21 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
               {/* Horizontal divider */}
               <div className="h-px bg-neutral-200 col-span-2"></div>
 
-              {/* Delete and save actions */}
+              {/* Save, Cancel and Delete actions */}
               <div className="col-span-2 flex flex-wrap justify-between items-center gap-4">
+                <div className="flex gap-4">
+                  <Button type="submit" loading={loading} disabled={!formDirty}>
+                    Shrani
+                  </Button>
+                  {formType == "edit" && (
+                    <Button variant="secondary" disabled={!formDirty}>
+                      Prekliči
+                    </Button>
+                  )}
+                </div>
                 {formType == "edit" ? (
                   <Button
-                    variant="quaternary"
+                    variant="tertiary-destructive"
                     disabled={loading}
                     onClick={handleDeleteCragClick}
                   >
@@ -603,9 +613,6 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                 ) : (
                   <div></div>
                 )}
-                <Button type="submit" loading={loading} disabled={!formDirty}>
-                  Shrani
-                </Button>
               </div>
             </div>
           </form>

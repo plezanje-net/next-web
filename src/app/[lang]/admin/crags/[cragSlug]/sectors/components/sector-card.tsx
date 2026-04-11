@@ -125,7 +125,7 @@ function SectorCard({
 
             {/* delete */}
             <Button
-              variant="quaternary"
+              variant="quaternary-destructive"
               disabled={disabled || !canEdit(currentUser, sector)}
               onClick={onDeleteClick}
             >

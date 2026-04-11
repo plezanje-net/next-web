@@ -119,7 +119,7 @@ function RouteCard({
 
             {/* delete */}
             <Button
-              variant="quaternary"
+              variant="quaternary-destructive"
               disabled={disabled || !canEdit(currentUser, route)}
               onClick={() => {
                 setDeleteRouteDialogIsOpen(true);
