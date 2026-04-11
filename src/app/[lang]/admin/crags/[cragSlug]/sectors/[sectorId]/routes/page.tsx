@@ -110,6 +110,7 @@ gql`
         }
       }
       routes {
+        __typename
         id
         name
         routeType {

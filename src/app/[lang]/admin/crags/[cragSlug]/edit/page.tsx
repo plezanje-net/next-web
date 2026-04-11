@@ -92,6 +92,7 @@ gql`
 gql`
   query EditCragPageCrag($cragSlug: String!) {
     cragBySlug(slug: $cragSlug) {
+      __typename
       id
       slug
       name
