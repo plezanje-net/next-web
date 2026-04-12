@@ -129,6 +129,7 @@ gql`
         name
         date
         type
+        customType
         duration
         routes {
           ascentType

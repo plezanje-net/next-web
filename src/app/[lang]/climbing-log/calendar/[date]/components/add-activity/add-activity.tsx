@@ -4,7 +4,7 @@ import Button from "@/components/ui/button";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import IconPlus from "@/components/ui/icons/plus";
 import ActivityDate from "./activity-date";
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { TDateString } from "@/components/ui/date-picker";
 import SelectActivityType from "./select-activity-type";
 import TextField from "@/components/ui/text-field";
@@ -15,9 +15,10 @@ import { useRouter } from "next/navigation";
 
 type TAddActivityProps = {
   date: TDateString;
+  customActivityTypes: Promise<string[]>;
 };
 
-function AddActivity({ date }: TAddActivityProps) {
+function AddActivity({ date, customActivityTypes: customActivityTypesPromise }: TAddActivityProps) {
   const router = useRouter();
   const [activityDate, setActivityDate] = useState(date);
   const [activityType, setActivityType] = useState("");
@@ -30,6 +31,8 @@ function AddActivity({ date }: TAddActivityProps) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const customActivityTypes = use(customActivityTypesPromise);
 
   const isValid = useMemo(() => {
     if (!activityDate) return false;
@@ -101,9 +104,10 @@ function AddActivity({ date }: TAddActivityProps) {
           <div className="flex-1">
             <SelectActivityType
               type={activityType}
-              setType={setActivityType}
               customType={activityCustomType}
+              setType={setActivityType}
               setCustomType={setActivityCustomType}
+              customTypes={customActivityTypes}
             />
           </div>
         </div>

@@ -42,7 +42,7 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
       <div className="grow">
         <div className="flex items-center">
           <h4 className="grow">
-            <ActivityType activityType={activity.type} variant="text" />
+            <ActivityType activityType={activity.type} customType={activity.customType} variant="text" />
           </h4>
           <Button variant="quaternary">
             <IconMore size={IconSize.regular} />

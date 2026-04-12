@@ -1,9 +1,13 @@
 import ActionsRow from "./components/actions-row";
-import { CalendarDailyActivitiesDocument } from "@/graphql/generated";
+import {
+  CalendarDailyActivitiesDocument,
+  UserCustomActivityTypesDocument,
+} from "@/graphql/generated";
 import AddActivity from "./components/add-activity/add-activity";
 import CalendarDayActivity from "./components/calendar-day-activity";
 import { gqlRequest } from "@/lib/gql-request";
 import { gql } from "graphql-request";
+import { Suspense } from "react";
 
 type TCalendarDayPageProps = {
   params: Promise<{ date: string }>;
@@ -20,6 +24,10 @@ async function CalendarDayPage(props: TCalendarDayPageProps) {
     },
   });
 
+  const customActivityTypes = gqlRequest(UserCustomActivityTypesDocument).then(
+    (res) => res.data.profile.customActivityTypes
+  );
+
   return (
     <>
       <ActionsRow date={params.date} />
@@ -28,7 +36,12 @@ async function CalendarDayPage(props: TCalendarDayPageProps) {
           <CalendarDayActivity key={activity.id} activity={activity} />
         ))}
         <div className="border-t border-neutral-200 py-5">
-          <AddActivity date={params.date} />
+          <Suspense>
+            <AddActivity
+              date={params.date}
+              customActivityTypes={customActivityTypes}
+            />
+          </Suspense>
         </div>
       </div>
     </>
@@ -91,6 +104,14 @@ gql`
           }
         }
       }
+    }
+  }
+`;
+gql`
+  query UserCustomActivityTypes {
+    profile {
+      id
+      customActivityTypes
     }
   }
 `;
