@@ -36,7 +36,7 @@ async function CalendarDayPage(props: TCalendarDayPageProps) {
           <CalendarDayActivity key={activity.id} activity={activity} />
         ))}
         <div className="border-t border-neutral-200 py-5">
-          <Suspense>
+          <Suspense fallback={<AddActivity date={params.date} customActivityTypes={null} />}>
             <AddActivity
               date={params.date}
               customActivityTypes={customActivityTypes}
