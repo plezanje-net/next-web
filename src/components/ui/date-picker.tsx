@@ -514,7 +514,7 @@ function DatePicker({
           <PopoverPanel
             modal={false}
             anchor="bottom end"
-            className="[--anchor-offset:4px] [--anchor-gap:13px]"
+            className="[--anchor-offset:4px] [--anchor-gap:13px] z-10"
           >
             {({ close }) => (
               <div className="w-[256px] min-[400px]:w-[298px] rounded-lg border border-neutral-400 bg-white px-2 py-3 relative">
