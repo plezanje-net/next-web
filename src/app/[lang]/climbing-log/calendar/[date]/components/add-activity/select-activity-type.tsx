@@ -38,10 +38,10 @@ function SelectActivityType({
 
   customTypes.forEach((customType, index) => {
     activityTypes.push({
-      value: 'other',
+      value: "other",
       customType,
       label: customType,
-      hasSeparator: index === 0
+      hasSeparator: index === 0,
     });
   });
 
@@ -66,17 +66,29 @@ function SelectActivityType({
     <div className="flex flex-col gap-2">
       <Select
         label="Vrsta aktivnosti"
-        value={customType && customTypes.find((t) => t === customType)  ? `other:${customType}` : type}
+        value={
+          customType && customTypes.find((t) => t === customType)
+            ? `other:${customType}`
+            : type
+        }
         onChange={handleTypeChange}
         placeholder="Izberi vrsto aktivnosti"
       >
         {activityTypes.map((option) => (
           <Option
-            key={option.customType ? `other:${option.customType}` : option.value}
-            value={option.customType ? `other:${option.customType}` : option.value}
+            key={
+              option.customType ? `other:${option.customType}` : option.value
+            }
+            value={
+              option.customType ? `other:${option.customType}` : option.value
+            }
             separator={option.hasSeparator}
           >
-            <ActivityType activityType={option.value} customType={option.customType} variant="full" />
+            <ActivityType
+              activityType={option.value}
+              customType={option.customType}
+              variant="full"
+            />
           </Option>
         ))}
       </Select>

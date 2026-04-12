@@ -22,7 +22,12 @@ const activityTypes: Record<string, TActivityType> = {
   other: { label: "Drugo", color: "text-neutral-400" },
 };
 
-function ActivityType({ activityType, variant, iconSize, customType }: TActivityTypeProps) {
+function ActivityType({
+  activityType,
+  variant,
+  iconSize,
+  customType,
+}: TActivityTypeProps) {
   const option = activityTypes[activityType];
 
   const inner = (
