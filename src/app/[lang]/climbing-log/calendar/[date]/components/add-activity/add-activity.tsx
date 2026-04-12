@@ -101,13 +101,17 @@ function AddActivity({
         loading: isLoading,
         dontCloseOnConfirm: true,
       }}
-      cancel={{ label: "Prekliči" }}
+      cancel={{ label: "Prekliči", callback: clearForm }}
       closeCallback={clearForm}
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-4">
           <div className="flex-1">
-            <ActivityDate value={activityDate} setValue={setActivityDate} />
+            <ActivityDate
+              value={activityDate}
+              setValue={setActivityDate}
+              disabled={isLoading}
+            />
           </div>
           <div className="flex-1">
             <SelectActivityType
@@ -116,6 +120,7 @@ function AddActivity({
               setType={setActivityType}
               setCustomType={setActivityCustomType}
               customTypes={customActivityTypes}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -133,6 +138,7 @@ function AddActivity({
             <ActivityDuration
               value={activityDuraton}
               setValue={setActivityDuration}
+              disabled={isLoading}
             />
           </div>
         </div>

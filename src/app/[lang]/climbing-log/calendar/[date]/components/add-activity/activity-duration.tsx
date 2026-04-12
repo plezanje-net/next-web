@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 
 type TActivityDurationProps = {
   value: number | null;
+  disabled?: boolean;
   setValue: (v: number | null) => void;
 };
 
-function ActivityDuration({ value, setValue }: TActivityDurationProps) {
+function ActivityDuration({
+  value,
+  setValue,
+  disabled,
+}: TActivityDurationProps) {
   const [hours, setHours] = useState<number | null>(
     value ? Math.floor(value / 60) : null
   );
@@ -25,11 +30,13 @@ function ActivityDuration({ value, setValue }: TActivityDurationProps) {
         value={hours ? hours.toString() : ""}
         onChange={(v) => setHours(v ? parseInt(v) : null)}
         suffix={<>h</>}
+        disabled={disabled}
       />
       <TextField
         value={minutes ? minutes.toString() : ""}
         onChange={(v) => setMinutes(v ? parseInt(v) : null)}
         suffix={<>min</>}
+        disabled={disabled}
       />
     </div>
   );

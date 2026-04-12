@@ -12,6 +12,7 @@ type TActivityTypeProps = {
   customTypes: string[];
   setType: (v: string) => void;
   setCustomType: (v: string | null) => void;
+  disabled?: boolean;
 };
 
 type TActivityTypeOption = {
@@ -27,6 +28,7 @@ function SelectActivityType({
   customType,
   setCustomType,
   customTypes,
+  disabled,
 }: TActivityTypeProps) {
   const activityTypes: TActivityTypeOption[] = [
     { value: "crag", label: "Crag" },
@@ -73,6 +75,7 @@ function SelectActivityType({
         }
         onChange={handleTypeChange}
         placeholder="Izberi vrsto aktivnosti"
+        disabled={disabled}
       >
         {activityTypes.map((option) => (
           <Option
@@ -119,6 +122,7 @@ function SelectActivityType({
           onChange={setNewCustomType}
           onBlur={() => setCustomType(newCustomType)}
           description="Ob naslednjem vnosu bo možnost na voljo v spustnem seznamu."
+          disabled={disabled}
         />
       )}
     </div>
