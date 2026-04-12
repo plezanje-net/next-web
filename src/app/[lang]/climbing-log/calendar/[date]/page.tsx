@@ -24,9 +24,11 @@ async function CalendarDayPage(props: TCalendarDayPageProps) {
     },
   });
 
-  const customActivityTypes = gqlRequest(UserCustomActivityTypesDocument).then(
-    (res) => res.data.profile.customActivityTypes
-  );
+  const customActivityTypes = gqlRequest(
+    UserCustomActivityTypesDocument,
+    {},
+    { tags: ["custom-activity-types"] }
+  ).then((res) => res.data.profile.customActivityTypes);
 
   return (
     <>
