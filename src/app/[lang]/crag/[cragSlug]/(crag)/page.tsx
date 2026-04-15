@@ -11,6 +11,7 @@ import trTickAscentTypes from "@/lib/constants/tr-tick-ascent-types";
 import getCurrentUser from "@/lib/auth/get-current-user";
 import { gqlRequest } from "@/lib/gql-request";
 import { gql } from "graphql-request";
+import PublishStatusCard from "../../../components/publish-status-card";
 
 type Params = {
   cragSlug: string;
@@ -118,6 +119,13 @@ async function CragPage(props: Props) {
 
   return (
     <>
+      {/* Possible publish status card */}
+      {cragBySlug.publishStatus !== "published" && (
+        <div className="px-4 xs:px-8 2xl:container mx-auto mt-7 mb-3">
+          <PublishStatusCard contributable={cragBySlug} />
+        </div>
+      )}
+
       <CragRoutes crag={cragBySlug} mySummary={myCragSummary} />
     </>
   );
@@ -134,9 +142,15 @@ gql`
     $loggedIn: Boolean!
   ) {
     cragBySlug(slug: $crag) {
+      __typename
       id
       slug
       name
+      publishStatus
+      user {
+        id
+        fullName
+      }
       sectors {
         id
         name

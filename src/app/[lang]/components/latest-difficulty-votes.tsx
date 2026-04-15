@@ -1,5 +1,4 @@
 import {
-  DifficultyVote,
   HomeLatestDifficultyVotesDocument,
   HomeLatestDifficultyVotesQuery,
 } from "@/graphql/generated";
@@ -57,6 +56,7 @@ gql`
             name
             slug
           }
+          publishStatus
         }
         user {
           id

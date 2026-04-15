@@ -14,9 +14,9 @@ import DeleteRouteDialog from "./delete-route-dialog";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { genderizeVerb } from "@/lib/text-helpers";
-import PublishStatusActions from "../../../../../../components/publish-status-actions";
 import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import PublishStatusActions from "../../../../../../../../components/publish-status-card/publish-status-actions";
 
 type TRouteCardProps = {
   route: EditRoutesPageSectorQuery["sector"]["routes"][number];
@@ -119,7 +119,8 @@ function RouteCard({
 
             {/* delete */}
             <Button
-              variant="quaternary-destructive"
+              variant="quaternary"
+              intent="destructive"
               disabled={disabled || !canEdit(currentUser, route)}
               onClick={() => {
                 setDeleteRouteDialogIsOpen(true);

@@ -11,10 +11,11 @@ import { genderizeVerb } from "@/lib/text-helpers";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { usePathname, useRouter } from "next/navigation";
-import PublishStatusActions from "../../../components/publish-status-actions";
+
 import { labelAndNameToString } from "@/lib/sector-helpers";
 import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import PublishStatusActions from "../../../../../components/publish-status-card/publish-status-actions";
 
 type TSectorCardProps = {
   sector: Sector;
@@ -125,7 +126,8 @@ function SectorCard({
 
             {/* delete */}
             <Button
-              variant="quaternary-destructive"
+              variant="quaternary"
+              intent="destructive"
               disabled={disabled || !canEdit(currentUser, sector)}
               onClick={onDeleteClick}
             >

@@ -607,7 +607,8 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                 </div>
                 {formType == "edit" ? (
                   <Button
-                    variant="tertiary-destructive"
+                    variant="tertiary"
+                    intent="destructive"
                     disabled={loading}
                     onClick={handleDeleteCragClick}
                   >

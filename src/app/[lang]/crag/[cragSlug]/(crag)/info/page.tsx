@@ -30,6 +30,7 @@ import IconMore from "@/components/ui/icons/more";
 import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
 import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import Button from "@/components/ui/button";
+import PublishStatusCard from "../../../../components/publish-status-card";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -159,8 +160,15 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
 
   return (
     <>
+      {/* Possible publish status card */}
+      {crag.publishStatus !== "published" && (
+        <div className="px-4 xs:px-8 2xl:container mx-auto my-7">
+          <PublishStatusCard contributable={crag} />
+        </div>
+      )}
+
       {/* Icons and edit button */}
-      <div className="mx-auto px-4 2xl:container xs:px-8">
+      <div className="px-4 xs:px-8 2xl:container mx-auto">
         {/* Row 1: some icons (based on screen size) and button. */}
         <div className="mt-7 flex items-center justify-between">
           <div className="flex">
@@ -625,6 +633,12 @@ gql`
       }
       lat
       lon
+      publishStatus
+      user {
+        id
+        fullName
+      }
+      __typename
     }
   }
 `;

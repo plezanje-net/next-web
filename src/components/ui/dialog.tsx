@@ -131,9 +131,7 @@ function Dialog({
                   onClick={handleConfirm}
                   disabled={confirm.disabled}
                   loading={confirm.loading}
-                  variant={
-                    confirm.destructive ? "primary-destructive" : "primary"
-                  }
+                  intent={confirm.destructive ? "destructive" : "default"}
                 >
                   {confirm.label}
                 </Button>
