@@ -94,7 +94,7 @@ function RouteCard({
               />
             </div>
             {/* route name */}
-            <div className="ml-4 w-0 flex-1 truncate @3xl:w-80 @3xl:flex-none">
+            <div className="ml-2.5 w-0 flex-1 truncate @3xl:w-80 @3xl:flex-none">
               {route.name}
             </div>
             <div className="w-10 ml-4">{grade?.name}</div>

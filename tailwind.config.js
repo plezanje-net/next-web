@@ -101,6 +101,7 @@ module.exports = {
         80: "20rem", // 320px
       },
       margin: {
+        2.5: "0.625rem", // 10px
         18: "4.5rem", // 72px
       },
       keyframes: {
