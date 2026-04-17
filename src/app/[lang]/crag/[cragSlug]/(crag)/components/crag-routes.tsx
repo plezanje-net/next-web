@@ -342,11 +342,7 @@ function CragRoutes({ crag, mySummary }: TCragRoutesProps) {
       }}
     >
       <CragRoutesActions />
-      <div
-        className={`mx-auto 2xl:container text-center ${
-          cragRoutesState.noSectors ? "px-4" : ""
-        } xs:px-8`}
-      >
+      <div className={`mx-auto 2xl:container text-center xs:px-8`}>
         <div
           ref={containerRef}
           className={`${cragRoutesState.compact === null ? "opacity-0" : ""}`}

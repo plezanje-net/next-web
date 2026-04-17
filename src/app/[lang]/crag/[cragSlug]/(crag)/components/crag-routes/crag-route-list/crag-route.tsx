@@ -112,9 +112,9 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
     cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
-    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks!),
-    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers!),
-    nrTries: pluralizeNoun("poskus", route.nrTries!),
+    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks ?? 0),
+    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers ?? 0),
+    nrTries: pluralizeNoun("poskus", route.nrTries ?? 0),
   })
     .filter(([key, _]) => displayColumn(key))
     .map(([_, value]) => value)
@@ -123,7 +123,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
   return (
     <div
       aria-label={route.name}
-      className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
+      className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none text-left"
     >
       <div className="w-7">
         <Checkbox
@@ -133,7 +133,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           onChange={(c) => setCheckedRoute(route.id, c)}
         />
       </div>
-      <div className="w-full pr-4">
+      <div className="w-full">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
           {displayColumn("starRating") && (
