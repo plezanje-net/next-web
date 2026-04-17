@@ -7,7 +7,7 @@ import {
 import LogDialog from "@/components/log-dialog/log-dialog";
 import Button from "@/components/ui/button";
 import { useState } from "react";
-import { AscentType, Crag, PublishType } from "@/graphql/generated";
+import { AscentType, CragSectorsQuery, PublishType } from "@/graphql/generated";
 
 function LogDialogPage() {
   const [logRoutes, setLogRoutes] = useState(routes);
@@ -17,7 +17,7 @@ function LogDialogPage() {
       <LogRoutesProvider
         logRoutes={logRoutes}
         setLogRoutes={setLogRoutes}
-        crag={crag as Crag}
+        crag={crag as CragSectorsQuery["cragBySlug"]}
         showLogSavedToast={() => {}}
       >
         <LogDialog openTrigger={<Button>Log routes</Button>} />

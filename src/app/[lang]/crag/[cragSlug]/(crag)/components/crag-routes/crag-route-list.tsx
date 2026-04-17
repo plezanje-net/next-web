@@ -1,7 +1,11 @@
 import { useContext } from "react";
-import { CragSectorsQuery, Route } from "@/graphql/generated";
+import { CragSectorsQuery } from "@/graphql/generated";
 import CragRoute, { CragRouteCompact } from "./crag-route-list/crag-route";
-import { CragRoutesContext, FilterOptions, SortOptions } from "../crag-routes";
+import {
+  CragRoutesContext,
+  TFilterOptions,
+  TSortOptions,
+} from "../crag-routes";
 import IconStarFull from "@/components/ui/icons/star-full";
 import IconComment from "@/components/ui/icons/comment";
 import IconCheck from "@/components/ui/icons/check";
@@ -17,7 +21,7 @@ interface Props {
 function filterRoutesByFilter(
   routes: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"],
   ascents: Map<string, string>,
-  { routesTouches, difficulty, starRating }: FilterOptions = {}
+  { routesTouches, difficulty, starRating }: TFilterOptions = {}
 ): CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"] {
   if (routesTouches) {
     switch (routesTouches) {
@@ -75,7 +79,7 @@ function filterRoutesByFilter(
 function sortRoutes(
   routes: CragSectorsQuery["cragBySlug"]["sectors"][number]["routes"],
   ascents: Map<string, string>,
-  sort: SortOptions = {
+  sort: TSortOptions = {
     column: "select",
     direction: "asc",
   }
@@ -137,20 +141,32 @@ function CragRouteList({ routes, crag, ascents }: Props) {
 
   routes = sortRoutes(routes, ascents, cragRoutesState.sort);
 
-  const bySector = !cragRoutesState.combine;
   const someFilter = Object.keys(cragRoutesState.filter || {}).length > 0;
   const someSearchQuery = cragRoutesState.search?.query;
-  const noResultsText = `Za izbrane pogoje ${
-    bySector ? "v tem sektorju" : ""
-  } ni rezultatov. Poskusi spremeniti 
-  ${someSearchQuery ? "iskalni niz" : ""}${
-    someSearchQuery && someFilter ? " ali " : ""
-  }${someFilter ? "nastavljene filtre" : ""}.`;
+  const bySector =
+    !cragRoutesState.combine && crag.sectors.length > 1 && !someSearchQuery; // if search query, sectors are automatically combined
+
+  let noResultsText = "";
+  if (!someFilter && !someSearchQuery) {
+    noResultsText = bySector
+      ? "V tem sektorju ni smeri."
+      : "V tem plezališču ni smeri.";
+  } else {
+    noResultsText = `Za izbrane pogoje ${bySector ? "v tem sektorju" : "v tem plezališču"} ni rezultatov. Poskusi spremeniti`;
+
+    if (someSearchQuery && !someFilter) {
+      noResultsText += " iskalni niz.";
+    } else if (!someSearchQuery && someFilter) {
+      noResultsText += " nastavljene filtre.";
+    } else if (someSearchQuery && someFilter) {
+      noResultsText += " iskalni niz ali nastavljene filtre.";
+    }
+  }
 
   return (
     <div className={`${!bySector || someSearchQuery ? "px-4 xs:px-0" : ""}`}>
       {!routes.length ? (
-        <p className={`${bySector ? "py-4" : ""}`}>{noResultsText}</p>
+        <p className="py-4">{noResultsText}</p>
       ) : !cragRoutesState.compact ? (
         <table className="w-full text-left">
           <thead>

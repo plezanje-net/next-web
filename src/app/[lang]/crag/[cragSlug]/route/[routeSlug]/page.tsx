@@ -14,6 +14,7 @@ import RouteImage from "./components/route-image";
 import ImageList from "@/components/image-list/image-list";
 import getCurrentUser from "@/lib/auth/get-current-user";
 import Button from "@/components/ui/button";
+import PublishStatusCard from "../../../../components/publish-status-card";
 
 type Params = {
   cragSlug: string;
@@ -42,6 +43,17 @@ async function RoutePage(props: { params: Promise<Params> }) {
     <>
       <RouteHeader route={route} />
       <RouteToolbar route={route} />
+
+      {/* Possible publish status card */}
+      {route.publishStatus !== "published" && (
+        <div className="px-4 xs:px-8 2xl:container mx-auto mt-7">
+          <PublishStatusCard
+            contributable={route}
+            redirectAfterReject={`/plezalisce/${cragSlug}`}
+          />
+        </div>
+      )}
+
       <div className="mx-auto flex flex-wrap px-4 2xl:container xs:px-8">
         <RouteSection
           label="Osnovni podatki"
@@ -151,6 +163,7 @@ gql`
     $pageSize: Int
   ) {
     routeBySlug(cragSlug: $cragSlug, routeSlug: $routeSlug) {
+      __typename
       id
       name
       slug
@@ -158,6 +171,7 @@ gql`
       difficulty
       starRating
       description
+      publishStatus
       nrTries
       nrTicks
       nrClimbers
@@ -272,11 +286,16 @@ gql`
         id
         name
         label
+        publishStatus
         routes {
           id
           name
           slug
         }
+      }
+      user {
+        id
+        fullName
       }
     }
   }

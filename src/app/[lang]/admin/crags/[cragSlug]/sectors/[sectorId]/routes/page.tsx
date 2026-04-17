@@ -110,12 +110,18 @@ gql`
         }
       }
       routes {
+        __typename
         id
         name
         routeType {
           id
         }
         difficulty
+        difficultyVotes {
+          id
+          difficulty
+          isBase
+        }
         isProject
         defaultGradingSystem {
           id

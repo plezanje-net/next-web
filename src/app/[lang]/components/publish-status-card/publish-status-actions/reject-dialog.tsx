@@ -1,30 +1,25 @@
 import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  EditCragPageCragQuery,
-  EditRoutesPageSectorQuery,
-  Sector,
-} from "@/graphql/generated";
-import updateRouteAction from "../[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
-import updateSectorAction from "../[cragSlug]/sectors/lib/update-sector-action";
-import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
+import updateRouteAction from "../../../admin/crags/[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
+import updateSectorAction from "../../../admin/crags/[cragSlug]/sectors/lib/update-sector-action";
+import updateCragAction from "../../../admin/crags/[cragSlug]/edit/lib/update-crag-action";
 import Checkbox from "@/components/ui/checkbox";
 import TextArea from "@/components/ui/text-area";
+import { TContributable } from "@/lib/contributables-helpers";
 
 type TRejectDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  contributable:
-    | EditRoutesPageSectorQuery["sector"]["routes"][number]
-    | Sector
-    | EditCragPageCragQuery["cragBySlug"];
+  contributable: TContributable;
+  redirectAfterReject?: string;
 };
 
 function RejectDialog({
   isOpen,
   setIsOpen,
   contributable,
+  redirectAfterReject,
 }: TRejectDialogProps) {
   const router = useRouter();
 
@@ -119,10 +114,12 @@ function RejectDialog({
     setIsOpen(false);
     setLoading(false);
 
-    if (contributable.__typename === "Crag") {
+    // one might pass in special redirect target (for example on route page (non-admin-page), after rejection, we need to go back to crag, since the route is not available to the user anymore)
+    if (redirectAfterReject) {
+      router.push(redirectAfterReject);
+    } else if (contributable.__typename === "Crag") {
       // if we are rejecting a crag, redirect to home, since a rejected (now draft again) crag is not visible to the current user
       router.push(`/`);
-      // TODO: when (if) there is an edit all crags page, redirect there.
     } else {
       router.refresh();
     }

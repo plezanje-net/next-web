@@ -1,51 +1,48 @@
-import Dialog, { DialogSize } from "@/components/ui/dialog";
+import Dialog from "@/components/ui/dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  EditCragPageCragQuery,
-  EditRoutesPageSectorQuery,
-  Sector,
-} from "@/graphql/generated";
-import updateRouteAction from "../[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
-import updateSectorAction from "../[cragSlug]/sectors/lib/update-sector-action";
-import updateCragAction from "../[cragSlug]/edit/lib/update-crag-action";
+import updateRouteAction from "../../../admin/crags/[cragSlug]/sectors/[sectorId]/routes/lib/update-route-action";
+import updateSectorAction from "../../../admin/crags/[cragSlug]/sectors/lib/update-sector-action";
+import updateCragAction from "../../../admin/crags/[cragSlug]/edit/lib/update-crag-action";
 import Checkbox from "@/components/ui/checkbox";
+import { TContributable } from "@/lib/contributables-helpers";
 
-type TSuggestPublishDialogProps = {
+type TPublishDialogProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  contributable:
-    | EditRoutesPageSectorQuery["sector"]["routes"][number]
-    | Sector
-    | EditCragPageCragQuery["cragBySlug"];
+  contributable: TContributable;
 };
 
-function SuggestPublishDialog({
+function PublishDialog({
   isOpen,
   setIsOpen,
   contributable,
-}: TSuggestPublishDialogProps) {
+}: TPublishDialogProps) {
   const router = useRouter();
 
   const [cascadePublish, setCascadePublish] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  let title = "";
   let description = "";
   let cascadeText = null;
   switch (contributable.__typename) {
     case "Route":
-      description = `Ali res želiš uredništvu predlagati objavo smeri `;
+      title = "Objava smeri";
+      description = `Ali res želiš objaviti smer `;
       break;
 
     case "Sector":
-      description = `Ali res želiš uredništvu predlagati objavo sektorja `;
+      title = "Objava sektorja";
+      description = `Ali res želiš objaviti sektor `;
       cascadeText = contributable.routes.length
-        ? "Predlagaj tudi objavo vseh smeri v tem sektorju."
+        ? "Objavi tudi vse smeri v tem sektorju."
         : null;
       break;
 
     case "Crag":
-      description = `Ali res želiš uredništvu predlagati objavo plezališča `;
+      title = "Objava plezališča";
+      description = `Ali res želiš objaviti plezališče `;
 
       const crag = contributable;
       if (
@@ -55,18 +52,18 @@ function SuggestPublishDialog({
       ) {
         // crag has a dummy sector
         if (crag.sectors[0].routes.length) {
-          cascadeText = "Predlagaj tudi objavo vseh smeri v tem plezališču.";
+          cascadeText = "Objavi tudi vse smeri v tem plezališču.";
         }
       } else {
         if (crag.sectors.length) {
-          cascadeText =
-            "Predlagaj tudi objavo vseh sektorjev v tem plezališču.";
+          cascadeText = "Objavi tudi vse sektorje v tem plezališču.";
         }
         if (crag.sectors.some((sector) => sector.routes.length)) {
           cascadeText =
-            "Predlagaj tudi objavo vseh sektorjev in vseh smeri v tem plezališču.";
+            "Objavi tudi vse sektorje in vse smeri v tem plezališču.";
         }
       }
+
       break;
   }
 
@@ -75,7 +72,7 @@ function SuggestPublishDialog({
 
     const data = {
       id: contributable.id,
-      publishStatus: "in_review",
+      publishStatus: "published",
       ...(contributable.__typename !== "Route" && {
         cascadePublishStatus: cascadePublish,
       }),
@@ -101,7 +98,7 @@ function SuggestPublishDialog({
         ) {
           const updateSectorData = {
             id: crag.sectors[0].id,
-            publishStatus: "in_review",
+            publishStatus: "published",
           };
           await updateSectorAction(updateSectorData);
         }
@@ -115,13 +112,12 @@ function SuggestPublishDialog({
 
   return (
     <Dialog
-      title="Predlog uredništvu"
-      dialogSize={DialogSize.medium}
+      title={title}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       cancel={{ label: "Prekliči", disabled: loading }}
       confirm={{
-        label: "Predlagaj objavo",
+        label: "Objavi",
         callback: handleConfirm,
         dontCloseOnConfirm: true,
         loading: loading,
@@ -149,4 +145,4 @@ function SuggestPublishDialog({
   );
 }
 
-export default SuggestPublishDialog;
+export default PublishDialog;
