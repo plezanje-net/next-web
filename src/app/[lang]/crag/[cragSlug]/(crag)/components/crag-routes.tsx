@@ -3,12 +3,8 @@
 import {
   ActivityRoute,
   AscentType,
-  Crag,
   CragSectorsQuery,
-  Maybe,
-  PaginatedActivityRoutes,
   PublishType,
-  Route,
   Sector,
 } from "@/graphql/generated";
 import { createContext, useCallback, useLayoutEffect, useState } from "react";
@@ -25,12 +21,12 @@ import LogRoutesPopover from "./log-routes-popover";
 import dayjs from "dayjs";
 import Toast from "@/components/ui/toast";
 
-interface Props {
+type TCragRoutesProps = {
   crag: CragSectorsQuery["cragBySlug"];
   mySummary: ActivityRoute[];
-}
+};
 
-interface FilterOptions {
+type TFilterOptions = {
   routesTouches?: "ticked" | "tried" | "unticked" | "untried";
   difficulty?: { from: number; to: number };
   starRating?: {
@@ -38,29 +34,29 @@ interface FilterOptions {
     beautiful: boolean;
     unremarkable: boolean;
   };
-}
+};
 
-interface SortOptions {
+type TSortOptions = {
   column: string;
   direction: "asc" | "desc";
-}
+};
 
-interface SearchOptions {
+type TSearchOptions = {
   query?: string;
   focus?: boolean;
-}
+};
 
-interface CragRoutesState {
+type TCragRoutesState = {
   compact: boolean | null;
   combine: boolean;
   selectedColumns: string[];
   noSectors: boolean;
-  search?: SearchOptions;
-  filter?: FilterOptions;
-  sort: SortOptions;
-}
+  search?: TSearchOptions;
+  filter?: TFilterOptions;
+  sort: TSortOptions;
+};
 
-interface CragRouteListColumn {
+type TCragRouteListColumn = {
   name: string;
   isOptional: boolean;
   label: string;
@@ -70,11 +66,11 @@ interface CragRouteListColumn {
   excludeFromSort?: boolean;
   isDefault: boolean;
   width: number;
-}
+};
 
 interface CragRoutesContextType {
-  cragRoutesState: CragRoutesState;
-  setCragRoutesState: (cragRoutesState: CragRoutesState) => void;
+  cragRoutesState: TCragRoutesState;
+  setCragRoutesState: (cragRoutesState: TCragRoutesState) => void;
   checkedRoutes: TLogRoute[];
   setCheckedRoute: (routeId: string, checked: boolean) => void;
   uncheckAllRoutes: () => void;
@@ -95,7 +91,7 @@ const CragRoutesContext = createContext<CragRoutesContextType>({
   uncheckAllRoutes: () => {},
 });
 
-const cragRouteListColumns: CragRouteListColumn[] = [
+const cragRouteListColumns: TCragRouteListColumn[] = [
   {
     name: "select",
     isOptional: false,
@@ -206,8 +202,8 @@ const cragRouteListColumns: CragRouteListColumn[] = [
   },
 ];
 
-function CragRoutes({ crag, mySummary }: Props) {
-  const [cragRoutesState, setCragRoutesState] = useState<CragRoutesState>({
+function CragRoutes({ crag, mySummary }: TCragRoutesProps) {
+  const [cragRoutesState, setCragRoutesState] = useState<TCragRoutesState>({
     compact: null,
     combine: false,
     selectedColumns: cragRouteListColumns
@@ -413,7 +409,7 @@ function CragRoutes({ crag, mySummary }: Props) {
 export {
   cragRouteListColumns,
   CragRoutesContext,
-  type FilterOptions,
-  type SortOptions,
+  type TFilterOptions,
+  type TSortOptions,
 };
 export default CragRoutes;
