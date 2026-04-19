@@ -1,4 +1,6 @@
-import { Fragment } from "react";
+"use client";
+
+import { Fragment, useState } from "react";
 import ActivityType from "@/components/activity-type";
 import AscentType from "@/components/ascent-type";
 import Grade from "@/components/grade";
@@ -6,12 +8,20 @@ import Button from "@/components/ui/button";
 import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import { CalendarDailyActivitiesQuery } from "@/graphql/generated";
+import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import Dialog from "@/components/ui/dialog";
+import deleteActivityAction from "./lib/delete-activity-action";
+import { useRouter } from "next/navigation";
 
 type TCalendarDayPageProps = {
   activity: CalendarDailyActivitiesQuery["myActivities"]["items"][0];
 };
 
 function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
+  const router = useRouter();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleteActivityLoading, setIsDeleteActivityLoading] = useState(false);
+
   const metersClimbed = activity.routes.reduce(
     (acc, route) => acc + (route.route.length || 0),
     0
@@ -27,6 +37,14 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
         .filter(Boolean)
         .join(" ")
     : "";
+
+  const handleDeleteActivity = async () => {
+    setIsDeleteActivityLoading(true);
+    await deleteActivityAction(activity.id);
+    setIsDeleteActivityLoading(false);
+    setIsDeleteDialogOpen(false);
+    router.refresh();
+  };
 
   return (
     <div
@@ -48,9 +66,32 @@ function CalendarDayActivity({ activity }: TCalendarDayPageProps) {
               variant="text"
             />
           </h4>
-          <Button variant="quaternary">
-            <IconMore size={IconSize.regular} />
-          </Button>
+          <DropdownMenu
+            openTrigger={
+              <Button variant="quaternary">
+                <IconMore size={IconSize.regular} />
+              </Button>
+            }
+          >
+            <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+              Izbriši aktivnost
+            </DropdownMenuItem>
+          </DropdownMenu>
+
+          <Dialog
+            title="Izbriši aktivnost?"
+            isOpen={isDeleteDialogOpen}
+            setIsOpen={setIsDeleteDialogOpen}
+            confirm={{
+              label: "Izbriši",
+              callback: handleDeleteActivity,
+              dontCloseOnConfirm: true,
+              loading: isDeleteActivityLoading,
+            }}
+            cancel={{ label: "Prekliči" }}
+          >
+            <div>Si prepričan_a da želiš izbrisati aktivnost?</div>
+          </Dialog>
         </div>
         <div className="pt-4">
           {activity.type === "crag" && activity.crag ? (
