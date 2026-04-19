@@ -42,6 +42,7 @@ export async function gqlRequest<
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       next: { revalidate, tags },
+      ...(tags ? { cache: "force-cache" } : {}),
     });
   };
 

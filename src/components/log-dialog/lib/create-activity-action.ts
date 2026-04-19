@@ -7,6 +7,7 @@ import {
   CreateActivityInput,
   CreateActivityRouteInput,
 } from "@/graphql/generated";
+import { updateTag } from "next/cache";
 
 async function createActivityAction(
   activity: CreateActivityInput,
@@ -17,7 +18,9 @@ async function createActivityAction(
     routes: routes,
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 4000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  updateTag("custom-activity-types");
 
   if (result.error) {
     console.error(result.error);
