@@ -157,6 +157,7 @@ gql`
         label
         publishStatus
         bouldersOnly
+        position
         routes {
           id
           name

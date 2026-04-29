@@ -342,7 +342,7 @@ function CragRoutes({ crag, mySummary }: TCragRoutesProps) {
       }}
     >
       <CragRoutesActions />
-      <div className={`mx-auto 2xl:container text-center xs:px-8`}>
+      <div className="mx-auto 2xl:container text-center xs:px-8">
         <div
           ref={containerRef}
           className={`${cragRoutesState.compact === null ? "opacity-0" : ""}`}
@@ -373,8 +373,8 @@ function CragRoutes({ crag, mySummary }: TCragRoutesProps) {
                   crag={crag}
                   sector={sector as Sector}
                   ascents={ascents}
-                  isOpen={expandedSectors.includes(index + 1)}
-                  onToggle={() => toggleSector(index + 1)}
+                  isOpen={expandedSectors.includes(sector.position)}
+                  onToggle={() => toggleSector(sector.position)}
                   first={index === 0}
                   last={index === crag.sectors.length - 1}
                 />
