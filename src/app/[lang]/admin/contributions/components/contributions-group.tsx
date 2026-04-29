@@ -46,7 +46,7 @@ function ContributionsGroup({
   }
 
   return (
-    <div className="mt-4 pb-4 border-b border-neutral-200">
+    <div className="py-4 border-b border-neutral-200 first-of-type:border-t first-of-type:pt-4">
       <div className="flex items-start justify-between gap-8">
         {/* Crag where this group of contributions is in */}
         <div>

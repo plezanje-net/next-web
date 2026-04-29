@@ -40,6 +40,24 @@ async function ContributionsPage() {
       />
 
       <div className="mx-auto 2xl:container px-4 xs:px-8">
+        <p className="my-7">
+          {currentUser?.roles.includes("admin") ? (
+            <>
+              Prispevki v statusu <span className="font-medium">Osnutek</span>{" "}
+              so vidni samo tebi. Za objavo jih preglej in potrdi. Prispevki v
+              statusu <span className="font-medium">V pregledu</span> čakajo, da
+              jih pregledaš ter potrdiš ali zavrneš objavo.
+            </>
+          ) : (
+            <>
+              Prispevki v statusu <span className="font-medium">Osnutek</span>{" "}
+              so vidni samo tebi. Za objavo jih pošlji v pregled uredništvu.
+              Prispevki v statusu{" "}
+              <span className="font-medium">V pregledu</span> čakajo, da jih
+              uredništvo pregleda in objavi.
+            </>
+          )}
+        </p>
         {Object.values(contributionsGroups).map((group) => (
           <ContributionsGroup
             key={group.crag?.id}
