@@ -81,7 +81,7 @@ function CoordinatesInput({
         dialogSize={DialogSize.large}
         isOpen={mapDialogIsOpen}
         setIsOpen={setMapDialogIsOpen}
-        confirm={{ label: "Shrani", callback: handleMapDialogConfirm }}
+        confirm={{ label: "Uporabi", callback: handleMapDialogConfirm }}
         cancel={{ label: "Prekliči" }}
         titleSize={DialogTitleSize.large}
       >

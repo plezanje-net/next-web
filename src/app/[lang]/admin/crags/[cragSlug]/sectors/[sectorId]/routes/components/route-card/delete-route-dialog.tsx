@@ -39,6 +39,7 @@ function DeleteRouteDialog({
         dontCloseOnConfirm: true,
         loading: loading,
         disabled: loading,
+        destructive: true,
       }}
     >
       <>

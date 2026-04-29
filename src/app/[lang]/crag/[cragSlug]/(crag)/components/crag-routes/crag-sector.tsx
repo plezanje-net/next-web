@@ -2,7 +2,7 @@ import { CragSectorsQuery } from "@/graphql/generated";
 import Accordion from "@/components/ui/accordion";
 import CragRouteList from "./crag-route-list";
 
-interface Props {
+type TCragSectorProps = {
   crag: CragSectorsQuery["cragBySlug"];
   sector: CragSectorsQuery["cragBySlug"]["sectors"][number];
   ascents: Map<string, string>;
@@ -10,7 +10,7 @@ interface Props {
   isOpen: boolean;
   first?: boolean;
   last?: boolean;
-}
+};
 
 function CragSector({
   crag,
@@ -20,7 +20,14 @@ function CragSector({
   onToggle,
   first,
   last,
-}: Props) {
+}: TCragSectorProps) {
+  const sectorStatus =
+    sector.publishStatus === "draft"
+      ? "draft"
+      : sector.publishStatus === "in_review"
+        ? "in_review"
+        : "default";
+
   return (
     <>
       <Accordion
@@ -31,6 +38,7 @@ function CragSector({
         onClick={onToggle}
         first={first}
         last={last}
+        status={sectorStatus}
       >
         <div className="mx-4">
           <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />

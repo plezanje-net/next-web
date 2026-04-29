@@ -103,6 +103,34 @@ function ButtonPage() {
       </div>
 
       <div className="mt-14 w-80">
+        <h5>Tertiary button destructive</h5>
+        <div className="mt-4">
+          <Button variant="tertiary" intent="destructive">
+            <span className="flex">
+              <IconColumns />
+              <span>
+                <span className="ml-2">Button</span>
+              </span>
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>Tertiary button destructive disabled</h5>
+        <div className="mt-4">
+          <Button variant="tertiary" intent="destructive" disabled>
+            <span className="flex">
+              <IconColumns />
+              <span>
+                <span className="ml-2">Button</span>
+              </span>
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
         <h5>Quaternary button (text only)</h5>
         <div className="mt-4">
           <Button variant="quaternary">Button</Button>
@@ -189,6 +217,24 @@ function ButtonPage() {
         <h5>As Link Tertiary button disabled</h5>
         <div className="mt-4">
           <Button variant="asLinkTertiary" disabled>
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>Primary button destructive</h5>
+        <div className="mt-4">
+          <Button variant="primary" intent="destructive">
+            Button
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-14 w-80">
+        <h5>Primary button destructive disabled</h5>
+        <div className="mt-4">
+          <Button variant="primary" intent="destructive" disabled>
             Button
           </Button>
         </div>

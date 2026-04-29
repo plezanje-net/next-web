@@ -16,6 +16,7 @@ type TButtonProps = {
     | "asLinkPrimary"
     | "asLinkSecondary"
     | "asLinkTertiary";
+  intent?: "default" | "destructive";
   disabled?: boolean;
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -27,6 +28,7 @@ const Button = forwardRef(function Button(
   {
     children,
     variant = "primary",
+    intent = "default",
     disabled = false,
     loading = false,
     onClick,
@@ -44,7 +46,11 @@ const Button = forwardRef(function Button(
     case "secondary":
     case "tertiary":
     case "quaternary":
-      buttonStyles += " flex focus-visible:ring focus-visible:ring-blue-100";
+      if (intent === "destructive") {
+        buttonStyles += " flex focus-visible:ring focus-visible:ring-red-100";
+      } else {
+        buttonStyles += " flex focus-visible:ring focus-visible:ring-blue-100";
+      }
       break;
 
     case "asLinkPrimary":
@@ -58,9 +64,16 @@ const Button = forwardRef(function Button(
   switch (variant) {
     case "primary":
       buttonStyles += " rounded-lg py-2 px-7 font-medium text-white";
-      buttonStyles += disabled
-        ? " bg-blue-100 cursor-default"
-        : " bg-blue-500 hover:bg-blue-600 active:bg-blue-700";
+
+      if (intent === "destructive") {
+        buttonStyles += disabled
+          ? " bg-red-100 cursor-default"
+          : " bg-red-500 hover:bg-red-600 active:bg-red-700";
+      } else {
+        buttonStyles += disabled
+          ? " bg-blue-100 cursor-default"
+          : " bg-blue-500 hover:bg-blue-600 active:bg-blue-700";
+      }
       break;
 
     case "secondary":
@@ -72,16 +85,30 @@ const Button = forwardRef(function Button(
 
     case "tertiary":
       buttonStyles += " rounded p-1";
-      buttonStyles += disabled
-        ? " text-blue-100 cursor-default"
-        : " text-blue-500 hover:text-blue-600 active:text-blue-700";
+
+      if (intent === "destructive") {
+        buttonStyles += disabled
+          ? " text-red-100 cursor-default"
+          : " text-red-500 hover:text-red-600 active:text-red-700";
+      } else {
+        buttonStyles += disabled
+          ? " text-blue-100 cursor-default"
+          : " text-blue-500 hover:text-blue-600 active:text-blue-700";
+      }
       break;
 
     case "quaternary":
       buttonStyles += " rounded p-1";
-      buttonStyles += disabled
-        ? " text-neutral-400 cursor-default"
-        : " hover:text-blue-500 active:text-blue-600";
+
+      if (intent === "destructive") {
+        buttonStyles += disabled
+          ? " text-neutral-400 cursor-default"
+          : " hover:text-red-500 active:text-red-600";
+      } else {
+        buttonStyles += disabled
+          ? " text-neutral-400 cursor-default"
+          : " hover:text-blue-500 active:text-blue-600";
+      }
       break;
 
     case "asLinkPrimary":

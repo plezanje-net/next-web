@@ -8,6 +8,8 @@ import Link from "@/components/ui/link";
 import { CragRoutesContext } from "../../crag-routes";
 import { pluralizeNoun } from "../../../../../../../../lib/text-helpers";
 import Checkbox from "@/components/ui/checkbox";
+import RouteGrade from "./crag-route/route-grade";
+import RouteStarRating from "@/components/route-star-rating";
 
 interface Props {
   crag: CragSectorsQuery["cragBySlug"];
@@ -49,7 +51,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route difficulty */}
       {displayColumn("difficulty") && (
         <td className="p-4">
-          {/* <RouteGrade route={route} crag={crag} /> */}
+          <RouteGrade route={route} />
         </td>
       )}
 
@@ -81,7 +83,7 @@ function CragRoute({ crag, route, ascent }: Props) {
       {/* Route star rating */}
       {displayColumn("starRating") && (
         <td className="p-4">
-          {/* <RouteStarRating route={route} size={IconSize.regular} /> */}
+          <RouteStarRating route={route} size={IconSize.regular} />
         </td>
       )}
 
@@ -110,9 +112,9 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
     cragRoutesState.selectedColumns.includes(name);
 
   const statsText = Object.entries({
-    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks!),
-    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers!),
-    nrTries: pluralizeNoun("poskus", route.nrTries!),
+    nrTicks: pluralizeNoun("uspešen vzpon", route.nrTicks ?? 0),
+    nrClimbers: pluralizeNoun("plezalec", route.nrClimbers ?? 0),
+    nrTries: pluralizeNoun("poskus", route.nrTries ?? 0),
   })
     .filter(([key, _]) => displayColumn(key))
     .map(([_, value]) => value)
@@ -121,7 +123,7 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
   return (
     <div
       aria-label={route.name}
-      className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none"
+      className="mt-2 flex items-center border-b border-neutral-200 pb-2 last:border-none text-left"
     >
       <div className="w-7">
         <Checkbox
@@ -131,19 +133,18 @@ function CragRouteCompact({ crag, route, ascent }: Props) {
           onChange={(c) => setCheckedRoute(route.id, c)}
         />
       </div>
-      <div className="w-full pr-4">
+      <div className="w-full">
         <div className="flex justify-between font-medium">
           <RouteLink route={route} crag={crag} />
           {displayColumn("starRating") && (
-            <></>
-            // <RouteStarRating route={route} size={IconSize.small} />
+            <RouteStarRating route={route} size={IconSize.small} />
           )}
         </div>
         <div className="flex items-center justify-between">
           <div className="flex">
             {displayColumn("difficulty") && (
               <div className="-m-1 pr-4">
-                {/* <RouteGrade route={route} crag={crag} /> */}
+                <RouteGrade route={route} />
               </div>
             )}
             {displayColumn("length") && !!route.length && (

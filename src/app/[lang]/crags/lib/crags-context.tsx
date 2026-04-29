@@ -5,7 +5,6 @@ import {
   AllCragsQuery,
   Area,
   Country,
-  Crag,
   Orientation,
   Season,
   WallAngle,

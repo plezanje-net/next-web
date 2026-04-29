@@ -40,6 +40,7 @@ function DeleteSectorDialog({
         dontCloseOnConfirm: true,
         loading: loading,
         disabled: loading,
+        destructive: true,
       }}
     >
       <>

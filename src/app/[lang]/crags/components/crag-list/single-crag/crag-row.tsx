@@ -1,4 +1,4 @@
-import { AllCragsQuery, Crag } from "@/graphql/generated";
+import { AllCragsQuery } from "@/graphql/generated";
 import Seasons from "./seasons";
 import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
@@ -14,6 +14,13 @@ type TCragRowProps = {
 function CragRow({ crag }: TCragRowProps) {
   const { columns } = useCragsContext();
 
+  const cragLinkStatus =
+    crag.publishStatus === "draft"
+      ? "draft"
+      : crag.publishStatus === "in_review"
+        ? "in_review"
+        : "default";
+
   return (
     <tr className="border-b border-neutral-200">
       {columns.shown.map((column, index) => {
@@ -21,7 +28,11 @@ function CragRow({ crag }: TCragRowProps) {
         switch (column.name) {
           case "name":
             cellContent = (
-              <Link href={`/plezalisce/${crag.slug}`} variant="secondary">
+              <Link
+                href={`/plezalisce/${crag.slug}`}
+                variant="secondary"
+                status={cragLinkStatus}
+              >
                 {crag.name}
               </Link>
             );

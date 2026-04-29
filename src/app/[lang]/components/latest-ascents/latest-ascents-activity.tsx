@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { HomeLatestAscentsQuery } from "@/graphql/generated";
 import displayDate from "../../../../lib/display-date";
@@ -8,11 +9,11 @@ import RouteLink from "@/components/route-link";
 import IconCollapse from "@/components/ui/icons/collapse";
 import IconExpand from "@/components/ui/icons/expand";
 
-type Params = {
+type TLatestAscentsActivityProps = {
   activity: HomeLatestAscentsQuery["activities"]["items"][number];
 };
 
-function LatestAscentsActivity({ activity }: Params) {
+function LatestAscentsActivity({ activity }: TLatestAscentsActivityProps) {
   const [expanded, setExpanded] = useState(false);
   const toggleCommentsHandler = () => setExpanded(!expanded);
 

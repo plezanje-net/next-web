@@ -52,10 +52,16 @@ module.exports = {
         25: "#FBECEA",
         50: "#F7D9D5",
         100: "#F0B3AA",
-        500: "#d9422b",
+        500: "#D9422B",
+        600: "#B83825",
+        700: "#982E1E",
       },
       amber: {
         25: "#FBF5EA",
+        50: "#F7ECD5",
+        500: "#D99E2B",
+        600: "#B88625",
+        700: "986E1E",
       },
       current: "currentColor",
 
@@ -95,6 +101,7 @@ module.exports = {
         80: "20rem", // 320px
       },
       margin: {
+        2.5: "0.625rem", // 10px
         18: "4.5rem", // 72px
       },
       keyframes: {
