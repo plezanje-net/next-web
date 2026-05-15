@@ -59,6 +59,7 @@ module.exports = {
       amber: {
         25: "#FBF5EA",
         50: "#F7ECD5",
+        100: "#F0D8AA",
         500: "#D99E2B",
         600: "#B88625",
         700: "986E1E",

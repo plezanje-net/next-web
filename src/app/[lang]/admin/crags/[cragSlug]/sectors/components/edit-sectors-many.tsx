@@ -28,6 +28,7 @@ import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 import { canEdit } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import PublishStatusLegend from "../../../components/publish-status-legend";
 
 type TEditSectorsManyProps = {
   crag: EditSectorsPageCragQuery["cragBySlug"];
@@ -162,6 +163,10 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
           </div>
         </SortableContext>
       </DndContext>
+
+      {crag.sectors.some((sector) => sector.publishStatus !== "published") && (
+        <PublishStatusLegend className="mt-8" />
+      )}
 
       {sectorDialogType === "new" ? (
         <SectorDialog
