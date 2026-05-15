@@ -37,6 +37,22 @@ type TContributableCrag = {
   }[];
 };
 
+type TContributableSector = {
+  __typename: Sector["__typename"];
+  id: Sector["id"];
+  name: Sector["name"];
+  publishStatus: Sector["publishStatus"];
+  crag: {
+    id: Crag["id"];
+    publishStatus: Crag["publishStatus"];
+  };
+  routes: {}[];
+  user?: {
+    id: User["id"];
+    fullName: User["fullName"];
+  } | null;
+};
+
 type TContributableRoute = {
   __typename: Route["__typename"];
   id: Route["id"];
@@ -52,7 +68,10 @@ type TContributableRoute = {
   };
 };
 
-type TContributable = TContributableCrag | TContributableRoute | Sector;
+type TContributable =
+  | TContributableCrag
+  | TContributableRoute
+  | TContributableSector;
 
 export { canEdit, getBgStyle };
 export type { TContributable };

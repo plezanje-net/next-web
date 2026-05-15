@@ -1,6 +1,8 @@
 import { CragSectorsQuery } from "@/graphql/generated";
 import Accordion from "@/components/ui/accordion";
 import CragRouteList from "./crag-route-list";
+import PublishStatusCard from "../../../../../components/publish-status-card";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TCragSectorProps = {
   crag: CragSectorsQuery["cragBySlug"];
@@ -28,6 +30,8 @@ function CragSector({
         ? "in_review"
         : "default";
 
+  const { currentUser } = useAuthContext();
+
   return (
     <>
       <Accordion
@@ -41,6 +45,14 @@ function CragSector({
         status={sectorStatus}
       >
         <div className="mx-4">
+          {sectorStatus !== "default" && (
+            <div className="my-2 text-left">
+              <PublishStatusCard
+                contributable={sector}
+                currentUser={currentUser}
+              />
+            </div>
+          )}
           <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />
         </div>
       </Accordion>

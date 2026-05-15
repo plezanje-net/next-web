@@ -4,6 +4,7 @@ import { CragCommentsDocument } from "@/graphql/generated";
 import Comment, { CommentType } from "./components/comment";
 import AddCommentForm from "./components/add-comment-form";
 import PublishStatusCard from "../../../../components/publish-status-card";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 interface Params {
   cragSlug: string;
@@ -16,13 +17,15 @@ async function CragComments(props: { params: Promise<Params> }) {
   });
   const crag = data.cragBySlug;
 
+  const currentUser = await getCurrentUser();
+
   return (
     <div>
       {/* Possible publish status card */}
       {crag.publishStatus !== "published" && (
         <div className="px-4 xs:px-8 2xl:container mx-auto mt-7 mb-3">
           <div className="mx-auto max-w-lg">
-            <PublishStatusCard contributable={crag} />
+            <PublishStatusCard contributable={crag} currentUser={currentUser} />
           </div>
         </div>
       )}

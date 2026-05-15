@@ -1,19 +1,19 @@
 import { genderizeVerb } from "@/lib/text-helpers";
-import getCurrentUser from "@/lib/auth/get-current-user";
 import { getBgStyle, TContributable } from "@/lib/contributables-helpers";
 import PublishStatusActions from "./publish-status-card/publish-status-actions";
+import { User } from "@/graphql/generated";
 
 type TPublishStatusCardProps = {
   contributable: TContributable;
   redirectAfterReject?: string;
+  currentUser?: User | null;
 };
 
-async function PublishStatusCard({
+function PublishStatusCard({
   contributable,
   redirectAfterReject,
+  currentUser,
 }: TPublishStatusCardProps) {
-  const currentUser = await getCurrentUser();
-
   return (
     <div
       className={`@container w-full mx-auto rounded-lg ${getBgStyle(contributable.publishStatus)}`}
@@ -30,6 +30,14 @@ async function PublishStatusCard({
                 </>
               )}
             {contributable.publishStatus === "draft" &&
+              contributable.__typename === "Sector" && (
+                <>
+                  Sektor je v statusu{" "}
+                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  urejanjem sektorja, ga objavi.
+                </>
+              )}
+            {contributable.publishStatus === "draft" &&
               contributable.__typename === "Route" && (
                 <>
                   Smer je v statusu <span className="font-medium">osnutek</span>
@@ -41,6 +49,14 @@ async function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
+                  <span className="font-medium">v pregledu</span>. Ko zaključiš
+                  s pregledom potrdi ali zavrni objavo.
+                </>
+              )}
+            {contributable.publishStatus === "in_review" &&
+              contributable.__typename === "Sector" && (
+                <>
+                  Sektor je v statusu{" "}
                   <span className="font-medium">v pregledu</span>. Ko zaključiš
                   s pregledom potrdi ali zavrni objavo.
                 </>
@@ -66,6 +82,14 @@ async function PublishStatusCard({
                 </>
               )}
             {contributable.publishStatus === "draft" &&
+              contributable.__typename === "Sector" && (
+                <>
+                  Sektor je v statusu{" "}
+                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  urejanjem sektorja, ga pošlji uredništvu v pregled in objavo.
+                </>
+              )}
+            {contributable.publishStatus === "draft" &&
               contributable.__typename === "Route" && (
                 <>
                   Smer je v statusu <span className="font-medium">osnutek</span>
@@ -78,6 +102,14 @@ async function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
+                  <span className="font-medium">v pregledu</span>. Prispevek bo
+                  objavljen ko bo pregledan s strani uredništva.
+                </>
+              )}
+            {contributable.publishStatus === "in_review" &&
+              contributable.__typename === "Sector" && (
+                <>
+                  Sektor je v statusu{" "}
                   <span className="font-medium">v pregledu</span>. Prispevek bo
                   objavljen ko bo pregledan s strani uredništva.
                 </>

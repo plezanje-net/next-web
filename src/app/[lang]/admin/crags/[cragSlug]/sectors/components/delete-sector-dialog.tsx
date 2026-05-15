@@ -1,5 +1,5 @@
 import Dialog from "@/components/ui/dialog";
-import { Sector } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 import { Dispatch, SetStateAction, useState } from "react";
 import deleteSectorAction from "../lib/delete-sector-action";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { labelAndNameToString } from "@/lib/sector-helpers";
 type TDeleteSectorDialog = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  sector: Sector;
+  sector: EditSectorsPageCragQuery["cragBySlug"]["sectors"][number];
 };
 
 function DeleteSectorDialog({

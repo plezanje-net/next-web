@@ -3,7 +3,7 @@
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconRoutes from "@/components/ui/icons/routes";
-import { Crag } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 import { usePathname, useRouter } from "next/navigation";
 import ConvertToSectorsManyDialog from "./convert-to-sectors-many-dialog";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { canEdit } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 type TEditSectorsNoneProps = {
-  crag: Crag;
+  crag: EditSectorsPageCragQuery["cragBySlug"];
 };
 
 function EditSectorsNone({ crag }: TEditSectorsNoneProps) {

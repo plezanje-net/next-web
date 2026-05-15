@@ -6,19 +6,18 @@ import { IconSize } from "@/components/ui/icons/icon-size";
 import IconMore from "@/components/ui/icons/more";
 import IconPlus from "@/components/ui/icons/plus";
 import IconRoutes from "@/components/ui/icons/routes";
-import { Sector } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 import { genderizeVerb } from "@/lib/text-helpers";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { usePathname, useRouter } from "next/navigation";
-
 import { labelAndNameToString } from "@/lib/sector-helpers";
 import { canEdit, getBgStyle } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
 import PublishStatusActions from "../../../../../components/publish-status-card/publish-status-actions";
 
 type TSectorCardProps = {
-  sector: Sector;
+  sector: EditSectorsPageCragQuery["cragBySlug"]["sectors"][number];
   disabled?: boolean;
   onAddClick: () => void;
   onEditClick: () => void;

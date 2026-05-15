@@ -11,7 +11,7 @@ import {
 import createSectorAction from "../lib/create-sector-action";
 import { useRouter } from "next/navigation";
 import updateSectorAction from "../lib/update-sector-action";
-import { Sector } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 
 type TSectorDialogBaseProps = {
   formType: "new" | "edit";
@@ -29,7 +29,7 @@ type TNewSectorDialogProps = TSectorDialogBaseProps & {
 
 type TEditSectorDialogProps = TSectorDialogBaseProps & {
   formType: "edit";
-  sector: Sector;
+  sector: EditSectorsPageCragQuery["cragBySlug"]["sectors"][number];
 
   position?: never;
   cragId?: never;

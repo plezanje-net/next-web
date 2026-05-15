@@ -11,6 +11,7 @@ import EditCragForm from "./components/edit-crag-form";
 import { gqlRequest } from "@/lib/gql-request";
 import { gql } from "graphql-request";
 import PublishStatusCard from "../../../../components/publish-status-card";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 type TEditCragPageProps = { params: Promise<{ cragSlug: string }> };
 
@@ -28,6 +29,8 @@ async function EditCragPage(props: TEditCragPageProps) {
   ]);
 
   const crag = cragData.cragBySlug;
+
+  const currentUser = await getCurrentUser();
 
   return (
     <>
@@ -66,7 +69,7 @@ async function EditCragPage(props: TEditCragPageProps) {
       {crag.publishStatus !== "published" && (
         <div className="flex justify-center px-4 xs:px-8 mt-7">
           <div className="w-full max-w-2xl">
-            <PublishStatusCard contributable={crag} />
+            <PublishStatusCard contributable={crag} currentUser={currentUser} />
           </div>
         </div>
       )}

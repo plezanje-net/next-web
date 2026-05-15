@@ -3,6 +3,7 @@ import ImageList from "@/components/image-list/image-list";
 import { CragGalleryDocument, Image } from "@/graphql/generated";
 import { gql } from "graphql-request";
 import PublishStatusCard from "../../../../components/publish-status-card";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 type TCragGalleryPageParams = {
   cragSlug: string;
@@ -20,12 +21,14 @@ async function CragGalleryPage(props: {
   const images = crag.images as Image[];
   const imagesBaseUrl = `${process.env.NEXT_PUBLIC_IMAGES_BASEURL}`;
 
+  const currentUser = await getCurrentUser();
+
   return (
     <>
       {/* Possible publish status card */}
       {crag.publishStatus !== "published" && (
         <div className="px-4 xs:px-8 2xl:container mx-auto mt-7 mb-3">
-          <PublishStatusCard contributable={crag} />
+          <PublishStatusCard contributable={crag} currentUser={currentUser} />
         </div>
       )}
 

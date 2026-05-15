@@ -5,7 +5,6 @@ import {
   AscentType,
   CragSectorsQuery,
   PublishType,
-  Sector,
 } from "@/graphql/generated";
 import { createContext, useCallback, useLayoutEffect, useState } from "react";
 import CragRouteList from "./crag-routes/crag-route-list";
@@ -371,7 +370,7 @@ function CragRoutes({ crag, mySummary }: TCragRoutesProps) {
               >
                 <CragSector
                   crag={crag}
-                  sector={sector as Sector}
+                  sector={sector}
                   ascents={ascents}
                   isOpen={expandedSectors.includes(sector.position)}
                   onToggle={() => toggleSector(sector.position)}

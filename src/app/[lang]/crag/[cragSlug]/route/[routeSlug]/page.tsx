@@ -49,6 +49,7 @@ async function RoutePage(props: { params: Promise<Params> }) {
         <div className="px-4 xs:px-8 2xl:container mx-auto mt-7">
           <PublishStatusCard
             contributable={route}
+            currentUser={user}
             redirectAfterReject={`/plezalisce/${cragSlug}`}
           />
         </div>

@@ -31,6 +31,7 @@ import { TLazyMapMarkerProps } from "@/components/map/lazy-map-marker";
 import DropdownMenu, { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import Button from "@/components/ui/button";
 import PublishStatusCard from "../../../../components/publish-status-card";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 type TCragInfoPageParams = {
   cragSlug: string;
@@ -70,6 +71,8 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
     minRouteLength: null,
     maxRouteLength: null,
   };
+
+  const currentUser = await getCurrentUser();
 
   // Find lenghts of shortest and longest route.
   const routeLengths = crag.sectors
@@ -163,7 +166,7 @@ async function CragInfoPage(props: { params: Promise<TCragInfoPageParams> }) {
       {/* Possible publish status card */}
       {crag.publishStatus !== "published" && (
         <div className="px-4 xs:px-8 2xl:container mx-auto my-7">
-          <PublishStatusCard contributable={crag} />
+          <PublishStatusCard contributable={crag} currentUser={currentUser} />
         </div>
       )}
 

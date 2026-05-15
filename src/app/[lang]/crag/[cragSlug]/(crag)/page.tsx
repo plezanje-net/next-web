@@ -122,7 +122,10 @@ async function CragPage(props: Props) {
       {/* Possible publish status card */}
       {cragBySlug.publishStatus !== "published" && (
         <div className="px-4 xs:px-8 2xl:container mx-auto mt-7 mb-3">
-          <PublishStatusCard contributable={cragBySlug} />
+          <PublishStatusCard
+            contributable={cragBySlug}
+            currentUser={currentUser}
+          />
         </div>
       )}
 
@@ -152,12 +155,21 @@ gql`
         fullName
       }
       sectors {
+        __typename
         id
         name
         label
         publishStatus
         bouldersOnly
         position
+        crag {
+          id
+          publishStatus
+        }
+        user {
+          id
+          fullName
+        }
         routes {
           id
           name
