@@ -1,5 +1,5 @@
 import FilterChip from "./filter-chip";
-import { Filter } from "./filtersHelp";
+import { Filter } from "./filters";
 
 type TActiveFiltersProps = {
   filters: Record<string, Filter>;

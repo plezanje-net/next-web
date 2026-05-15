@@ -1,6 +1,6 @@
 import IconFilter from "@/components/ui/icons/filter";
 import { Fragment } from "react";
-import { Filter, MultiFilter, RangeFilter } from "./filtersHelp";
+import { Filter, MultiFilter, RangeFilter } from "./filters";
 import Button from "@/components/ui/button";
 import IconReset from "@/components/ui/icons/reset";
 
