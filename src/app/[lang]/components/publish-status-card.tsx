@@ -25,7 +25,7 @@ function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
-                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  <span className="font-medium">Osnutek</span>. Ko zaključiš z
                   urejanjem plezališča ter sektorjev in smeri v njem, ga objavi.
                 </>
               )}
@@ -33,14 +33,14 @@ function PublishStatusCard({
               contributable.__typename === "Sector" && (
                 <>
                   Sektor je v statusu{" "}
-                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  <span className="font-medium">Osnutek</span>. Ko zaključiš z
                   urejanjem sektorja, ga objavi.
                 </>
               )}
             {contributable.publishStatus === "draft" &&
               contributable.__typename === "Route" && (
                 <>
-                  Smer je v statusu <span className="font-medium">osnutek</span>
+                  Smer je v statusu <span className="font-medium">Osnutek</span>
                   . Ko zaključiš z urejanjem smeri, jo objavi.
                 </>
               )}
@@ -49,7 +49,7 @@ function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Ko zaključiš
+                  <span className="font-medium">V pregledu</span>. Ko zaključiš
                   s pregledom potrdi ali zavrni objavo.
                 </>
               )}
@@ -57,7 +57,7 @@ function PublishStatusCard({
               contributable.__typename === "Sector" && (
                 <>
                   Sektor je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Ko zaključiš
+                  <span className="font-medium">V pregledu</span>. Ko zaključiš
                   s pregledom potrdi ali zavrni objavo.
                 </>
               )}
@@ -65,7 +65,7 @@ function PublishStatusCard({
               contributable.__typename === "Route" && (
                 <>
                   Smer je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Ko zaključiš
+                  <span className="font-medium">V pregledu</span>. Ko zaključiš
                   s pregledom potrdi ali zavrni objavo.
                 </>
               )}
@@ -76,7 +76,7 @@ function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
-                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  <span className="font-medium">Osnutek</span>. Ko zaključiš z
                   urejanjem plezališča ter sektorjev in smeri v njem, ga pošlji
                   uredništvu v pregled in objavo.
                 </>
@@ -85,14 +85,14 @@ function PublishStatusCard({
               contributable.__typename === "Sector" && (
                 <>
                   Sektor je v statusu{" "}
-                  <span className="font-medium">osnutek</span>. Ko zaključiš z
+                  <span className="font-medium">Osnutek</span>. Ko zaključiš z
                   urejanjem sektorja, ga pošlji uredništvu v pregled in objavo.
                 </>
               )}
             {contributable.publishStatus === "draft" &&
               contributable.__typename === "Route" && (
                 <>
-                  Smer je v statusu <span className="font-medium">osnutek</span>
+                  Smer je v statusu <span className="font-medium">Osnutek</span>
                   . Ko zaključiš z urejanjem smeri, jo pošlji uredništvu v
                   pregled in objavo.
                 </>
@@ -102,7 +102,7 @@ function PublishStatusCard({
               contributable.__typename === "Crag" && (
                 <>
                   Plezališče je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Prispevek bo
+                  <span className="font-medium">V pregledu</span>. Prispevek bo
                   objavljen ko bo pregledan s strani uredništva.
                 </>
               )}
@@ -110,7 +110,7 @@ function PublishStatusCard({
               contributable.__typename === "Sector" && (
                 <>
                   Sektor je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Prispevek bo
+                  <span className="font-medium">V pregledu</span>. Prispevek bo
                   objavljen ko bo pregledan s strani uredništva.
                 </>
               )}
@@ -118,7 +118,7 @@ function PublishStatusCard({
               contributable.__typename === "Route" && (
                 <>
                   Smer je v statusu{" "}
-                  <span className="font-medium">v pregledu</span>. Prispevek bo
+                  <span className="font-medium">V pregledu</span>. Prispevek bo
                   objavljen ko bo pregledan s strani uredništva.
                 </>
               )}
