@@ -24,9 +24,7 @@ async function CragComments(props: { params: Promise<Params> }) {
       {/* Possible publish status card */}
       {crag.publishStatus !== "published" && (
         <div className="px-4 xs:px-8 2xl:container mx-auto mt-7 mb-3">
-          <div className="mx-auto max-w-lg">
-            <PublishStatusCard contributable={crag} currentUser={currentUser} />
-          </div>
+          <PublishStatusCard contributable={crag} currentUser={currentUser} />
         </div>
       )}
 
