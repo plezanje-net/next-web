@@ -1,39 +1,14 @@
-import { Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import IconMarker from "../ui/icons/marker";
-import { ReactNode } from "react";
-import { useClientRenderToString } from "@/hooks/useClientRenderToString";
+"use client";
 
-type TMapMarkerProps = {
-  marker: TMarker;
-  index: number;
-};
+import dynamic from "next/dynamic";
+import { TLazyMapMarkerProps as TMapMarkerProps } from "./lazy-map-marker";
 
-type TMarker = {
-  type: "parking" | "wall";
-  position: [number, number];
-  popupContent?: ReactNode;
-};
+const LazyMapMarker = dynamic(() => import("./lazy-map-marker"), {
+  ssr: false,
+});
 
-function MapMarker({ marker, index }: TMapMarkerProps) {
-  const [icon] = useClientRenderToString(<IconMarker type={marker.type} />);
-
-  return (
-    <Marker
-      key={index}
-      icon={L.divIcon({
-        className: "",
-        html: icon,
-        iconSize: [52, 52],
-        iconAnchor: [26, 52],
-        popupAnchor: [0, -46],
-      })}
-      position={marker.position}
-    >
-      <Popup>{marker.popupContent}</Popup>
-    </Marker>
-  );
+function MapMarker(props: TMapMarkerProps) {
+  return <LazyMapMarker {...props} />;
 }
 
-export type { TMarker };
 export default MapMarker;

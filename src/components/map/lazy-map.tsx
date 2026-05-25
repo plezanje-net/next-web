@@ -5,26 +5,29 @@ import L, { FitBoundsOptions } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { ReactNode } from "react";
 import "./map.css";
-import MapMarker, { TMarker } from "./map-marker";
+import MapMarker from "./map-marker";
+import { TLazyMapMarkerProps } from "./lazy-map-marker";
 
 type TLazyMapProps = {
   children?: ReactNode;
-  markers?: TMarker[];
+  markersData?: TLazyMapMarkerProps[];
   className?: string;
   center?: [number, number];
   zoom?: number;
   autoBounds?: boolean;
+  scrollWheelZoom?: boolean;
 };
 
 function LazyMap({
   children,
-  markers,
+  markersData,
   className,
   center,
   zoom,
   autoBounds,
+  scrollWheelZoom = false,
 }: TLazyMapProps) {
-  let mapClassName = "h-[600px] w-full xs:rounded-lg";
+  let mapClassName = "h-[600px] w-full cursor-loading";
   if (className) {
     mapClassName = `${mapClassName} ${className}`;
   }
@@ -37,8 +40,9 @@ function LazyMap({
     boundsOptions?: FitBoundsOptions;
     zoom?: number;
   } = {};
-  if (autoBounds && markers) {
-    boundsOrCenterAndZoom.bounds = markers.map((marker) => marker.position);
+
+  if (autoBounds && markersData) {
+    boundsOrCenterAndZoom.bounds = markersData.map(({ position }) => position);
     boundsOrCenterAndZoom.boundsOptions = { padding: [30, 60] };
   } else {
     boundsOrCenterAndZoom.center = center;
@@ -48,7 +52,7 @@ function LazyMap({
   return (
     <MapContainer
       {...boundsOrCenterAndZoom}
-      scrollWheelZoom={false}
+      scrollWheelZoom={scrollWheelZoom}
       className={mapClassName}
     >
       <TileLayer
@@ -56,8 +60,13 @@ function LazyMap({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {markers?.map((marker, index) => (
-        <MapMarker key={index} marker={marker} index={index} />
+      {markersData?.map(({ type, position, popupContent }, index) => (
+        <MapMarker
+          key={index}
+          type={type}
+          position={position}
+          popupContent={popupContent}
+        />
       ))}
 
       {children}

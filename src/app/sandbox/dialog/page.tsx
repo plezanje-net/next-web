@@ -1,8 +1,8 @@
 "use client";
+
 import { useState } from "react";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import IconFilter from "@/components/ui/icons/filter";
-import Link from "@/components/ui/link";
 import Button from "@/components/ui/button";
 
 function DialogPage() {
@@ -69,11 +69,11 @@ function DialogPage() {
       </div>
 
       <div className="mt-14 w-80">
-        <h5>Large dialog with a link trigger</h5>
+        <h5>Large dialog with a button as link trigger</h5>
         <div className="mt-4">
           <Dialog
             title="Test Dialog"
-            openTrigger={<Link href="">Open Dialog</Link>}
+            openTrigger={<Button variant="asLinkPrimary">Open Dialog</Button>}
             confirm={{ label: "Confirm" }}
             cancel={{ label: "Cancel" }}
             dialogSize={DialogSize.large}

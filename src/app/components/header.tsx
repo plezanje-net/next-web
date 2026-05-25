@@ -1,12 +1,13 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import IconClose from "@/components/ui/icons/close";
 import IconMenu from "@/components/ui/icons/menu";
 import IconSearch from "@/components/ui/icons/search";
 import Logo from "./header/logo";
-import { useI18nPathname } from "@/utils/hooks/use-i18n-pathname";
-import { AuthStatus } from "@/utils/auth/auth-status";
+import { useI18nPathname } from "@/hooks/use-i18n-pathname";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
 type NavLink = {
   label: string;
@@ -14,11 +15,7 @@ type NavLink = {
   isActive: boolean;
 };
 
-interface Props {
-  authStatus: AuthStatus;
-}
-
-function Header({ authStatus }: Props) {
+function Header() {
   const i18nPathname = useI18nPathname();
 
   const navLinks: NavLink[] = [
@@ -45,18 +42,18 @@ function Header({ authStatus }: Props) {
     setMenuOpened(!menuOpened);
   };
 
-  const loggedIn = authStatus?.loggedIn;
+  const { currentUser, loggedIn } = useAuthContext();
 
-  const userFullName = authStatus?.user?.fullName;
+  const userFullName = currentUser?.fullName;
   const userFullNameShort = [
-    authStatus.user?.firstname ?? "",
-    authStatus.user?.lastname ?? "",
+    currentUser?.firstname ?? "",
+    currentUser?.lastname ?? "",
   ]
     .reduce((prev, curr) => prev + curr[0], "")
     .toUpperCase();
 
   return (
-    <header className="flex flex-col justify-between px-4 xs:px-8 lg:flex-row lg:items-center">
+    <header className="flex flex-col justify-between px-4 xs:px-8 lg:flex-row lg:items-center border-neutral-200 border-b">
       {/* Logo row */}
       <div className="box-content flex h-20 items-center justify-between">
         {/* Logo */}

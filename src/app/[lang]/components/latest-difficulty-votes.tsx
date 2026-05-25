@@ -1,20 +1,21 @@
-import { gql } from "@urql/core";
 import {
   DifficultyVote,
   HomeLatestDifficultyVotesDocument,
+  HomeLatestDifficultyVotesQuery,
 } from "@/graphql/generated";
 import LatestDifficultyVote from "./latest-difficulty-votes/latest-difficulty-vote";
 import LatestDifficultyVoteSkeleton from "./latest-difficulty-votes/latest-difficulty-vote-skeleton";
-import urqlServer from "@/graphql/urql-server";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function LatestDifficultyVotes() {
-  const { data } = await urqlServer().query(HomeLatestDifficultyVotesDocument, {
+  const { data } = await gqlRequest(HomeLatestDifficultyVotesDocument, {
     input: {
       pageSize: 10,
     },
   });
 
-  const difficultyVotes: DifficultyVote[] =
+  const difficultyVotes: HomeLatestDifficultyVotesQuery["latestDifficultyVotes"]["items"] =
     data?.latestDifficultyVotes.items ?? Array.from(new Array(10));
 
   return (

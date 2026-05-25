@@ -1,13 +1,12 @@
-import { Crag } from "@/graphql/generated";
 import CragCard from "./single-crag/crag-card";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function CragListCards() {
   const { crags } = useCragsContext();
 
   return (
     <div>
-      {crags.map((crag: Crag) => (
+      {crags.map((crag) => (
         <CragCard key={crag.id} crag={crag} />
       ))}
     </div>

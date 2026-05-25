@@ -2,6 +2,7 @@ enum IconSize {
   small = "small", // 20px
   regular = "regular", // 24px
   large = "large", // 40px
+  xl = "xl", // 52px
 }
 
 /**

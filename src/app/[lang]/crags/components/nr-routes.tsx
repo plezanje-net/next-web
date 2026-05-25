@@ -1,4 +1,4 @@
-import { pluralizeNoun } from "@/utils/text-helpers";
+import { pluralizeNoun } from "../../../../lib/text-helpers";
 
 type TNrRoutesProps = {
   nrRoutes: number;

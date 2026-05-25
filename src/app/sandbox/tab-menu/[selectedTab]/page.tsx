@@ -1,12 +1,15 @@
 "use client";
-import TabMenu, { TabMenuItem } from "@/components/ui/tab-menu";
+import { use } from "react";
 
-interface Params {
-  params: { selectedTab?: string };
-}
+import TabMenu, { TTabMenuItem } from "@/components/ui/tab-menu";
 
-function TabMenuPage({ params }: Params) {
-  const menuItems: TabMenuItem[] = [
+type TTabMenuPageParams = {
+  params: Promise<{ selectedTab?: string }>;
+};
+
+function TabMenuPage(props: TTabMenuPageParams) {
+  const params = use(props.params);
+  const menuItems: TTabMenuItem[] = [
     {
       label: "Informacije",
       link: "/sandbox/tab-menu/info",
@@ -25,9 +28,11 @@ function TabMenuPage({ params }: Params) {
     {
       label: "Galerija",
       link: "/sandbox/tab-menu/galerija",
-      isActive: params.selectedTab === "galerija",
+      isActive: false,
+      isDisabled: true,
     },
   ];
+
   return (
     <div className="m-8">
       <h1 className="text-xl">Tab menu demo</h1>

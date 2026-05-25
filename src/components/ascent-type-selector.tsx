@@ -194,7 +194,7 @@ function AscentTypeSelector({
   return (
     <div>
       <RadioGroup
-        value={value}
+        value={value ?? undefined}
         onChange={onChange}
         className="flex flex-wrap justify-center gap-2"
         disabled={disabled}

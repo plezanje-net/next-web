@@ -1,25 +1,24 @@
-import { gql } from "urql/core";
-import urqlServer from "@/graphql/urql-server";
-import { Crag, CragCommentsDocument } from "@/graphql/generated";
+import { gql } from "graphql-request";
+import { gqlRequest } from "@/lib/gql-request";
+import { CragCommentsDocument } from "@/graphql/generated";
 import Comment, { CommentType } from "./components/comment";
 import AddCommentForm from "./components/add-comment-form";
-import authStatus from "@/utils/auth/auth-status";
 
 interface Params {
   cragSlug: string;
 }
 
-async function CragComments({ params }: { params: Params }) {
-  const { data } = await urqlServer().query(CragCommentsDocument, {
+async function CragComments(props: { params: Promise<Params> }) {
+  const params = await props.params;
+  const { data } = await gqlRequest(CragCommentsDocument, {
     crag: params.cragSlug,
   });
-  const crag = data.cragBySlug as Crag;
-  const currentUser = (await authStatus())?.user;
+  const crag = data.cragBySlug;
 
   return (
     <div className="mt-18 px-4 xs:px-8">
       <div className="mx-auto max-w-lg">
-        <AddCommentForm cragId={crag.id} currentUser={currentUser} />
+        <AddCommentForm cragId={crag.id} />
 
         <div className="mt-18">
           {crag.comments.map((comment) => (
@@ -34,7 +33,6 @@ async function CragComments({ params }: { params: Params }) {
                 content={comment.content}
                 type={comment.type as CommentType}
                 author={comment.user}
-                currentUser={currentUser}
               />
             </div>
           ))}

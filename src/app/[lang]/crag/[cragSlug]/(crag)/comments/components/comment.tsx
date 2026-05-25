@@ -1,4 +1,7 @@
-import { User } from "@/graphql/generated";
+"use client";
+
+import { CragCommentsQuery } from "@/graphql/generated";
+import { useAuthContext } from "@/lib/auth/auth-context";
 import CommentActions from "./comment-actions";
 
 interface CommentProps {
@@ -7,8 +10,10 @@ interface CommentProps {
   created: string;
   content: string | null | undefined; // TODO: fix type when BE marks this field as non nullable
   type: CommentType;
-  author: User | null | undefined; // TODO: fix type when BE marks this field as non nullable
-  currentUser: User | undefined;
+  author:
+    | CragCommentsQuery["cragBySlug"]["comments"][number]["user"]
+    | null
+    | undefined; // TODO: fix type when BE marks this field as non nullable
 }
 
 enum CommentType {
@@ -23,8 +28,9 @@ function Comment({
   content,
   type,
   author,
-  currentUser,
 }: CommentProps) {
+  const { currentUser } = useAuthContext();
+
   return (
     <div
       className={`${

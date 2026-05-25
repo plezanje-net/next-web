@@ -1,11 +1,11 @@
 "use client";
+
 import { IconSize } from "@/components/ui/icons/icon-size";
 import Button from "@/components/ui/button";
 import IconColumns from "@/components/ui/icons/columns";
 import IconStarFull from "@/components/ui/icons/star-full";
 import { Select, Option } from "@/components/ui/select";
-import { gradingSystems } from "@/utils/grading-systems";
-
+import { gradingSystems } from "../../../lib/grading-systems";
 import { useState } from "react";
 import IconRepeat from "@/components/ui/icons/repeat";
 
@@ -184,7 +184,7 @@ function SelectPage() {
 
       <div className="mt-14 w-40">
         <h5>A narrow select</h5>
-        <div className="mt-4">
+        <div className="mt-4 text-right">
           <Select
             label="Izberi možnost"
             placeholder="Izberi možnost"
@@ -266,6 +266,14 @@ function SelectPage() {
             </Option>
           ))}
         </Select>
+        <select>
+          {" "}
+          {grades.map((grade) => (
+            <option key={grade.id} value={grade.name}>
+              {grade.name}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

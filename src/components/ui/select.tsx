@@ -1,33 +1,37 @@
 import {
+  Description,
+  Field,
   Label,
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import React, {
+import {
   Children,
   Fragment,
   ReactElement,
+  ReactNode,
   useEffect,
   useRef,
 } from "react";
 import IconCheck from "./icons/check";
 import IconExpand from "./icons/expand";
 
-interface OptionProps {
+type TOptionProps = {
   value: string; // the value for the option
-  children: string | ReactElement; // the label for the option (can include an icon)
+  children: ReactNode; // the label for the option (can include an icon)
   disabled?: boolean;
-}
+  separator?: boolean;
+};
 
-function Option({ value, children, disabled }: OptionProps) {
+function Option({ value, children, disabled, separator }: TOptionProps) {
   return (
     <ListboxOption
       key={value}
       value={value}
       disabled={disabled}
-      className="flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400"
+      className={`flex cursor-pointer justify-between gap-4 py-2 pl-4 pr-2 ui-selected:text-blue-500 ui-active:bg-neutral-100 ui-active:text-blue-500 ui-disabled:cursor-default ui-disabled:text-neutral-400 ${separator ? "border-neutral-200 border-t" : ""}`}
     >
       <span className="overflow-hidden text-ellipsis whitespace-nowrap">
         {children}
@@ -39,33 +43,37 @@ function Option({ value, children, disabled }: OptionProps) {
   );
 }
 
-type SelectProps = {
-  value: string | string[];
-  onChange: ((value: string) => void) | ((value: string[]) => void);
-  children: ReactElement<OptionProps>[]; // all of the select's options
+type TSelectProps<M extends boolean = false> = {
+  multi?: M;
+  value: M extends true ? string[] : string;
+  onChange: (value: M extends true ? string[] : string) => void;
+  children: ReactElement<TOptionProps>[]; // all of the select's options
   label?: string;
   placeholder?: string;
-  multi?: boolean;
+  description?: string;
+  errorMessage?: string;
   customTrigger?: ReactElement;
   disabled?: boolean;
   initialScrollToValue?: string;
 };
 
-function Select({
+function Select<M extends boolean = false>({
+  multi,
   value,
   onChange,
   children,
   label,
   placeholder,
-  multi,
+  description,
+  errorMessage,
   customTrigger,
   disabled,
   initialScrollToValue,
-}: SelectProps) {
+}: TSelectProps<M>) {
   // save association between value and label. get it from children (options). we need to access labels via values later when constructing the field's currently selected label
   let childrenValuesToLabels: {
     [key: string]: {
-      label: string | ReactElement;
+      label: ReactNode;
     };
   } = {};
 
@@ -80,7 +88,7 @@ function Select({
   });
 
   const constructSelectedLabel = (selected: string | string[]) => {
-    // the selected value is either a single value or an array (if this is a mutliselect)
+    // the selected value is either a single value (sting) or an array (of strings) (if this is a mutliselect)
     if (multi) {
       return (selected as string[]).map((value: string, index) => {
         return (
@@ -111,10 +119,13 @@ function Select({
           disabled={disabled}
           value={value}
           placeholder={placeholder}
+          description={description}
+          errorMessage={errorMessage}
           constructSelectedLabel={constructSelectedLabel}
           open={open}
           childrenValuesToIndexes={childrenValuesToIndexes}
           initialScrollToValue={initialScrollToValue}
+          multi={multi}
         >
           {children}
         </InnerListBox>
@@ -123,26 +134,31 @@ function Select({
   );
 }
 
-type InnerListBoxProps = Omit<SelectProps, "onChange"> & {
+type InnerListBoxProps<M extends boolean> = Omit<
+  TSelectProps<M>,
+  "onChange"
+> & {
   constructSelectedLabel: (
-    selected: string | string[]
-  ) => string | ReactElement | ReactElement[];
+    selected: M extends true ? string[] : string
+  ) => ReactNode;
   open: boolean;
   childrenValuesToIndexes: Record<string, number>;
 };
 
-function InnerListBox({
+function InnerListBox<M extends boolean>({
   label,
   customTrigger,
   disabled,
   value,
   placeholder,
+  description,
+  errorMessage,
   constructSelectedLabel,
   open,
   childrenValuesToIndexes,
   initialScrollToValue,
   children,
-}: InnerListBoxProps) {
+}: InnerListBoxProps<M>) {
   const listboxOptionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -153,19 +169,26 @@ function InnerListBox({
   }, [open, childrenValuesToIndexes, initialScrollToValue, value]);
 
   return (
-    <>
+    <Field>
       {label && <Label>{label}</Label>}
       {customTrigger ? (
         <ListboxButton as={Fragment}>{customTrigger}</ListboxButton>
       ) : (
         <ListboxButton
-          className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 ${
-            label ? "mt-2" : ""
-          } ${
-            disabled
-              ? "border-neutral-300 bg-neutral-100 text-neutral-400"
-              : "border-neutral-400"
-          }`}
+          className={`relative flex w-full justify-between gap-2 rounded-lg border py-2 pl-4 pr-2 focus-visible:outline-none focus-visible:ring
+            ${label ? "mt-2" : ""}
+            ${!disabled && !errorMessage ? "border-neutral-400" : ""}
+            ${open ? (errorMessage ? "ring ring-red-100" : "ring ring-blue-100") : ""}
+            ${
+              errorMessage
+                ? "border-red-500 focus-visible:ring-red-100"
+                : "focus-visible:ring-blue-100"
+            }
+            ${
+              disabled
+                ? "border-neutral-300 bg-neutral-100 text-neutral-400"
+                : ""
+            }`}
         >
           {!!value?.length ? (
             <span className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -183,20 +206,23 @@ function InnerListBox({
         </ListboxButton>
       )}
 
-      <div
-        className={`absolute z-10 pb-2 ${
-          customTrigger
-            ? "w-auto whitespace-nowrap max-xs:fixed max-xs:left-4 max-xs:right-4"
-            : "w-full"
-        }`}
+      {description && !errorMessage && (
+        <Description className="text-sm mt-1">{description}</Description>
+      )}
+      {errorMessage && (
+        <div className="text-sm mt-1 text-red-500">{errorMessage}</div>
+      )}
+
+      <ListboxOptions
+        modal={false}
+        anchor="bottom start"
+        className={`${!customTrigger && "min-w-[var(--button-width)] "} [--anchor-gap:8px] [--anchor-padding:8px] overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100 z-10`}
       >
-        <ListboxOptions className="mt-2 overflow-hidden rounded-lg border border-neutral-400 bg-white focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-100">
-          <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
-            {children}
-          </div>
-        </ListboxOptions>
-      </div>
-    </>
+        <div ref={listboxOptionsRef} className="max-h-80 overflow-auto">
+          {children}
+        </div>
+      </ListboxOptions>
+    </Field>
   );
 }
 

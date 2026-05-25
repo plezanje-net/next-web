@@ -6,14 +6,23 @@ import {
 } from "react";
 import Spinner from "./spinner";
 
-interface ButtonProps {
-  children: ReactElement | string;
-  variant?: "primary" | "secondary" | "tertiary" | "quaternary";
+type TButtonProps = {
+  children: ReactElement<any> | string;
+  variant?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "quaternary"
+    | "asLinkPrimary"
+    | "asLinkSecondary"
+    | "asLinkTertiary";
   disabled?: boolean;
   loading?: boolean;
   type?: "button" | "reset" | "submit";
   onClick?: MouseEventHandler<HTMLButtonElement>;
-}
+  type?: "submit" | "reset" | "button";
+  className?: string;
+};
 
 const Button = forwardRef(function Button(
   {
@@ -23,11 +32,30 @@ const Button = forwardRef(function Button(
     disabled = false,
     loading = false,
     onClick,
-  }: ButtonProps,
+    type = "button",
+    className,
+    ...rest
+  }: TButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
-  let buttonStyles =
-    "flex outline-none focus-visible:ring focus-visible:ring-blue-100";
+  let buttonStyles = "outline-none";
+  buttonStyles += className ? " " + className : "";
+
+  switch (variant) {
+    case "primary":
+    case "secondary":
+    case "tertiary":
+    case "quaternary":
+      buttonStyles += " flex focus-visible:ring focus-visible:ring-blue-100";
+      break;
+
+    case "asLinkPrimary":
+    case "asLinkSecondary":
+    case "asLinkTertiary":
+      buttonStyles +=
+        " focus-visible:underline focus-visible:decoration-double";
+      break;
+  }
 
   switch (variant) {
     case "primary":
@@ -57,6 +85,24 @@ const Button = forwardRef(function Button(
         ? " text-neutral-400 cursor-default"
         : " hover:text-blue-500 active:text-blue-600";
       break;
+
+    case "asLinkPrimary":
+      buttonStyles += disabled
+        ? " text-neutral-400 cursor-default"
+        : " text-blue-500 hover:text-blue-600 hover:underline active:text-blue-700";
+      break;
+
+    case "asLinkSecondary":
+      buttonStyles += disabled
+        ? " text-neutral-400 cursor-default"
+        : " text-neutral-900 hover:text-neutral-800 hover:underline active:text-neutral-600";
+      break;
+
+    case "asLinkTertiary":
+      buttonStyles += disabled
+        ? " text-neutral-400 cursor-default"
+        : " text-neutral-500 hover:text-neutral-600 hover:underline active:text-neutral-700";
+      break;
   }
 
   return (
@@ -66,6 +112,7 @@ const Button = forwardRef(function Button(
       disabled={disabled}
       onClick={onClick}
       type={type}
+      {...rest}
     >
       {loading ? (
         <div className="relative">

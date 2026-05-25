@@ -1,5 +1,5 @@
 import RangeSlider from "./range-slider";
-import { gradingSystems } from "@/utils/grading-systems";
+import { gradingSystems } from "../../lib/grading-systems";
 
 // TODO: french is hardcoded for now. where/how to get the chosen system? majority of routes in this crag? user choice? majority of currently filtered routes?
 const gradingSystem = gradingSystems.french;
@@ -16,17 +16,17 @@ const sliderValueToGradeMap = new Map(
   gradingSystem?.grades.map((grade, index) => [index, grade.name])
 );
 
-interface GradeRangeSliderProps {
+type TGradeRangeSliderProps = {
   onChangeEnd: (value: number[]) => void;
   label: string;
   defaultValue: [number, number];
-}
+};
 
 function GradeRangeSlider({
   onChangeEnd,
   label,
   defaultValue,
-}: GradeRangeSliderProps) {
+}: TGradeRangeSliderProps) {
   return (
     <RangeSlider
       label={label}

@@ -1,11 +1,14 @@
-import { Activity, HomeLatestAscentsDocument } from "@/graphql/generated";
+import {
+  HomeLatestAscentsDocument,
+  HomeLatestAscentsQuery,
+} from "@/graphql/generated";
 import LatestAscentsActivity from "./latest-ascents/latest-ascents-activity";
 import LatestAscentsActivitySkeleton from "./latest-ascents/latest-ascents-activity-skeleton";
-import urqlServer from "@/graphql/urql-server";
-import { gql } from "@urql/core";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 
 async function LatestAscents() {
-  const { data } = await urqlServer().query(HomeLatestAscentsDocument, {
+  const { data } = await gqlRequest(HomeLatestAscentsDocument, {
     activitiesInput: {
       type: ["crag"],
       hasRoutesWithPublish: ["public"],
@@ -18,7 +21,7 @@ async function LatestAscents() {
     },
   });
 
-  const activities: Activity[] =
+  const activities: HomeLatestAscentsQuery["activities"]["items"] =
     data?.activities.items ?? Array.from(new Array(10));
 
   return (

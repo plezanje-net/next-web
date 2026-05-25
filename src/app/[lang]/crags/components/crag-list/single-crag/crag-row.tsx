@@ -1,14 +1,14 @@
-import { Crag } from "@/graphql/generated";
+import { AllCragsQuery, Crag } from "@/graphql/generated";
 import Seasons from "./seasons";
 import RouteTypes from "./route-types";
 import WallAngles from "./wall-angles";
 import GradeFromTo from "./grade-from-to";
 import Orientations from "./orientations";
 import Link from "@/components/ui/link";
-import { useCragsContext } from "../../crags-context";
+import { useCragsContext } from "../../../lib/crags-context";
 
 type TCragRowProps = {
-  crag: Crag;
+  crag: AllCragsQuery["crags"][number];
 };
 
 function CragRow({ crag }: TCragRowProps) {

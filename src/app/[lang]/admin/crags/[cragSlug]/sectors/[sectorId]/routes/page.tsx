@@ -1,0 +1,140 @@
+import Breadcrumbs from "@/components/breadcrumbs";
+import ContentHeader from "@/components/content-header";
+import IconInfo from "@/components/ui/icons/info";
+import IconRoutes from "@/components/ui/icons/routes";
+import TabMenu from "@/components/ui/tab-menu";
+import { EditRoutesPageSectorDocument } from "@/graphql/generated";
+import EditRoutes from "./components/edit-routes";
+import { labelAndNameToString } from "@/lib/sector-helpers";
+import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
+
+type TEditRoutesPageProps = {
+  params: Promise<{ sectorId: string }>;
+};
+
+async function EditRoutesPage(props: TEditRoutesPageProps) {
+  const params = await props.params;
+
+  const { sectorId } = params;
+
+  const sectorDataPromise = gqlRequest(EditRoutesPageSectorDocument, {
+    id: sectorId,
+  });
+  const { data: sectorData } = await sectorDataPromise;
+  const sector = sectorData.sector;
+
+  const noSectorsCrag =
+    sector.crag.sectors.length === 1 &&
+    sector.name === "" &&
+    sector.label === "";
+
+  // Dep: sector label is deprecated. remove it after it is migrated into name on be.
+  return (
+    <>
+      <ContentHeader
+        heading={`Urejanje smeri v ${noSectorsCrag ? `plezališču ${sector.crag.name}` : `sektorju ${labelAndNameToString(sector.label, sector.name)}`}`}
+        breadcrumbs={
+          <Breadcrumbs
+            crumbs={[
+              { label: "Plezanje.net", link: "/" },
+              { label: "Urejanje", link: null },
+              { label: "Plezališča", link: null },
+              {
+                label: sector.crag.name,
+                link: `/urejanje/plezalisca/${sector.crag.slug}/uredi`,
+              },
+              {
+                label: "Sektorji",
+                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji`,
+              },
+              ...(noSectorsCrag
+                ? []
+                : [
+                    {
+                      label: labelAndNameToString(sector.label, sector.name),
+                      link: null,
+                    },
+                  ]),
+              { label: "Smeri", link: null },
+            ]}
+          />
+        }
+        tabMenu={
+          <TabMenu
+            items={[
+              {
+                label: "Osnovni podatki",
+                link: `/urejanje/plezalisca/${sector.crag.slug}/uredi`,
+                isActive: false,
+                icon: <IconInfo />,
+              },
+              {
+                label: "Sektorji in smeri",
+                link: `/urejanje/plezalisca/${sector.crag.slug}/sektorji`,
+                isActive: true,
+                icon: <IconRoutes />,
+              },
+            ]}
+          />
+        }
+      />
+
+      <EditRoutes
+        routes={sector.routes}
+        sector={sector}
+        crag={sector.crag}
+        allSectors={sector.crag.sectors}
+      />
+    </>
+  );
+}
+
+export default EditRoutesPage;
+
+gql`
+  query EditRoutesPageSector($id: String!) {
+    sector(id: $id) {
+      id
+      label
+      name
+      crag {
+        id
+        slug
+        name
+        publishStatus
+        sectors {
+          id
+          label
+          name
+        }
+      }
+      routes {
+        id
+        name
+        routeType {
+          id
+        }
+        difficulty
+        isProject
+        defaultGradingSystem {
+          id
+        }
+        length
+        position
+        created
+        publishStatus
+        user {
+          id
+          fullName
+        }
+        sector {
+          id
+          publishStatus
+        }
+        author
+        description
+      }
+    }
+  }
+`;

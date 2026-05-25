@@ -1,81 +1,36 @@
 "use client";
-import {
-  ForwardedRef,
-  forwardRef,
-  HTMLAttributeAnchorTarget,
-  ReactNode,
-} from "react";
-import { UrlObject } from "url";
+
 import NextLink from "next/link";
-import { AriaLinkOptions, useLink } from "react-aria";
-import useForwardedRef from "../../hooks/useForwardedRef";
+import { ComponentProps } from "react";
 
-interface LinkProps extends AriaLinkOptions {
-  href?: string | UrlObject;
-  target?: HTMLAttributeAnchorTarget;
+type TLinkProps = ComponentProps<typeof NextLink> & {
   variant?: "primary" | "secondary" | "tertiary";
-  children: ReactNode;
-  className?: string;
-}
+};
 
-const Link = forwardRef(function Link(
-  props: LinkProps,
-  forwardedRef: ForwardedRef<HTMLAnchorElement>
-) {
-  const linkRef = useForwardedRef(forwardedRef);
-  const { linkProps, isPressed } = useLink(
-    { ...props, elementType: props.href ? "a" : "span" },
-    linkRef
-  );
-
-  // default classes for a link
-  let className =
-    "outline-none focus-visible:underline focus-visible:decoration-double";
-
-  // classes that might be passed in by the parent
-  className += props.className ? " " + props.className : "";
-
-  // classes for disabled/not disabled variation
-  className += props.isDisabled
-    ? " cursor-default text-neutral-400"
-    : " cursor-pointer hover:underline";
+function Link({ variant = "primary", className, ...rest }: TLinkProps) {
+  let linkClassName = className ? className + " " : "";
+  linkClassName +=
+    "outline-none focus-visible:underline focus-visible:decoration-double cursor-pointer hover:underline";
 
   // default, hover, active classes for different variants of a link
-  switch (props.variant) {
+  switch (variant) {
+    case "primary":
+      linkClassName +=
+        " text-blue-500 hover:text-blue-600 active:text-blue-700";
+      break;
     case "secondary":
-      className += " text-neutral-900";
-      className += isPressed ? " text-neutral-600" : "";
+      linkClassName +=
+        " text-neutral-900 hover:text-neutral-800 active:text-neutral-600";
       break;
     case "tertiary":
-      className += " text-neutral-500";
-      className += isPressed ? " text-neutral-600" : "";
+      linkClassName +=
+        " text-neutral-500 hover:text-neutral-600 active:text-neutral-700";
       break;
-    default: // primary
-      className += " text-blue-500";
-      className += isPressed ? " text-blue-600" : "";
   }
 
-  // use NextLink for 'real' links, and use span for 'appearance' links, where clicks are handled by the client
-  if (props.href) {
-    return (
-      <NextLink
-        {...linkProps}
-        ref={linkRef}
-        href={props.href}
-        target={props.target}
-        className={className}
-        prefetch={false}
-      >
-        {props.children}
-      </NextLink>
-    );
-  } else {
-    return (
-      <span {...linkProps} ref={linkRef} className={className}>
-        {props.children}
-      </span>
-    );
-  }
-});
+  return <NextLink className={linkClassName} {...rest} />;
+}
+
+Link.displayName = "Link";
 
 export default Link;

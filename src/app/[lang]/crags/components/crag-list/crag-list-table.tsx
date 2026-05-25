@@ -1,6 +1,5 @@
-import { Crag } from "@/graphql/generated";
 import CragRow from "./single-crag/crag-row";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function CragListTable() {
   const { crags, columns } = useCragsContext();
@@ -33,7 +32,7 @@ function CragListTable() {
       </thead>
 
       <tbody>
-        {crags.map((crag: Crag, index) => (
+        {crags.map((crag, index) => (
           <CragRow key={index} crag={crag} />
         ))}
       </tbody>

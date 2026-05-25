@@ -1,10 +1,10 @@
-import { Crag, Sector } from "@/graphql/generated";
+import { CragSectorsQuery } from "@/graphql/generated";
 import Accordion from "@/components/ui/accordion";
 import CragRouteList from "./crag-route-list";
 
 interface Props {
-  crag: Crag;
-  sector: Sector;
+  crag: CragSectorsQuery["cragBySlug"];
+  sector: CragSectorsQuery["cragBySlug"]["sectors"][number];
   ascents: Map<string, string>;
   onToggle: () => void;
   isOpen: boolean;

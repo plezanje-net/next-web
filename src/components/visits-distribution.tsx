@@ -1,11 +1,11 @@
 import { Fragment } from "react";
-import { Crag } from "@/graphql/generated";
+import { CragInfoQuery } from "@/graphql/generated";
 
-interface VisitsDistributionProps {
-  crag: Crag;
-}
+type TVisitsDistributionProps = {
+  crag: CragInfoQuery["cragBySlug"];
+};
 
-function VisitsDistribution({ crag }: VisitsDistributionProps) {
+function VisitsDistribution({ crag }: TVisitsDistributionProps) {
   const maxCount = Math.max(...crag.activityByMonth);
 
   const monthNames = [

@@ -6,70 +6,7 @@ import {
   Radio as RadioHUI,
 } from "@headlessui/react";
 
-interface RadioProps {
-  value: string;
-  disabled?: boolean;
-  children: ReactNode;
-}
-
-function Radio({ value, disabled, children }: RadioProps) {
-  return (
-    <RadioHUI
-      value={value}
-      as="label"
-      className="group inline-flex items-center outline-none"
-      disabled={disabled}
-    >
-      {({ focus, checked, disabled }) => (
-        <>
-          <div
-            aria-hidden="true"
-            className={`rounded-lg ${focus ? "ring ring-blue-100" : ""}`}
-          >
-            {/* radio circle (outer) */}
-            <div
-              className={`flex h-4 w-4 items-center justify-center rounded-lg border 
-                          ${
-                            !disabled && !checked
-                              ? "border-neutral-400 group-active:border-neutral-500"
-                              : ""
-                          }             
-                          ${
-                            !disabled && checked
-                              ? "border-blue-500 group-active:border-blue-600"
-                              : ""
-                          }                                                 
-                          ${
-                            disabled && !checked
-                              ? "border-neutral-300 bg-neutral-100"
-                              : ""
-                          }
-                          ${disabled && checked ? "border-neutral-300" : ""}`}
-            >
-              {/* radio dot (inner) */}
-              {checked && (
-                <div
-                  className={`h-2 w-2 rounded
-                              ${
-                                !disabled
-                                  ? "bg-blue-500 group-active:bg-blue-600"
-                                  : "bg-neutral-300"
-                              } `}
-                ></div>
-              )}
-            </div>
-          </div>
-
-          <span className={`ml-2 ${disabled ? "text-neutral-400" : ""}`}>
-            {children}
-          </span>
-        </>
-      )}
-    </RadioHUI>
-  );
-}
-
-interface RadioGroupProps {
+type TRadioGroupProps = {
   name?: string;
   value?: string;
   onChange?: (value: string) => void;
@@ -77,10 +14,10 @@ interface RadioGroupProps {
   description?: string;
   defaultValue?: string;
   disabled?: boolean;
-  error?: string;
+  errorMessage?: string;
   inline?: boolean;
   children: ReactNode[];
-}
+};
 
 function RadioGroup({
   name,
@@ -90,10 +27,10 @@ function RadioGroup({
   description,
   defaultValue,
   disabled,
-  error,
+  errorMessage,
   inline,
   children,
-}: RadioGroupProps) {
+}: TRadioGroupProps) {
   return (
     <RadioGroupHUI
       name={name}
@@ -112,13 +49,87 @@ function RadioGroup({
         {children}
       </div>
 
-      {description && (
+      {description && !errorMessage && (
         <Description className="mt-1 text-sm">{description}</Description>
       )}
 
-      {error && <div className="mt-1 text-sm text-red-500">{error}</div>}
+      {errorMessage && (
+        <div className="mt-1 text-sm text-red-500">{errorMessage}</div>
+      )}
     </RadioGroupHUI>
   );
 }
 
-export { RadioGroup, Radio };
+type TRadioProps = {
+  value: string;
+  disabled?: boolean;
+  children: ReactNode;
+};
+
+function Radio({ value, disabled, children }: TRadioProps) {
+  return (
+    <RadioHUI
+      value={value}
+      as="label"
+      className="group inline-flex items-center outline-none"
+      disabled={disabled}
+    >
+      {({ focus, checked, disabled }) => (
+        <>
+          <div
+            aria-hidden="true"
+            className={`rounded-lg ${focus ? "ring ring-blue-100" : ""}`}
+          >
+            <RadioCircle checked={checked} disabled={disabled} />
+          </div>
+
+          <span className={`ml-2 ${disabled ? "text-neutral-400" : ""}`}>
+            {children}
+          </span>
+        </>
+      )}
+    </RadioHUI>
+  );
+}
+
+type TRadioCircleProps = {
+  checked: boolean;
+  disabled: boolean;
+};
+
+function RadioCircle({ checked, disabled }: TRadioCircleProps) {
+  return (
+    <div
+      // radio circle (outer)
+      className={`flex h-4 w-4 items-center justify-center rounded-lg border 
+               ${
+                 !disabled && !checked
+                   ? "border-neutral-400 group-active:border-neutral-500"
+                   : ""
+               }             
+               ${
+                 !disabled && checked
+                   ? "border-blue-500 group-active:border-blue-600"
+                   : ""
+               }                                                 
+               ${
+                 disabled && !checked ? "border-neutral-300 bg-neutral-100" : ""
+               }
+               ${disabled && checked ? "border-neutral-300" : ""}`}
+    >
+      {checked && (
+        <div
+          // radio dot (inner)
+          className={`h-2 w-2 rounded
+                   ${
+                     !disabled
+                       ? "bg-blue-500 group-active:bg-blue-600"
+                       : "bg-neutral-300"
+                   } `}
+        ></div>
+      )}
+    </div>
+  );
+}
+
+export { RadioGroup, Radio, RadioCircle };

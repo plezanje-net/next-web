@@ -11,12 +11,12 @@ import {
   AriaSliderProps,
 } from "react-aria";
 
-interface SliderProps extends AriaSliderProps {
+type TSliderProps = AriaSliderProps & {
   formatOptions?: Intl.NumberFormatOptions;
   valueToLabelMap?: Map<number, string>;
-}
+};
 
-function RangeSlider(props: SliderProps) {
+function RangeSlider(props: TSliderProps) {
   let trackRef = useRef(null);
 
   let numberFormatter = useNumberFormatter(props.formatOptions);
@@ -97,13 +97,13 @@ function RangeSlider(props: SliderProps) {
   );
 }
 
-interface SliderThumbProps {
+type TSliderThumbProps = {
   state: SliderState;
-  trackRef: RefObject<Element>;
+  trackRef: RefObject<Element | null>;
   index: number;
-}
+};
 
-function Thumb(props: SliderThumbProps) {
+function Thumb(props: TSliderThumbProps) {
   let { state, trackRef, index } = props;
   let inputRef = useRef(null);
   let { thumbProps, inputProps, isDragging } = useSliderThumb(
@@ -128,8 +128,8 @@ function Thumb(props: SliderThumbProps) {
             state.isDisabled
               ? "bg-neutral-300"
               : isDragging
-              ? "bg-blue-600"
-              : "bg-blue-500"
+                ? "bg-blue-600"
+                : "bg-blue-500"
           }`}
       >
         <VisuallyHidden>

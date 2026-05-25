@@ -37,7 +37,10 @@ function RadioGroupPage() {
 
       {/* example with error message */}
       <div className="mt-10">
-        <RadioGroup label="Choose your favourite" error="You must choose one.">
+        <RadioGroup
+          label="Choose your favourite"
+          errorMessage="You must choose one."
+        >
           <Radio value="1">Krvavica</Radio>
           <Radio value="2">Pleskavica</Radio>
           <Radio value="3">Klobasa</Radio>
@@ -48,7 +51,7 @@ function RadioGroupPage() {
       <div className="mt-10">
         <RadioGroup
           label="Choose your favourite"
-          error="Wrong choice."
+          errorMessage="Wrong choice."
           defaultValue="1"
         >
           <Radio value="1">Krvavica</Radio>

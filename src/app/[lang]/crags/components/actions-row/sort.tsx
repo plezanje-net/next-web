@@ -1,7 +1,7 @@
 import Button from "@/components/ui/button";
 import IconSort from "@/components/ui/icons/sort";
 import { Select, Option } from "@/components/ui/select";
-import { useCragsContext } from "../crags-context";
+import { useCragsContext } from "../../lib/crags-context";
 
 function Sort() {
   const {

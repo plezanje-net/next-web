@@ -1,12 +1,13 @@
-import { gql } from "urql/core";
-import { Crag, CragActivitiesByMonthDocument } from "@/graphql/generated";
-import urqlServer from "@/graphql/urql-server";
+import { CragInfoDocument, CragInfoQuery } from "@/graphql/generated";
 import VisitsByMonth from "@/components/visits-distribution";
+import { gqlRequest } from "@/lib/gql-request";
 
-async function getCragBySlug(crag: string): Promise<Crag> {
+async function getCragBySlug(
+  crag: string
+): Promise<CragInfoQuery["cragBySlug"]> {
   const {
     data: { cragBySlug },
-  } = await urqlServer().query(CragActivitiesByMonthDocument, {
+  } = await gqlRequest(CragInfoDocument, {
     crag,
   });
   return cragBySlug;
@@ -53,15 +54,5 @@ async function VisitsDistributionPage() {
     </div>
   );
 }
-
-gql`
-  query CragActivitiesByMonth($crag: String!) {
-    cragBySlug(slug: $crag) {
-      id
-      slug
-      activityByMonth
-    }
-  }
-`;
 
 export default VisitsDistributionPage;
