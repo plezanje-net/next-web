@@ -25,6 +25,7 @@ const nextConfig = {
     return rewritesArray;
   },
   images: {
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
     remotePatterns: [
       {
         protocol: process.env.NEXT_PUBLIC_IMAGES_PROTOCOL,
