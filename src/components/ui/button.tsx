@@ -18,7 +18,6 @@ type TButtonProps = {
     | "asLinkTertiary";
   disabled?: boolean;
   loading?: boolean;
-  type?: "button" | "reset" | "submit";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "submit" | "reset" | "button";
   className?: string;
@@ -28,7 +27,6 @@ const Button = forwardRef(function Button(
   {
     children,
     variant = "primary",
-    type = "submit",
     disabled = false,
     loading = false,
     onClick,

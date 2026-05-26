@@ -4,7 +4,8 @@ import { CragGalleryDocument, Image } from "@/graphql/generated";
 import { gql } from "graphql-request";
 import ImageUpload from "@/components/image-upload/image-upload";
 import Button from "@/components/ui/button";
-import authStatus from "@/utils/auth/auth-status";
+import getCurrentUser from "@/lib/auth/get-current-user";
+import getAuthToken from "@/lib/auth/auth-token";
 
 type TCragGalleryPageParams = {
   cragSlug: string;
@@ -18,19 +19,22 @@ async function CragGalleryPage(props: {
     crag: params.cragSlug,
   });
 
-  const currentUser = await authStatus();
+  const currentUser = await getCurrentUser();
+  const authToken = await getAuthToken();
+  const loggedIn = currentUser !== null;
+
   const images = data.cragBySlug.images as Image[];
   const imagesBaseUrl = `${process.env.NEXT_PUBLIC_IMAGES_BASEURL}`;
 
   return (
     <div className="mx-auto mt-4 px-4 2xl:container xs:px-8">
-      {currentUser.loggedIn && (
+      {loggedIn && (
         <div className="flex justify-end mb-4">
           <ImageUpload
             openTrigger={<Button>Dodaj fotografijo</Button>}
             entityType="crag"
             entityId={data.cragBySlug.id}
-            user={currentUser}
+            user={{ user: currentUser, token: authToken, loggedIn }}
           />
         </div>
       )}

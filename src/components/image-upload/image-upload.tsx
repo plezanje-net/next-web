@@ -5,7 +5,6 @@ import {
   ChangeEvent,
   ReactElement,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -14,10 +13,10 @@ import Checkbox from "../ui/checkbox";
 import TextField from "../ui/text-field";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { AuthStatus } from "@/utils/auth/auth-status";
 import ProgressBar from "../ui/progress-bar";
-import { bytesToSize } from "@/utils/file-size";
 import IconClose from "../ui/icons/close";
+import { bytesToSize } from "@/lib/file-size";
+import { User } from "@/graphql/generated";
 
 type TImageUploadResponse = {
   aspectRatio: number;
@@ -36,6 +35,12 @@ type TImageUploadResponse = {
   __has_crag__: boolean;
   __has_user__: boolean;
   __user__: unknown;
+};
+
+type AuthStatus = {
+  loggedIn: boolean;
+  token?: string | null;
+  user?: User;
 };
 
 async function createImageAction(
@@ -390,12 +395,13 @@ function ImageUpload({
             name="title"
             ref={titleRef}
             label="Naslov fotografije"
-            isDisabled={isSubmitting}
+            disabled={isSubmitting}
             placeholder="npr. Pogled na steno"
             onChange={handleTitleChange}
             errorMessage={
               formError?.title ? "Vpišite naslov fotografije" : undefined
             }
+            value={formData.title}
           />
         </div>
         <div className="mt-6">
@@ -415,7 +421,7 @@ function ImageUpload({
             name="author"
             label="Avtor/ica fotografije"
             ref={authorRef}
-            isDisabled={(authorCheckbox && user !== undefined) || isSubmitting}
+            disabled={(authorCheckbox && user !== undefined) || isSubmitting}
             placeholder="Ime in priimek avtorice oz. avtorja"
             onChange={handleAuthorChange}
             value={formData.author}
