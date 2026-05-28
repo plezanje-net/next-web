@@ -34,6 +34,7 @@ const nextConfig = {
         pathname: `${process.env.NEXT_PUBLIC_IMAGES_PATHNAME}/**`,
       },
     ],
+    qualities: [100],
   },
 };
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
