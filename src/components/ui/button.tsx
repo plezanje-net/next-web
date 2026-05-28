@@ -20,7 +20,7 @@ type TButtonProps = {
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "submit" | "reset" | "button";
-  form?: string; // ID of the form the button is associated with (if type="submit" or "reset")
+  form?: string; // ID of the form the button is associated with (if type="submit")
   className?: string;
 };
 
