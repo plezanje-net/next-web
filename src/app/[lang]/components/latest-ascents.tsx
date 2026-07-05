@@ -68,6 +68,7 @@ gql`
               name
               slug
             }
+            publishStatus
           }
           id
           ascentType

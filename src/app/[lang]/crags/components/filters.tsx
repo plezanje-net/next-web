@@ -7,9 +7,6 @@ import { pluralizeNoun } from "../../../../lib/text-helpers";
 import { ReactNode, useState } from "react";
 import Button from "@/components/ui/button";
 
-// TODO: rename this file name and/or split to files...
-// TODO: check if this is even used still, seems like a temp file...
-
 abstract class Filter {
   readonly label: string;
 

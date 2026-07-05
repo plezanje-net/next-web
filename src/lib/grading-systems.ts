@@ -9,7 +9,7 @@ export type TGradingSystemId = "french" | "uiaa" | "yds" | "font" | "hueco" | "a
   routeTypes: TRouteType[];
 };
 
-  type TGrade = {
+  export type TGrade = {
   __typename?: 'Grade';
   difficulty: number;
   id: string;
@@ -24,7 +24,7 @@ export type TGradingSystemId = "french" | "uiaa" | "yds" | "font" | "hueco" | "a
 
 export type TGradingSystems = Record<TGradingSystemId, TGradingSystem>;
 
-export const gradingSystems =  {
+export const gradingSystems: TGradingSystems =  {
     "french": {
         "name": "French",
         "id": "french",

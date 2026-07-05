@@ -1,4 +1,5 @@
 "use client";
+
 import { HomeLatestDifficultyVotesQuery } from "@/graphql/generated";
 import displayDate from "../../../../lib/display-date";
 import CragLink from "@/components/crag-link";
@@ -6,11 +7,11 @@ import Grade from "@/components/grade";
 import RouteLink from "@/components/route-link";
 import IconRight from "@/components/ui/icons/right";
 
-type Params = {
+type TLatestDifficultyVoteProps = {
   difficultyVote: HomeLatestDifficultyVotesQuery["latestDifficultyVotes"]["items"][number];
 };
 
-function LatestDifficultyVote({ difficultyVote }: Params) {
+function LatestDifficultyVote({ difficultyVote }: TLatestDifficultyVoteProps) {
   return (
     <li className="border-b border-b-neutral-200 py-3">
       <div>{displayDate(difficultyVote.created)}</div>

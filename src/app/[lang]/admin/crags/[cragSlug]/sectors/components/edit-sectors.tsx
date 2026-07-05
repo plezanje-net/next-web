@@ -1,9 +1,9 @@
-import { Crag } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 import EditSectorsNone from "./edit-sectors-none";
 import EditSectorsMany from "./edit-sectors-many";
 
 type TEditCragSectorsProps = {
-  crag: Crag;
+  crag: EditSectorsPageCragQuery["cragBySlug"];
 };
 
 function EditSectors({ crag }: TEditCragSectorsProps) {

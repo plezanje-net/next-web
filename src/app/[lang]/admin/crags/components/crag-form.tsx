@@ -196,6 +196,12 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
     setDeleteCragDialogIsOpen(true);
   };
 
+  const handleCancelClick = () => {
+    if (formType == "edit" && crag) {
+      router.push(`/plezalisce/${crag.slug}/info`);
+    }
+  };
+
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -536,7 +542,7 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                   // TODO: make default center, center of the country/area selected if available, or if crag coords already set, make that the default center
                   mapDefaultCenter={[46.119944, 14.815333]}
                   mapZoom={8}
-                  markerType="wall"
+                  markerType="parking"
                 />
               </div>
               {/* Approach time */}
@@ -587,11 +593,22 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
               {/* Horizontal divider */}
               <div className="h-px bg-neutral-200 col-span-2"></div>
 
-              {/* Delete and save actions */}
+              {/* Save, Cancel and Delete actions */}
               <div className="col-span-2 flex flex-wrap justify-between items-center gap-4">
+                <div className="flex gap-4">
+                  <Button type="submit" loading={loading} disabled={!formDirty}>
+                    Shrani
+                  </Button>
+                  {formType == "edit" && (
+                    <Button variant="secondary" onClick={handleCancelClick}>
+                      Prekliči
+                    </Button>
+                  )}
+                </div>
                 {formType == "edit" ? (
                   <Button
-                    variant="quaternary"
+                    variant="tertiary"
+                    intent="destructive"
                     disabled={loading}
                     onClick={handleDeleteCragClick}
                   >
@@ -603,9 +620,6 @@ function CragForm({ formType, countriesWithAreas, crag }: TCragFormProps) {
                 ) : (
                   <div></div>
                 )}
-                <Button type="submit" loading={loading} disabled={!formDirty}>
-                  Shrani
-                </Button>
               </div>
             </div>
           </form>

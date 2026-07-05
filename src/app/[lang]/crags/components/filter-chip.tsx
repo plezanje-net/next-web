@@ -1,6 +1,6 @@
 import Button from "@/components/ui/button";
 import IconClose from "@/components/ui/icons/close";
-import { Filter } from "./filtersHelp";
+import { Filter } from "./filters";
 
 type TFilterChipProps = {
   filter: Filter;

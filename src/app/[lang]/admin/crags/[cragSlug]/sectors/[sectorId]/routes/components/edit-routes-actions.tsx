@@ -159,6 +159,7 @@ function EditRoutesActions({
               {/* delete checked routes */}
               <Button
                 variant="quaternary"
+                intent="destructive"
                 onClick={() => setDeleteRoutesDialogIsOpen(true)}
               >
                 <span className="flex">

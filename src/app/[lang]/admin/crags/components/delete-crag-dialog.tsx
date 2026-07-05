@@ -39,6 +39,7 @@ function DeleteCragDialog({ isOpen, setIsOpen, crag }: TDeleteCragDialog) {
         dontCloseOnConfirm: true,
         loading: loading,
         disabled: loading,
+        destructive: true,
       }}
     >
       <>

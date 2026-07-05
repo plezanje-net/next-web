@@ -2,30 +2,25 @@
 
 import Button from "@/components/ui/button";
 import IconPublish from "@/components/ui/icons/publish";
-import {
-  EditCragPageCragQuery,
-  EditRoutesPageSectorQuery,
-  Sector,
-} from "@/graphql/generated";
 import { useState } from "react";
 import IconCheck from "@/components/ui/icons/check";
 import IconClose from "@/components/ui/icons/close";
-import PublishDialog from "./publish-dialog";
-import SuggestPublishDialog from "./suggest-publish-dialog";
-import RejectDialog from "./reject-dialog";
+import PublishDialog from "./publish-status-actions/publish-dialog";
+import SuggestPublishDialog from "./publish-status-actions/suggest-publish-dialog";
+import RejectDialog from "./publish-status-actions/reject-dialog";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import { TContributable } from "@/lib/contributables-helpers";
 
 type TPublishStatusActionsProps = {
-  contributable:
-    | EditRoutesPageSectorQuery["sector"]["routes"][number]
-    | Sector
-    | EditCragPageCragQuery["cragBySlug"];
+  contributable: TContributable;
   disabled: boolean;
+  redirectAfterReject?: string;
 };
 
 function PublishStatusActions({
   contributable,
   disabled,
+  redirectAfterReject,
 }: TPublishStatusActionsProps) {
   const { currentUser } = useAuthContext();
 
@@ -137,6 +132,7 @@ function PublishStatusActions({
                 isOpen={rejectDialogIsOpen}
                 setIsOpen={setRejectDialogIsOpen}
                 contributable={contributable}
+                redirectAfterReject={redirectAfterReject}
               />
             </>
           )}

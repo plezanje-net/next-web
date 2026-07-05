@@ -1,16 +1,20 @@
-import { RouteBySlugQuery } from "@/graphql/generated";
+import { DifficultyVote, Route, User } from "@/graphql/generated";
 import displayDate from "@/lib/display-date";
-import Grade, { diffToGrade } from "@/components/grade";
+import Grade from "@/components/grade";
 import { pluralizeNoun } from "@/lib/text-helpers";
+import { difficultyToGrade } from "@/lib/grade-helpers";
 
 type TDifficultyVotesProps = {
-  route: RouteBySlugQuery["routeBySlug"];
-  difficultyVotes: RouteBySlugQuery["routeBySlug"]["difficultyVotes"];
+  route: Pick<Route, "difficulty">;
+  difficultyVotes: (Pick<
+    DifficultyVote,
+    "id" | "difficulty" | "includedInCalculation" | "isBase" | "created"
+  > & { user?: Pick<User, "fullName"> | null })[];
 };
 
 function DifficultyVotes({ route, difficultyVotes }: TDifficultyVotesProps) {
   const routeGradeDifficulty = route.difficulty
-    ? diffToGrade(route.difficulty, "french", false).difficulty
+    ? difficultyToGrade(route.difficulty, "french", false)?.difficulty
     : null;
 
   const nrVotesPerDifficulty = difficultyVotes.reduce(

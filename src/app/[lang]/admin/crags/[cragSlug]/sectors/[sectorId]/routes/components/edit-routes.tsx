@@ -24,6 +24,7 @@ import updateRouteAction from "../lib/update-route-action";
 import EditRoutesActions from "./edit-routes-actions";
 import NewFirstRouteButton from "./new-first-route-button";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import PublishStatusLegend from "../../../../../components/publish-status-legend";
 
 type TEditRoutesProps = {
   routes: EditRoutesPageSectorQuery["sector"]["routes"];
@@ -155,6 +156,10 @@ function EditRoutes({ routes, crag, sector, allSectors }: TEditRoutesProps) {
             </div>
           </SortableContext>
         </DndContext>
+
+        {routes.some((route) => route.publishStatus !== "published") && (
+          <PublishStatusLegend className="mt-8" />
+        )}
       </div>
     </div>
   );

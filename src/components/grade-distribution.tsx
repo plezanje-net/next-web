@@ -1,30 +1,5 @@
 import { CragInfoQuery } from "@/graphql/generated";
-import { TGradingSystemId, gradingSystems } from "../lib/grading-systems";
-
-// TODO: we decided to keep half grades for voting and lose modifiers on calculated grades. this becomes much simpler now. move to Grade??
-function difficultyToGrade(difficulty: number, gradingSystemId: string) {
-  const grades = gradingSystems[gradingSystemId as TGradingSystemId].grades;
-
-  if (!grades) return null;
-
-  // assuming grades are ordered by difficulty low to high
-  for (let i = 1; i < grades.length; i++) {
-    const prevGrade = grades[i - 1];
-    const currGrade = grades[i];
-
-    if (currGrade.difficulty >= difficulty) {
-      // are we closer to left or right 'whole' grade
-      if (
-        difficulty - prevGrade.difficulty <=
-        currGrade.difficulty - difficulty
-      ) {
-        return prevGrade;
-      } else {
-        return currGrade;
-      }
-    }
-  }
-}
+import { difficultyToGrade } from "@/lib/grade-helpers";
 
 type TGradeSlot = {
   label: string;

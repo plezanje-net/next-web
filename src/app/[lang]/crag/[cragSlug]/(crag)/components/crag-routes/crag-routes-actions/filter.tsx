@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import Button from "@/components/ui/button";
 import IconFilter from "@/components/ui/icons/filter";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
-import { CragRoutesContext, FilterOptions } from "../../crag-routes";
+import { CragRoutesContext, TFilterOptions } from "../../crag-routes";
 import GradeRangeSlider, {
   difficultyToSliderValueMap,
   maxSliderValue,
@@ -29,7 +29,7 @@ function Filter() {
 
   const handleApplyFilter = () => {
     let nrFiltersActiveCount = 0;
-    const filter: FilterOptions = {};
+    const filter: TFilterOptions = {};
 
     if (
       routesTouchesFilterValue === "ticked" ||

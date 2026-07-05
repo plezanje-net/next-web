@@ -1,8 +1,10 @@
 import { CragSectorsQuery } from "@/graphql/generated";
 import Accordion from "@/components/ui/accordion";
 import CragRouteList from "./crag-route-list";
+import PublishStatusCard from "../../../../../components/publish-status-card";
+import { useAuthContext } from "@/lib/auth/auth-context";
 
-interface Props {
+type TCragSectorProps = {
   crag: CragSectorsQuery["cragBySlug"];
   sector: CragSectorsQuery["cragBySlug"]["sectors"][number];
   ascents: Map<string, string>;
@@ -10,7 +12,7 @@ interface Props {
   isOpen: boolean;
   first?: boolean;
   last?: boolean;
-}
+};
 
 function CragSector({
   crag,
@@ -20,7 +22,16 @@ function CragSector({
   onToggle,
   first,
   last,
-}: Props) {
+}: TCragSectorProps) {
+  const sectorStatus =
+    sector.publishStatus === "draft"
+      ? "draft"
+      : sector.publishStatus === "in_review"
+        ? "in_review"
+        : "default";
+
+  const { currentUser } = useAuthContext();
+
   return (
     <>
       <Accordion
@@ -31,8 +42,17 @@ function CragSector({
         onClick={onToggle}
         first={first}
         last={last}
+        status={sectorStatus}
       >
         <div className="mx-4">
+          {sectorStatus !== "default" && (
+            <div className="my-2 text-left">
+              <PublishStatusCard
+                contributable={sector}
+                currentUser={currentUser}
+              />
+            </div>
+          )}
           <CragRouteList routes={sector.routes} crag={crag} ascents={ascents} />
         </div>
       </Accordion>

@@ -8,9 +8,10 @@ import {
   EditCragPageCragDocument,
 } from "@/graphql/generated";
 import EditCragForm from "./components/edit-crag-form";
-import CragPublishStatusCard from "./components/crag-publish-status-card";
 import { gqlRequest } from "@/lib/gql-request";
 import { gql } from "graphql-request";
+import PublishStatusCard from "../../../../components/publish-status-card";
+import getCurrentUser from "@/lib/auth/get-current-user";
 
 type TEditCragPageProps = { params: Promise<{ cragSlug: string }> };
 
@@ -28,6 +29,8 @@ async function EditCragPage(props: TEditCragPageProps) {
   ]);
 
   const crag = cragData.cragBySlug;
+
+  const currentUser = await getCurrentUser();
 
   return (
     <>
@@ -64,7 +67,11 @@ async function EditCragPage(props: TEditCragPageProps) {
       />
 
       {crag.publishStatus !== "published" && (
-        <CragPublishStatusCard crag={crag} />
+        <div className="flex justify-center px-4 xs:px-8 mt-7">
+          <div className="w-full max-w-2xl">
+            <PublishStatusCard contributable={crag} currentUser={currentUser} />
+          </div>
+        </div>
       )}
 
       <EditCragForm countriesWithAreas={countriesData.countries} crag={crag} />
@@ -92,6 +99,7 @@ gql`
 gql`
   query EditCragPageCrag($cragSlug: String!) {
     cragBySlug(slug: $cragSlug) {
+      __typename
       id
       slug
       name

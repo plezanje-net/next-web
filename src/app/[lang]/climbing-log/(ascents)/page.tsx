@@ -153,6 +153,7 @@ gql`
           name
           slug
           id
+          publishStatus
         }
         pitch {
           number

@@ -1,7 +1,7 @@
 "use client";
 
 import Checkbox from "@/components/ui/checkbox";
-import { Crag, Sector } from "@/graphql/generated";
+import { EditSectorsPageCragQuery } from "@/graphql/generated";
 import SectorCard from "./sector-card";
 import { Fragment, useEffect, useState } from "react";
 import SectorDialog from "./sector-dialog";
@@ -28,9 +28,10 @@ import NewFirstSectorButton from "./new-first-sector-button";
 import ConvertToSectorsNoneDialog from "./convert-to-sectors-none-dialog";
 import { canEdit } from "@/lib/contributables-helpers";
 import { useAuthContext } from "@/lib/auth/auth-context";
+import PublishStatusLegend from "../../../components/publish-status-legend";
 
 type TEditSectorsManyProps = {
-  crag: Crag;
+  crag: EditSectorsPageCragQuery["cragBySlug"];
 };
 
 function EditSectorsMany({ crag }: TEditSectorsManyProps) {
@@ -42,7 +43,9 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
   const [sectorDialogType, setSectorDialogType] = useState<"new" | "edit">();
   const [sectorDialogIsOpen, setSectorDialogIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
-  const [sector, setSector] = useState<Sector>(crag.sectors[0]);
+  const [sector, setSector] = useState<
+    EditSectorsPageCragQuery["cragBySlug"]["sectors"][number]
+  >(crag.sectors[0]);
   const [sortedSectors, setSortedSectors] = useState(crag.sectors);
   useEffect(() => {
     //eslint-disable-next-line react-hooks/set-state-in-effect
@@ -55,7 +58,9 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
     setSectorDialogIsOpen(true);
   };
 
-  const handleEditSectorClick = (sector: Sector) => {
+  const handleEditSectorClick = (
+    sector: EditSectorsPageCragQuery["cragBySlug"]["sectors"][number]
+  ) => {
     setSectorDialogType("edit");
     setSector(sector);
     setSectorDialogIsOpen(true);
@@ -63,7 +68,9 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
 
   const [deleteSectorDialogIsOpen, setDeleteSectorDialogIsOpen] =
     useState(false);
-  const handleDeleteSectorClick = (sector: Sector) => {
+  const handleDeleteSectorClick = (
+    sector: EditSectorsPageCragQuery["cragBySlug"]["sectors"][number]
+  ) => {
     setSector(sector);
     setDeleteSectorDialogIsOpen(true);
   };
@@ -156,6 +163,10 @@ function EditSectorsMany({ crag }: TEditSectorsManyProps) {
           </div>
         </SortableContext>
       </DndContext>
+
+      {crag.sectors.some((sector) => sector.publishStatus !== "published") && (
+        <PublishStatusLegend className="mt-8" />
+      )}
 
       {sectorDialogType === "new" ? (
         <SectorDialog

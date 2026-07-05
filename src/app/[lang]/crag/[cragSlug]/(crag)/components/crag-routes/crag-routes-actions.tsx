@@ -17,7 +17,7 @@ function CragRoutesActions() {
           : "flex justify-center"
       }`}
     >
-      <div className="flex items-center justify-center py-4 xs:py-5">
+      <div className="flex items-center justify-center py-5">
         <div>
           <Filter />
         </div>
@@ -37,7 +37,7 @@ function CragRoutesActions() {
         className={`flex min-w-0 items-center xs:ml-8 xs:w-80 ${
           !cragRoutesState.search?.focus && !cragRoutesState.search?.query
             ? ""
-            : "mb-6 xs:mb-0"
+            : "mb-5 xs:mb-0"
         }`}
       >
         {!cragRoutesState.search?.focus && !cragRoutesState.search?.query && (

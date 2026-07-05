@@ -38,12 +38,23 @@ function CragCard({ crag }: TCragCardProps) {
   const showRainproof =
     columns.selectedState.includes("rainproof") && crag.rainproof != null;
 
+  const cragLinkStatus =
+    crag.publishStatus === "draft"
+      ? "draft"
+      : crag.publishStatus === "in_review"
+        ? "in_review"
+        : "default";
+
   return (
     <div className="border-b border-neutral-200 py-4">
       {/* row 1 */}
       <div className="flex items-center justify-between">
         <div className="font-medium">
-          <Link href={`/plezalisce/${crag.slug}`} variant="secondary">
+          <Link
+            href={`/plezalisce/${crag.slug}`}
+            variant="secondary"
+            status={cragLinkStatus}
+          >
             {crag.name}
           </Link>
         </div>

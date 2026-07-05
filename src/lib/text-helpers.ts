@@ -64,6 +64,32 @@ const pluralizeNoun = (
           return nounOnly ? "smeri" : `${count} smeri`;
       }
 
+    case "nova smer":
+      switch (count % 100) {
+        case 1:
+          return nounOnly ? "nova smer" : `${count} nova smer`;
+        case 2:
+          return nounOnly ? "novi smeri" : `${count} novi smeri`;
+        case 3:
+        case 4:
+          return nounOnly ? "nove smeri" : `${count} nove smeri`;
+        default:
+          return nounOnly ? "novih smeri" : `${count} novih smeri`;
+      }
+
+    case "nov sektor":
+      switch (count % 100) {
+        case 1:
+          return nounOnly ? "nov sektor" : `${count} nov sektor`;
+        case 2:
+          return nounOnly ? "nova sektorja" : `${count} nova sektorja`;
+        case 3:
+        case 4:
+          return nounOnly ? "novi sektorji" : `${count} novi sektorji`;
+        default:
+          return nounOnly ? "novih sektorjev" : `${count} novih sektorjev`;
+      }
+
     case "problem":
       switch (count % 100) {
         case 1:
@@ -108,7 +134,7 @@ const pluralizeNoun = (
 const capitalizeFirstLetter = (text: string) =>
   text.charAt(0).toUpperCase() + text.slice(1);
 
-const genderizeVerb = (verb: string, gender: string) => {
+const genderizeVerb = (verb: string, gender?: string | null) => {
   if (gender == "F") return verb + "a";
   if (gender == "M") return verb;
   return verb + "/a";

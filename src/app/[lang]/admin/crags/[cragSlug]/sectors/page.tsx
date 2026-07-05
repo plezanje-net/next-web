@@ -4,7 +4,7 @@ import ContentHeader from "@/components/content-header";
 import IconInfo from "@/components/ui/icons/info";
 import IconRoutes from "@/components/ui/icons/routes";
 import TabMenu from "@/components/ui/tab-menu";
-import { Crag, EditSectorsPageCragDocument } from "@/graphql/generated";
+import { EditSectorsPageCragDocument } from "@/graphql/generated";
 import EditSectors from "./components/edit-sectors";
 import { gqlRequest } from "@/lib/gql-request";
 
@@ -21,7 +21,7 @@ async function EditSectorsPage(props: TEditSectorsPageProps) {
     cragSlug: cragSlug,
   });
   const { data: cragData } = await cragDataPromise;
-  const crag = cragData.cragBySlug as Crag;
+  const crag = cragData.cragBySlug;
 
   return (
     <>

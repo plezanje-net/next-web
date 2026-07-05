@@ -12,7 +12,8 @@
     "/{admin}/{crags}/{add}",
     "/{admin}/{crags}/:cragSlug/{edit}",
     "/{admin}/{crags}/:cragSlug/{sectors}",
-    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}"
+    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}",
+    "/{admin}/{contributions}"
   ],
   "translations": {
     "sl": {
@@ -29,7 +30,8 @@
       "add": "dodaj",
       "edit": "uredi",
       "sectors": "sektorji",
-      "routes": "smeri"
+      "routes": "smeri",
+      "contributions": "prispevki"
     },
     "en": {
       "crags": "crags",
@@ -45,7 +47,8 @@
       "add": "add",
       "edit": "edit",
       "sectors": "sectors",
-      "routes": "routes"
+      "routes": "routes",
+      "contributions": "contributions"
     }
   },
   "defaultLanguage": "sl"
