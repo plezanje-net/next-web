@@ -4,33 +4,39 @@ type TTextAreaProps = {
   name?: string;
   value: string;
   onChange: (value: string) => void;
+  onFocus?: () => void;
   label?: string;
   placeholder?: string;
   description?: string;
   errorMessage?: string;
   disabled?: boolean;
   rows?: number;
+  readOnly?: boolean;
 };
 
 function TextArea({
   name,
   value,
   onChange,
+  onFocus,
   label,
   placeholder,
   description,
   errorMessage,
   disabled,
   rows = 6,
+  readOnly = false,
 }: TTextAreaProps) {
   return (
     <Field disabled={disabled}>
       {label && <Label className="mb-2 block">{label}</Label>}
 
       <Textarea
+        readOnly={readOnly}
         name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={onFocus}
         rows={rows}
         placeholder={placeholder}
         className={`block w-full py-2 px-4 rounded-lg border outline-none focus:ring placeholder:text-neutral-400

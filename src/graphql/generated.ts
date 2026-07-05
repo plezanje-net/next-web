@@ -1189,6 +1189,7 @@ export type RegisterInput = {
   gender?: InputMaybe<Scalars['String']['input']>;
   lastname: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  returnTo?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Role = {

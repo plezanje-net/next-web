@@ -28,6 +28,7 @@ async function registerAction({
       firstname: firstName,
       lastname: lastName,
       gender,
+      returnTo,
     },
   });
 
