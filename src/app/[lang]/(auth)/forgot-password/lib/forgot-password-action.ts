@@ -15,7 +15,7 @@ async function forgotPasswordAction({
 }: TForgotPasswordActionArgs) {
   // TODO: extend api so returnTo can be included in recovery link, so after reset user gets back to where he was trying to go?
 
-  const result = await gqlRequest(ForgotPasswordDocument, { email });
+  const result = await gqlRequest(ForgotPasswordDocument, { email, returnTo });
 
   // TODO: generalize error handling
   if (result.error) {
@@ -32,7 +32,7 @@ async function forgotPasswordAction({
 export default forgotPasswordAction;
 
 gql`
-  mutation ForgotPassword($email: String!) {
-    recover(email: $email)
+  mutation ForgotPassword($email: String!, $returnTo: String) {
+    recover(email: $email, returnTo: $returnTo)
   }
 `;
