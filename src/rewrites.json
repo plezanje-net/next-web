@@ -12,7 +12,15 @@
     "/{admin}/{crags}/{add}",
     "/{admin}/{crags}/:cragSlug/{edit}",
     "/{admin}/{crags}/:cragSlug/{sectors}",
-    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}"
+    "/{admin}/{crags}/:cragSlug/{sectors}/:sectorId/{routes}",
+    "/{login}",
+    "/{register}",
+    "/{register}/{sent}",
+    "/{register}/{activate}/:id/:token",
+    "/{forgot-password}",
+    "/{forgot-password}/{sent}",
+    "/{forgot-password}/{reset}/:id/:token",
+    "/{forgot-password}/{success}"
   ],
   "translations": {
     "sl": {
@@ -29,7 +37,14 @@
       "add": "dodaj",
       "edit": "uredi",
       "sectors": "sektorji",
-      "routes": "smeri"
+      "routes": "smeri",
+      "login": "prijava",
+      "register": "registracija",
+      "activate": "aktivacija",
+      "forgot-password": "pozabljeno-geslo",
+      "sent": "poslano",
+      "reset": "ponastavi",
+      "success": "uspeh"
     },
     "en": {
       "crags": "crags",
@@ -45,7 +60,14 @@
       "add": "add",
       "edit": "edit",
       "sectors": "sectors",
-      "routes": "routes"
+      "routes": "routes",
+      "login": "login",
+      "register": "register",
+      "activate": "activate",
+      "forgot-password": "forgot-password",
+      "sent": "sent",
+      "reset": "reset",
+      "success": "success"
     }
   },
   "defaultLanguage": "sl"

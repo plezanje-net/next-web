@@ -96,7 +96,7 @@ function Header() {
         {!loggedIn && (
           <Link
             className="-mx-2 block p-2 font-medium hover:text-blue-500 active:text-blue-600 lg:hidden"
-            href="/sandbox/auth"
+            href="/prijava"
           >
             Prijava
           </Link>
@@ -115,7 +115,7 @@ function Header() {
 
         <Link
           className="-mr-2 hidden p-2 py-2 font-medium hover:text-blue-500 active:text-blue-600 lg:ml-4 lg:block"
-          href="/sandbox/auth"
+          href={loggedIn ? "/sandbox/auth" : "/prijava"}
         >
           {loggedIn ? userFullName : "Prijava"}
         </Link>

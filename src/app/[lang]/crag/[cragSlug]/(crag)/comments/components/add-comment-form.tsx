@@ -5,7 +5,7 @@ import Button from "@/components/ui/button";
 import TextArea from "@/components/ui/text-area";
 import { Radio, RadioGroup } from "@/components/ui/radio-group";
 import createCommentAction from "./lib/create-comment-action";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthContext } from "@/lib/auth/auth-context";
 
 interface Props {
@@ -19,6 +19,8 @@ enum CommentType {
 
 function AddCommentForm({ cragId }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const { currentUser } = useAuthContext();
 
   const [commentType, setCommentType] = useState<CommentType>(
@@ -28,14 +30,21 @@ function AddCommentForm({ cragId }: Props) {
 
   const buttonLabel = { comment: "komentar", warning: "opozorilo" };
 
+  const handleCommentInputFocus = () => {
+    // check if user is logged in, if not redirect to login page
+    if (!currentUser) {
+      router.push(`/prijava?returnTo=${encodeURIComponent(pathname)}`);
+    }
+  };
+
   const handleFormAction = async (formData: FormData) => {
     if (!commentContent) {
       return;
     }
 
+    // should never happen, but just in case...
     if (!currentUser) {
-      console.log("Prijavi se za oddajo komentarja.");
-      // TODO: open login modal dialog, when such dialog is implemented
+      router.push(`/prijava?returnTo=${encodeURIComponent(pathname)}`);
       return;
     }
 
@@ -57,8 +66,10 @@ function AddCommentForm({ cragId }: Props) {
           name="commentContent"
           value={commentContent}
           onChange={setCommentContent}
+          onFocus={handleCommentInputFocus}
           placeholder="Vnesi komentar ali opozorilo..."
           aria-label="Vnesi komentar ali opozorilo"
+          readOnly={!currentUser}
         />
 
         <div className="flex-wrap xs:flex xs:items-start xs:justify-between">

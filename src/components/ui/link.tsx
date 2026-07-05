@@ -5,9 +5,15 @@ import { ComponentProps } from "react";
 
 type TLinkProps = ComponentProps<typeof NextLink> & {
   variant?: "primary" | "secondary" | "tertiary";
+  mailto?: boolean;
 };
 
-function Link({ variant = "primary", className, ...rest }: TLinkProps) {
+function Link({
+  variant = "primary",
+  className,
+  mailto = false,
+  ...rest
+}: TLinkProps) {
   let linkClassName = className ? className + " " : "";
   linkClassName +=
     "outline-none focus-visible:underline focus-visible:decoration-double cursor-pointer hover:underline";
@@ -26,6 +32,19 @@ function Link({ variant = "primary", className, ...rest }: TLinkProps) {
       linkClassName +=
         " text-neutral-500 hover:text-neutral-600 active:text-neutral-700";
       break;
+  }
+
+  if (mailto) {
+    return (
+      <a
+        className={linkClassName}
+        href={`${rest.href}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {rest.children}
+      </a>
+    );
   }
 
   return <NextLink className={linkClassName} {...rest} />;
