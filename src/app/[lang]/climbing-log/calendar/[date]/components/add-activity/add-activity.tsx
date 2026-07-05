@@ -4,7 +4,7 @@ import Button from "@/components/ui/button";
 import Dialog, { DialogSize } from "@/components/ui/dialog";
 import IconPlus from "@/components/ui/icons/plus";
 import ActivityDate from "./activity-date";
-import { useMemo, useState } from "react";
+import { Suspense, use, useMemo, useState } from "react";
 import { TDateString } from "@/components/ui/date-picker";
 import SelectActivityType from "./select-activity-type";
 import TextField from "@/components/ui/text-field";
@@ -15,9 +15,13 @@ import { useRouter } from "next/navigation";
 
 type TAddActivityProps = {
   date: TDateString;
+  customActivityTypes: Promise<string[]> | null;
 };
 
-function AddActivity({ date }: TAddActivityProps) {
+function AddActivity({
+  date,
+  customActivityTypes: customActivityTypesPromise,
+}: TAddActivityProps) {
   const router = useRouter();
   const [activityDate, setActivityDate] = useState(date);
   const [activityType, setActivityType] = useState("");
@@ -30,6 +34,10 @@ function AddActivity({ date }: TAddActivityProps) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const customActivityTypes = customActivityTypesPromise
+    ? use(customActivityTypesPromise)
+    : [];
 
   const isValid = useMemo(() => {
     if (!activityDate) return false;
@@ -75,7 +83,10 @@ function AddActivity({ date }: TAddActivityProps) {
       setIsOpen={setIsOpen}
       title="Dodajanje aktivnosti"
       openTrigger={
-        <Button variant="quaternary">
+        <Button
+          variant="quaternary"
+          disabled={customActivityTypesPromise === null}
+        >
           <span className="flex">
             <IconPlus />
             <span className="ml-2">Dodaj aktivnost</span>
@@ -90,20 +101,26 @@ function AddActivity({ date }: TAddActivityProps) {
         loading: isLoading,
         dontCloseOnConfirm: true,
       }}
-      cancel={{ label: "Prekliči" }}
+      cancel={{ label: "Prekliči", callback: clearForm }}
       closeCallback={clearForm}
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-4">
           <div className="flex-1">
-            <ActivityDate value={activityDate} setValue={setActivityDate} />
+            <ActivityDate
+              value={activityDate}
+              setValue={setActivityDate}
+              disabled={isLoading}
+            />
           </div>
           <div className="flex-1">
             <SelectActivityType
               type={activityType}
-              setType={setActivityType}
               customType={activityCustomType}
+              setType={setActivityType}
               setCustomType={setActivityCustomType}
+              customTypes={customActivityTypes}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -121,6 +138,7 @@ function AddActivity({ date }: TAddActivityProps) {
             <ActivityDuration
               value={activityDuraton}
               setValue={setActivityDuration}
+              disabled={isLoading}
             />
           </div>
         </div>

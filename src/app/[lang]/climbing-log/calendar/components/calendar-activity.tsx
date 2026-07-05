@@ -33,7 +33,11 @@ function CalendarActivity({ activity }: TCalendarActivityProps) {
       </div>
       <div className="hidden lg:block">
         <div>
-          <ActivityType activityType={activity.type} variant="text" />
+          <ActivityType
+            activityType={activity.type}
+            customType={activity.customType}
+            variant="text"
+          />
         </div>
         {activity.type == "crag" && activity.crag && (
           <div className="text-sm">

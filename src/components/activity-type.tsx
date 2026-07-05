@@ -5,6 +5,7 @@ type TActivityTypeProps = {
   variant: "icon" | "text" | "full";
   iconSize?: IconSize.small | IconSize.regular;
   activityType: string;
+  customType?: string | null;
 };
 
 type TActivityType = {
@@ -18,10 +19,15 @@ const activityTypes: Record<string, TActivityType> = {
   trainingGym: { label: "Telovadnica", color: "text-red-100" },
   peak: { label: "Hribi", color: "text-neutral-400" },
   iceFall: { label: "Slap", color: "text-neutral-400" },
-  other: { label: "Ostalo", color: "text-neutral-400" },
+  other: { label: "Drugo", color: "text-neutral-400" },
 };
 
-function ActivityType({ activityType, variant, iconSize }: TActivityTypeProps) {
+function ActivityType({
+  activityType,
+  variant,
+  iconSize,
+  customType,
+}: TActivityTypeProps) {
   const option = activityTypes[activityType];
 
   const inner = (
@@ -31,7 +37,7 @@ function ActivityType({ activityType, variant, iconSize }: TActivityTypeProps) {
           <IconDot size={iconSize ?? IconSize.small} />
         </span>
       )}
-      {variant != "icon" && <span>{option.label}</span>}
+      {variant != "icon" && <span>{customType ?? option.label}</span>}
     </>
   );
 
