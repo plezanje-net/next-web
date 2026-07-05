@@ -21,6 +21,7 @@ type TButtonProps = {
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "submit" | "reset" | "button";
+  form?: string; // ID of the form the button is associated with (if type="submit")
   className?: string;
 };
 
@@ -33,6 +34,7 @@ const Button = forwardRef(function Button(
     loading = false,
     onClick,
     type = "button",
+    form,
     className,
     ...rest
   }: TButtonProps,
@@ -137,6 +139,7 @@ const Button = forwardRef(function Button(
       disabled={disabled}
       onClick={onClick}
       type={type}
+      form={form}
       {...rest}
     >
       {loading ? (

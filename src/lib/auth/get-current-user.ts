@@ -30,6 +30,7 @@ gql`
       firstname
       lastname
       fullName
+      gender
       email
       roles
     }

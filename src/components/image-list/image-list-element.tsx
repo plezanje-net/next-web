@@ -42,13 +42,15 @@ function ImageListElement({
           onClick={onClick}
         />
       </div>
-      {title && <div className="pt-2">{title}</div>}
-      {author && (
-        <div className="flex items-center gap-0.5 text-sm">
-          <IconPhoto size={IconSize.small} />
-          <span>{author}</span>
-        </div>
-      )}
+      <div className="pt-2">
+        {title && <div>{title}</div>}
+        {author && (
+          <div className="flex items-center gap-0.5 text-sm">
+            <IconPhoto size={IconSize.small} />
+            <span>{author}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,9 +1,11 @@
 import { gqlRequest } from "@/lib/gql-request";
+import { gql } from "graphql-request";
 import ImageList from "@/components/image-list/image-list";
 import { CragGalleryDocument, Image } from "@/graphql/generated";
-import { gql } from "graphql-request";
 import PublishStatusCard from "../../../../components/publish-status-card";
 import getCurrentUser from "@/lib/auth/get-current-user";
+import getAuthToken from "@/lib/auth/auth-token";
+import ImageUploadDialog from "@/components/image-upload/image-upload-dialog";
 
 type TCragGalleryPageParams = {
   cragSlug: string;
@@ -19,9 +21,11 @@ async function CragGalleryPage(props: {
 
   const crag = data.cragBySlug;
   const images = crag.images as Image[];
-  const imagesBaseUrl = `${process.env.NEXT_PUBLIC_IMAGES_BASEURL}`;
-
   const currentUser = await getCurrentUser();
+  const authToken = await getAuthToken();
+  const loggedIn = currentUser !== null && authToken !== null; // checking auth token only to make ts happy
+
+  const imagesBaseUrl = `${process.env.NEXT_PUBLIC_IMAGES_BASEURL}`;
 
   return (
     <>
@@ -32,7 +36,16 @@ async function CragGalleryPage(props: {
         </div>
       )}
 
-      <div className="mx-auto mt-18 px-4 2xl:container xs:px-8">
+      <div className="mx-auto mt-4 px-4 2xl:container xs:px-8">
+        {loggedIn && (
+          <div className="flex justify-end mb-4">
+            <ImageUploadDialog
+              authToken={authToken}
+              entityId={data.cragBySlug.id}
+              entityType="crag"
+            />
+          </div>
+        )}
         <ImageList images={images} baseUrl={imagesBaseUrl} />
       </div>
     </>

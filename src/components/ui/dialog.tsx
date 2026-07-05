@@ -36,6 +36,8 @@ type TDialogProps = {
     loading?: boolean;
     dontCloseOnConfirm?: boolean;
     destructive?: boolean;
+    type?: "button" | "submit"; // "submit" if the button should submit a form inside the dialog
+    form?: string; // ID of the form the button will trigger (if type="submit")
   };
   cancel?: { label: string; callback?: () => void; disabled?: boolean };
   dialogSize?: DialogSize;
@@ -132,6 +134,8 @@ function Dialog({
                   disabled={confirm.disabled}
                   loading={confirm.loading}
                   intent={confirm.destructive ? "destructive" : "default"}
+                  type={confirm.type ?? "button"}
+                  form={confirm.form}
                 >
                   {confirm.label}
                 </Button>
